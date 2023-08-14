@@ -1,5 +1,5 @@
 ---
-author: ryan
+author: Ryan
 title: Kubernetes 二进制部署
 date: 2023-04-28 21:23:22
 tags:

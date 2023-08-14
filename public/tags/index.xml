@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>Tags - 标签 - Ryan&#39;s Notebook</title>
+    <link>https://www.xinn.cc/tags/</link>
+    <description>Tags - 标签 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (ryanxin7)</managingEditor>
+      <webMaster>99929x@gmail.com (ryanxin7)</webMaster><lastBuildDate>Fri, 28 Apr 2023 21:23:22 &#43;0000</lastBuildDate><atom:link href="https://www.xinn.cc/tags/" rel="self" type="application/rss+xml" /><item>
+  <title>k8s进阶训练营</title>
+  <link>https://www.xinn.cc/tags/k8s%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/</link>
+  <pubDate>Fri, 28 Apr 2023 21:23:22 &#43;0000</pubDate>
+  <author>ryanxin7</author>
+  <guid>https://www.xinn.cc/tags/k8s%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/</guid>
+  <description><![CDATA[]]></description>
+</item>
+</channel>
+</rss>
