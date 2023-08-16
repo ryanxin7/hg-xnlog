@@ -4,9 +4,17 @@
     <link>https://www.xinn.cc/</link>
     <description>Ryan’s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Fri, 28 Apr 2023 21:23:22 &#43;0000</lastBuildDate>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Tue, 15 Aug 2023 00:00:00 &#43;0000</lastBuildDate>
       <atom:link href="https://www.xinn.cc/index.xml" rel="self" type="application/rss+xml" />
     <item>
+  <title>使用Algolia实现Hugo本地智能搜索</title>
+  <link>https://www.xinn.cc/posts/%E4%BD%BF%E7%94%A8algolia%E5%AE%9E%E7%8E%B0hugo%E6%9C%AC%E5%9C%B0%E6%99%BA%E8%83%BD%E6%90%9C%E7%B4%A2/</link>
+  <pubDate>Tue, 15 Aug 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://www.xinn.cc/posts/%E4%BD%BF%E7%94%A8algolia%E5%AE%9E%E7%8E%B0hugo%E6%9C%AC%E5%9C%B0%E6%99%BA%E8%83%BD%E6%90%9C%E7%B4%A2/</guid>
+  <description><![CDATA[1.简介 Algolia是一家提供搜索即服务的技术公司，帮助开发者为他们的应用程序或网站构建高速、精准的搜索功能。 免费的计划每个月可以查询10]]></description>
+</item>
+<item>
   <title>Kubernetes 二进制部署</title>
   <link>https://www.xinn.cc/posts/kubernetes-1/</link>
   <pubDate>Fri, 28 Apr 2023 21:23:22 &#43;0000</pubDate>
