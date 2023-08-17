@@ -30,7 +30,7 @@ defaults:
 jobs:
   # Build job
   build:
-    runs-on: Windows 11
+    runs-on: ubuntu-latest
     env:
       HUGO_VERSION: v0.117.0
     steps:
