@@ -28,5 +28,13 @@
   <guid>https://www.xinn.cc/posts/1.kubernetes%E5%9F%BA%E7%A1%80/</guid>
   <description><![CDATA[1.为什么需要容器编排系统？ Docker在管理单个容器时表现出色，对于一些由有限几个或十几个容器构建的应用程序来说，直接在Docker引擎上]]></description>
 </item>
+<item>
+  <title></title>
+  <link>https://www.xinn.cc/posts/action/</link>
+  <pubDate>Mon, 01 Jan 0001 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://www.xinn.cc/posts/action/</guid>
+  <description><![CDATA[]]></description>
+</item>
 </channel>
 </rss>
