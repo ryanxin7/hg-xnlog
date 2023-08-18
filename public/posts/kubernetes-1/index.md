@@ -2250,5 +2250,5 @@ NAME        STATUS                     ROLES    AGE    VERSION
 ---
 
 > 作者: [Ryan](https://github.com/ryanxin7)  
-> URL: https://www.xinn.cc/posts/kubernetes-1/  
+> URL: https://hg-xnlog.github.io/posts/kubernetes-1/  
 

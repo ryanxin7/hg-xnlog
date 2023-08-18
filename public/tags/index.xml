@@ -1,31 +1,47 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
   <channel>
     <title>Tags - 标签 - Ryan&#39;s Notebook</title>
-    <link>https://www.xinn.cc/tags/</link>
+    <link>https://hg-xnlog.github.io/tags/</link>
     <description>Tags - 标签 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Tue, 15 Aug 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://www.xinn.cc/tags/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Tue, 15 Aug 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/" rel="self" type="application/rss+xml" /><item>
   <title>Hugo</title>
-  <link>https://www.xinn.cc/tags/hugo/</link>
+  <link>https://hg-xnlog.github.io/tags/hugo/</link>
   <pubDate>Tue, 15 Aug 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
-  <guid>https://www.xinn.cc/tags/hugo/</guid>
+  <guid>https://hg-xnlog.github.io/tags/hugo/</guid>
   <description><![CDATA[]]></description>
 </item>
 <item>
   <title>个人网站</title>
-  <link>https://www.xinn.cc/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</link>
+  <link>https://hg-xnlog.github.io/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</link>
   <pubDate>Tue, 15 Aug 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
-  <guid>https://www.xinn.cc/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</guid>
+  <guid>https://hg-xnlog.github.io/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</guid>
   <description><![CDATA[]]></description>
 </item>
 <item>
   <title>k8s进阶训练营</title>
-  <link>https://www.xinn.cc/tags/k8s%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/</link>
+  <link>https://hg-xnlog.github.io/tags/k8s%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/</link>
   <pubDate>Fri, 28 Apr 2023 21:23:22 &#43;0000</pubDate>
   <author>Ryan</author>
-  <guid>https://www.xinn.cc/tags/k8s%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/</guid>
+  <guid>https://hg-xnlog.github.io/tags/k8s%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
+  <title>负载均衡</title>
+  <link>https://hg-xnlog.github.io/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</link>
+  <pubDate>Tue, 07 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
+  <title>docker</title>
+  <link>https://hg-xnlog.github.io/tags/docker/</link>
+  <pubDate>Sat, 04 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/tags/docker/</guid>
   <description><![CDATA[]]></description>
 </item>
 </channel>

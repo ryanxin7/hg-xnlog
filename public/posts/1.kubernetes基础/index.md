@@ -116,5 +116,5 @@ Kubernetes提供了一种声明式的方法来管理应用程序和资源对象�
 ---
 
 > 作者: [Ryan](https://github.com/ryanxin7)  
-> URL: https://www.xinn.cc/posts/1.kubernetes%E5%9F%BA%E7%A1%80/  
+> URL: https://hg-xnlog.github.io/posts/1.kubernetes%E5%9F%BA%E7%A1%80/  
 

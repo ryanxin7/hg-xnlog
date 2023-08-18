@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>HAProxy-基础配置详解 （二） - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
+<meta name="author-link" content="https://github.com/ryanxin7">
+<meta name="description" content="四、基础配置详解 官方文档：http://cbonte.github.io/haproxy-dconv/2.6/configuration.h" /><meta name="keywords" content='负载均衡' /><meta itemprop="name" content="HAProxy-基础配置详解 （二）">
+<meta itemprop="description" content="四、基础配置详解 官方文档：http://cbonte.github.io/haproxy-dconv/2.6/configuration.h"><meta itemprop="datePublished" content="2023-02-05T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-08-17T00:00:00+00:00" />
+<meta itemprop="wordCount" content="3033"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="keywords" content="负载均衡," /><meta property="og:title" content="HAProxy-基础配置详解 （二）" />
+<meta property="og:description" content="四、基础配置详解 官方文档：http://cbonte.github.io/haproxy-dconv/2.6/configuration.h" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hg-xnlog.github.io/posts/haproxy/haproxy-2/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-02-05T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-08-17T00:00:00+00:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
+
+<meta name="twitter:title" content="HAProxy-基础配置详解 （二）"/>
+<meta name="twitter:description" content="四、基础配置详解 官方文档：http://cbonte.github.io/haproxy-dconv/2.6/configuration.h"/>
+<meta name="application-name" content="Ryan’s Notebook">
+<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/haproxy/haproxy-2/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/docker/docker%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%8C%85%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85/" /><link rel="next" href="https://hg-xnlog.github.io/posts/haproxy/haproxy-3/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "HAProxy-基础配置详解 （二）",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/hg-xnlog.github.io\/posts\/haproxy\/haproxy-2\/"
+    },"genre": "posts","keywords": "负载均衡","wordcount":  3033 ,
+    "url": "https:\/\/hg-xnlog.github.io\/posts\/haproxy\/haproxy-2\/","datePublished": "2023-02-05T00:00:00+00:00","dateModified": "2023-08-17T00:00:00+00:00","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "Ryan"
+      },"description": ""
+  }
+  </script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><script>(window.localStorage?.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('data-theme', 'dark');</script><div class="wrapper" data-page-style="wide"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper" data-github-corner="right">
+    <div class="header-title">
+      <a href="/" title="Ryan&#39;s Notebook"><img loading="lazy" src="/images/pow.png" srcset="/images/pow.png, /images/pow.png 1.5x, /images/pow.png 2x" sizes="auto" data-title="Ryan&#39;s Notebook" data-alt="Ryan&#39;s Notebook" class="logo" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/><span class="header-title-text">Ryan’s Notebook</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 所有文章</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/friends/"
+                title="友情链接"
+                
+              ><i class="fa-solid fa-users fa-fw fa-sm" aria-hidden="true"></i> 友链</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/guestbook/"
+                
+                
+              ><i class="fa-solid fa-comments fa-fw fa-sm" aria-hidden="true"></i> 留言</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/about/"
+                
+                
+              ><i class="fa-solid fa-user-tie fa-fw fa-sm" aria-hidden="true"></i> 關於</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容……" id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="Ryan&#39;s Notebook"><img loading="lazy" src="/images/pow.png" srcset="/images/pow.png, /images/pow.png 1.5x, /images/pow.png 2x" sizes="auto" data-title="/images/pow.png" data-alt="/images/pow.png" class="logo" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/><span class="header-title-text">Ryan’s Notebook</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容……" id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/posts/"
+                  
+                  
+                ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 所有文章</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/categories/"
+                  
+                  
+                ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/tags/"
+                  
+                  
+                ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/friends/"
+                  title="友情链接"
+                  
+                ><i class="fa-solid fa-users fa-fw fa-sm" aria-hidden="true"></i> 友链</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/guestbook/"
+                  
+                  
+                ><i class="fa-solid fa-comments fa-fw fa-sm" aria-hidden="true"></i> 留言</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/about/"
+                  
+                  
+                ><i class="fa-solid fa-user-tie fa-fw fa-sm" aria-hidden="true"></i> 關於</a></li><li
+              class="menu-item text-center"
+            ><a
+                  class="menu-link"
+                  href="https://github.com/ryanxin7/hg-xnlog"
+                  title="GitHub"
+                  rel="noopener noreferrer" target="_blank"
+                ><i class='fa-brands fa-github fa-fw' aria-hidden='true'></i> </a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="切换主题"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container"><aside class="toc" id="toc-auto"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside>
+
+  <aside class="aside-custom">
+    </aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>HAProxy-基础配置详解 （二）</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
+          <span class="post-category">收录于 <a href="/categories/haproxy/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> HAProxy</a></span></div>
+      <div class="post-meta-line"><span title="发布于 2023-02-05 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-05">2023-02-05</time></span>&nbsp;<span title="更新于 2023-08-17 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-08-17">2023-08-17</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 3033 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 7 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="HAProxy-基础配置详解 （二）">
+            <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
+          </span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#四基础配置详解">四、基础配置详解</a>
+      <ul>
+        <li><a href="#41-global配置">4.1 global配置</a></li>
+        <li><a href="#42-proxies配置">4.2 Proxies配置</a></li>
+        <li><a href="#43-使用子配置文件保存配置">4.3 使用子配置文件保存配置</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content"><h2 id="四基础配置详解">四、基础配置详解</h2>
+<p>官方文档：<a href="http://cbonte.github.io/haproxy-dconv/2.6/configuration.html"target="_blank" rel="external nofollow noopener noreferrer">http://cbonte.github.io/haproxy-dconv/2.6/configuration.html</a></p>
+<p>HAProxy 的配置文件<strong>haproxy.cfg</strong>由两大部分组成，分别是<strong>global</strong>和<strong>proxies</strong>部分</p>
+<p>**global ：全局配置段  **</p>
+<div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">进程及安全配置相关的参数
+</span></span><span class="line"><span class="cl">性能调整相关参数
+</span></span><span class="line"><span class="cl">Debug参数</span></span></code></pre></div><p>** proxies：代理配置段  **</p>
+<div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">defaults：为frontend, backend, listen提供默认配置
+</span></span><span class="line"><span class="cl">frontend：前端，相当于nginx中的server <span class="o">{}</span>
+</span></span><span class="line"><span class="cl">backend：后端，相当于nginx中的upstream <span class="o">{}</span>
+</span></span><span class="line"><span class="cl">listen：同时拥有前端和后端配置</span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h3 id="41-global配置">4.1 global配置</h3>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h4 id="411-global-配置参数说明">4.1.1 global 配置参数说明</h4>
+<p>官方文档：<a href="http://cbonte.github.io/haproxy-dconv/2.6/configuration.html"target="_blank" rel="external nofollow noopener noreferrer">http://cbonte.github.io/haproxy-dconv/2.6/configuration.html</a></p>
+<div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">chroot <span class="c1">#锁定运行目录</span>
+</span></span><span class="line"><span class="cl">deamon <span class="c1">#以守护进程运行</span>
+</span></span><span class="line"><span class="cl">stats socket /var/lib/haproxy/haproxy.sock mode <span class="m">600</span> level admin process <span class="m">1</span> <span class="c1">#链接本机的socket文件，定义权限方便对负载进行动态调整</span>
+</span></span><span class="line"><span class="cl">user, group, uid, gid  <span class="c1">#运行haproxy的用户身份</span>
+</span></span><span class="line"><span class="cl">nbproc    n     <span class="c1">#多进程模式，开启worker进程数，建议与cpu个数相同，默认为1。开启时就不在支持线程模式，没开启时，一个进程下面有多个线程</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#nbthread  1    #指定每个haproxy进程开启的线程数，默认为每个进程一个线程,和nbproc互斥（版本有关）</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#如果同时启用nbproc和nbthread 会出现以下日志的错误，无法启动服务</span>
+</span></span><span class="line"><span class="cl">Apr  <span class="m">7</span> 14:46:23 haproxy haproxy: <span class="o">[</span>ALERT<span class="o">]</span> 097/144623 <span class="o">(</span>1454<span class="o">)</span> : config : cannot <span class="nb">enable</span> multiple processes <span class="k">if</span> multiple threads are configured. Please use either nbproc or nbthread but not both.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">cpu-map <span class="m">1</span> <span class="m">0</span>     <span class="c1">#绑定haproxy 进程至指定CPU，将第一个work进程绑定至0号CPU</span>
+</span></span><span class="line"><span class="cl">cpu-map <span class="m">2</span> <span class="m">1</span>     <span class="c1">#绑定haproxy 进程至指定CPU，将第二个work进程绑定至1号CPU</span>
+</span></span><span class="line"><span class="cl">maxconn  <span class="m">100000</span>      <span class="c1">#每个haproxy进程的最大并发连接数</span>
+</span></span><span class="line"><span class="cl">maxsslconn  n   <span class="c1">#每个haproxy进程ssl最大连接数,用于haproxy配置了证书的场景下</span>
+</span></span><span class="line"><span class="cl">maxconnrate n   <span class="c1">#每个进程每秒创建的最大连接数量</span>
+</span></span><span class="line"><span class="cl">spread-checks n <span class="c1">#后端server状态check随机提前或延迟百分比时间，建议2-5(20%-50%)之间，默认值0</span>
+</span></span><span class="line"><span class="cl">pidfile         <span class="c1">#指定pid文件路径</span>
+</span></span><span class="line"><span class="cl">log 127.0.0.1  local2 info <span class="c1">#定义全局的syslog服务器；日志服务器需要开启UDP协议，最多可以定义两个</span></span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h4 id="442-多进程和线程">4.4.2 多进程和线程</h4>
+<p>范例：多进程和socket文件  <!-- raw HTML omitted --><strong>查看CPU核心数量</strong></p>
+<div class="highlight" id="id-4"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@localhost haproxy<span class="o">]</span><span class="c1"># cat /proc/cpuinfo  | grep &#34;cores&#34; | uniq                                                                       </span>
+</span></span><span class="line"><span class="cl">cpu cores       : <span class="m">8</span></span></span></code></pre></div><div class="highlight" id="id-5"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@centos7 ~<span class="o">]</span><span class="c1">#vim /etc/haproxy/haproxy.cfg</span>
+</span></span><span class="line"><span class="cl">global
+</span></span><span class="line"><span class="cl">maxconn <span class="m">100000</span>
+</span></span><span class="line"><span class="cl">chroot /apps/haproxy
+</span></span><span class="line"><span class="cl">stats socket /var/lib/haproxy/haproxy.sock1 mode <span class="m">600</span> level admin process <span class="m">1</span>               
+</span></span><span class="line"><span class="cl">stats socket /var/lib/haproxy/haproxy.sock2 mode <span class="m">600</span> level admin process <span class="m">2</span>
+</span></span><span class="line"><span class="cl">uid <span class="m">99</span>
+</span></span><span class="line"><span class="cl">gid <span class="m">99</span>
+</span></span><span class="line"><span class="cl">daemon
+</span></span><span class="line"><span class="cl">nbproc <span class="m">2</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@centos7 ~<span class="o">]</span><span class="c1">#systemctl restart haproxy</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@centos7 ~<span class="o">]</span><span class="c1">#pstree -p |grep haproxy</span>
+</span></span><span class="line"><span class="cl">           <span class="p">|</span>-haproxy<span class="o">(</span>2634<span class="o">)</span>-+-haproxy<span class="o">(</span>2637<span class="o">)</span>
+</span></span><span class="line"><span class="cl">           <span class="p">|</span>               <span class="sb">`</span>-haproxy<span class="o">(</span>2638<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@centos7 ~<span class="o">]</span><span class="c1">#ll /var/lib/haproxy/</span>
+</span></span><span class="line"><span class="cl">total <span class="m">4</span>
+</span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> root root <span class="m">5</span> Mar <span class="m">31</span> 18:49 haproxy.pid
+</span></span><span class="line"><span class="cl">srw------- <span class="m">1</span> root root <span class="m">0</span> Mar <span class="m">31</span> 18:49 haproxy.sock1
+</span></span><span class="line"><span class="cl">srw------- <span class="m">1</span> root root <span class="m">0</span> Mar <span class="m">31</span> 18:49 haproxy.sock2</span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h4 id="443--配置haproxy记录日志到指定日志文件中">4.4.3  配置HAProxy记录日志到指定日志文件中</h4>
+<div class="highlight" id="id-6"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#在global配置项定义：</span>
+</span></span><span class="line"><span class="cl">log 127.0.0.1  local<span class="o">{</span>1-7<span class="o">}</span> info <span class="c1">#基于syslog记录日志到指定设备，级别有(err、warning、info、debug)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">listen  web_port
+</span></span><span class="line"><span class="cl">  <span class="nb">bind</span> 127.0.0.1:80
+</span></span><span class="line"><span class="cl">  mode http
+</span></span><span class="line"><span class="cl">  log global   <span class="c1">#开启当前web_port的日志功能，默认不记录日志</span>
+</span></span><span class="line"><span class="cl">  server web1  127.0.0.1:8080  check inter <span class="m">3000</span> fall <span class="m">2</span> rise <span class="m">5</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># systemctl  restart haproxy</span></span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h5 id="rsyslog配置"><strong>Rsyslog配置</strong></h5>
+<div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/rsyslog.conf 
+</span></span><span class="line"><span class="cl"><span class="nv">$ModLoad</span> imudp
+</span></span><span class="line"><span class="cl"><span class="nv">$UDPServerRun</span> <span class="m">514</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Save boot messages also to boot.log</span>
+</span></span><span class="line"><span class="cl">local7.*                                                /var/log/boot.log
+</span></span><span class="line"><span class="cl">local5.*                                                /var/log/haproxy.log
+</span></span><span class="line"><span class="cl">local0.*                                                /var/log/haproxy.log
+</span></span><span class="line"><span class="cl"><span class="c1"># systemctl  restart rsyslog</span></span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h5 id="验证haproxy日志">验证HAProxy日志</h5>
+<p>重启syslog服务并访问app页面，然后验证是否生成日志</p>
+<div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@localhost log<span class="o">]</span><span class="c1"># tail -f haproxy.log </span>
+</span></span><span class="line"><span class="cl">Feb <span class="m">13</span> 11:11:57 localhost haproxy<span class="o">[</span>3127<span class="o">]</span>: Connect from 172.16.32.242:64058 to 10.1.0.6:30013 <span class="o">(</span>web_port/HTTP<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Feb <span class="m">13</span> 11:11:57 localhost haproxy<span class="o">[</span>3127<span class="o">]</span>: Connect from 172.16.32.242:64058 to 10.1.0.6:30013 <span class="o">(</span>web_port/HTTP<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Feb <span class="m">13</span> 11:11:59 localhost haproxy<span class="o">[</span>3127<span class="o">]</span>: Connect from 172.16.32.242:64058 to 10.1.0.6:30013 <span class="o">(</span>web_port/HTTP<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Feb <span class="m">13</span> 11:11:59 localhost haproxy<span class="o">[</span>3127<span class="o">]</span>: Connect from 172.16.32.242:64058 to 10.1.0.6:30013 <span class="o">(</span>web_port/HTTP<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Feb <span class="m">13</span> 11:11:59 localhost haproxy<span class="o">[</span>3127<span class="o">]</span>: Connect from 172.16.32.242:64058 to 10.1.0.6:30013 <span class="o">(</span>web_port/HTTP<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Feb <span class="m">13</span> 11:11:59 localhost haproxy<span class="o">[</span>3127<span class="o">]</span>: Connect from 172.16.32.242:64058 to 10.1.0.6:30013 <span class="o">(</span>web_port/HTTP<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Feb <span class="m">13</span> 11:11:59 localhost haproxy<span class="o">[</span>3127<span class="o">]</span>: Connect from 172.16.32.242:64061 to 10.1.0.6:30013 <span class="o">(</span>web_port/HTTP<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Feb <span class="m">13</span> 11:11:59 localhost haproxy<span class="o">[</span>3127<span class="o">]</span>: Connect from 172.16.32.242:64061 to 10.1.0.6:30013 <span class="o">(</span>web_port/HTTP<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Feb <span class="m">13</span> 11:11:59 localhost haproxy<span class="o">[</span>3127<span class="o">]</span>: Connect from 172.16.32.242:64061 to 10.1.0.6:30013 <span class="o">(</span>web_port/HTTP<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Feb <span class="m">13</span> 11:11:59 localhost haproxy<span class="o">[</span>3127<span class="o">]</span>: Connect from 172.16.32.242:64061 to 10.1.0.6:30013 <span class="o">(</span>web_port/HTTP<span class="o">)</span></span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h3 id="42-proxies配置">4.2 Proxies配置</h3>
+<p>官方文档：<a href="http://docs.haproxy.org/2.6/configuration.html#4"target="_blank" rel="external nofollow noopener noreferrer">http://docs.haproxy.org/2.6/configuration.html#4</a></p>
+<div class="highlight" id="id-9"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">defaults <span class="o">[</span>&lt;name&gt;<span class="o">]</span> <span class="c1">#默认配置项，针对以下的frontend、backend和listen生效，可以多个name也可以没有name</span>
+</span></span><span class="line"><span class="cl">frontend &lt;name&gt;   <span class="c1">#前端servername，类似于Nginx的一个虚拟主机 server和LVS服务集群。</span>
+</span></span><span class="line"><span class="cl">backend  &lt;name&gt;   <span class="c1">#后端服务器组，等于nginx的upstream和LVS中的RS服务器</span>
+</span></span><span class="line"><span class="cl">listen   &lt;name&gt;   <span class="c1">#将frontend和backend合并在一起配置，相对于frontend和backend配置更简洁，生产常用</span></span></span></code></pre></div><p>**注意：name字段只能使用大小写字母，数字，‘-’(dash)，’_‘(underscore)，’.’ (dot)和 ‘:&rsquo;(colon)，并且严格区分大小写 **</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h4 id="421-proxies配置-frontend">4.2.1 Proxies配置-frontend</h4>
+<p><strong>frontend 配置参数：</strong></p>
+<div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bind：   <span class="c1">#指定HAProxy的监听地址，可以是IPV4或IPV6，可以同时监听多个IP或端口，可同时用于listen字段中</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#格式：</span>
+</span></span><span class="line"><span class="cl"><span class="nb">bind</span> <span class="o">[</span>&lt;address&gt;<span class="o">]</span>:&lt;port_range&gt; <span class="o">[</span>, ...<span class="o">]</span> <span class="o">[</span>param*<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#注意：如果需要绑定在非本机的IP，需要开启内核参数：net.ipv4.ip_nonlocal_bind=1</span></span></span></code></pre></div><p>范例：</p>
+<div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">listen http_proxy                           <span class="c1">#监听http的多个IP的多个端口和sock文件</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">bind</span> :80,:443,:8801-8810
+</span></span><span class="line"><span class="cl">    <span class="nb">bind</span> 10.0.0.1:10080,10.0.0.1:10443
+</span></span><span class="line"><span class="cl">    <span class="nb">bind</span> /var/run/ssl-frontend.sock user root mode <span class="m">600</span> accept-proxy
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">listen http_https_proxy                     <span class="c1">#https监听</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">bind</span> :80
+</span></span><span class="line"><span class="cl">    <span class="nb">bind</span> :443 ssl crt /etc/haproxy/site.pem <span class="c1">#公钥和私钥公共文件</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">listen http_https_proxy_explicit            <span class="c1">#监听ipv6、ipv4和unix sock文件</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">bind</span> ipv6@:80
+</span></span><span class="line"><span class="cl">    <span class="nb">bind</span> ipv4@public_ssl:443 ssl crt /etc/haproxy/site.pem
+</span></span><span class="line"><span class="cl">    <span class="nb">bind</span> unix@ssl-frontend.sock user root mode <span class="m">600</span> accept-proxy
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">listen external_bind_app1                   <span class="c1">#监听file descriptor</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">bind</span> <span class="s2">&#34;fd@</span><span class="si">${</span><span class="nv">FD_APP1</span><span class="si">}</span><span class="s2">&#34;</span></span></span></code></pre></div><p>** 生产示例：**</p>
+<div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">frontend  magedu_web_port               <span class="c1">#可以采用后面形式命名：业务-服务-端口号</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">bind</span> :80,:8080
+</span></span><span class="line"><span class="cl">    <span class="nb">bind</span> 10.0.0.7:10080,:8801-8810,10.0.0.17:9001-9010
+</span></span><span class="line"><span class="cl">    mode  http<span class="p">|</span>tcp              <span class="c1">#指定负载协议类型</span>
+</span></span><span class="line"><span class="cl">    use_backend &lt;backend_name&gt;  <span class="c1">#调用的后端服务器组名称</span></span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h4 id="422-proxies配置-backend">4.2.2 Proxies配置-backend</h4>
+<p>定义一组后端服务器，backend服务器将被frontend进行调用。</p>
+<div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mode  http<span class="p">|</span>tcp      <span class="c1">#指定负载协议类型,和对应的frontend必须一致</span>
+</span></span><span class="line"><span class="cl">option              <span class="c1">#配置选项</span>
+</span></span><span class="line"><span class="cl">server              <span class="c1">#定义后端real server</span></span></span></code></pre></div><p>注意：option后面加** httpchk，smtpchk,mysql-check,pgsql-check，ssl-hello-chk**方法，可用于实现更多应用层检测功能。</p>
+<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h5 id="option-配置">option 配置</h5>
+<div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">check               <span class="c1">#对指定real进行健康状态检查，如果不加此设置，默认不开启检查</span>
+</span></span><span class="line"><span class="cl">    addr  &lt;IP&gt;        <span class="c1">#可指定的健康状态监测IP，可以是专门的数据网段，减少业务网络的流量</span>
+</span></span><span class="line"><span class="cl">    port  &lt;num&gt;   <span class="c1">#指定的健康状态监测端口</span>
+</span></span><span class="line"><span class="cl">    inter &lt;num&gt;   <span class="c1">#健康状态检查间隔时间，默认2000 ms</span>
+</span></span><span class="line"><span class="cl">    fall  &lt;num&gt;       <span class="c1">#后端服务器从线上转为线下的检查的连续失效次数，默认为3</span>
+</span></span><span class="line"><span class="cl">    rise  &lt;num&gt;       <span class="c1">#后端服务器从下线恢复上线的检查的连续有效次数，默认为2</span>
+</span></span><span class="line"><span class="cl">weight  &lt;weight&gt;  <span class="c1">#默认为1，最大值为256，0表示不参与负载均衡，但仍接受持久连接</span>
+</span></span><span class="line"><span class="cl">backup              <span class="c1">#将后端服务器标记为备份状态,只在所有非备份主机down机时提供服务，类似Sorry Server</span>
+</span></span><span class="line"><span class="cl">disabled            <span class="c1">#将后端服务器标记为不可用状态，即维护状态，除了持久模式，将不再接受连接</span>
+</span></span><span class="line"><span class="cl">redirect prefix  http://www.baidu.com/      <span class="c1">#将请求临时(302)重定向至其它URL，只适用于http模式</span>
+</span></span><span class="line"><span class="cl">redir http://www.baidu.com                  <span class="c1">#将请求临时(302)重定向至其它URL，只适用于http模式</span>
+</span></span><span class="line"><span class="cl">maxconn &lt;maxconn&gt;     <span class="c1">#当前后端server的最大并发连接数</span>
+</span></span><span class="line"><span class="cl">backlog &lt;backlog&gt; <span class="c1">#当前端服务器的连接数达到上限后的后援队列长度，注意：不支持backend</span></span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h4 id="423-frontendbackend配置实例">4.2.3 frontend+backend配置实例</h4>
+<p>范例1：</p>
+<div class="highlight" id="id-15"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">frontend xin-test-http
+</span></span><span class="line"><span class="cl"> <span class="nb">bind</span> :80,:8080
+</span></span><span class="line"><span class="cl"> mode tcp
+</span></span><span class="line"><span class="cl"> use_backend magedu-test-http-nodes
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">backend magedu-test-http-nodes
+</span></span><span class="line"><span class="cl"> mode tcp
+</span></span><span class="line"><span class="cl"> default-server inter <span class="m">1000</span> weight <span class="m">6</span>  
+</span></span><span class="line"><span class="cl"> server web1 10.0.0.17:80 check weight <span class="m">2</span> addr 10.0.0.117 port <span class="m">8080</span>
+</span></span><span class="line"><span class="cl"> server web1 10.0.0.27:80 check</span></span></code></pre></div><p>范例2：</p>
+<div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#官网业务访问入口</span>
+</span></span><span class="line"><span class="cl">frontend  WEB_PORT_80
+</span></span><span class="line"><span class="cl">    <span class="nb">bind</span> 10.0.0.7:80
+</span></span><span class="line"><span class="cl">    mode http
+</span></span><span class="line"><span class="cl">    use_backend  web_prot_http_nodes
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">backend web_prot_http_nodes
+</span></span><span class="line"><span class="cl">    mode  http
+</span></span><span class="line"><span class="cl">    option forwardfor
+</span></span><span class="line"><span class="cl">    server 10.0.0.17 10.0.0.17:8080   check inter <span class="m">3000</span> fall <span class="m">3</span> rise <span class="m">5</span>  
+</span></span><span class="line"><span class="cl">    server 10.0.0.27 10.0.0.27:8080   check inter <span class="m">3000</span> fall <span class="m">3</span> rise <span class="m">5</span></span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h4 id="424-proxies配置-listen替代frontendbackend">4.2.4 Proxies配置-listen替代frontend+backend</h4>
+<p>使用listen替换上面的frontend和backend的配置方式，可以简化设置，通常只用于TCP协议的应用</p>
+<div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#官网业务访问入口</span>
+</span></span><span class="line"><span class="cl">listen  WEB_PORT_80 
+</span></span><span class="line"><span class="cl">    <span class="nb">bind</span> 10.0.0.7:80  
+</span></span><span class="line"><span class="cl">    mode http
+</span></span><span class="line"><span class="cl">    option  forwardfor
+</span></span><span class="line"><span class="cl">    server web1   10.0.0.17:8080   check inter <span class="m">3000</span> fall <span class="m">3</span> rise <span class="m">5</span>
+</span></span><span class="line"><span class="cl">    server web2   10.0.0.27:8080   check inter <span class="m">3000</span> fall <span class="m">3</span> rise <span class="m">5</span></span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<h3 id="43-使用子配置文件保存配置">4.3 使用子配置文件保存配置</h3>
+<p>当业务众多时，将所有配置都放在一个配置文件中，会造成维护困难。可以考虑按业务分类，将配置信息拆分，放在不同的子配置文件中，从而达到方便维护的目的。</p>
+<div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#创建子配置目录</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@centos7 ~<span class="o">]</span><span class="c1">#mkdir /etc/haproxy/conf.d/</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#创建子配置文件，注意：必须为cfg后缀</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@centos7 ~<span class="o">]</span><span class="c1">#vim  /etc/haproxy/conf.d/test.cfg</span>
+</span></span><span class="line"><span class="cl">listen WEB_PORT_80
+</span></span><span class="line"><span class="cl">    <span class="nb">bind</span> 10.0.0.7:80
+</span></span><span class="line"><span class="cl">    mode http
+</span></span><span class="line"><span class="cl">    balance roundrobin
+</span></span><span class="line"><span class="cl">    server web1  10.0.0.17:80  check inter <span class="m">3000</span> fall <span class="m">2</span> rise <span class="m">5</span>
+</span></span><span class="line"><span class="cl">    server web2  10.0.0.27:80  check inter <span class="m">3000</span> fall <span class="m">2</span> rise <span class="m">5</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#添加子配置目录到unit文件中</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@centos7 ~<span class="o">]</span><span class="c1">#vim  /lib/systemd/system/haproxy.service</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Description</span><span class="o">=</span>HAProxy Load Balancer
+</span></span><span class="line"><span class="cl"><span class="nv">After</span><span class="o">=</span>syslog.target network.target
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Service<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">ExecStartPre</span><span class="o">=</span>/usr/sbin/haproxy -f /etc/haproxy/haproxy.cfg -f /etc/haproxy/conf.d/ -c -q
+</span></span><span class="line"><span class="cl"><span class="nv">ExecStart</span><span class="o">=</span>/usr/sbin/haproxy -Ws -f /etc/haproxy/haproxy.cfg -f /etc/haproxy/conf.d/  -p /var/lib/haproxy/haproxy.pid
+</span></span><span class="line"><span class="cl"><span class="nv">ExecReload</span><span class="o">=</span>/bin/kill -USR2 <span class="nv">$MAINPID</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@centos7 ~<span class="o">]</span><span class="c1">#systemctl daemon-reload </span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@centos7 ~<span class="o">]</span><span class="c1">#systemctl restart haproxy</span></span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title="更新于 2023-08-17 00:00:00">更新于 2023-08-17&nbsp;</span>
+      </div><div class="post-info-license">
+          <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+        </div></div>
+    <div class="post-info-line">
+      <div class="post-info-md"><span><a href="/posts/haproxy/haproxy-2/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
+      <div class="post-info-share">
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/haproxy/haproxy-2/" data-title="HAProxy-基础配置详解 （二）" data-hashtags="负载均衡"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/haproxy/haproxy-2/" data-hashtag="负载均衡"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/haproxy/haproxy-2/" data-title="HAProxy-基础配置详解 （二）" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/haproxy/haproxy-2/" data-title="HAProxy-基础配置详解 （二）"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/haproxy/haproxy-2/" data-title="HAProxy-基础配置详解 （二）"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://hg-xnlog.github.io/posts/haproxy/haproxy-2/" data-title="HAProxy-基础配置详解 （二）" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://hg-xnlog.github.io/posts/haproxy/haproxy-2/" data-title="HAProxy-基础配置详解 （二）" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://hg-xnlog.github.io/posts/haproxy/haproxy-2/" data-title="HAProxy-基础配置详解 （二）"><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
+  </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href='/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/' class="post-tag">负载均衡</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div>
+
+  <div class="post-nav"><a href="/posts/docker/docker%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%8C%85%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85/" class="post-nav-item" rel="prev" title="Docker 二进制方式安装"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>Docker 二进制方式安装</a>
+      <a href="/posts/haproxy/haproxy-3/" class="post-nav-item" rel="next" title="HAProxy-调度算法(三)">HAProxy-调度算法(三)<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2021 - 2023</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/ryanxin7"target="_blank" rel="external nofollow noopener noreferrer">Ryan</a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics"><span class="site-time" title='网站运行中……'><i class="fa-solid fa-heartbeat fa-fw animate-icon" aria-hidden="true"></i><span class="run-times ms-1">网站运行中……</span></span></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='总访客数'><i class="fa-regular fa-user fa-fw" aria-hidden="true"></i>&nbsp;<span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='总访问量'><i class="fa-regular fa-eye fa-fw" aria-hidden="true"></i>&nbsp;<span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div></div><a href="https://github.com/ryanxin7" title="在 GitHub 上查看源代码"target="_blank" rel="external nofollow" class="github-corner right d-none-mobile"><svg viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><div id="mask"></div><noscript>
+    <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><link rel="stylesheet" href="/lib/pace/themes/blue/pace-theme-minimal.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async defer></script><script src="/lib/pace/pace.min.js" async defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"enablePWA":true,"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"HFAFNY4NX2","algoliaIndex":"xn-log","algoliaSearchKey":"bd08388586b2f88b20753c17c60ba92f","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"siteTime":"2021-09-09T09:09:09+09:00"};</script><script src="/js/theme.min.js" defer></script></body>
+</html>

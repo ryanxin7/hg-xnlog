@@ -269,5 +269,5 @@ taxonomyTerm = ["HTML"]
 ---
 
 > 作者: [Ryan](https://github.com/ryanxin7)  
-> URL: https://www.xinn.cc/posts/%E4%BD%BF%E7%94%A8algolia%E5%AE%9E%E7%8E%B0hugo%E6%9C%AC%E5%9C%B0%E6%99%BA%E8%83%BD%E6%90%9C%E7%B4%A2/  
+> URL: https://hg-xnlog.github.io/posts/%E4%BD%BF%E7%94%A8algolia%E5%AE%9E%E7%8E%B0hugo%E6%9C%AC%E5%9C%B0%E6%99%BA%E8%83%BD%E6%90%9C%E7%B4%A2/  
 
