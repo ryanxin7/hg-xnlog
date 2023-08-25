@@ -21,6 +21,14 @@
   <description><![CDATA[]]></description>
 </item>
 <item>
+  <title>持续集成</title>
+  <link>https://hg-xnlog.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/</link>
+  <pubDate>Mon, 12 Jun 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
   <title>k8s进阶训练营</title>
   <link>https://hg-xnlog.github.io/tags/k8s%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/</link>
   <pubDate>Fri, 28 Apr 2023 21:23:22 &#43;0000</pubDate>
@@ -42,6 +50,14 @@
   <pubDate>Sat, 04 Feb 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/tags/docker/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
+  <title>CI/CD</title>
+  <link>https://hg-xnlog.github.io/tags/ci/cd/</link>
+  <pubDate>Mon, 01 Jan 0001 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/tags/ci/cd/</guid>
   <description><![CDATA[]]></description>
 </item>
 </channel>

@@ -1,6 +1,9 @@
 https://hg-xnlog.github.io/posts/%E4%BD%BF%E7%94%A8algolia%E5%AE%9E%E7%8E%B0hugo%E6%9C%AC%E5%9C%B0%E6%99%BA%E8%83%BD%E6%90%9C%E7%B4%A2/
-https://hg-xnlog.github.io/posts/kubernetes-1/
-https://hg-xnlog.github.io/posts/1.kubernetes%E5%9F%BA%E7%A1%80/
+https://hg-xnlog.github.io/posts/cicd/github-synctogitee/
+https://hg-xnlog.github.io/posts/cicd/jenkins-install/
+https://hg-xnlog.github.io/posts/cicd/jenkins-autodeploy/
+https://hg-xnlog.github.io/posts/kubernetes/kubernetes-1/
+https://hg-xnlog.github.io/posts/kubernetes/1.kubernetes%E5%9F%BA%E7%A1%80/
 https://hg-xnlog.github.io/posts/haproxy/haproxy-4/
 https://hg-xnlog.github.io/posts/haproxy/haproxy-3/
 https://hg-xnlog.github.io/posts/haproxy/haproxy-2/

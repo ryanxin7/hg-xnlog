@@ -6,18 +6,18 @@
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
       <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Fri, 28 Apr 2023 21:23:22 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/categories/kubernetes/" rel="self" type="application/rss+xml" /><item>
   <title>Kubernetes 二进制部署</title>
-  <link>https://hg-xnlog.github.io/posts/kubernetes-1/</link>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/kubernetes-1/</link>
   <pubDate>Fri, 28 Apr 2023 21:23:22 &#43;0000</pubDate>
   <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/kubernetes-1/</guid>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/kubernetes-1/</guid>
   <description><![CDATA[前言 Kubernetes二进制部署相对于使用自动化工具（如kubeadm）而言，涉及更多的手动步骤和配置过程。然而，这种部署方式在一些情境下]]></description>
 </item>
 <item>
   <title>Kubernetes 基础</title>
-  <link>https://hg-xnlog.github.io/posts/1.kubernetes%E5%9F%BA%E7%A1%80/</link>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/1.kubernetes%E5%9F%BA%E7%A1%80/</link>
   <pubDate>Mon, 24 Apr 2023 21:23:22 &#43;0000</pubDate>
   <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/1.kubernetes%E5%9F%BA%E7%A1%80/</guid>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/1.kubernetes%E5%9F%BA%E7%A1%80/</guid>
   <description><![CDATA[1.为什么需要容器编排系统？ Docker在管理单个容器时表现出色，对于一些由有限几个或十几个容器构建的应用程序来说，直接在Docker引擎上]]></description>
 </item>
 </channel>

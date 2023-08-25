@@ -1,0 +1,16 @@
+name: Docker Image CI for GHCR
+
+
+on:
+   push
+
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest
+    setps:
+      - uses: actions/checkout@v3
+      - name: Build and push the image
+        run: |
+          docker login --username ryanxin7 --password ${{ secrets.DOCKERPACKAING }} ghcr.io
+          docker build . --tag ghcr.io/ryanxin7/xnlog:latest
+          docker push ghcr.io/ryanxin7/xnlog:latest
