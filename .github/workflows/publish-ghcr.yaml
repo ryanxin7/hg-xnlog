@@ -12,5 +12,5 @@ jobs:
       - name: Build and push the image
         run: |
           docker login --username ryanxin7 --password ${{ secrets.DOCKERPACKAING }} ghcr.io
-          docker build /docker/. --tag ghcr.io/ryanxin7/xnlog:latest
+          docker build docker/. --tag ghcr.io/ryanxin7/xnlog:latest
           docker push ghcr.io/ryanxin7/xnlog:latest
