@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>个人网站 - 标签 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</link>
+    <description>个人网站 - 标签 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Tue, 15 Aug 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/" rel="self" type="application/rss+xml" /><item>
+  <title>使用Algolia实现Hugo本地智能搜索</title>
+  <link>https://hg-xnlog.github.io/posts/%E4%BD%BF%E7%94%A8algolia%E5%AE%9E%E7%8E%B0hugo%E6%9C%AC%E5%9C%B0%E6%99%BA%E8%83%BD%E6%90%9C%E7%B4%A2/</link>
+  <pubDate>Tue, 15 Aug 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/%E4%BD%BF%E7%94%A8algolia%E5%AE%9E%E7%8E%B0hugo%E6%9C%AC%E5%9C%B0%E6%99%BA%E8%83%BD%E6%90%9C%E7%B4%A2/</guid>
+  <description><![CDATA[1.简介 Algolia是一家提供搜索即服务的技术公司，帮助开发者为他们的应用程序或网站构建高速、精准的搜索功能。 免费的计划每个月可以查询10]]></description>
+</item>
+</channel>
+</rss>

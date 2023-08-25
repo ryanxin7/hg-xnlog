@@ -1,0 +1,32 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>CI/CD - 标签 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/tags/ci/cd/</link>
+    <description>CI/CD - 标签 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><atom:link href="https://hg-xnlog.github.io/tags/ci/cd/" rel="self" type="application/rss+xml" /><item>
+  <title>Github Actions 自动同步到 Gitee</title>
+  <link>https://hg-xnlog.github.io/posts/cicd/github-synctogitee/</link>
+  <pubDate>Mon, 12 Jun 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/cicd/github-synctogitee/</guid>
+  <description><![CDATA[1. 开通 Github Aciton 上传代码一般已Github仓库为主，但Jenkins由于网络原因经常无法拉取Github上的代码，于是考虑将Github仓库自动同]]></description>
+</item>
+<item>
+  <title>Jenkins 安装与基础配置</title>
+  <link>https://hg-xnlog.github.io/posts/cicd/jenkins-install/</link>
+  <pubDate>Mon, 12 Jun 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/cicd/jenkins-install/</guid>
+  <description><![CDATA[Jenkins 安装与基础配置 配置java环境 Jdk下载：https://www.oracle.com/java/technologies/downloa]]></description>
+</item>
+<item>
+  <title>Jenkins实践-自动构建并发布前端项目</title>
+  <link>https://hg-xnlog.github.io/posts/cicd/jenkins-autodeploy/</link>
+  <pubDate>Mon, 12 Jun 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/cicd/jenkins-autodeploy/</guid>
+  <description><![CDATA[1.安装插件 1.1 安装NodeJS插件 点击系统管理,然后点击插件管理,在可选插件里面搜索NodeJS插件,然后安装 1.2 安装连接SSH的插件 Publish Over SS]]></description>
+</item>
+</channel>
+</rss>

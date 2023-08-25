@@ -1,0 +1,40 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>HAProxy - 分类 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/categories/haproxy/</link>
+    <description>HAProxy - 分类 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Tue, 07 Feb 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/categories/haproxy/" rel="self" type="application/rss+xml" /><item>
+  <title>HAProxy-https实现（四）</title>
+  <link>https://hg-xnlog.github.io/posts/haproxy/haproxy-4/</link>
+  <pubDate>Tue, 07 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/haproxy/haproxy-4/</guid>
+  <description><![CDATA[六、HAProxy https实现 #配置HAProxy支持https协议，支持ssl会话； bind *:443 ssl crt /PATH/TO/SOME_PEM_FILE #crt 后证书文件为PEM格式，且同时包含证书和]]></description>
+</item>
+<item>
+  <title>HAProxy-调度算法(三)</title>
+  <link>https://hg-xnlog.github.io/posts/haproxy/haproxy-3/</link>
+  <pubDate>Mon, 06 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/haproxy/haproxy-3/</guid>
+  <description><![CDATA[五、HAProxy调度算法 HAProxy通过固定参数 **balance ** 指明对后端服务器的调度算法，该参数可以配置在listen或backend选项中。 HA]]></description>
+</item>
+<item>
+  <title>HAProxy-基础配置详解 （二）</title>
+  <link>https://hg-xnlog.github.io/posts/haproxy/haproxy-2/</link>
+  <pubDate>Sun, 05 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/haproxy/haproxy-2/</guid>
+  <description><![CDATA[四、基础配置详解 官方文档：http://cbonte.github.io/haproxy-dconv/2.6/configuration.h]]></description>
+</item>
+<item>
+  <title>HAProxy-安装及基础配置（一）</title>
+  <link>https://hg-xnlog.github.io/posts/haproxy/haproxy-1/</link>
+  <pubDate>Sat, 04 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/haproxy/haproxy-1/</guid>
+  <description><![CDATA[三、HAProxy安装及基础配置 介绍HAProxy的基础安装及基础配置 3.1 源码包安装 官方提供了Ubuntu和Debian的包，没有Centos]]></description>
+</item>
+</channel>
+</rss>
