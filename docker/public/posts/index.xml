@@ -21,6 +21,14 @@
   <description><![CDATA[1.简介 Algolia是一家提供搜索即服务的技术公司，帮助开发者为他们的应用程序或网站构建高速、精准的搜索功能。 免费的计划每个月可以查询10]]></description>
 </item>
 <item>
+  <title>五花八门的 Markdown Admonition</title>
+  <link>https://hg-xnlog.github.io/posts/blog/%E4%BA%94%E8%8A%B1%E5%85%AB%E9%97%A8%E7%9A%84-markdown-admonitions/</link>
+  <pubDate>Mon, 24 Jul 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/blog/%E4%BA%94%E8%8A%B1%E5%85%AB%E9%97%A8%E7%9A%84-markdown-admonitions/</guid>
+  <description><![CDATA[语法 admonition shortcode 支持 12 种 帮助你在页面中插入提示的横幅。 支持 Markdown 或者 HTML 格式。 注意 一个 注意 横幅 摘要 一个 摘要 横幅 信息 一个 信息 横幅 技巧 一个 技巧 横幅 成功 一个 成功]]></description>
+</item>
+<item>
   <title>Github Actions 自动同步到 Gitee</title>
   <link>https://hg-xnlog.github.io/posts/cicd/github-synctogitee/</link>
   <pubDate>Mon, 12 Jun 2023 00:00:00 &#43;0000</pubDate>
@@ -45,22 +53,6 @@
   <description><![CDATA[1.安装插件 1.1 安装NodeJS插件 点击系统管理,然后点击插件管理,在可选插件里面搜索NodeJS插件,然后安装 1.2 安装连接SSH的插件 Publish Over SS]]></description>
 </item>
 <item>
-  <title>Kubernetes 二进制部署</title>
-  <link>https://hg-xnlog.github.io/posts/kubernetes/kubernetes-1/</link>
-  <pubDate>Fri, 28 Apr 2023 21:23:22 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/kubernetes/kubernetes-1/</guid>
-  <description><![CDATA[前言 Kubernetes二进制部署相对于使用自动化工具（如kubeadm）而言，涉及更多的手动步骤和配置过程。然而，这种部署方式在一些情境下]]></description>
-</item>
-<item>
-  <title>Kubernetes 基础</title>
-  <link>https://hg-xnlog.github.io/posts/kubernetes/1.kubernetes%E5%9F%BA%E7%A1%80/</link>
-  <pubDate>Mon, 24 Apr 2023 21:23:22 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/kubernetes/1.kubernetes%E5%9F%BA%E7%A1%80/</guid>
-  <description><![CDATA[1.为什么需要容器编排系统？ Docker在管理单个容器时表现出色，对于一些由有限几个或十几个容器构建的应用程序来说，直接在Docker引擎上]]></description>
-</item>
-<item>
   <title>HAProxy-https实现（四）</title>
   <link>https://hg-xnlog.github.io/posts/haproxy/haproxy-4/</link>
   <pubDate>Tue, 07 Feb 2023 00:00:00 &#43;0000</pubDate>
@@ -83,6 +75,14 @@
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/haproxy/haproxy-2/</guid>
   <description><![CDATA[四、基础配置详解 官方文档：http://cbonte.github.io/haproxy-dconv/2.6/configuration.h]]></description>
+</item>
+<item>
+  <title>Docker 二进制方式安装</title>
+  <link>https://hg-xnlog.github.io/posts/docker/docker%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%8C%85%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85/</link>
+  <pubDate>Sat, 04 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/docker/docker%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%8C%85%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85/</guid>
+  <description><![CDATA[1.下载Docker二进制包 Docker 下载地址： https://download.docker.com/win/static/stable/x86_64/ https://mirrors.aliyun.com/docker-ce/linux/static/stable/x86_64/ Docker-compos 下载地址： https://github.com/docker/compose/releases https://github.com/docker/compose/releases/download/v2.20.3/docker-compose-linux-x86_64 2.安装Docker tar xvf docker-24.0.5.zip cp docker/* /usr/bin cp containerd.service /lib/systemd/system/containerd.service cp docker.service /lib/systemd/system/docker.service cp docker.socket /lib/systemd/system/docker.socket cp docker-compose-Linux-x86_64_2.20.3 /usr/bin/docker-compose groupadd docker &amp;&amp; useradd docker -g docker systemctl enable containerd.service &amp;&amp; systemctl]]></description>
 </item>
 </channel>
 </rss>

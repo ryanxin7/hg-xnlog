@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>4.Ceph 集群维护 - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
+<meta name="author-link" content="https://github.com/ryanxin7">
+<meta name="description" content="ceph集群配置、部署与运维 http://docs.ceph.org.cn/rados/ 4.1:通过套接字进行单机管理 每个node节点上都有不同数量的OSD数量 启动osd进程会在 /var/run/c" /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="4.Ceph 集群维护">
+<meta itemprop="description" content="ceph集群配置、部署与运维 http://docs.ceph.org.cn/rados/ 4.1:通过套接字进行单机管理 每个node节点上都有不同数量的OSD数量 启动osd进程会在 /var/run/c">
+
+<meta itemprop="wordCount" content="9504"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="keywords" content="" /><meta property="og:title" content="4.Ceph 集群维护" />
+<meta property="og:description" content="ceph集群配置、部署与运维 http://docs.ceph.org.cn/rados/ 4.1:通过套接字进行单机管理 每个node节点上都有不同数量的OSD数量 启动osd进程会在 /var/run/c" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
+
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
+
+<meta name="twitter:title" content="4.Ceph 集群维护"/>
+<meta name="twitter:description" content="ceph集群配置、部署与运维 http://docs.ceph.org.cn/rados/ 4.1:通过套接字进行单机管理 每个node节点上都有不同数量的OSD数量 启动osd进程会在 /var/run/c"/>
+<meta name="application-name" content="Ryan’s Notebook">
+<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/kubernetes-4/" /><link rel="next" href="https://hg-xnlog.github.io/posts/redis/redis-3/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "4.Ceph 集群维护",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4\/"
+    },"genre": "posts","wordcount":  9504 ,
+    "url": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4\/","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "Ryan"
+      },"description": ""
+  }
+  </script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><script>(window.localStorage?.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('data-theme', 'dark');</script><div class="wrapper" data-page-style="wide"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper" data-github-corner="right">
+    <div class="header-title">
+      <a href="/" title="Ryan&#39;s Notebook"><img loading="lazy" src="/images/pow.png" srcset="/images/pow.png, /images/pow.png 1.5x, /images/pow.png 2x" sizes="auto" data-title="Ryan&#39;s Notebook" data-alt="Ryan&#39;s Notebook" class="logo" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/><span class="header-title-text">Ryan’s Notebook</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 所有文章</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/friends/"
+                title="友情链接"
+                
+              ><i class="fa-solid fa-users fa-fw fa-sm" aria-hidden="true"></i> 友链</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/about/"
+                
+                
+              ><i class="fa-solid fa-user-tie fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容……" id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="Ryan&#39;s Notebook"><img loading="lazy" src="/images/pow.png" srcset="/images/pow.png, /images/pow.png 1.5x, /images/pow.png 2x" sizes="auto" data-title="/images/pow.png" data-alt="/images/pow.png" class="logo" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/><span class="header-title-text">Ryan’s Notebook</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容……" id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/posts/"
+                  
+                  
+                ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 所有文章</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/categories/"
+                  
+                  
+                ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/tags/"
+                  
+                  
+                ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/friends/"
+                  title="友情链接"
+                  
+                ><i class="fa-solid fa-users fa-fw fa-sm" aria-hidden="true"></i> 友链</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/about/"
+                  
+                  
+                ><i class="fa-solid fa-user-tie fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li
+              class="menu-item text-center"
+            ><a
+                  class="menu-link"
+                  href="https://github.com/ryanxin7/hg-xnlog"
+                  title="GitHub"
+                  rel="noopener noreferrer" target="_blank"
+                ><i class='fa-brands fa-github fa-fw' aria-hidden='true'></i> </a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="切换主题"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container"><aside class="toc" id="toc-auto"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside>
+
+  <aside class="aside-custom">
+    </aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>4.Ceph 集群维护</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span></div>
+      <div class="post-meta-line"><span title="发布于 0001-01-01 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="0001-01-01">0001-01-01</time></span>&nbsp;<span title="更新于 0001-01-01 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="0001-01-01">0001-01-01</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 9504 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 19 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="4.Ceph 集群维护">
+            <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
+          </span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#41通过套接字进行单机管理">4.1:通过套接字进行单机管理</a>
+      <ul>
+        <li><a href="#可在node节点或者mon节点通过ceph命令进行单机管理本机的mon或者osd服务">可在node节点或者mon节点通过ceph命令进行单机管理本机的mon或者osd服务</a></li>
+      </ul>
+    </li>
+    <li><a href="#42-ceph集群的停止或重启">4.2 ceph集群的停止或重启</a>
+      <ul>
+        <li><a href="#421-关闭顺序">4.2.1 关闭顺序</a></li>
+        <li><a href="#422-启动顺序">4.2.2 启动顺序</a></li>
+        <li><a href="#423-服务时间偏差">4.2.3 服务时间偏差</a></li>
+      </ul>
+    </li>
+    <li><a href="#43-ceph-配置文件">4.3 ceph 配置文件</a></li>
+    <li><a href="#44-存储池pg与crush">4.4 存储池、PG与CRUSH</a>
+      <ul>
+        <li><a href="#441-副本池">4.4.1 副本池</a></li>
+        <li><a href="#442-纠删码池">4.4.2 纠删码池</a></li>
+      </ul>
+    </li>
+    <li><a href="#45-pg与pgp">4.5 PG与PGP</a></li>
+    <li><a href="#46-pg与-osd的关系">4.6 PG与 OSD的关系</a></li>
+    <li><a href="#47-pg分配计算">4.7 PG分配计算</a></li>
+    <li><a href="#48-pg的状态">4.8 PG的状态</a>
+      <ul>
+        <li><a href="#481peering">4.8.1:Peering</a></li>
+        <li><a href="#482activating">4.8.2:Activating</a></li>
+        <li><a href="#483-clean">4.8.3 Clean</a></li>
+        <li><a href="#484-active">4.8.4 Active</a></li>
+        <li><a href="#485-degraded-降级状态">4.8.5 Degraded 降级状态</a></li>
+        <li><a href="#486-stale过期状态">4.8.6 Stale:过期状态</a></li>
+        <li><a href="#487-undersized">4.8.7 undersized</a></li>
+        <li><a href="#488-scrubbing">4.8.8 Scrubbing</a></li>
+        <li><a href="#489recovering">4.8.9:Recovering:</a></li>
+        <li><a href="#4810-backfilling">4.8.10 Backfilling</a></li>
+        <li><a href="#4811-backfill-toofull">4.8.11 Backfill-toofull</a></li>
+      </ul>
+    </li>
+    <li><a href="#49-ceph存储池操作">4.9 ceph存储池操作</a>
+      <ul>
+        <li><a href="#491-常用命令">4.9.1 常用命令</a></li>
+        <li><a href="#492-删除存储池">4.9.2 删除存储池</a></li>
+        <li><a href="#493-存储池配额">4.9.3 存储池配额</a></li>
+        <li><a href="#494-存储池可用参数">4.9.4 存储池可用参数</a></li>
+      </ul>
+    </li>
+    <li><a href="#410-存储池快照">4.10 存储池快照</a>
+      <ul>
+        <li><a href="#4101-创建快照">4.10.1 创建快照</a></li>
+        <li><a href="#4102-验证快照">4.10.2 验证快照</a></li>
+        <li><a href="#4103-回滚快照">4.10.3 回滚快照</a></li>
+        <li><a href="#4104-删除快照">4.10.4 删除快照</a></li>
+      </ul>
+    </li>
+    <li><a href="#411-数据压缩">4.11 数据压缩</a>
+      <ul>
+        <li><a href="#4111-启用压缩并指定压缩算法">4.11.1 启用压缩并指定压缩算法</a></li>
+        <li><a href="#4112-指定压缩模式">4.11.2 指定压缩模式</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content"><div class="details admonition warning open">
+      <div class="details-summary admonition-title">
+        <i class="icon fa-solid fa-exclamation-triangle fa-fw" aria-hidden="true"></i>警告<i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i>
+      </div>
+      <div class="details-content">
+        <div class="admonition-content">本文最后更新于 0001-01-01，文中内容可能已过时。</div>
+      </div>
+    </div><p>ceph集群配置、部署与运维</p>
+<p><!-- raw HTML omitted --><a href="http://docs.ceph.org.cn/rados/"target="_blank" rel="external nofollow noopener noreferrer">http://docs.ceph.org.cn/rados/</a></p>
+<h2 id="41通过套接字进行单机管理">4.1:通过套接字进行单机管理</h2>
+<p>每个node节点上都有不同数量的OSD数量</p>
+<p>启动osd进程会在 /var/run/ceph下生成soke文件</p>
+<div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ls /var/run/ceph
+</span></span><span class="line"><span class="cl">ceph-osd.0.asok<span class="o">=</span>
+</span></span><span class="line"><span class="cl">ceph-osd.1.asok<span class="o">=</span>
+</span></span><span class="line"><span class="cl">ceph-osd.2.asok<span class="o">=</span>
+</span></span><span class="line"><span class="cl">ceph-osd.3.asok<span class="o">=</span>
+</span></span><span class="line"><span class="cl">ceph-osd.4.asok<span class="o">=</span></span></span></code></pre></div><h3 id="可在node节点或者mon节点通过ceph命令进行单机管理本机的mon或者osd服务">可在node节点或者mon节点通过ceph命令进行单机管理本机的mon或者osd服务</h3>
+<p>先将admin认证文件同步到mon或者node节点</p>
+<div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ceph@ceph-deploy:/home/ceph/ceph-cluster<span class="nv">$scp</span> ceph.client.admin.keyring root@172.31.6.101:/etc/ceph
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#指定要管理的asok文件</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@ceph-node1 ~<span class="o">]</span><span class="c1"># ceph -- admin-socket /var/run/ceph/ceph-osd.0.asok --help</span></span></span></code></pre></div><p><img loading="lazy" src="http://cdn1.ryanxin.live/xxlog/1669618980856-1b869d03-8ae2-4b8b-9b2a-4125d7a4bb01.png" srcset="http://cdn1.ryanxin.live/xxlog/1669618980856-1b869d03-8ae2-4b8b-9b2a-4125d7a4bb01.png, http://cdn1.ryanxin.live/xxlog/1669618980856-1b869d03-8ae2-4b8b-9b2a-4125d7a4bb01.png 1.5x, http://cdn1.ryanxin.live/xxlog/1669618980856-1b869d03-8ae2-4b8b-9b2a-4125d7a4bb01.png 2x" sizes="auto" data-title="image.png" data-alt="image.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><code>-- admin-daemon</code>  在 mon节点获取daemon服务帮助:</p>
+<div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#帮助信息: </span>
+</span></span><span class="line"><span class="cl">ceph-mon1~<span class="o">]</span><span class="c1">#ceph --admin-daemon /var/run/ceph/ceph-mon.cephjmon1.asok help</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#mon状态:</span>
+</span></span><span class="line"><span class="cl">ceph-mon1~<span class="o">]</span><span class="c1"># ceph --admin-daemon /var/run/ceph/ceph-mon.ceph-mon1.asok mon_ status</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#查看配置信息:</span>
+</span></span><span class="line"><span class="cl">ceph-mon1~<span class="o">]</span><span class="c1"># ceph - admin-daemon /var/run/ceph/ceph-mon.ceph-mon1.asok config show</span></span></span></code></pre></div><h2 id="42-ceph集群的停止或重启">4.2 ceph集群的停止或重启</h2>
+<p>重启之前按照正确的流程，要提前设置ceph集群不要将OSD标记为out,避免node节点关闭服务后被踢出ceph集群外</p>
+<p>node节点每隔6s向mon节点汇报一次OSD状态，连续20秒后没有通告正常mon就会把OSD标记为OUT ，就会触发磁盘的高可用开始磁盘的选举和数据同步。</p>
+<div class="highlight" id="id-4"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#关闭服务前设置noout</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ceph-cluster<span class="o">]</span>$ ceph osd <span class="nb">set</span> noout 
+</span></span><span class="line"><span class="cl">noout is <span class="nb">set</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#启动服务后取消noout</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ceph-cluster<span class="o">]</span>$ ceph osd <span class="nb">unset</span> noout 
+</span></span><span class="line"><span class="cl">noout is unset</span></span></code></pre></div><h3 id="421-关闭顺序">4.2.1 关闭顺序</h3>
+<ol>
+<li>关闭服务前设置noout</li>
+<li>关闭存储客户端停止读写数据</li>
+<li>如果使用RGW，关闭RGW</li>
+<li>关闭cephfs 元数据服务</li>
+<li>关闭ceph OSD</li>
+<li>关闭ceph manager</li>
+<li>关闭 ceph monitor</li>
+</ol>
+<h3 id="422-启动顺序">4.2.2 启动顺序</h3>
+<ol>
+<li>启动 ceph monitor</li>
+<li>启动 ceph manager</li>
+<li>启动 ceph OSD</li>
+<li>启动 ceph FS 元数据服务</li>
+<li>启动RGW</li>
+<li>启动存储客户端</li>
+<li>启动服务后取消 noout</li>
+</ol>
+<h3 id="423-服务时间偏差">4.2.3 服务时间偏差</h3>
+<p><a href="http://docs.ceph.org.cn/rados/configuration/mon-config-ref/"target="_blank" rel="external nofollow noopener noreferrer">http://docs.ceph.org.cn/rados/configuration/mon-config-ref/</a></p>
+<p>重启发现：</p>
+<blockquote>
+<p>cluster:
+id:5ac860ab- 9a4e- 4edd- 9da2 e3de293a8d44
+health: HEALTH WARN
+clock skew detected on mon. ceph-mon2, mon. ceph-mon3
+noout flag(s) set</p>
+</blockquote>
+<p>通常由于服务器重启后导致时间不太一致，因为服务器有时间同步计划任务同步周期还没到</p>
+<p>可以设置监视器运行的时钟漂移量，默认为0.050秒即50毫秒</p>
+<div class="highlight" id="id-5"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat /ceph.conf
+</span></span><span class="line"><span class="cl"><span class="c1">#设置监视器运行的时钟漂移量</span>
+</span></span><span class="line"><span class="cl">mon clock drift <span class="nv">allowed</span> <span class="o">=</span><span class="m">3</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#时钟偏移警告的退避指數即连续多少次时间偏差后就出发警告</span>
+</span></span><span class="line"><span class="cl">mon clock drift warn <span class="nv">backoff</span><span class="o">=</span> <span class="m">10</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#同步配置文件mon服务器</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ceph-cluster<span class="o">]</span>$ ceph-deploy --overwrite-conf config push stor01..3<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#重启mon</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#拷贝方式</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#ceph@ceph-deploy:~/ceph-cluster$ scp ceph.conf root@172.31.6.101: /etc/ceph/</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#ceph@ceph-deploy:~/ceph-cluster$ scp ceph.conf root@172.31.6.102: /etc/ceph/</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#ceph@ceph-deploy:~/ceph-cluster$ scp ceph.conf root@172.31.6.103: /etc/ceph/</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@ceph-mon1 ~<span class="o">]</span><span class="c1"># ntpdate timel.aliyun.com &amp;&amp; hwclock -W</span>
+</span></span><span class="line"><span class="cl">root@ceph-mon1:~# systemctl restart ceph-mon@ceph-mon1.service</span></span></code></pre></div><h2 id="43-ceph-配置文件">4.3 ceph 配置文件</h2>
+<p>Ceph的主配置文件是<code>/etc/ceph/ceph.conf </code>，ceph 服务在启动时会检查ceph.conf分号;和#在配置文件中都是注释，<strong>ceph.conf</strong> 主要由以下配置段组成:</p>
+<p>:::info
+<strong>[global] <strong>#全局配置</strong>[osd]</strong> #osd专用配置，可以使用osd.N, 来表示某一个OSD专用配置，N为osd的编号，如0、2、1等，</p>
+<p><!-- raw HTML omitted --><strong>[mon]</strong> #mon专用配置，也可以使用mon.A来为某一个monitor节点做专用配置，其中A为该节点的名称，ceph-monitor-2、 ceph-monitor-1 等，使用命令ceph mon dump可以获取节点的名称、</p>
+<p><!-- raw HTML omitted --><strong>[client]</strong> #客户端专用配置.
+:::</p>
+<p><strong>ceph 文件的加載順序</strong></p>
+<div class="highlight" id="id-6"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">$CEPH_CONF</span> 环境变量
+</span></span><span class="line"><span class="cl">-c 指定配置文件位置
+</span></span><span class="line"><span class="cl">/etc/ceph/ceph.conf
+</span></span><span class="line"><span class="cl">~/.ceph/ceph.conf
+</span></span><span class="line"><span class="cl">./ceph.conf</span></span></code></pre></div><h2 id="44-存储池pg与crush">4.4 存储池、PG与CRUSH</h2>
+<p>:::info
+<strong>副本池:repicated</strong>,定义每个对象在集群中保存为多少个副本，默认为三个副本, 一主两备,实现高可用，副本池是ceph默认的存储池类型.
+:::</p>
+<p>在创建存储池的时候可以指定默认是三副本<code>osd pool create pool --help [replicated]</code></p>
+<p>:::info
+<strong>纠删码池(erasure code)</strong>: ceph另一种数据可用性机制一定程度上实现数据高可用（使用的不多），存储机制类似于raid5 把一部分存储空间用于存放校验码实现数据恢复的目的，既可以提高磁盘空间利用率，又能实现一定程度上的数据高可用。和raid机制一样不能坏一定数量的磁盘所以高可用机制有限。
+:::</p>
+<!-- raw HTML omitted -->
+<p>但是不是所有应用都支持纠删码池，RDB块存储只支持副本池而radosgw 可以支持纠删码池</p>
+<p><strong>一部分存数据、一部分存校验码</strong></p>
+<!-- raw HTML omitted -->
+<p><img loading="lazy" src="http://cdn1.ryanxin.live/xxlog/1669691960330-9d8aa14f-ec4b-4d76-a6df-2a40bfc26a09.png" srcset="http://cdn1.ryanxin.live/xxlog/1669691960330-9d8aa14f-ec4b-4d76-a6df-2a40bfc26a09.png, http://cdn1.ryanxin.live/xxlog/1669691960330-9d8aa14f-ec4b-4d76-a6df-2a40bfc26a09.png 1.5x, http://cdn1.ryanxin.live/xxlog/1669691960330-9d8aa14f-ec4b-4d76-a6df-2a40bfc26a09.png 2x" sizes="auto" data-title="image.png" data-alt="image.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p>把各对象存储为<strong>N=K+M个块</strong>，其中K为数据块数量，M为编码快数量，因此存储池的尺寸为K+M.</p>
+<!-- raw HTML omitted -->
+<p>即数据保存在K个数据块,并提供M个冗余块提供数据高可用，那么最多能故障的块就是M个,实际的磁盘占用就是K+M块，因此相比副本池机制比较节省存储资源。</p>
+<p><!-- raw HTML omitted -->一般采用8+4机制，即8个数据块+4个冗余块，那么也就是12个数据块有8个数据块保存数据,有4个实现数据冗余，即1/3的磁盘空间用于数据冗余，比默认副本池的三倍冗余节省空间,但是不能出现大于一定数据块故障。</p>
+<!-- raw HTML omitted -->
+<p><strong>但是不是所有的应用都支持纠删码池，RBD只支持副本池而Tjadosgw则可以支持纠删码池。</strong></p>
+<p>创建<strong>纠删码池</strong></p>
+<div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ceph osd pool create erasure-testpool <span class="m">32</span> <span class="m">32</span> erasure</span></span></code></pre></div><p>写入数据</p>
+<div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo rados put -p erasure-testpool testfile1 /var/log/syslog</span></span></code></pre></div><p>验证数据</p>
+<div class="highlight" id="id-9"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ceph osd map erasure-testpool testfile1</span></span></code></pre></div><p>验证当前pg状态</p>
+<div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ceph pg ls-by-pool erasure-testpool <span class="p">|</span> awk <span class="s1">&#39;{print $1,$2,$15}&#39;</span></span></span></code></pre></div><h3 id="441-副本池">4.4.1 副本池</h3>
+<p><strong>将一个数据对象存储为多个副本</strong></p>
+<p><!-- raw HTML omitted -->在客户端写入操作时，ceph使用CRUSH算法计算出与对象相对应的<strong>PG ID</strong>和<strong>primary OSD</strong></p>
+<p><!-- raw HTML omitted -->主OSD根据设置的副本数、对象名称、存储池名称和**集群运行图(cluster map)**计算出PG</p>
+<p><!-- raw HTML omitted -->的各辅助OSD，然后由OSD将数据再同步给辅助OSD.</p>
+<p><strong>读取数据:</strong></p>
+<p><!-- raw HTML omitted -->1.客户端发送读请求，<strong>RADOS</strong> 将请求发送到主OSD.</p>
+<p><!-- raw HTML omitted -->2.主OSD从本地磁盘读取数据并返回数据，最终完成读请求。</p>
+<p><strong>写入数据:</strong></p>
+<!-- raw HTML omitted -->
+<ol>
+<li>客户端<strong>APP</strong>请求写入数据，<strong>RADOS</strong>发送数据到主OSD.</li>
+<li>主OSD识别副本OSDs,并发送数据到各副本OSD.</li>
+<li>副本OSDs写入数据，并发送写入完成信号给主OSD.</li>
+<li>主OSD发送写人完成信号给客户端APP.</li>
+</ol>
+<p><img loading="lazy" src="http://cdn1.ryanxin.live/xxlog/1669702054632-6c88be77-c67d-42d9-8253-ff988889159c.png" srcset="http://cdn1.ryanxin.live/xxlog/1669702054632-6c88be77-c67d-42d9-8253-ff988889159c.png, http://cdn1.ryanxin.live/xxlog/1669702054632-6c88be77-c67d-42d9-8253-ff988889159c.png 1.5x, http://cdn1.ryanxin.live/xxlog/1669702054632-6c88be77-c67d-42d9-8253-ff988889159c.png 2x" sizes="auto" data-title="image.png" data-alt="image.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/><img loading="lazy" src="http://cdn1.ryanxin.live/xxlog/1669702079911-981a98c9-e7cd-42b2-80c5-f224c76ed860.png" srcset="http://cdn1.ryanxin.live/xxlog/1669702079911-981a98c9-e7cd-42b2-80c5-f224c76ed860.png, http://cdn1.ryanxin.live/xxlog/1669702079911-981a98c9-e7cd-42b2-80c5-f224c76ed860.png 1.5x, http://cdn1.ryanxin.live/xxlog/1669702079911-981a98c9-e7cd-42b2-80c5-f224c76ed860.png 2x" sizes="auto" data-title="image.png" data-alt="image.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h3 id="442-纠删码池">4.4.2 纠删码池</h3>
+<p>纠删码池降低了数据保存所需要的磁盘总空间数量，但是读写数据的计算成本要比副本池高<!-- raw HTML omitted -->RGW可以支持纠删码池，RBD 不支持纠删码池可以降低企业的前期TCO总拥有成本。</p>
+<p><strong>纠删码写:</strong><!-- raw HTML omitted -->数据将在主OSD进行编码然后分发到相应的OSDs.上去。<!-- raw HTML omitted -->1.计算合适的数据块并进行编码<!-- raw HTML omitted -->2.对每个数据块进行编码并写入OSD</p>
+<p><strong>纠删码读:</strong><!-- raw HTML omitted -->从相应的OSDs中获取数据后进行解码，如果此时有数据丢失，Ceph 会自动从存放校验码的OSD中读取数据进行解码。</p>
+<p><img loading="lazy" src="http://cdn1.ryanxin.live/xxlog/1669702129781-75cd2740-58be-4f4b-9f7d-22b25657463e.png" srcset="http://cdn1.ryanxin.live/xxlog/1669702129781-75cd2740-58be-4f4b-9f7d-22b25657463e.png, http://cdn1.ryanxin.live/xxlog/1669702129781-75cd2740-58be-4f4b-9f7d-22b25657463e.png 1.5x, http://cdn1.ryanxin.live/xxlog/1669702129781-75cd2740-58be-4f4b-9f7d-22b25657463e.png 2x" sizes="auto" data-title="image.png" data-alt="image.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h2 id="45-pg与pgp">4.5 PG与PGP</h2>
+<p>:::info
+<strong>PG = Placement Group</strong> 归置组<!-- raw HTML omitted --><strong>PGP = Placement Group for Placement purpose</strong> 归置组的组合， pgp 相当于是pg对应osd的一种排列组合关系。
+:::</p>
+<p>**归置组(placement group)**是用于跨越多OSD将数据存储在每个存储池中的内部数据结构.<!-- raw HTML omitted -->归置组在OSD守护进程和ceph客户端之间生成了一个中间层，<strong>CRUSH</strong> 算法负责将每个对象动态映射到一个归置组，然后再将每个归置组动态映射到一个或多个OSD守护进程,从而能够支持在新的OSD设备上线时进行数据重新平衡。</p>
+<p>相对于存储池来说，PG是一个虚拟组件，它是对象映射到存储池时使用的虚拟层。根据业务的数据量分配PG 一般 几百个G16和32就可以，TB级 64 到128。2的次方<!-- raw HTML omitted -->  <!-- raw HTML omitted --><img loading="lazy" src="http://cdn1.ryanxin.live/xxlog/1669715338535-50c64e93-251b-4de6-bf56-0e529abb82e6.png" srcset="http://cdn1.ryanxin.live/xxlog/1669715338535-50c64e93-251b-4de6-bf56-0e529abb82e6.png, http://cdn1.ryanxin.live/xxlog/1669715338535-50c64e93-251b-4de6-bf56-0e529abb82e6.png 1.5x, http://cdn1.ryanxin.live/xxlog/1669715338535-50c64e93-251b-4de6-bf56-0e529abb82e6.png 2x" sizes="auto" data-title="image.png" data-alt="image.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p>想对于存储池来说，PG 是一个虚拟组件，它是对象映射到存储池时使用的虚拟层。<!-- raw HTML omitted -->可以自定义存储池中的归置组数量。</p>
+<p>ceph出于规模伸缩及性能方面的考虑，ceph 将存储池细分为多个归置组，把每个单独的对<!-- raw HTML omitted -->象映射到归置组，并为归置组分配一个主OSD.</p>
+<p>存储池由一系列的归置组组成，而CRUSH算法则根据集群运行图和集群状态，将个PG均<!-- raw HTML omitted -->匀、伪随机(基于hash映射，每次的计算结果够 样)的分布到集群中的OSD之上。<!-- raw HTML omitted -->如果某个OSD失败或需要对集群进行重新平衡，ceph 则移动或复制整个归置组而不需要<!-- raw HTML omitted -->单独对每个镜像进行寻址。</p>
+<h2 id="46-pg与-osd的关系">4.6 PG与 OSD的关系</h2>
+<p>ceph基于crush算法将归置组PG分配至OSD<!-- raw HTML omitted -->当一个客户端存储对象的时候，CRUSH 算法映射每一个对象至归置组(PG)<!-- raw HTML omitted --> <img loading="lazy" src="http://cdn1.ryanxin.live/xxlog/1669722018056-814dc21a-3afa-47a6-b007-9ca1238be466.png" srcset="http://cdn1.ryanxin.live/xxlog/1669722018056-814dc21a-3afa-47a6-b007-9ca1238be466.png, http://cdn1.ryanxin.live/xxlog/1669722018056-814dc21a-3afa-47a6-b007-9ca1238be466.png 1.5x, http://cdn1.ryanxin.live/xxlog/1669722018056-814dc21a-3afa-47a6-b007-9ca1238be466.png 2x" sizes="auto" data-title="image.png" data-alt="image.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h2 id="47-pg分配计算">4.7 PG分配计算</h2>
+<p><strong>归置组(PG)<strong>的数量是由管理员在创建存储池的时候指定的，然后由</strong>CRUSH</strong>负责创建和使<!-- raw HTML omitted -->用，PG的数量是2的N次方的倍数,每个OSD的PG不要超出250个PG，官方是每个OSD<!-- raw HTML omitted -->100个左右</p>
+<p>一个磁盘可能属于多个PG分别担任不同的角色，<!-- raw HTML omitted --><a href="https://docs.ceph.com/en/mimic/rados/configuration/pool-pg-config-ref/"target="_blank" rel="external nofollow noopener noreferrer">https://docs.ceph.com/en/mimic/rados/configuration/pool-pg-config-ref/</a></p>
+<p><strong>recommend approximately</strong><!-- raw HTML omitted -->确保设置了合适的归置组大小，我们建议每个OSD大约100个，例如，osd 总数乘以100<!-- raw HTML omitted -->除以副本数量(即 osd池默认大小)，因此，对于10个osd、<strong>存储池为4个，我们建议每</strong><!-- raw HTML omitted --><strong>个存储池大约(100 * 10) /4= 250</strong></p>
+<p><strong>先算磁盘数量是多少块，官方推荐每个OSD是100个PG左右，10块就是1000个PG</strong></p>
+<p><strong>PG的数量在集群分发数据和重新平衡时扮演者重要的角色</strong></p>
+<p>PG的数量过少，PG的数量在ceph同步数据时有短暂影响，一个OSD上保存的数据数据会相对加多，那么ceph同步数据的时候产生的网络负载将对集群的性能输出产生一定影响。  <strong>PG数量太少 数据量又大，那么必然同步是时间就长</strong><!-- raw HTML omitted --> <!-- raw HTML omitted -->PG过多的时候，ceph将会占用过多的CPU和内存资源用于记录PG的状态信息</p>
+<p>至于一个pool应该使用多少个PG，可以通过下面的公式计算后，将pool的PG值四舍<!-- raw HTML omitted -->五人到最近的2的N次幂，如下先计算出ceph集群的总PG数:</p>
+<p><strong>磁盘总数x每个磁盘PG数/副本数=&gt; ceph集群总PG数(略大于2^n次方)</strong><!-- raw HTML omitted --><strong>单个pool的PG计算如下:</strong>
+:::info
+有100个osd,3副本，5个pool<!-- raw HTML omitted -->Total PGS =100*100/3-3333<!-- raw HTML omitted -->每个pool的PG=3333/5=512.那么创建pool的时候就指定pg为512
+:::
+需要结合数据数量、磁盘数量及磁盘空间计算出PG数量，8、16、 32、64、128、 256<!-- raw HTML omitted -->等2的N次方。<!-- raw HTML omitted -->一个RADOS集群上会存在多个存储池，因此管理员还需要考虑所有存储池上的PG分布<!-- raw HTML omitted -->后每个OSD需要映射的PG数量.</p>
+<h2 id="48-pg的状态">4.8 PG的状态</h2>
+<h3 id="481peering">4.8.1:Peering</h3>
+<p>正在同步状态，同一个PG中的OSD需要将准备数据同步一致, 而Peering(对等)就是OSD同步过程中的状态。</p>
+<h3 id="482activating">4.8.2:Activating</h3>
+<p>Peering已经完成，PG 正在等待所有PG实例同步Peering的结果(info、Log等)</p>
+<h3 id="483-clean">4.8.3 Clean</h3>
+<p>磁盘没有宕机  <!-- raw HTML omitted -->干净态,PG当前不存在待修复的对象，并且大小等于存储池的副本数，即PG的活动集(Acting Set)和上行集(Up Set)为同一组OSD且内容一致。</p>
+<p>活动集(Acting Set):由PG当前主的OSD和其余处于活动状态的备用OSD组成，当前PG内的OSD负责处理用户的读写请求。</p>
+<p>上行集(Up Set):在某一个OSD故障时，需要将故障的OSD更换为可用的OSD,并主PG内部的主OSD同步数据到新的OSD上，例如PG内有OSD1、OSD2、OSD3，当OSD3故障后需要用OSD4替换OSD3,那么OSD1. OSD2、OSD3就是上行集，替换后OSD1、OSD2、OSD4就是活动集，OSD 替换完成后活动集最终要替换上行集。</p>
+<h3 id="484-active">4.8.4 Active</h3>
+<p>正常<!-- raw HTML omitted -->就绪状态或活跃状态，Active 表示主OSD和备OSD处于正常工作状态，此时的PG可以正常处理来自客户端的读写请求，正常的PG默认就是Active+Clean状态。</p>
+<h3 id="485-degraded-降级状态">4.8.5 Degraded 降级状态</h3>
+<p>一般出现在磁盘宕机后，并且一段时间没有恢复<!-- raw HTML omitted -->降级状态出现于OSD被标记为down以后，那么其他映射到此OSD的PG都会转换到降级状态。<!-- raw HTML omitted -->如果此OSD还能重新启动完成并完成Peering操作后,那么使用此OSD的PG将重新恢复为clean状态。<!-- raw HTML omitted -->如果此OSD被标记为down的时间超过5分钟还没有修复，那么此OSD将会被ceph踢出集群，然后ceph会对被降级的PG启动恢复操作，直到所有由于此OSD而被降级的PG重新恢复为clean状态。<!-- raw HTML omitted -->恢复数据会从PG内的主OSD恢复，如果是主OSD故障，那么会在剩下的两个备用OSD重新选择一个作为主OSD.</p>
+<h3 id="486-stale过期状态">4.8.6 Stale:过期状态</h3>
+<p>发生在OSD主宕了，数据不是最新<!-- raw HTML omitted -->正常状态下，每个主OSD都要周期性的向RADOS集群中的监视器(Mon)报告其作为主OSD所持有的所有PG的最新统计数据，因任何原因导致某个OSD无法正常向监视器发送汇报信息的、或者由其他OSD报告某个OSD已经down的时候，则所有以此OSD为主PG则会立即被标记为stale 状态，即他们的主OSD已经不是最新的数据了，如果是备份的OSD发送down的时候，则ceph会执行修复而不会触发PG状态转换为stale状态不会切换主。</p>
+<h3 id="487-undersized">4.8.7 undersized</h3>
+<p>一主两副本，备宕了 出现副本数太低了<!-- raw HTML omitted -->PG当前副本数小于其存储池定义的值的时候，PG会转换为<strong>undersixed</strong>状态，比如两个备份OSD都down了，那么此时PG中就只有一个主OSD了，不符合ceph最少要求一个主OSD加一个备OSD的要求，那么就会导致使用此OSD的PG转换为undersized状态，直到添加备份OSD添加完成，或者修复完成。</p>
+<h3 id="488-scrubbing">4.8.8 Scrubbing</h3>
+<p>每天进行数据的浅清理（整理元数据），每周进行数据的深清理（整理元数据和数据本身）<!-- raw HTML omitted -->scrub是ceph对数据的清洗状态，用来保证数据完整性的机制, Ceph的OSD定期启动scrub线程来扫描部分对象，通过与其他副本比对来发现是否一致， 如果存在不一致,抛出异常提示用户手动解决。<!-- raw HTML omitted -->scrub 以PG为单位，对于每一个pg, ceph 分析该pg下所有的object,产生一个类似于元数据信息摘要的数据结构,如对象大小，属性等,叫scrubmap,比较主与副scrubmap,来保证是不是有object丢失或者不匹配，扫描分为轻量级扫描和深度扫描，轻量级扫描也叫做<strong>light scrubs</strong>或者<strong>shallow scrubs</strong>或者simply scrubs即轻量级扫描.<!-- raw HTML omitted -->Light scrub(daily)比较object size和属性，deep scrub (weekly)读取数据部分并通过checksum(CRC32算法)对比和数据的一致性,深度扫描过程中的PG会处scrubbing +deep状态.</p>
+<h3 id="489recovering">4.8.9:Recovering:</h3>
+<p>正在恢复态，集群正在执行迁移或同步对象和他们的副本，这可能是由于添加了一个新的OSD到集群中或者某个OSD宕掉后，PG可能会被CRUSH算法重新分配不同的OSD,而由于OSD更换导致PG发生内部数据同步的过程中的PG会被标记为Recovering.</p>
+<h3 id="4810-backfilling">4.8.10 Backfilling</h3>
+<p>正在后台填充态,backfill是recovery的一种特殊场景, 指peering完成后，如果基于当前权威日志无法对Up Set (. 上行集)当中的某些PG实例实施增量同步(例如承载这些PG实例的OSD离线太久,或者是新的OSD加入集群导致的PG实例整体迁移)则通过完全拷贝当前Primary所有对象的方式进行<strong>全量同步</strong>，此过程中的PG会处于backilling.</p>
+<h3 id="4811-backfill-toofull">4.8.11 Backfill-toofull</h3>
+<p>某个需要被Backfill的PG实例，其所在的OSD可用空间不足，Backfill 流程当前被挂起时PG给的状态。</p>
+<h2 id="49-ceph存储池操作">4.9 ceph存储池操作</h2>
+<p>存储池的管理通常保存创建、列出、重命名和删除等操作，管理工具使用ceph osd pool<!-- raw HTML omitted -->的子命令及参数，比如create/ls/rename/rm等。<!-- raw HTML omitted -->ceph官方运维手册<!-- raw HTML omitted --><a href="http://docs.ceph.org.cn/rados/"target="_blank" rel="external nofollow noopener noreferrer">http://docs.ceph.org.cn/rados/</a></p>
+<h3 id="491-常用命令">4.9.1 常用命令</h3>
+<p><strong>创建存储池命令格式</strong></p>
+<div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">$ceph</span> osd pool create &lt;poolname&gt; pg. num pgp_ num <span class="o">{</span>replicatedlerasure<span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#列出存储池:</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ceph-cluster<span class="o">]</span>$ ceph osd poolls <span class="o">[</span>detail<span class="o">]</span> <span class="c1">#不带 pool ID</span>
+</span></span><span class="line"><span class="cl">mypool
+</span></span><span class="line"><span class="cl">myrdb1
+</span></span><span class="line"><span class="cl">.rgw.root
+</span></span><span class="line"><span class="cl">default.rgw.control 
+</span></span><span class="line"><span class="cl">default.rgw.meta
+</span></span><span class="line"><span class="cl">default.rgw.log
+</span></span><span class="line"><span class="cl">cephfs-metadata
+</span></span><span class="line"><span class="cl">cephfs-data
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#带pool ID</span>
+</span></span><span class="line"><span class="cl">ceph osd poolls
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#查看详细</span>
+</span></span><span class="line"><span class="cl">ceph osd pool ls detail
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#查看存储池的事件信息</span>
+</span></span><span class="line"><span class="cl">ceph osd pool stats mypool
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#重命名存储池</span>
+</span></span><span class="line"><span class="cl">ceph osd pool rename old-name new-name
+</span></span><span class="line"><span class="cl">ceph osd pool rename myrbd1 myrbd2
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#显示存储池用量</span>
+</span></span><span class="line"><span class="cl">ceph df
+</span></span><span class="line"><span class="cl">rados df </span></span></code></pre></div><h3 id="492-删除存储池">4.9.2 删除存储池</h3>
+<p>ceph为了防止误删除存储池设置了两个机制来防止误删除操作。</p>
+<p><strong>第一个机制</strong>是NODELETE 标志,需要设置为false 但是默认就是FALSE。</p>
+<div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#创建一个测试pool</span>
+</span></span><span class="line"><span class="cl">ceph osd pool create mypool2 <span class="m">32</span> <span class="m">32</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ceph osd pool get mypool2 nodelete
+</span></span><span class="line"><span class="cl">nodelete：false
+</span></span><span class="line"><span class="cl"><span class="c1">#如果设置了为true就表示不能删除，可以使用set指令重新设置为false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ceph osd pool <span class="nb">set</span> mypool2 nodelete <span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> pool <span class="m">9</span> nodelete to true</span></span></code></pre></div><p><strong>第二个机制</strong>是集群范围的配置参数<strong>mon allow pool delete</strong>,默认值为false,即监视器不允许删除存储池，可以在特定场合使用tell指令临时设置为(true)允许删除,在删除指定的pool之后再重新设置为false.</p>
+<div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ceph tell mon.* injectargs --mon-allow-pool-delete<span class="o">=</span><span class="nb">true</span>
+</span></span><span class="line"><span class="cl">mon.ceph-mon1:injectargs:mon_allow_pool <span class="nv">delete</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span>
+</span></span><span class="line"><span class="cl">mon.ceph-mon2:injectargs:mon_allow_pool <span class="nv">delete</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span>
+</span></span><span class="line"><span class="cl">mon.ceph-mon3:injectargs:mon_allow_pool <span class="nv">delete</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span>
+</span></span><span class="line"><span class="cl">$ ceph osd pool rm mypool2 mypool2 --yes-i-really-really-mean-it
+</span></span><span class="line"><span class="cl">pool <span class="s1">&#39;mypool2&#39;</span> removed</span></span></code></pre></div><h3 id="493-存储池配额">4.9.3 存储池配额</h3>
+<p>存储池可以设置两个配对存储的对象进行限制，一个配额是<strong>最大空间(max_ bytes</strong>), 另外一个配额是对象<strong>最大数量(max_ objects)</strong>。</p>
+<div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#查看存储池限制</span>
+</span></span><span class="line"><span class="cl">$ ceph osd pool get-quota mypool 
+</span></span><span class="line"><span class="cl">quotas <span class="k">for</span> pool <span class="s1">&#39;mypool&#39;</span>:
+</span></span><span class="line"><span class="cl">   max objects: N/A <span class="c1">#默认不限制对象数量</span>
+</span></span><span class="line"><span class="cl">   max bytes : N/A <span class="c1">#默认不限制空间大小</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">----
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ ceph osd pool set-quota mypool max_objects <span class="m">1000</span> <span class="c1">#限制最大1000个对象</span>
+</span></span><span class="line"><span class="cl">set-quota <span class="nv">max_objects</span> <span class="o">=</span> <span class="m">1000</span> <span class="k">for</span> pool mypool
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ceph-cluster<span class="o">]</span>$ ceph osd pool set-quota mypool max_bytes <span class="m">10737418240</span> <span class="c1">#限制最大10737418240字节</span>
+</span></span><span class="line"><span class="cl">set-quota <span class="nv">max_bytes</span> <span class="o">=</span> <span class="m">10737418240</span> <span class="k">for</span> pool mypool</span></span></code></pre></div><h3 id="494-存储池可用参数">4.9.4 存储池可用参数</h3>
+<p><code>size</code>: 存储池中的对象副本数，默认一主两个备3副本</p>
+<p><code>min_size</code>: <strong>提供服务所需要的最小副本数</strong>，如果定义size为3, min_size 也为3,坏掉一个OSD,如果pool池中有副本在此块OSD上面，那么此pool将不提供服务，如果将min_size定义为2，那么还可以提供服务，如果提供为1.表示只要有一块副本都提供服务。</p>
+<p><code>pg_num:</code> 查看当前PG的数量<!-- raw HTML omitted --><code>crush_rule:</code> 设置crush算法规则<!-- raw HTML omitted --><code>crush_ rule</code>:  默认为副本池<!-- raw HTML omitted --><code>nodelete</code>:控制是否可删除，默认可以<!-- raw HTML omitted --><code>nopgchange</code>: 控制是否可更改存储池的pg num和pgp num<!-- raw HTML omitted --><code>nosizechange</code>: 控制是否可以更改存储池的大小<!-- raw HTML omitted --><code>noscrub</code>和<code>nodeep-scrub</code>:控制是否不进行轻量扫描或是否深层扫描存储池，可临时解决高l/0问题<!-- raw HTML omitted --><code>scrub_min_interval</code>: 集群存储池的最小清理时间间隔，默认值没有设置，可以通过配置文件中的<code>osd_scrub_min_interval</code> 参数指定间隔时间.</p>
+<p><code>scrub_max_interval</code>: 整理存储池的最大清理时间间隔，默认值没有设置，可以通过配置文件中的<code>osd_scrub_max_interval</code> 参数指定。</p>
+<p><code>deep_scrub_interval</code>: 深层整理存储池的时间间隔，默认值没有设置，可以通过配置文件中的<code>osd_deep_scrub_interval</code> 参数指定。</p>
+<div class="highlight" id="id-15"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#查看副本数</span>
+</span></span><span class="line"><span class="cl">ceph osd pool get mypool size
+</span></span><span class="line"><span class="cl">size:3
+</span></span><span class="line"><span class="cl"><span class="c1">#修改副本数为2</span>
+</span></span><span class="line"><span class="cl">ceph osd pool get mypool size <span class="m">2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#为2就是允许挂一个OSD</span>
+</span></span><span class="line"><span class="cl">ceph osd pool mypool min_size
+</span></span><span class="line"><span class="cl">min_size:2
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#pg_num:查看当前PG的数量</span>
+</span></span><span class="line"><span class="cl">$ ceph osd pool get mypool pg_num
+</span></span><span class="line"><span class="cl">pg num: <span class="m">32</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#crush_rule: 设置crush算法规则</span>
+</span></span><span class="line"><span class="cl">$ ceph osd pool get mypool crush_rule
+</span></span><span class="line"><span class="cl">crush_ rule: replicated_rule <span class="c1">#默认为副本池</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#nodelete:控制是否可删除，默认可以</span>
+</span></span><span class="line"><span class="cl">$ ceph osd pool get mypool nodelete
+</span></span><span class="line"><span class="cl">nodelete: <span class="nb">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#nopgchange:控制是否可更改存储池的pg num和pgp num</span>
+</span></span><span class="line"><span class="cl">S cenh osd pool get mypool nopgchange
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#修改指定pool的pg数量</span>
+</span></span><span class="line"><span class="cl">$ ceph osd pool <span class="nb">set</span> mypool pg_num <span class="m">64</span> 
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> pool1 pg_num to <span class="m">64</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">##修改指定pool的pgp数量</span>
+</span></span><span class="line"><span class="cl">$ ceph osd pool <span class="nb">set</span> mypool pgp_num <span class="m">64</span> 
+</span></span><span class="line"><span class="cl"><span class="c1">#nosizechange:控制是否可以更改存储池的大小</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ ceph osd pool get mypool nosizechange
+</span></span><span class="line"><span class="cl">nosizechange: <span class="nb">false</span> <span class="c1">#默认允许修改存储池大小</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ ceph osd pool get-quota mypool
+</span></span><span class="line"><span class="cl">quotas <span class="k">for</span> pool <span class="s1">&#39;mypool&#39;</span>:
+</span></span><span class="line"><span class="cl">max objects: <span class="m">1</span> k objects
+</span></span><span class="line"><span class="cl">max bytes : <span class="m">10</span> GiB
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#限制存储池最大写入大小</span>
+</span></span><span class="line"><span class="cl">ceph osd pool set-quota mypool max bytes <span class="m">21474836480</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#noscrub和nodeep-scrub:控制是否不进行轻量扫描或是否深层扫描存储池，可临时解决高l/0问题</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#查看 当前是否关闭轻量扫描数据，默认为不关闭，即开启</span>
+</span></span><span class="line"><span class="cl">$ ceph osd pool get mypool noscrub
+</span></span><span class="line"><span class="cl">noscrub: <span class="nb">false</span> 
+</span></span><span class="line"><span class="cl"><span class="c1">#可以修改某个指定的pool的轻量级扫描测量为true,即不执行轻量级扫描</span>
+</span></span><span class="line"><span class="cl">$ ceph osd pool <span class="nb">set</span> mypool noscrub <span class="nb">true</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> pool <span class="m">1</span> noscrub to <span class="nb">true</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#再次 查看就不进行轻量级扫描了</span>
+</span></span><span class="line"><span class="cl">$ ceph osd pool get mypool noscrub
+</span></span><span class="line"><span class="cl">noscrub: <span class="nb">true</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#查看当前是否关闭深度扫描数据，默认为不关闭，即开启</span>
+</span></span><span class="line"><span class="cl">$ ceph osd pool get mypool nodeep-scrub
+</span></span><span class="line"><span class="cl">nodeep-scrub: <span class="nb">false</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#再次查看就不执行深度扫描了</span>
+</span></span><span class="line"><span class="cl">$ ceph osd pool get mypool nodeep-scrub
+</span></span><span class="line"><span class="cl">nodeep-scrub: <span class="nb">true</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#scrub_ min_ interval: 集群存储池的最小清理时间间隔，默认值没有设置，可以通过配置文件中的osd_scrub_min_interval 参数指定间隔时间.</span>
+</span></span><span class="line"><span class="cl">$ ceph osd pool get mypool scrub min interval
+</span></span><span class="line"><span class="cl">Error ENOENT: option <span class="s1">&#39;scrub_min_interval&#39;</span> is not <span class="nb">set</span> on pool <span class="s1">&#39;mypool&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#scrub_max_interval: 整理存储池的最大清理时间间隔，默认值没有设置，可以通过配置文件中的osd_scrub_max_interval 参数指定。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ ceph osd pool get mypool scrub max interval
+</span></span><span class="line"><span class="cl">Error ENOENT: option <span class="s1">&#39;scrub_max_interval&#39;</span> is not <span class="nb">set</span> on pool <span class="s1">&#39;mypool&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#deep_scrub_interval: 深层整理存储池的时间间隔，默认值没有设置，可以通过配置文件中的osd_deep_scrub_interval 参数指定。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ ceph osd pool get mypool deep_scrub_interval
+</span></span><span class="line"><span class="cl">Error ENOENT: option <span class="s1">&#39;deep_scrub_interval&#39;</span> is not <span class="nb">set</span> on pool <span class="s1">&#39;mypool&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#查看ceph node的默认配置:</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@ceph-node1 ~<span class="o">]</span><span class="c1"># ll /var/run/ceph/</span>
+</span></span><span class="line"><span class="cl">total <span class="m">0</span>
+</span></span><span class="line"><span class="cl">Srxr-Xr-x <span class="m">1</span> ceph ceph <span class="m">0</span> Nov <span class="m">3</span> 12:22 ceph-osd.3.asok
+</span></span><span class="line"><span class="cl">SrwXr-Xr-x <span class="m">1</span> ceph ceph <span class="m">0</span> Nov <span class="m">3</span> 12:22 ceph-osd.6.asok
+</span></span><span class="line"><span class="cl">SrWXr-Xr-x <span class="m">1</span> ceph ceph <span class="m">0</span> Nov <span class="m">3</span> 12:23 ceph-osd.9.asok
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@ceph-node1 ~<span class="o">]</span><span class="c1"># ceph daemon osd.3 config show | grep scrub</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;mds_max_scrub_ops_in_progress&#34;</span>: <span class="s2">&#34;5&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;mon_scrub_inject_crc_mismatch&#34;</span>: <span class="s2">&#34;0.000000&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;mon_scrub_inject_missing_keys&#34;</span>: <span class="s2">&#34;0.000000&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;mon_scrub_jinterval&#34;</span>: <span class="s2">&#34;86400&#34;</span>，
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;mon_scrub_max_keys&#34;</span>: <span class="s2">&#34;100&#34;</span>，
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;mon_scrub_timeout&#34;</span>: <span class="s2">&#34;300&#34;</span>,，
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;mon_warn_not_deep_scrubbed&#34;</span>: <span class="s2">&#34;0&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;mon_warn_not_scrubbed&#34;</span>: <span class="s2">&#34;0&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;osd_debug_deep_scrub_sleep&#34;</span>: <span class="s2">&#34;0.000000&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;osd_deep_scrub_jinterval&#34;</span>:_<span class="s2">&#34;604800.00000&#34;</span>，#定义深度清洗间隔，604800秒<span class="o">=</span>7天
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;osd_deep_scrub_keys&#34;</span>: <span class="s2">&#34;1024&#34;</span>，
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;osd_deep_scrub_Jarge_omap_object_key_threshold&#34;</span>: <span class="s2">&#34;200000&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;osd_deep_scrub_large_omap_object_value_sum_threshold&#34;</span>: <span class="s2">&#34;1073741824&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;osd_deep_scrub_randomize.ratio&#34;</span>: <span class="s2">&#34;0.150000&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;osd_deep_scrub.stride&#34;</span>: <span class="s2">&#34;524288&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;osd.deep_scrub.update_digest_min_age&#34;</span>: <span class="s2">&#34;7200&#34;</span>，
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;osd.max_scrubs&#34;</span>: <span class="s2">&#34;1&#34;</span>， <span class="c1">#定义一个ceph OSD daemon内能够同时进行scrubbing的操作数 （启用几个线程扫描 默认是一个）</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;osd_op_queue_mclock_scrub_lim&#34;</span>: <span class="s2">&#34;0.001000&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;osd_op_queue_mclock_scrub_res&#34;</span>: <span class="s2">&#34;0.000000&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;osd_op_queue_mclock_scrub_wgt&#34;</span>: <span class="s2">&#34;1.000000,
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_requested_scrub_priority<span class="s2">&#34;: &#34;</span>120<span class="s2">&#34;，
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_auto_repair<span class="s2">&#34;: &#34;</span>false<span class="s2">&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_auto_repair_num_errors<span class="s2">&#34;: &#34;</span>5<span class="s2">&#34;，
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_backoff_ratio<span class="s2">&#34;: &#34;</span>0.660000<span class="s2">&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_begin_hour<span class="s2">&#34;: &#34;</span>0<span class="s2">&#34;，
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_begin_week_day<span class="s2">&#34;: &#34;</span>0<span class="s2">&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_chunk_max<span class="s2">&#34;: &#34;</span>25<span class="s2">&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_chunk_min<span class="s2">&#34;: &#34;</span>5<span class="s2">&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_cost<span class="s2">&#34;: &#34;</span>52428800<span class="s2">&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_during_recovery<span class="s2">&#34;: &#34;</span>false<span class="s2">&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_end_hour<span class="s2">&#34;: &#34;</span>24<span class="s2">&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_end_week_day<span class="s2">&#34;: &#34;</span>7<span class="s2">&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_interval_randomize_ratio<span class="s2">&#34;: &#34;</span>0.500000<span class="s2">&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_invalid_stats<span class="s2">&#34;: &#34;</span>true<span class="s2">&#34;, #定义scrub是否有效
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_load_threshold<span class="s2">&#34;: &#34;</span>0.500000<span class="s2">&#34;,
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_max_interval<span class="s2">&#34;: &#34;</span>60480000000<span class="s2">&#34;，#定义最大执行scrub间隔，604800秒=7天
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_max_preemptions<span class="s2">&#34;: &#34;</span>5<span class="s2">&#34;，
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;</span>osd_scrub_min_interval<span class="s2">&#34;: 8640000000&#34;</span> <span class="c1">#定义最小执行普通scrub间隔，86400秒=1天</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;osd_scrub_priority&#34;</span>: <span class="s2">&#34;5&#34;</span>,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;osd_scrub_sleep&#34;</span>: <span class="s2">&#34;0.000000&#34;</span>,</span></span></code></pre></div><h2 id="410-存储池快照">4.10 存储池快照</h2>
+<p>快照用于读存储池中的数据进行备份与还原，创建快照需要占用的磁盘空间会比较大,取决于存储池中的数据大小，使用以下命令创建快照:</p>
+<h3 id="4101-创建快照">4.10.1 创建快照</h3>
+<div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ceph osd pool ls
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#命令1: ceph osd pool mksnap {pool-name} {snap-name}</span>
+</span></span><span class="line"><span class="cl">$ ceph osd pool mksnap mypool mypool-snap
+</span></span><span class="line"><span class="cl">created pool mypool snap mypool-snap
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#命令2: rados -P {pool-name} mksnap {snap-name}</span>
+</span></span><span class="line"><span class="cl">$ rados -P mypool mksnap mypool-snap2
+</span></span><span class="line"><span class="cl">created pool mypool snap mypool-snap2</span></span></code></pre></div><h3 id="4102-验证快照">4.10.2 验证快照</h3>
+<div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ rados lssnap -p mypool
+</span></span><span class="line"><span class="cl"><span class="m">1</span>  mypool-snap  2020.11.03 16:12:56
+</span></span><span class="line"><span class="cl"><span class="m">2</span>  mypool-snap2 2020.11.03 16:13:40
+</span></span><span class="line"><span class="cl"><span class="m">2</span> snaps</span></span></code></pre></div><h3 id="4103-回滚快照">4.10.3 回滚快照</h3>
+<p>测试上传文件后创建快照，照后删除文件再还原文件,基于对象还原。<!-- raw HTML omitted --><code>rados rollback &lt;obj-name&gt; &lt;snap-name&gt; roll back object to snap &lt;snap-name&gt;</code></p>
+<div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#上传文件</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ceph-cluster<span class="o">]</span>$ rados -P mypool put testile /etc/hosts
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#验证文件</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ceph-cluster<span class="o">]</span>$ rados -P mypool ls 
+</span></span><span class="line"><span class="cl">msg1
+</span></span><span class="line"><span class="cl">testfile
+</span></span><span class="line"><span class="cl">my.conf
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#创建快照</span>
+</span></span><span class="line"><span class="cl"><span class="o">(</span>ceph@ceph-deploy ceph-cluster<span class="o">]</span>$ ceph pool mksnap mypool
+</span></span><span class="line"><span class="cl">mypool-snapshot001
+</span></span><span class="line"><span class="cl">created pool mypool snap mypool-snapshot001
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#验证快照</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ceph-cluster<span class="o">]</span>$ rados lssnap -p mypool
+</span></span><span class="line"><span class="cl"><span class="m">3</span>  mypool-snap   2020.11.04 14:11:41
+</span></span><span class="line"><span class="cl"><span class="m">4</span>  mypool-snap2  2020.11.0414:1 1:49
+</span></span><span class="line"><span class="cl"><span class="m">5</span>  mypool-conf-bak 2020.11.04 14:18:41
+</span></span><span class="line"><span class="cl"><span class="m">6</span>  mypool-snapshot001 2020.11.0414:38:50
+</span></span><span class="line"><span class="cl"><span class="m">4</span> snaps
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#删除文件</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ceph-cluster<span class="o">]</span>$ rados -P mypool rm testile
+</span></span><span class="line"><span class="cl"><span class="c1">#删除文件后，无法再次删除文件，提升文件不存在</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ceph-cluster$ rados -P mypool rm testfile
+</span></span><span class="line"><span class="cl">error removing mypool&gt;testfile: <span class="o">(</span>2<span class="o">)</span> No such file or directory
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#通过快照还原某个文件</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ceph-cluster<span class="o">]</span>$ rados rollback -P mypool testfile mypool-snapshot001
+</span></span><span class="line"><span class="cl">rolled back pool mypool to snapshot mypool-snapshot001
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#再次执行删除就可以执行成功</span></span></span></code></pre></div><h3 id="4104-删除快照">4.10.4 删除快照</h3>
+<p><code>ceph osd pool rmsnap &lt;poolname&gt; &lt;snap&gt;</code></p>
+<div class="highlight" id="id-19"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ceph-cluster$ rados Issnap -P mypool
+</span></span><span class="line"><span class="cl"><span class="m">3</span> mypool-snap 2020.11.0414:11:41
+</span></span><span class="line"><span class="cl"><span class="m">4</span> mypool-snap2 2020.11.04 14:11:49
+</span></span><span class="line"><span class="cl"><span class="m">5</span> mypool-conf-bak 2020.11.04 14:18:41
+</span></span><span class="line"><span class="cl"><span class="m">6</span> mypool-snapshot001  2020.1 1.0414:38:50
+</span></span><span class="line"><span class="cl"><span class="m">4</span> snaps
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ceph-cluster<span class="o">]</span>$ ceph osd pool rmsnap mypool mypool-snap
+</span></span><span class="line"><span class="cl">removed pool mypool snap mypool-snap
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ceph-cluster$ rados Issnap -P mypool
+</span></span><span class="line"><span class="cl"><span class="m">4</span> mypool-snap2 2020.11.04 14:11:49
+</span></span><span class="line"><span class="cl"><span class="m">5</span> mypool-conf-bak 2020.11.04 14:18:41
+</span></span><span class="line"><span class="cl"><span class="m">6</span> mvoool-snanshot001 2020.11.04 14:38:50</span></span></code></pre></div><h2 id="411-数据压缩">4.11 数据压缩</h2>
+<p>如果使用<strong>bulestore</strong>存储引擎，ceph 支持称为&quot;实时数据压缩”即边压缩边保存数据的功能，<!-- raw HTML omitted -->该功能有助于节省磁盘空间，可以在BlueStore OSD 上创建的每个Ceph池上启用或禁用压缩，以节约磁盘空间，默认没有开启压缩，需要后期配置并开启。</p>
+<h3 id="4111-启用压缩并指定压缩算法">4.11.1 启用压缩并指定压缩算法</h3>
+<p>压缩会导致CPU利用率偏高</p>
+<div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ceph-cluster<span class="o">]</span>$ ceph osd pool <span class="nb">set</span> &lt;pool name&gt; compression_algorithm snappy <span class="c1">#默认算</span>
+</span></span><span class="line"><span class="cl">法为snappy</span></span></code></pre></div><p>:::info
+snappy:该配置为指定压缩使用的算法默认为<strong>sanppy</strong>,还有<strong>none、zlib、 lz4、 zstd</strong> 和<strong>snappy</strong>等算法，zstd压缩比好，但消耗CPU, lz4 和snappy对CPU占用较低，不建议使用zlib.
+:::</p>
+<h3 id="4112-指定压缩模式">4.11.2 指定压缩模式</h3>
+<div class="highlight" id="id-21"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ceph-cluster<span class="o">]</span>$ ceph osd pool <span class="nb">set</span> &lt;pool name&gt; compression_mode aggressive</span></span></code></pre></div><p><strong>aggressive</strong>: 压缩的模式，有none、aggressive 、passive 和force 默认none <!-- raw HTML omitted --><strong>none</strong>: 从不压缩数据.<!-- raw HTML omitted --><strong>passive</strong>: 除非写操作具有可压缩的提示集，否则不要压缩数据.<!-- raw HTML omitted --><strong>aggressive</strong>: 压缩数据，除非写操作具有不可压缩的提示集。<!-- raw HTML omitted --><strong>force</strong>: 无论如何都尝试压缩数据，即使客户端暗示数据不可压缩也会压缩，也就是在所有情况下都使用压缩。</p>
+<p><strong>存储池压缩设置参数:</strong><!-- raw HTML omitted --><code>compression_algorithm</code>  压缩算法<!-- raw HTML omitted --><code>compression_mode</code>  压缩模式</p>
+<p><code>compression_required_ratio</code> #压缩后与压缩前的压缩比，默认为.875<!-- raw HTML omitted --><code>compression_max_blob_size</code>: #大于此的块在被压缩之前被分解成更小的blob(块)，此设置将覆盖bluestore压缩<strong>max blob <em><strong>的全局设置。<!-- raw HTML omitted --><code>compression_min_blob_size</code>: #小于此的块不压缩，此设置将覆盖bluestore压缩</strong>min blob</em></strong>的全局设置，</p>
+<p><strong>全局压缩选项，这些可以配置到ceph.conf配置文件，作用于所有存储池</strong>:</p>
+<div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bluestore_compression_algorithm <span class="c1">#压缩算法</span>
+</span></span><span class="line"><span class="cl">bluestore_compression_mode <span class="c1">#压缩模式</span>
+</span></span><span class="line"><span class="cl">bluestore_compression_required_ratio <span class="c1">#压缩后与压缩前的压缩比，默认为.875</span>
+</span></span><span class="line"><span class="cl">bluestore_compression_min_blob_size <span class="c1">#小于它的块不会被压缩,默认0</span>
+</span></span><span class="line"><span class="cl">bluestore_compression_max_blob_size <span class="c1">#大于它的块在压缩前会被拆成更小的块,默认0</span>
+</span></span><span class="line"><span class="cl">bluestore_compression_min_blob_size_ssd <span class="c1">#默认 8k</span>
+</span></span><span class="line"><span class="cl">bluestore_compression_max_blob_size_ssd <span class="c1">#默认 64k</span>
+</span></span><span class="line"><span class="cl">bluestore_compression_min_blob_size_hdd <span class="c1">#默认 128k</span>
+</span></span><span class="line"><span class="cl">bluestore_compression_max_blob_size_hdd <span class="c1">#默认 512k</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">到node 节点验证
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@ceph-node3 ~<span class="o">]</span><span class="c1"># ceph daemon osd.11 config show | grep compression</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#修改压缩算法</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ~<span class="o">]</span>$ ceph osd pool <span class="nb">set</span> mypool compression algorithm snapy
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> pool <span class="m">2</span> compression algorithm to snappy
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ~<span class="o">]</span>$ ceph osd pool get mypool compression algorithm compression_algorithm:snappy
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#修改压缩模式: </span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ~<span class="o">]</span>$ ceph osd pool <span class="nb">set</span> mypool compression mode passive
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> pool <span class="m">2</span> compression mode to passive
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ~<span class="o">]</span>$ ceph osd pool get mypool compression_mode
+</span></span><span class="line"><span class="cl">compression_mode: passive</span></span></code></pre></div></div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title="更新于 0001-01-01 00:00:00">更新于 0001-01-01&nbsp;</span>
+      </div><div class="post-info-license">
+          <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+        </div></div>
+    <div class="post-info-line">
+      <div class="post-info-md"><span><a href="/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
+      <div class="post-info-share">
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="4.Ceph 集群维护"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="4.Ceph 集群维护" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="4.Ceph 集群维护"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="4.Ceph 集群维护"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="4.Ceph 集群维护" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="4.Ceph 集群维护" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="4.Ceph 集群维护"><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
+  </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-info-more">
+    <section class="post-tags"></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div>
+
+  <div class="post-nav"><a href="/posts/kubernetes/kubernetes-4/" class="post-nav-item" rel="prev" title="4.kubernetesAPI资源对象"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>4.kubernetesAPI资源对象</a>
+      <a href="/posts/redis/redis-3/" class="post-nav-item" rel="next" title="3.Redis 基础-环境部署">3.Redis 基础-环境部署<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2021 - 2023</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/ryanxin7"target="_blank" rel="external nofollow noopener noreferrer">Ryan</a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics"><span class="site-time" title='网站运行中……'><i class="fa-solid fa-heartbeat fa-fw animate-icon" aria-hidden="true"></i><span class="run-times ms-1">网站运行中……</span></span></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='总访客数'><i class="fa-regular fa-user fa-fw" aria-hidden="true"></i>&nbsp;<span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='总访问量'><i class="fa-regular fa-eye fa-fw" aria-hidden="true"></i>&nbsp;<span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div></div><a href="https://github.com/ryanxin7" title="在 GitHub 上查看源代码"target="_blank" rel="external nofollow" class="github-corner right d-none-mobile"><svg viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><div id="mask"></div><noscript>
+    <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><link rel="stylesheet" href="/lib/pace/themes/blue/pace-theme-minimal.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async defer></script><script src="/lib/pace/pace.min.js" async defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":10},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"enablePWA":true,"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"HFAFNY4NX2","algoliaIndex":"xn-log","algoliaSearchKey":"bd08388586b2f88b20753c17c60ba92f","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"siteTime":"2021-09-09T09:09:09+09:00"};</script><script src="/js/theme.min.js" defer></script></body>
+</html>

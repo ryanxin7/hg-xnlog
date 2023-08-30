@@ -43,21 +43,21 @@
   weight = 4
   [main.params]
     icon = "fa-solid fa-users"
-[[main]]
-  identifier = "guestbook"
-  pre = ""
-  post = ""
-  name = "留言"
-  url = "/guestbook/"
-  title = ""
-  weight = 6
-  [main.params]
-    icon = "fa-solid fa-comments"
+#[[main]]
+#  identifier = "guestbook"
+#  pre = ""
+#  post = ""
+#  name = "留言"
+#  url = "/guestbook/"
+#  title = ""
+#  weight = 6
+#  [main.params]
+#    icon = "fa-solid fa-comments"
 [[main]]
   identifier = "about"
   pre = ""
   post = ""
-  name = "關於"
+  name = "关于"
   url = "/about/"
   title = ""
   weight = 7
