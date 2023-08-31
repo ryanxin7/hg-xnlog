@@ -10,7 +10,7 @@
 <meta name="description" content="三、HAProxy安装及基础配置 介绍HAProxy的基础安装及基础配置 3.1 源码包安装 官方提供了Ubuntu和Debian的包，没有Centos" /><meta name="keywords" content='负载均衡' /><meta itemprop="name" content="HAProxy-安装及基础配置（一）">
 <meta itemprop="description" content="三、HAProxy安装及基础配置 介绍HAProxy的基础安装及基础配置 3.1 源码包安装 官方提供了Ubuntu和Debian的包，没有Centos"><meta itemprop="datePublished" content="2023-02-04T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-08-17T00:00:00+00:00" />
-<meta itemprop="wordCount" content="2791"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="2790"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="负载均衡," /><meta property="og:title" content="HAProxy-安装及基础配置（一）" />
 <meta property="og:description" content="三、HAProxy安装及基础配置 介绍HAProxy的基础安装及基础配置 3.1 源码包安装 官方提供了Ubuntu和Debian的包，没有Centos" />
 <meta property="og:type" content="article" />
@@ -23,7 +23,7 @@
 <meta name="twitter:title" content="HAProxy-安装及基础配置（一）"/>
 <meta name="twitter:description" content="三、HAProxy安装及基础配置 介绍HAProxy的基础安装及基础配置 3.1 源码包安装 官方提供了Ubuntu和Debian的包，没有Centos"/>
 <meta name="application-name" content="Ryan’s Notebook">
-<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/haproxy/haproxy-1/" /><link rel="next" href="https://hg-xnlog.github.io/posts/docker/docker%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%8C%85%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/haproxy/haproxy-1/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-11/" /><link rel="next" href="https://hg-xnlog.github.io/posts/docker/docker%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%8C%85%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/haproxy\/haproxy-1\/"
-    },"genre": "posts","keywords": "负载均衡","wordcount":  2791 ,
+    },"genre": "posts","keywords": "负载均衡","wordcount":  2790 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/haproxy\/haproxy-1\/","datePublished": "2023-02-04T00:00:00+00:00","dateModified": "2023-08-17T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -181,7 +181,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/haproxy/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> HAProxy</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-02-04 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-04">2023-02-04</time></span>&nbsp;<span title="更新于 2023-08-17 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-08-17">2023-08-17</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2791 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 6 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="HAProxy-安装及基础配置（一）">
+      <div class="post-meta-line"><span title="发布于 2023-02-04 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-04">2023-02-04</time></span>&nbsp;<span title="更新于 2023-08-17 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-08-17">2023-08-17</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2790 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 6 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="HAProxy-安装及基础配置（一）">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -202,12 +202,10 @@
 </nav></div>
       </div><div class="content" id="content"><h2 id="三haproxy安装及基础配置">三、HAProxy安装及基础配置</h2>
 <p>介绍HAProxy的基础安装及基础配置</p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
 <h3 id="31-源码包安装">3.1 源码包安装</h3>
 <p>官方提供了Ubuntu和Debian的包，没有Centos的包<!-- raw HTML omitted --><img loading="lazy" src="http://cdn1.ryanxin.live/1675997727329-efbe55ed-cb1e-4446-b7d2-40fd13d1031b.png" srcset="http://cdn1.ryanxin.live/1675997727329-efbe55ed-cb1e-4446-b7d2-40fd13d1031b.png, http://cdn1.ryanxin.live/1675997727329-efbe55ed-cb1e-4446-b7d2-40fd13d1031b.png 1.5x, http://cdn1.ryanxin.live/1675997727329-efbe55ed-cb1e-4446-b7d2-40fd13d1031b.png 2x" sizes="auto" data-title="http://cdn1.ryanxin.live/1675997727329-efbe55ed-cb1e-4446-b7d2-40fd13d1031b.png" data-alt="http://cdn1.ryanxin.live/1675997727329-efbe55ed-cb1e-4446-b7d2-40fd13d1031b.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <hr>
 <p><img loading="lazy" src="http://cdn1.ryanxin.live/xxlog/1675997822880-a7a98a7a-9d66-4040-902e-4575f17bcaf5.png" srcset="http://cdn1.ryanxin.live/xxlog/1675997822880-a7a98a7a-9d66-4040-902e-4575f17bcaf5.png, http://cdn1.ryanxin.live/xxlog/1675997822880-a7a98a7a-9d66-4040-902e-4575f17bcaf5.png 1.5x, http://cdn1.ryanxin.live/xxlog/1675997822880-a7a98a7a-9d66-4040-902e-4575f17bcaf5.png 2x" sizes="auto" data-title="image.png" data-alt="image.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
 <h4 id="ubuntu-安装">ubuntu 安装</h4>
 <div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">apt-get install --no-install-recommends software-properties-common </span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#--no-install-recommends 参数来避免安装非必须的文件，从而减小镜像的体积</span><span class="w">
@@ -252,17 +250,14 @@
 </span></span><span class="line"><span class="cl">HAProxy version 2.6.8-1ppa1~focal 2023/01/24 - https://haproxy.org/
 </span></span><span class="line"><span class="cl">Status: long-term supported branch - will stop receiving fixes around Q2 2027.
 </span></span><span class="line"><span class="cl">Known bugs: http://www.haproxy.org/bugs/bugs-2.6.8.html
-</span></span><span class="line"><span class="cl">Running on: Linux 5.4.0-135-generic <span class="c1">#152-Ubuntu SMP Wed Nov 23 20:19:22 UTC 2022 x86_64</span></span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
-<h4 id="centos安装">Centos安装</h4>
+</span></span><span class="line"><span class="cl">Running on: Linux 5.4.0-135-generic <span class="c1">#152-Ubuntu SMP Wed Nov 23 20:19:22 UTC 2022 x86_64</span></span></span></code></pre></div><h4 id="centos安装">Centos安装</h4>
 <p>在centos系统上通过yum、编译等多种安装方式。<!-- raw HTML omitted --><strong>默认yum源</strong><!-- raw HTML omitted -->默认的base仓库中包含haproxy的安装包文件，但是版本比较旧，是1.5.18的版本，距离当前版本已经有较长时间没有更新，由于版本比较旧所以有很多功能不支持，如果对功能和性能没有要求可以使用此版本，否则推荐使用新版本。</p>
 <div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># yum install haproxy -y</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#验证haproxy版本</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># haproxy -v</span>
 </span></span><span class="line"><span class="cl">HA-Proxy version 1.5.18 2016/05/10
-</span></span><span class="line"><span class="cl">Copyright 2000-2016 Willy Tarreau &lt;willy@haproxy.org&gt;</span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
-<h3 id="32-编译安装haproxy">3.2 编译安装HAProxy</h3>
+</span></span><span class="line"><span class="cl">Copyright 2000-2016 Willy Tarreau &lt;willy@haproxy.org&gt;</span></span></code></pre></div><h3 id="32-编译安装haproxy">3.2 编译安装HAProxy</h3>
 <p>编译安装HAProxy 2.0 LTS版本，源码包下载地址：<a href="http://www.haproxy.org/download/"target="_blank" rel="external nofollow noopener noreferrer">http://www.haproxy.org/download/</a></p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
 <h4 id="321-解决lua环境">3.2.1 解决lua环境</h4>
 <p>HAProxy支持基于lua实现功能扩展，lua是一种小巧的脚本语言，于1993年由巴西里约热内卢天主教大学（Pontiﬁcal Catholic University of Rio de Janeiro）里的一个研究小组开发，其设计目的是为了嵌入应用程序中，从而为应用程序提供灵活的扩展和定制功能。</p>
 <p>Lua 官网：www.lua.org</p>
@@ -356,8 +351,7 @@
 </span></span><span class="line"><span class="cl"><span class="c1">#或安装系统自带的lua</span>
 </span></span><span class="line"><span class="cl">$ apt install  lua5.3<span class="o">=</span>5.3.3-1ubuntu0.18.04.1
 </span></span><span class="line"><span class="cl">$ lua5.3  -v
-</span></span><span class="line"><span class="cl">Lua 5.3.3  Copyright <span class="o">(</span>C<span class="o">)</span> 1994-2016 Lua.org, PUC-Rio</span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
-<h4 id="322-开始编译安装">3.2.2 开始编译安装</h4>
+</span></span><span class="line"><span class="cl">Lua 5.3.3  Copyright <span class="o">(</span>C<span class="o">)</span> 1994-2016 Lua.org, PUC-Rio</span></span></code></pre></div><h4 id="322-开始编译安装">3.2.2 开始编译安装</h4>
 <p><strong>Centos 环境</strong><!-- raw HTML omitted --><strong>ubuntu 系统推荐使用包管理器安装</strong></p>
 <div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#HAProxy  1.8及1.9版本编译参数：</span>
 </span></span><span class="line"><span class="cl">make  <span class="nv">ARCH</span><span class="o">=</span>x86_64 <span class="nv">TARGET</span><span class="o">=</span>linux2628 <span class="nv">USE_PCRE</span><span class="o">=</span><span class="m">1</span> <span class="nv">USE_OPENSSL</span><span class="o">=</span><span class="m">1</span> <span class="nv">USE_ZLIB</span><span class="o">=</span><span class="m">1</span> <span class="nv">USE_SYSTEMD</span><span class="o">=</span><span class="m">1</span>  <span class="nv">USE_CPU_AFFINITY</span><span class="o">=</span><span class="m">1</span>  <span class="nv">PREFIX</span><span class="o">=</span>/usr/local/haproxy 
@@ -579,8 +573,7 @@
 </span></span><span class="line"><span class="cl">HAProxy version 2.6.8-ab6ee7f 2023/01/24 - https://haproxy.org/
 </span></span><span class="line"><span class="cl">Status: long-term supported branch - will stop receiving fixes around Q2 2027.
 </span></span><span class="line"><span class="cl">Known bugs: http://www.haproxy.org/bugs/bugs-2.6.8.html
-</span></span><span class="line"><span class="cl">Running on: Linux 3.10.0-1127.8.2.el7.x86_64 <span class="c1">#1 SMP Tue May 12 16:57:42 UTC 2020 x86_64</span></span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
-<h4 id="323-haproxy启动脚本">3.2.3 HAProxy启动脚本</h4>
+</span></span><span class="line"><span class="cl">Running on: Linux 3.10.0-1127.8.2.el7.x86_64 <span class="c1">#1 SMP Tue May 12 16:57:42 UTC 2020 x86_64</span></span></span></code></pre></div><h4 id="323-haproxy启动脚本">3.2.3 HAProxy启动脚本</h4>
 <div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim   /usr/lib/systemd/system/haproxy.service
 </span></span><span class="line"><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
 </span></span><span class="line"><span class="cl"><span class="nv">Description</span><span class="o">=</span>HAProxy Load Balancer
@@ -592,8 +585,7 @@
 </span></span><span class="line"><span class="cl"><span class="nv">ExecReload</span><span class="o">=</span>/bin/kill -USR2 <span class="nv">$MAINPID</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
-</span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target</span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
-<h4 id="324-创建配置文件">3.2.4 创建配置文件</h4>
+</span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target</span></span></code></pre></div><h4 id="324-创建配置文件">3.2.4 创建配置文件</h4>
 <div class="highlight" id="id-9"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir  /etc/haproxy
 </span></span><span class="line"><span class="cl">vim /etc/haproxy/haproxy.cfg
 </span></span><span class="line"><span class="cl">
@@ -636,8 +628,7 @@
 </span></span><span class="line"><span class="cl">    mode http
 </span></span><span class="line"><span class="cl">    option forwardfor
 </span></span><span class="line"><span class="cl">    log global
-</span></span><span class="line"><span class="cl">    server web1  10.1.0.31:30013  check inter <span class="m">3000</span> fall <span class="m">2</span> rise <span class="m">5</span></span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
-<h4 id="325--启动haproxy">3.2.5  启动haproxy</h4>
+</span></span><span class="line"><span class="cl">    server web1  10.1.0.31:30013  check inter <span class="m">3000</span> fall <span class="m">2</span> rise <span class="m">5</span></span></span></code></pre></div><h4 id="325--启动haproxy">3.2.5  启动haproxy</h4>
 <div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir  /var/lib/haproxy
 </span></span><span class="line"><span class="cl">chown  -R 99.99 /var/lib/haproxy/ 
 </span></span><span class="line"><span class="cl">
@@ -646,9 +637,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">systemctl start haproxy
 </span></span><span class="line"><span class="cl">systemctl <span class="nb">enable</span> haproxy
-</span></span><span class="line"><span class="cl">systemctl status haproxy</span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
-<h3 id="33-验证haproxy状态">3.3 验证haproxy状态</h3>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+</span></span><span class="line"><span class="cl">systemctl status haproxy</span></span></code></pre></div><h3 id="33-验证haproxy状态">3.3 验证haproxy状态</h3>
 <h4 id="331-验证监听端口">3.3.1 验证监听端口</h4>
 <div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@localhost haproxy<span class="o">]</span><span class="c1"># ss -tnl</span>
 </span></span><span class="line"><span class="cl">State       Recv-Q Send-Q          Local Address:Port      Peer Address:Port              
@@ -665,14 +654,11 @@
 </span></span><span class="line"><span class="cl">LISTEN      <span class="m">0</span>      <span class="m">128</span>                         *:6379                 *:*                  
 </span></span><span class="line"><span class="cl">LISTEN      <span class="m">0</span>      <span class="m">128</span>                         *:61613                *:*                  
 </span></span><span class="line"><span class="cl">LISTEN      <span class="m">0</span>      <span class="m">50</span>                          *:61614                *:*                  
-</span></span><span class="line"><span class="cl">LISTEN      <span class="m">0</span>      <span class="m">128</span>                         *:9999                 *:* </span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
-<h4 id="332-查看haproxy的状态页面">3.3.2 查看haproxy的状态页面</h4>
+</span></span><span class="line"><span class="cl">LISTEN      <span class="m">0</span>      <span class="m">128</span>                         *:9999                 *:* </span></span></code></pre></div><h4 id="332-查看haproxy的状态页面">3.3.2 查看haproxy的状态页面</h4>
 <p>浏览器访问：<a href="http://www.yunweipai.com/go?_=84a56fb1feaHR0cDovL2hhcHJveHktc2VydmVyOjk5OTkvaGFwcm94eS1zdGF0dXM%3D"target="_blank" rel="external nofollow noopener noreferrer">http://haproxy-server:9999/haproxy-status</a><!-- raw HTML omitted --><img loading="lazy" src="http://cdn1.ryanxin.live/1676021477593-8a91dd15-dde3-4cc1-a009-f117f39f08f9.png" srcset="http://cdn1.ryanxin.live/1676021477593-8a91dd15-dde3-4cc1-a009-f117f39f08f9.png, http://cdn1.ryanxin.live/1676021477593-8a91dd15-dde3-4cc1-a009-f117f39f08f9.png 1.5x, http://cdn1.ryanxin.live/1676021477593-8a91dd15-dde3-4cc1-a009-f117f39f08f9.png 2x" sizes="auto" data-title="http://cdn1.ryanxin.live/1676021477593-8a91dd15-dde3-4cc1-a009-f117f39f08f9.png" data-alt="http://cdn1.ryanxin.live/1676021477593-8a91dd15-dde3-4cc1-a009-f117f39f08f9.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
 <h4 id="333-测试转发">3.3.3 测试转发</h4>
 <p>10.1.0.6:30013 转发到 10.1.0.31:30013 ✅</p>
 <p><img loading="lazy" src="http://cdn1.ryanxin.live/1676254179452-d15ddfd6-e6e2-4d2c-8d3a-691d48309fcf.png" srcset="http://cdn1.ryanxin.live/1676254179452-d15ddfd6-e6e2-4d2c-8d3a-691d48309fcf.png, http://cdn1.ryanxin.live/1676254179452-d15ddfd6-e6e2-4d2c-8d3a-691d48309fcf.png 1.5x, http://cdn1.ryanxin.live/1676254179452-d15ddfd6-e6e2-4d2c-8d3a-691d48309fcf.png 2x" sizes="auto" data-title="http://cdn1.ryanxin.live/1676254179452-d15ddfd6-e6e2-4d2c-8d3a-691d48309fcf.png" data-alt="http://cdn1.ryanxin.live/1676254179452-d15ddfd6-e6e2-4d2c-8d3a-691d48309fcf.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
 </div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
@@ -704,7 +690,7 @@
     </section>
   </div>
 
-  <div class="post-nav">
+  <div class="post-nav"><a href="/posts/kubernetes/primary/kubernetes-11/" class="post-nav-item" rel="prev" title="实战案例-基于zookeeper实现微服务动态注册和发现 (十一)"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>实战案例-基于zookeeper实现微服务动态注册和发现 (十一)</a>
       <a href="/posts/docker/docker%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%8C%85%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85/" class="post-nav-item" rel="next" title="Docker 二进制方式安装">Docker 二进制方式安装<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></main><footer class="footer">

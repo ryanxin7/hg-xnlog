@@ -21,6 +21,22 @@
   <description><![CDATA[]]></description>
 </item>
 <item>
+  <title>Kubernetes</title>
+  <link>https://hg-xnlog.github.io/categories/kubernetes/</link>
+  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/categories/kubernetes/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
+  <title>小记</title>
+  <link>https://hg-xnlog.github.io/categories/%E5%B0%8F%E8%AE%B0/</link>
+  <pubDate>Tue, 16 May 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/categories/%E5%B0%8F%E8%AE%B0/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
   <title>HAProxy</title>
   <link>https://hg-xnlog.github.io/categories/haproxy/</link>
   <pubDate>Tue, 07 Feb 2023 00:00:00 &#43;0000</pubDate>
@@ -34,6 +50,38 @@
   <pubDate>Sat, 04 Feb 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/categories/docker/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
+  <title>Ceph</title>
+  <link>https://hg-xnlog.github.io/categories/ceph/</link>
+  <pubDate>Wed, 18 Jan 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/categories/ceph/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
+  <title>Kafka</title>
+  <link>https://hg-xnlog.github.io/categories/kafka/</link>
+  <pubDate>Sat, 04 Dec 2021 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/categories/kafka/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
+  <title>ElasticStack</title>
+  <link>https://hg-xnlog.github.io/categories/elasticstack/</link>
+  <pubDate>Thu, 21 Oct 2021 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/categories/elasticstack/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
+  <title>Zookeeper</title>
+  <link>https://hg-xnlog.github.io/categories/zookeeper/</link>
+  <pubDate>Sat, 09 Oct 2021 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/categories/zookeeper/</guid>
   <description><![CDATA[]]></description>
 </item>
 </channel>

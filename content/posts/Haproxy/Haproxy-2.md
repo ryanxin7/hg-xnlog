@@ -37,11 +37,11 @@ listen：同时拥有前端和后端配置
 ```
 
 
-<a name="uAz1l"></a>
+
 
 ### 4.1 global配置
 
-<a name="lWVLb"></a>
+
 
 #### 4.1.1 global 配置参数说明
 
@@ -67,7 +67,7 @@ pidfile         #指定pid文件路径
 log 127.0.0.1  local2 info #定义全局的syslog服务器；日志服务器需要开启UDP协议，最多可以定义两个
 ```
 
-<a name="EuFfx"></a>
+
 
 #### 4.4.2 多进程和线程
 
@@ -100,7 +100,7 @@ srw------- 1 root root 0 Mar 31 18:49 haproxy.sock1
 srw------- 1 root root 0 Mar 31 18:49 haproxy.sock2
 ```
 
-<a name="H2JCH"></a>
+
 
 #### 4.4.3  配置HAProxy记录日志到指定日志文件中  
 
@@ -117,7 +117,7 @@ listen  web_port
 # systemctl  restart haproxy
 ```
 
-<a name="ESfie"></a>
+
 
 ##### **Rsyslog配置**
 
@@ -133,7 +133,7 @@ local0.*                                                /var/log/haproxy.log
 # systemctl  restart rsyslog
 ```
 
-<a name="oKsmk"></a>
+
 
 ##### 验证HAProxy日志
 
@@ -153,7 +153,7 @@ Feb 13 11:11:59 localhost haproxy[3127]: Connect from 172.16.32.242:64061 to 10.
 Feb 13 11:11:59 localhost haproxy[3127]: Connect from 172.16.32.242:64061 to 10.1.0.6:30013 (web_port/HTTP)
 ```
 
-<a name="QimZ3"></a>
+
 
 ### 4.2 Proxies配置
 
@@ -168,7 +168,7 @@ listen   <name>   #将frontend和backend合并在一起配置，相对于fronten
 
  **注意：name字段只能使用大小写字母，数字，‘-’(dash)，’_‘(underscore)，’.’ (dot)和 ‘:'(colon)，并且严格区分大小写 ** 
 
-<a name="W2ZMc"></a>
+
 
 #### 4.2.1 Proxies配置-frontend
 
@@ -214,7 +214,7 @@ frontend  magedu_web_port               #可以采用后面形式命名：业务
     use_backend <backend_name>  #调用的后端服务器组名称
 ```
 
-<a name="ZeD03"></a>
+
 
 #### 4.2.2 Proxies配置-backend
 
@@ -229,7 +229,7 @@ server              #定义后端real server
  注意：option后面加** httpchk，smtpchk,mysql-check,pgsql-check，ssl-hello-chk**方法，可用于实现更多应用层检测功能。  
 
 
-<a name="P9DQB"></a>
+
 
 ##### option 配置
 
@@ -249,7 +249,7 @@ maxconn <maxconn>     #当前后端server的最大并发连接数
 backlog <backlog> #当前端服务器的连接数达到上限后的后援队列长度，注意：不支持backend
 ```
 
-<a name="LKKi7"></a>
+
 
 #### 4.2.3 frontend+backend配置实例
 
@@ -285,7 +285,7 @@ backend web_prot_http_nodes
 ```
 
 
-<a name="jVeG5"></a>
+
 
 #### 4.2.4 Proxies配置-listen替代frontend+backend
 
@@ -302,7 +302,7 @@ listen  WEB_PORT_80
 ```
 
 
-<a name="PN7I4"></a>
+
 
 ### 4.3 使用子配置文件保存配置
 
@@ -341,4 +341,3 @@ WantedBy=multi-user.target
 
 
 
-<a name="pz6z2"></a>

@@ -1,0 +1,72 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>Linux 学习之旅 - 标签 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/tags/linux-%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/</link>
+    <description>Linux 学习之旅 - 标签 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Thu, 28 Nov 2019 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/linux-%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/" rel="self" type="application/rss+xml" /><item>
+  <title>实战案例-LNMP网站架构</title>
+  <link>https://hg-xnlog.github.io/posts/linux-basic/lnmp/</link>
+  <pubDate>Thu, 28 Nov 2019 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/linux-basic/lnmp/</guid>
+  <description><![CDATA[LNMP网站架构实战 [[toc]] 1. 实施步骤说明 :::tip 服务实施步骤 了解LNMP架构的组成作用 架构的部署 架构通讯原理 LNMP服务之间如何建立管理 运维人员代码上]]></description>
+</item>
+<item>
+  <title>Keepalived 高可用服务部署</title>
+  <link>https://hg-xnlog.github.io/posts/linux-basic/linux3/</link>
+  <pubDate>Mon, 25 Nov 2019 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/linux-basic/linux3/</guid>
+  <description><![CDATA[Keepalived 高可用服务部署 ​ Keepalived 软件最早是配合 LVS 负载均衡软件而设计的，用来管理并监控LVS集群系统中各个服务节点的状态，后来又加入了VRRP 协议可以实现]]></description>
+</item>
+<item>
+  <title>远程管理服务知识介绍</title>
+  <link>https://hg-xnlog.github.io/posts/linux-basic/linux2/</link>
+  <pubDate>Fri, 22 Nov 2019 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/linux-basic/linux2/</guid>
+  <description><![CDATA[远程管理服务知识介绍 一、SSH远程登录服务介绍说明 SSH是Secure Shell Protocol的简写，由 IETF 网络工作小组（Network Working Group]]></description>
+</item>
+<item>
+  <title>Linux的目录结构特点</title>
+  <link>https://hg-xnlog.github.io/posts/linux-basic/linux-basics/</link>
+  <pubDate>Thu, 21 Nov 2019 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/linux-basic/linux-basics/</guid>
+  <description><![CDATA[Linux的目录结构特点 目录结构特点 一切从根root 开始 Linux中每个设备可以挂在任何目录上面 Linux下面设备没有挂载无法使用 linux]]></description>
+</item>
+<item>
+  <title>Linux 基础知识</title>
+  <link>https://hg-xnlog.github.io/posts/linux-basic/linux1/</link>
+  <pubDate>Wed, 20 Nov 2019 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/linux-basic/linux1/</guid>
+  <description><![CDATA[Linux 基础 Linux，全称GNU/Linux，是一套免费使用和自由传播的类UNIX操作系统，其内核由林纳斯·本纳第克特·托瓦兹于1991年第一次]]></description>
+</item>
+<item>
+  <title>網卡文件配置文件詳解</title>
+  <link>https://hg-xnlog.github.io/posts/linux-basic/linux-network/</link>
+  <pubDate>Wed, 20 Nov 2019 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/linux-basic/linux-network/</guid>
+  <description><![CDATA[网卡文件配置文件详解 文件路径： //etc/sysconfig/network-scripts/ifcfg-eth0 为网卡文件路径 配置参数 参数详解 DEVICE=eth0 网卡名字 HWADDR=00:0c:29:bc:1f:24 Hardware address 硬件地址 TYPE=Ethernet 网络类型 因特网 UUID=1c340c4c-e0ec-4672-81e7-a5f4110dd1f9 UUID系统中唯一的标识 ONBOOT=yes boot on 在重启]]></description>
+</item>
+<item>
+  <title>Linux 系统的服务课程笔记</title>
+  <link>https://hg-xnlog.github.io/posts/linux-basic/linux-technology-stack/</link>
+  <pubDate>Mon, 11 Nov 2019 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/linux-basic/linux-technology-stack/</guid>
+  <description><![CDATA[基于 Linux 系统的服务课程笔记 ​ 互联网运维是一个融合多学科（网络、系统、开发、安全、应用架构、存储等）的综合性技术岗位，给运维工程师提供了一个很好]]></description>
+</item>
+<item>
+  <title>NFS-网络共享存储服务</title>
+  <link>https://hg-xnlog.github.io/posts/linux-basic/nfs/</link>
+  <pubDate>Fri, 13 Sep 2019 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/linux-basic/nfs/</guid>
+  <description><![CDATA[nfs共享存储 1.NFS基本概述 1.1 什么是NFS? NFS是Network File System的缩写及网络文件系统。[ 通常我们称NFS为共享存储] 1.2 N]]></description>
+</item>
+</channel>
+</rss>

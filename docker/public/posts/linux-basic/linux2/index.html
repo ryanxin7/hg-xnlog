@@ -7,23 +7,23 @@
     <meta name="robots" content="noodp" />
     <title>远程管理服务知识介绍 - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
 <meta name="author-link" content="https://github.com/ryanxin7">
-<meta name="description" content="远程管理服务知识介绍 一、SSH远程登录服务介绍说明 SSH是Secure Shell Protocol的简写，由 IETF 网络工作小组（Network Working Group" /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="远程管理服务知识介绍">
-<meta itemprop="description" content="远程管理服务知识介绍 一、SSH远程登录服务介绍说明 SSH是Secure Shell Protocol的简写，由 IETF 网络工作小组（Network Working Group"><meta itemprop="datePublished" content="2019-11-20T23:45:01+00:00" />
-<meta itemprop="dateModified" content="2019-11-20T23:45:01+00:00" />
+<meta name="description" content="远程管理服务知识介绍 一、SSH远程登录服务介绍说明 SSH是Secure Shell Protocol的简写，由 IETF 网络工作小组（Network Working Group" /><meta name="keywords" content='Linux 学习之旅, SSH' /><meta itemprop="name" content="远程管理服务知识介绍">
+<meta itemprop="description" content="远程管理服务知识介绍 一、SSH远程登录服务介绍说明 SSH是Secure Shell Protocol的简写，由 IETF 网络工作小组（Network Working Group"><meta itemprop="datePublished" content="2019-11-22T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2019-11-22T00:00:00+00:00" />
 <meta itemprop="wordCount" content="2618"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
-<meta itemprop="keywords" content="" /><meta property="og:title" content="远程管理服务知识介绍" />
+<meta itemprop="keywords" content="Linux 学习之旅,SSH," /><meta property="og:title" content="远程管理服务知识介绍" />
 <meta property="og:description" content="远程管理服务知识介绍 一、SSH远程登录服务介绍说明 SSH是Secure Shell Protocol的简写，由 IETF 网络工作小组（Network Working Group" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hg-xnlog.github.io/posts/linux-basic/linux2/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2019-11-20T23:45:01+00:00" />
-<meta property="article:modified_time" content="2019-11-20T23:45:01+00:00" />
+<meta property="article:published_time" content="2019-11-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-11-22T00:00:00+00:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
 
 <meta name="twitter:title" content="远程管理服务知识介绍"/>
 <meta name="twitter:description" content="远程管理服务知识介绍 一、SSH远程登录服务介绍说明 SSH是Secure Shell Protocol的简写，由 IETF 网络工作小组（Network Working Group"/>
 <meta name="application-name" content="Ryan’s Notebook">
-<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/linux-basic/linux2/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/linux-basic/linux-network/" /><link rel="next" href="https://hg-xnlog.github.io/posts/linux-basic/linux1/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/linux-basic/linux2/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/linux-basic/linux-basics/" /><link rel="next" href="https://hg-xnlog.github.io/posts/linux-basic/linux3/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
@@ -32,8 +32,8 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/linux-basic\/linux2\/"
-    },"genre": "posts","wordcount":  2618 ,
-    "url": "https:\/\/hg-xnlog.github.io\/posts\/linux-basic\/linux2\/","datePublished": "2019-11-20T23:45:01+00:00","dateModified": "2019-11-20T23:45:01+00:00","publisher": {
+    },"genre": "posts","keywords": "Linux 学习之旅, SSH","wordcount":  2618 ,
+    "url": "https:\/\/hg-xnlog.github.io\/posts\/linux-basic\/linux2\/","datePublished": "2019-11-22T00:00:00+00:00","dateModified": "2019-11-22T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
         "@type": "Person",
@@ -179,8 +179,9 @@
   <article class="page single">
     <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>远程管理服务知识介绍</span>
       </h1></div><div class="post-meta">
-      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2019-11-20 23:45:01"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2019-11-20">2019-11-20</time></span>&nbsp;<span title="更新于 2019-11-20 23:45:01"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2019-11-20">2019-11-20</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2618 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 6 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="远程管理服务知识介绍">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
+          <span class="post-category">收录于 <a href="/categories/linux/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Linux</a></span></div>
+      <div class="post-meta-line"><span title="发布于 2019-11-22 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2019-11-22">2019-11-22</time></span>&nbsp;<span title="更新于 2019-11-22 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2019-11-22">2019-11-22</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2618 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 6 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="远程管理服务知识介绍">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -200,14 +201,7 @@
     <li><a href="#八sftp-常用操作命令总结">八、SFTP 常用操作命令总结</a></li>
   </ul>
 </nav></div>
-      </div><div class="content" id="content"><div class="details admonition warning open">
-      <div class="details-summary admonition-title">
-        <i class="icon fa-solid fa-exclamation-triangle fa-fw" aria-hidden="true"></i>警告<i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i>
-      </div>
-      <div class="details-content">
-        <div class="admonition-content">本文最后更新于 2019-11-20，文中内容可能已过时。</div>
-      </div>
-    </div><h1 id="远程管理服务知识介绍">远程管理服务知识介绍</h1>
+      </div><div class="content" id="content"><h1 id="远程管理服务知识介绍">远程管理服务知识介绍</h1>
 <h2 id="一ssh远程登录服务介绍说明">一、SSH远程登录服务介绍说明</h2>
 <p>SSH是Secure Shell Protocol的简写，由 IETF 网络工作小组（Network Working Group）制定；在进行数据传输之前，SSH先对联机数据包通过加密技术进行加密处理，加密后在进行数据传输。确保了传递的数据安全。
 ​</p>
@@ -518,15 +512,15 @@
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">
-        <span title="更新于 2019-11-20 23:45:01">更新于 2019-11-20&nbsp;</span>
+        <span title="更新于 2019-11-22 00:00:00">更新于 2019-11-22&nbsp;</span>
       </div><div class="post-info-license">
           <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
         </div></div>
     <div class="post-info-line">
       <div class="post-info-md"><span><a href="/posts/linux-basic/linux2/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
       <div class="post-info-share">
-        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/linux-basic/linux2/" data-title="远程管理服务知识介绍"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/linux-basic/linux2/"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/linux-basic/linux2/" data-title="远程管理服务知识介绍" data-hashtags="Linux 学习之旅,SSH"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/linux-basic/linux2/" data-hashtag="Linux 学习之旅"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
   <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/linux-basic/linux2/" data-title="远程管理服务知识介绍" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
   <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/linux-basic/linux2/" data-title="远程管理服务知识介绍"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
   <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/linux-basic/linux2/" data-title="远程管理服务知识介绍"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
@@ -539,14 +533,14 @@
   </div>
 
   <div class="post-info-more">
-    <section class="post-tags"></section>
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href='/tags/linux-%E5%AD%A6%E4%B9%A0%E4%B9%8B%E6%97%85/' class="post-tag">Linux 学习之旅</a><a href='/tags/ssh/' class="post-tag">SSH</a></section>
     <section>
       <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
     </section>
   </div>
 
-  <div class="post-nav"><a href="/posts/linux-basic/linux-network/" class="post-nav-item" rel="prev" title="網卡文件配置文件詳解"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>網卡文件配置文件詳解</a>
-      <a href="/posts/linux-basic/linux1/" class="post-nav-item" rel="next" title="Linux 基础知识">Linux 基础知识<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+  <div class="post-nav"><a href="/posts/linux-basic/linux-basics/" class="post-nav-item" rel="prev" title="Linux的目录结构特点"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>Linux的目录结构特点</a>
+      <a href="/posts/linux-basic/linux3/" class="post-nav-item" rel="next" title="Keepalived 高可用服务部署">Keepalived 高可用服务部署<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></main><footer class="footer">
     <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>

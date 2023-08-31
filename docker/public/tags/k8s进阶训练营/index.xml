@@ -4,21 +4,85 @@
     <link>https://hg-xnlog.github.io/tags/k8s%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/</link>
     <description>k8s进阶训练营 - 标签 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Fri, 28 Apr 2023 21:23:22 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/k8s%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/" rel="self" type="application/rss+xml" /><item>
-  <title>Kubernetes 二进制部署</title>
-  <link>https://hg-xnlog.github.io/posts/kubernetes/kubernetes-1/</link>
-  <pubDate>Fri, 28 Apr 2023 21:23:22 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/kubernetes/kubernetes-1/</guid>
-  <description><![CDATA[前言 Kubernetes二进制部署相对于使用自动化工具（如kubeadm）而言，涉及更多的手动步骤和配置过程。然而，这种部署方式在一些情境下]]></description>
-</item>
-<item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 24 Apr 2023 21:23:22 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/k8s%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/" rel="self" type="application/rss+xml" /><item>
   <title>Kubernetes 基础</title>
-  <link>https://hg-xnlog.github.io/posts/kubernetes/1.kubernetes%E5%9F%BA%E7%A1%80/</link>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/1.kubernetes%E5%9F%BA%E7%A1%80/</link>
   <pubDate>Mon, 24 Apr 2023 21:23:22 &#43;0000</pubDate>
   <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/kubernetes/1.kubernetes%E5%9F%BA%E7%A1%80/</guid>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/1.kubernetes%E5%9F%BA%E7%A1%80/</guid>
   <description><![CDATA[1.为什么需要容器编排系统？ Docker在管理单个容器时表现出色，对于一些由有限几个或十几个容器构建的应用程序来说，直接在Docker引擎上]]></description>
+</item>
+<item>
+  <title>Harbor 使用自签证书支持 Https 访问 (十七)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-17/</link>
+  <pubDate>Wed, 22 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-17/</guid>
+  <description><![CDATA[1、安装docker harbor依赖于docker 和docker-compose 2、安装docker-compose wget https://github.com/docker/compose/releases/download/v2.17.3/docker-compose-linux-x86_64 [root@harbor ~]# cp docker-compose-linux-x86_64 /usr/local/bin/docker-compose [root@harbor ~]# chmod +x /]]></description>
+</item>
+<item>
+  <title>实战案例-Cert-Manager 实现 K8s 服务域名证书自动化续签 (十六)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-16/</link>
+  <pubDate>Tue, 21 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-16/</guid>
+  <description><![CDATA[前言 说到免费的SSL证书，大家首先想到的肯定是Let’s Encrypt，而使用过Let’s Encrypt的同学应该也知道，其有效期只有三个月]]></description>
+</item>
+<item>
+  <title>K8S 持续集成与部署 (十四)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-14/</link>
+  <pubDate>Fri, 17 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-14/</guid>
+  <description><![CDATA[1.发布方式解读 1.1 金丝雀发布 金丝雀发布这个术语源自20世纪初期，当时英国的煤矿工人在下井采矿之前，会把笼养的金丝雀携带到矿井中，如果矿井中一]]></description>
+</item>
+<item>
+  <title>K8S集群证书更新 (十五)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/</link>
+  <pubDate>Fri, 17 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/</guid>
+  <description><![CDATA[更新证书 为了更新的安全性，更新之前可以将所有 Master 节点的配置目录做一个备份： cp -r /etc/kubernetes /etc/kubernetes_$(date +%F) cp -r /var/lib/etcd /var/lib/etcd_$(date +%F)通过执行证书更新命令查看： kubeadm certs renew --hel]]></description>
+</item>
+<item>
+  <title>HPA自动伸缩pod数量 (十三)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-13/</link>
+  <pubDate>Thu, 16 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-13/</guid>
+  <description><![CDATA[1.HPA简介 HPA（Horizontal Pod Autoscaler），Pod水平自动缩放器，可以根据Pod的负载动态调整Pod的副本数量，业务]]></description>
+</item>
+<item>
+  <title>实战案例-基于zookeeper实现微服务动态注册和发现 (十二)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-12/</link>
+  <pubDate>Wed, 15 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-12/</guid>
+  <description><![CDATA[Author: Ryan title: 12.ingress 实现基于域名的多虚拟主机,URL转发及多域名HTTPS实现案例 tag: - k8s进阶训练营 category: k8s date: 2022-6-12 12:12:22 lastUpdated: true #sidebar: false breadcrumb: false #contributors: false Ingress和Ingr]]></description>
+</item>
+<item>
+  <title>实战案例-基于zookeeper实现微服务动态注册和发现 (十一)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-11/</link>
+  <pubDate>Tue, 31 Jan 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-11/</guid>
+  <description><![CDATA[Apache Dubbo 最初在 2008 年由 Alibaba 捐献开源，很快成为了国内开源服务框架选型的事实标准框架 ，得到了各行各业的广泛应用。在 2017 年，Dubbo 正式捐献到 Apache 软件基金会]]></description>
+</item>
+<item>
+  <title>实战案例-WordPress (十)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-10/</link>
+  <pubDate>Sun, 29 Jan 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-10/</guid>
+  <description><![CDATA[https://cn.wordpress.org/download/releases/ 1.准备PHP镜像 官方PHP镜像 root@harbor01[09:20:39]/dockerfile/web/wordpress #:docker pull php:5.6.40-fpm root@harbor01[09:21:35]/dockerfile/web/wordpress #:docker tag php:5.6.40-fpm harbor.ceamg.com/baseimages/php-fpm:5.6.40 root@harbor01[09:23:12]/dockerfile/web/wordpress #:docker push harbor.ceamg.com/baseimages/php-fpm:5.6.4]]></description>
+</item>
+<item>
+  <title>实战案例-运行java应用 (九)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-9/</link>
+  <pubDate>Tue, 24 Jan 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-9/</guid>
+  <description><![CDATA[本次以jenkins.war 包部署⽅式为例运⾏ ，java war包或jar包，且要求jenkins的数据保存⾄外部存储(NFS或者PVC)，其]]></description>
 </item>
 </channel>
 </rss>

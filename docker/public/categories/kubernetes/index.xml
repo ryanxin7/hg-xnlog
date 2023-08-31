@@ -4,21 +4,85 @@
     <link>https://hg-xnlog.github.io/categories/kubernetes/</link>
     <description>Kubernetes - 分类 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Fri, 28 Apr 2023 21:23:22 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/categories/kubernetes/" rel="self" type="application/rss+xml" /><item>
-  <title>Kubernetes 二进制部署</title>
-  <link>https://hg-xnlog.github.io/posts/kubernetes/kubernetes-1/</link>
-  <pubDate>Fri, 28 Apr 2023 21:23:22 &#43;0000</pubDate>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/categories/kubernetes/" rel="self" type="application/rss+xml" /><item>
+  <title>k8s强制删除pod&amp;pv&amp;pvc和ns&amp;namespace方法</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E5%BC%BA%E5%88%B6%E5%88%A0%E9%99%A4podpvpvc%E5%92%8Cnsnamespace%E6%96%B9%E6%B3%95/</link>
+  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/kubernetes/kubernetes-1/</guid>
-  <description><![CDATA[前言 Kubernetes二进制部署相对于使用自动化工具（如kubeadm）而言，涉及更多的手动步骤和配置过程。然而，这种部署方式在一些情境下]]></description>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E5%BC%BA%E5%88%B6%E5%88%A0%E9%99%A4podpvpvc%E5%92%8Cnsnamespace%E6%96%B9%E6%B3%95/</guid>
+  <description><![CDATA[k8s强制删除pod&amp;pv&amp;pvc和ns&amp;namespace方法 注意：以下操作方法十分危险，三思而行！！！ 如果名称空]]></description>
+</item>
+<item>
+  <title>k8s中部署单节点redis</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/redis-on-k8scluster/</link>
+  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/redis-on-k8scluster/</guid>
+  <description><![CDATA[k8s中部署单节点redis https://gitee.com/zdevops/k8s-yaml/blob/main/redis/single/ redis-cm.yaml --- apiVersion: v1 kind: ConfigMap metadata: name: redis-config namespace: zdevops data: redis-config: | appendonly yes protected-mode no dir /data port 6379 requirepass redis@abc.com redis-sts.yaml --- apiVersion: apps/v1 kind: StatefulSet metadata: name: redis namespace: zdevops labels: app: redis spec: serviceName: redis-headless replicas: 1 selector: matchLabels: app: redis template: metadata: labels: app: redis spec: containers: -]]></description>
+</item>
+<item>
+  <title>生产案例-Kubernetes 替换后端存储</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-replace-nfs-storage/</link>
+  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-replace-nfs-storage/</guid>
+  <description><![CDATA[# /etc/rsyncd: configuration file for rsync daemon mode # See rsyncd.conf man page for more options. # configuration example: uid = root gid = root use chroot = no max connections = 200 timeout = 6000 ignore errors read only = false list = false auth users = rsync_backup secrets file = /etc/rsync.passwd log file = /var/log/rsyncd.log # pid file = /var/run/rsyncd.pid # exclude = lost+found/ # transfer logging =]]></description>
 </item>
 <item>
   <title>Kubernetes 基础</title>
-  <link>https://hg-xnlog.github.io/posts/kubernetes/1.kubernetes%E5%9F%BA%E7%A1%80/</link>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/1.kubernetes%E5%9F%BA%E7%A1%80/</link>
   <pubDate>Mon, 24 Apr 2023 21:23:22 &#43;0000</pubDate>
   <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/kubernetes/1.kubernetes%E5%9F%BA%E7%A1%80/</guid>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/1.kubernetes%E5%9F%BA%E7%A1%80/</guid>
   <description><![CDATA[1.为什么需要容器编排系统？ Docker在管理单个容器时表现出色，对于一些由有限几个或十几个容器构建的应用程序来说，直接在Docker引擎上]]></description>
+</item>
+<item>
+  <title>Harbor 使用自签证书支持 Https 访问 (十七)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-17/</link>
+  <pubDate>Wed, 22 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-17/</guid>
+  <description><![CDATA[1、安装docker harbor依赖于docker 和docker-compose 2、安装docker-compose wget https://github.com/docker/compose/releases/download/v2.17.3/docker-compose-linux-x86_64 [root@harbor ~]# cp docker-compose-linux-x86_64 /usr/local/bin/docker-compose [root@harbor ~]# chmod +x /]]></description>
+</item>
+<item>
+  <title>实战案例-Cert-Manager 实现 K8s 服务域名证书自动化续签 (十六)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-16/</link>
+  <pubDate>Tue, 21 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-16/</guid>
+  <description><![CDATA[前言 说到免费的SSL证书，大家首先想到的肯定是Let’s Encrypt，而使用过Let’s Encrypt的同学应该也知道，其有效期只有三个月]]></description>
+</item>
+<item>
+  <title>K8S 持续集成与部署 (十四)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-14/</link>
+  <pubDate>Fri, 17 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-14/</guid>
+  <description><![CDATA[1.发布方式解读 1.1 金丝雀发布 金丝雀发布这个术语源自20世纪初期，当时英国的煤矿工人在下井采矿之前，会把笼养的金丝雀携带到矿井中，如果矿井中一]]></description>
+</item>
+<item>
+  <title>K8S集群证书更新 (十五)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/</link>
+  <pubDate>Fri, 17 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/</guid>
+  <description><![CDATA[更新证书 为了更新的安全性，更新之前可以将所有 Master 节点的配置目录做一个备份： cp -r /etc/kubernetes /etc/kubernetes_$(date +%F) cp -r /var/lib/etcd /var/lib/etcd_$(date +%F)通过执行证书更新命令查看： kubeadm certs renew --hel]]></description>
+</item>
+<item>
+  <title>HPA自动伸缩pod数量 (十三)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-13/</link>
+  <pubDate>Thu, 16 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-13/</guid>
+  <description><![CDATA[1.HPA简介 HPA（Horizontal Pod Autoscaler），Pod水平自动缩放器，可以根据Pod的负载动态调整Pod的副本数量，业务]]></description>
+</item>
+<item>
+  <title>实战案例-基于zookeeper实现微服务动态注册和发现 (十二)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-12/</link>
+  <pubDate>Wed, 15 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-12/</guid>
+  <description><![CDATA[Author: Ryan title: 12.ingress 实现基于域名的多虚拟主机,URL转发及多域名HTTPS实现案例 tag: - k8s进阶训练营 category: k8s date: 2022-6-12 12:12:22 lastUpdated: true #sidebar: false breadcrumb: false #contributors: false Ingress和Ingr]]></description>
 </item>
 </channel>
 </rss>

@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>Etcd - 标签 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/tags/etcd/</link>
+    <description>Etcd - 标签 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Thu, 05 Jan 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/etcd/" rel="self" type="application/rss+xml" /><item>
+  <title>etcd 客户端使用、数据备份与恢复 （二）</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-2/</link>
+  <pubDate>Thu, 05 Jan 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-2/</guid>
+  <description><![CDATA[etcd是CoreOS团队于2013年6月发起的开源项目，它的目标是构建一个高可用的分 布式键值(key-value)数据库。etcd内部采用]]></description>
+</item>
+</channel>
+</rss>

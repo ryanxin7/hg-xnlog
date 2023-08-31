@@ -5,35 +5,35 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
     <meta name="robots" content="noodp" />
-    <title>4.Ceph 集群维护 - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
+    <title>Ceph 集群维护 （四） - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
 <meta name="author-link" content="https://github.com/ryanxin7">
-<meta name="description" content="ceph集群配置、部署与运维 http://docs.ceph.org.cn/rados/ 4.1:通过套接字进行单机管理 每个node节点上都有不同数量的OSD数量 启动osd进程会在 /var/run/c" /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="4.Ceph 集群维护">
-<meta itemprop="description" content="ceph集群配置、部署与运维 http://docs.ceph.org.cn/rados/ 4.1:通过套接字进行单机管理 每个node节点上都有不同数量的OSD数量 启动osd进程会在 /var/run/c">
-
+<meta name="description" content="ceph集群配置、部署与运维 http://docs.ceph.org.cn/rados/ 4.1:通过套接字进行单机管理 每个node节点上都有不同数量的OSD数量 启动osd进程会在 /var/run/c" /><meta name="keywords" content='分布式存储' /><meta itemprop="name" content="Ceph 集群维护 （四）">
+<meta itemprop="description" content="ceph集群配置、部署与运维 http://docs.ceph.org.cn/rados/ 4.1:通过套接字进行单机管理 每个node节点上都有不同数量的OSD数量 启动osd进程会在 /var/run/c"><meta itemprop="datePublished" content="2023-01-12T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-05-31T00:00:00+00:00" />
 <meta itemprop="wordCount" content="9504"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
-<meta itemprop="keywords" content="" /><meta property="og:title" content="4.Ceph 集群维护" />
+<meta itemprop="keywords" content="分布式存储," /><meta property="og:title" content="Ceph 集群维护 （四）" />
 <meta property="og:description" content="ceph集群配置、部署与运维 http://docs.ceph.org.cn/rados/ 4.1:通过套接字进行单机管理 每个node节点上都有不同数量的OSD数量 启动osd进程会在 /var/run/c" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
-
-
+<meta property="article:published_time" content="2023-01-12T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-05-31T00:00:00+00:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
 
-<meta name="twitter:title" content="4.Ceph 集群维护"/>
+<meta name="twitter:title" content="Ceph 集群维护 （四）"/>
 <meta name="twitter:description" content="ceph集群配置、部署与运维 http://docs.ceph.org.cn/rados/ 4.1:通过套接字进行单机管理 每个node节点上都有不同数量的OSD数量 启动osd进程会在 /var/run/c"/>
 <meta name="application-name" content="Ryan’s Notebook">
-<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/kubernetes-4/" /><link rel="next" href="https://hg-xnlog.github.io/posts/redis/redis-3/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-4/" /><link rel="next" href="https://hg-xnlog.github.io/posts/ceph/5.-cephx%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
-    "headline": "4.Ceph 集群维护",
+    "headline": "Ceph 集群维护 （四）",
     "inLanguage": "zh-CN",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4\/"
-    },"genre": "posts","wordcount":  9504 ,
-    "url": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4\/","publisher": {
+    },"genre": "posts","keywords": "分布式存储","wordcount":  9504 ,
+    "url": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4\/","datePublished": "2023-01-12T00:00:00+00:00","dateModified": "2023-05-31T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
         "@type": "Person",
@@ -177,10 +177,11 @@
     </aside>
 
   <article class="page single">
-    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>4.Ceph 集群维护</span>
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>Ceph 集群维护 （四）</span>
       </h1></div><div class="post-meta">
-      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span></div>
-      <div class="post-meta-line"><span title="发布于 0001-01-01 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="0001-01-01">0001-01-01</time></span>&nbsp;<span title="更新于 0001-01-01 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="0001-01-01">0001-01-01</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 9504 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 19 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="4.Ceph 集群维护">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
+          <span class="post-category">收录于 <a href="/categories/ceph/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Ceph</a></span></div>
+      <div class="post-meta-line"><span title="发布于 2023-01-12 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-01-12">2023-01-12</time></span>&nbsp;<span title="更新于 2023-05-31 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-05-31">2023-05-31</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 9504 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 19 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Ceph 集群维护 （四）">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -251,12 +252,12 @@
     </li>
   </ul>
 </nav></div>
-      </div><div class="content" id="content"><div class="details admonition warning open">
+      </div><div class="content" id="content"><div class="details admonition note open">
       <div class="details-summary admonition-title">
-        <i class="icon fa-solid fa-exclamation-triangle fa-fw" aria-hidden="true"></i>警告<i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i>
+        <i class="icon fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i>注意<i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i>
       </div>
       <div class="details-content">
-        <div class="admonition-content">本文最后更新于 0001-01-01，文中内容可能已过时。</div>
+        <div class="admonition-content">本文最后更新于 2023-05-31，文中内容可能已过时。</div>
       </div>
     </div><p>ceph集群配置、部署与运维</p>
 <p><!-- raw HTML omitted --><a href="http://docs.ceph.org.cn/rados/"target="_blank" rel="external nofollow noopener noreferrer">http://docs.ceph.org.cn/rados/</a></p>
@@ -759,35 +760,35 @@ snappy:该配置为指定压缩使用的算法默认为<strong>sanppy</strong>,�
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">
-        <span title="更新于 0001-01-01 00:00:00">更新于 0001-01-01&nbsp;</span>
+        <span title="更新于 2023-05-31 00:00:00">更新于 2023-05-31&nbsp;</span>
       </div><div class="post-info-license">
           <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
         </div></div>
     <div class="post-info-line">
       <div class="post-info-md"><span><a href="/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
       <div class="post-info-share">
-        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="4.Ceph 集群维护"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="4.Ceph 集群维护" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="4.Ceph 集群维护"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="4.Ceph 集群维护"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="4.Ceph 集群维护" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="4.Ceph 集群维护" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="4.Ceph 集群维护"><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="Ceph 集群维护 （四）" data-hashtags="分布式存储"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-hashtag="分布式存储"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="Ceph 集群维护 （四）" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="Ceph 集群维护 （四）"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="Ceph 集群维护 （四）"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="Ceph 集群维护 （四）" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="Ceph 集群维护 （四）" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/" data-title="Ceph 集群维护 （四）"><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
   </span>
       </div>
     </div>
   </div>
 
   <div class="post-info-more">
-    <section class="post-tags"></section>
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href='/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/' class="post-tag">分布式存储</a></section>
     <section>
       <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
     </section>
   </div>
 
-  <div class="post-nav"><a href="/posts/kubernetes/kubernetes-4/" class="post-nav-item" rel="prev" title="4.kubernetesAPI资源对象"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>4.kubernetesAPI资源对象</a>
-      <a href="/posts/redis/redis-3/" class="post-nav-item" rel="next" title="3.Redis 基础-环境部署">3.Redis 基础-环境部署<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+  <div class="post-nav"><a href="/posts/kubernetes/primary/kubernetes-4/" class="post-nav-item" rel="prev" title="kubernetesAPI资源对象 (四)"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>kubernetesAPI资源对象 (四)</a>
+      <a href="/posts/ceph/5.-cephx%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/" class="post-nav-item" rel="next" title="CephX 认证机制 （五）">CephX 认证机制 （五）<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></main><footer class="footer">
     <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>

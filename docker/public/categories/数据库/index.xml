@@ -1,0 +1,64 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>数据库 - 分类 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+    <description>数据库 - 分类 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Fri, 07 Aug 2020 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="self" type="application/rss+xml" /><item>
+  <title>Redis Sentinel（哨兵） （七）</title>
+  <link>https://hg-xnlog.github.io/posts/redis/redis-7/</link>
+  <pubDate>Fri, 07 Aug 2020 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/redis/redis-7/</guid>
+  <description><![CDATA[Redis Sentinel（哨兵） 简介 主从复制奠定了Redis分布式的基础，但是普通的主从复制并不能达到高可用的状态。在普通的主从复制模式下，如果主]]></description>
+</item>
+<item>
+  <title>Redis 主从同步 （六）</title>
+  <link>https://hg-xnlog.github.io/posts/redis/redis-6/</link>
+  <pubDate>Thu, 06 Aug 2020 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/redis/redis-6/</guid>
+  <description><![CDATA[Redis 主从同步 redis 作为一个分布式的数据缓存平台，我们可以借助于redis的多实例机制，让多个实例间的数据， 达成一个同步的效果，这样即使某个实例出现]]></description>
+</item>
+<item>
+  <title>Redis 持久复制 （五）</title>
+  <link>https://hg-xnlog.github.io/posts/redis/redis-5/</link>
+  <pubDate>Wed, 05 Aug 2020 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/redis/redis-5/</guid>
+  <description><![CDATA[Redis 持久复制 Redis虽然是一个内存级别的缓存程序，但是其可以将内存的数据按照一定的策略保存到硬盘上，从而实现数据持久保存的目的。 目前，red]]></description>
+</item>
+<item>
+  <title>Redis 共享Session实践 （四）</title>
+  <link>https://hg-xnlog.github.io/posts/redis/redis-4/</link>
+  <pubDate>Tue, 04 Aug 2020 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/redis/redis-4/</guid>
+  <description><![CDATA[应用Redis python-Web Session实践 我们在后面是准备在python web项目中应用redis，所以我们需要在python虚拟环境中安装redi]]></description>
+</item>
+<item>
+  <title>Redis 环境部署 （三）</title>
+  <link>https://hg-xnlog.github.io/posts/redis/redis-3/</link>
+  <pubDate>Mon, 03 Aug 2020 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/redis/redis-3/</guid>
+  <description><![CDATA[Redis 基础知识 Redis 是 Remote Dictionary Server(远程数据服务)的缩写，由意大利人 antirez(Salvatore Sanfilippo) 开发的一款 内存高速缓存数据库，该软件使用 C 语言编写,它的数据模型为 key]]></description>
+</item>
+<item>
+  <title>Redis 基础-NoSQL （二）</title>
+  <link>https://hg-xnlog.github.io/posts/redis/redis-2/</link>
+  <pubDate>Sun, 02 Aug 2020 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/redis/redis-2/</guid>
+  <description><![CDATA[NoSQL 基础知识 一类新出现的数据库(not only sql) 特点 泛指非关系型的数据库 不支持SQL语法 存储结构跟传统关系型数据库中的那种关系表完全不同，nosql]]></description>
+</item>
+<item>
+  <title>Redis 基础-数据分类 （一）</title>
+  <link>https://hg-xnlog.github.io/posts/redis/redis-1/</link>
+  <pubDate>Sat, 01 Aug 2020 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/redis/redis-1/</guid>
+  <description><![CDATA[用户访问的过程中会产生各种各样的数据，为了让网站能够正常的运行，并且高效的让用户精准的看到相应的数据，我们就会在不同业务功能场景中采用各种各]]></description>
+</item>
+</channel>
+</rss>

@@ -10,7 +10,7 @@
 <meta name="description" content="六、HAProxy https实现 #配置HAProxy支持https协议，支持ssl会话； bind *:443 ssl crt /PATH/TO/SOME_PEM_FILE #crt 后证书文件为PEM格式，且同时包含证书和" /><meta name="keywords" content='负载均衡' /><meta itemprop="name" content="HAProxy-https实现（四）">
 <meta itemprop="description" content="六、HAProxy https实现 #配置HAProxy支持https协议，支持ssl会话； bind *:443 ssl crt /PATH/TO/SOME_PEM_FILE #crt 后证书文件为PEM格式，且同时包含证书和"><meta itemprop="datePublished" content="2023-02-07T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-08-17T00:00:00+00:00" />
-<meta itemprop="wordCount" content="519"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="520"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="负载均衡," /><meta property="og:title" content="HAProxy-https实现（四）" />
 <meta property="og:description" content="六、HAProxy https实现 #配置HAProxy支持https协议，支持ssl会话； bind *:443 ssl crt /PATH/TO/SOME_PEM_FILE #crt 后证书文件为PEM格式，且同时包含证书和" />
 <meta property="og:type" content="article" />
@@ -23,7 +23,7 @@
 <meta name="twitter:title" content="HAProxy-https实现（四）"/>
 <meta name="twitter:description" content="六、HAProxy https实现 #配置HAProxy支持https协议，支持ssl会话； bind *:443 ssl crt /PATH/TO/SOME_PEM_FILE #crt 后证书文件为PEM格式，且同时包含证书和"/>
 <meta name="application-name" content="Ryan’s Notebook">
-<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/haproxy/haproxy-4/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/haproxy/haproxy-3/" /><link rel="next" href="https://hg-xnlog.github.io/posts/cicd/jenkins-autodeploy/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/haproxy/haproxy-4/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/haproxy/haproxy-3/" /><link rel="next" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-12/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/haproxy\/haproxy-4\/"
-    },"genre": "posts","keywords": "负载均衡","wordcount":  519 ,
+    },"genre": "posts","keywords": "负载均衡","wordcount":  520 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/haproxy\/haproxy-4\/","datePublished": "2023-02-07T00:00:00+00:00","dateModified": "2023-08-17T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -181,7 +181,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/haproxy/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> HAProxy</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-02-07 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-07">2023-02-07</time></span>&nbsp;<span title="更新于 2023-08-17 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-08-17">2023-08-17</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 519 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 2 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="HAProxy-https实现（四）">
+      <div class="post-meta-line"><span title="发布于 2023-02-07 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-07">2023-02-07</time></span>&nbsp;<span title="更新于 2023-08-17 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-08-17">2023-08-17</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 520 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 2 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="HAProxy-https实现（四）">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -212,8 +212,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">#向后端传递用户请求的协议和端口（frontend或backend）</span>
 </span></span><span class="line"><span class="cl">http_request set-header X-Forwarded-Port %<span class="o">[</span>dst_port<span class="o">]</span>
-</span></span><span class="line"><span class="cl">http_request add-header X-Forwared-Proto https <span class="k">if</span> <span class="o">{</span> ssl_fc <span class="o">}</span></span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
-<h3 id="61-证书制作">6.1 证书制作</h3>
+</span></span><span class="line"><span class="cl">http_request add-header X-Forwared-Proto https <span class="k">if</span> <span class="o">{</span> ssl_fc <span class="o">}</span></span></span></code></pre></div><h3 id="61-证书制作">6.1 证书制作</h3>
 <div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#方法1</span>
 </span></span><span class="line"><span class="cl"><span class="o">[</span>root@centos7 ~<span class="o">]</span>mkdir /etc/haproxy/certs/
 </span></span><span class="line"><span class="cl"><span class="o">[</span>root@centos7 ~<span class="o">]</span><span class="nb">cd</span> /etc/haproxy/certs/
@@ -223,8 +222,7 @@
 </span></span><span class="line"><span class="cl"><span class="o">[</span>root@centos7 certs<span class="o">]</span><span class="c1">#openssl req  -x509 -newkey rsa:2048 -subj &#34;/CN=www.magedu.org&#34; -keyout haproxy.key -nodes -days 365 -out haproxy.crt</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="o">[</span>root@centos7 certs<span class="o">]</span><span class="c1">#cat haproxy.key  haproxy.crt  &gt; haproxy.pem</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@centos7 certs<span class="o">]</span><span class="c1">#openssl  x509 -in  haproxy.pem -noout -text        #查看证书</span></span></span></code></pre></div><p><!-- raw HTML omitted --><!-- raw HTML omitted --></p>
-<h3 id="62-https配置示例">6.2 https配置示例</h3>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@centos7 certs<span class="o">]</span><span class="c1">#openssl  x509 -in  haproxy.pem -noout -text        #查看证书</span></span></span></code></pre></div><h3 id="62-https配置示例">6.2 https配置示例</h3>
 <div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@centos7 ~<span class="o">]</span><span class="c1">#cat  /etc/haproxy/conf.d/test.cfg</span>
 </span></span><span class="line"><span class="cl">frontend  magedu_http_port
 </span></span><span class="line"><span class="cl">  <span class="nb">bind</span> 10.0.0.7:80
@@ -338,7 +336,7 @@
   </div>
 
   <div class="post-nav"><a href="/posts/haproxy/haproxy-3/" class="post-nav-item" rel="prev" title="HAProxy-调度算法(三)"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>HAProxy-调度算法(三)</a>
-      <a href="/posts/cicd/jenkins-autodeploy/" class="post-nav-item" rel="next" title="Jenkins实践-自动构建并发布前端项目">Jenkins实践-自动构建并发布前端项目<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+      <a href="/posts/kubernetes/primary/kubernetes-12/" class="post-nav-item" rel="next" title="实战案例-基于zookeeper实现微服务动态注册和发现 (十二)">实战案例-基于zookeeper实现微服务动态注册和发现 (十二)<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></main><footer class="footer">
     <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>

@@ -32,7 +32,7 @@ http_request add-header X-Forwared-Proto https if { ssl_fc }
 ```
 
 
-<a name="WvK6d"></a>
+
 
 ### 6.1 证书制作
 
@@ -49,7 +49,7 @@ http_request add-header X-Forwared-Proto https if { ssl_fc }
 [root@centos7 certs]#openssl  x509 -in  haproxy.pem -noout -text        #查看证书
 ```
 
-<a name="ipX7G"></a>
+
 
 ### 6.2 https配置示例
 

@@ -19,7 +19,7 @@ expirationReminder:
 ## 三、HAProxy安装及基础配置
 介绍HAProxy的基础安装及基础配置
 
-<a name="lz77Z"></a>
+
 ### 3.1 源码包安装
 官方提供了Ubuntu和Debian的包，没有Centos的包<br />![](http://cdn1.ryanxin.live/1675997727329-efbe55ed-cb1e-4446-b7d2-40fd13d1031b.png)
 
@@ -27,7 +27,7 @@ expirationReminder:
 
 ![image.png](http://cdn1.ryanxin.live/xxlog/1675997822880-a7a98a7a-9d66-4040-902e-4575f17bcaf5.png)
 
-<a name="lXWmr"></a>
+
 #### ubuntu 安装
 ```yaml
 apt-get install --no-install-recommends software-properties-common 
@@ -82,7 +82,7 @@ Running on: Linux 5.4.0-135-generic #152-Ubuntu SMP Wed Nov 23 20:19:22 UTC 2022
 
 ```
 
-<a name="O6GRy"></a>
+
 #### Centos安装
 在centos系统上通过yum、编译等多种安装方式。<br />**默认yum源**<br />默认的base仓库中包含haproxy的安装包文件，但是版本比较旧，是1.5.18的版本，距离当前版本已经有较长时间没有更新，由于版本比较旧所以有很多功能不支持，如果对功能和性能没有要求可以使用此版本，否则推荐使用新版本。
 ```bash
@@ -94,12 +94,12 @@ Copyright 2000-2016 Willy Tarreau <willy@haproxy.org>
 ```
 
 
-<a name="tp9NK"></a>
+
 ### 3.2 编译安装HAProxy
 编译安装HAProxy 2.0 LTS版本，源码包下载地址：[http://www.haproxy.org/download/](http://www.haproxy.org/download/)
 
 
-<a name="lz3vV"></a>
+
 #### 3.2.1 解决lua环境
 HAProxy支持基于lua实现功能扩展，lua是一种小巧的脚本语言，于1993年由巴西里约热内卢天主教大学（Pontiﬁcal Catholic University of Rio de Janeiro）里的一个研究小组开发，其设计目的是为了嵌入应用程序中，从而为应用程序提供灵活的扩展和定制功能。
 
@@ -210,7 +210,7 @@ Lua 5.3.3  Copyright (C) 1994-2016 Lua.org, PUC-Rio
 ```
 
 
-<a name="suUyR"></a>
+
 #### 3.2.2 开始编译安装
 **Centos 环境**<br />**ubuntu 系统推荐使用包管理器安装**
 ```bash
@@ -438,7 +438,7 @@ Running on: Linux 3.10.0-1127.8.2.el7.x86_64 #1 SMP Tue May 12 16:57:42 UTC 2020
 ```
 
 
-<a name="oWaGF"></a>
+
 ####    3.2.3 HAProxy启动脚本
 ```bash
 vim   /usr/lib/systemd/system/haproxy.service
@@ -455,7 +455,7 @@ ExecReload=/bin/kill -USR2 $MAINPID
 WantedBy=multi-user.target
 ```
 
-<a name="XOK2n"></a>
+
 #### 3.2.4 创建配置文件
 ```bash
 mkdir  /etc/haproxy
@@ -504,7 +504,7 @@ listen  web_port
 ```
 
 
-<a name="merQc"></a>
+
 #### 3.2.5  启动haproxy
 ```bash
 mkdir  /var/lib/haproxy
@@ -518,9 +518,9 @@ systemctl enable haproxy
 systemctl status haproxy
 ```
 
-<a name="gpyFm"></a>
+
 ### 3.3 验证haproxy状态
-<a name="IOACl"></a>
+
 #### 3.3.1 验证监听端口
 ```bash
 [root@localhost haproxy]# ss -tnl
@@ -540,18 +540,18 @@ LISTEN      0      128                         *:61613                *:*
 LISTEN      0      50                          *:61614                *:*                  
 LISTEN      0      128                         *:9999                 *:* 
 ```
-<a name="CE44W"></a>
+
 #### 3.3.2 查看haproxy的状态页面
 
  浏览器访问：[http://haproxy-server:9999/haproxy-status](http://www.yunweipai.com/go?_=84a56fb1feaHR0cDovL2hhcHJveHktc2VydmVyOjk5OTkvaGFwcm94eS1zdGF0dXM%3D)<br />![](http://cdn1.ryanxin.live/1676021477593-8a91dd15-dde3-4cc1-a009-f117f39f08f9.png)
 
 
 
-<a name="pjkah"></a>
+
 #### 3.3.3 测试转发
 10.1.0.6:30013 转发到 10.1.0.31:30013 ✅
 
 ![](http://cdn1.ryanxin.live/1676254179452-d15ddfd6-e6e2-4d2c-8d3a-691d48309fcf.png)
 
-<a name="HaR1B"></a>
+
 
