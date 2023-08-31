@@ -21,6 +21,10 @@ subtitle: Ryan Chueng
       const site = new Blog('Ryan's NoteBook, 'RyanChueng', 'http://xinn.cc');
       {{< /typeit >}}
 
+
+
+
+
 ## 关于我
 
 
@@ -66,10 +70,6 @@ subtitle: Ryan Chueng
 &nbsp;
 
 {{< music url="/music/Wavelength.mp3" name=Wavelength artist=oldmanyoung cover="/images/Wavelength.jpg" >}}
-
-
-
-
 
 
 
