@@ -7,12 +7,12 @@
     <meta name="robots" content="noodp" />
     <title>生产案例-Kubernetes 替换后端存储 - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
 <meta name="author-link" content="https://github.com/ryanxin7">
-<meta name="description" content="# /etc/rsyncd: configuration file for rsync daemon mode # See rsyncd.conf man page for more options. # configuration example: uid = root gid = root use chroot = no max connections = 200 timeout = 6000 ignore errors read only = false list = false auth users = rsync_backup secrets file = /etc/rsync.passwd log file = /var/log/rsyncd.log # pid file = /var/run/rsyncd.pid # exclude = lost&#43;found/ # transfer logging =" /><meta name="keywords" content='Kubernetes, NFS' /><meta itemprop="name" content="生产案例-Kubernetes 替换后端存储">
-<meta itemprop="description" content="# /etc/rsyncd: configuration file for rsync daemon mode # See rsyncd.conf man page for more options. # configuration example: uid = root gid = root use chroot = no max connections = 200 timeout = 6000 ignore errors read only = false list = false auth users = rsync_backup secrets file = /etc/rsync.passwd log file = /var/log/rsyncd.log # pid file = /var/run/rsyncd.pid # exclude = lost&#43;found/ # transfer logging ="><meta itemprop="datePublished" content="2023-08-14T00:00:00+00:00" />
+<meta name="description" content="使用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储" /><meta name="keywords" content='Kubernetes, NFS' /><meta itemprop="name" content="生产案例-Kubernetes 替换后端存储">
+<meta itemprop="description" content="使用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储"><meta itemprop="datePublished" content="2023-08-14T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-08-14T00:00:00+00:00" />
-<meta itemprop="wordCount" content="230"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="3950"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="Kubernetes,NFS," /><meta property="og:title" content="生产案例-Kubernetes 替换后端存储" />
-<meta property="og:description" content="# /etc/rsyncd: configuration file for rsync daemon mode # See rsyncd.conf man page for more options. # configuration example: uid = root gid = root use chroot = no max connections = 200 timeout = 6000 ignore errors read only = false list = false auth users = rsync_backup secrets file = /etc/rsync.passwd log file = /var/log/rsyncd.log # pid file = /var/run/rsyncd.pid # exclude = lost&#43;found/ # transfer logging =" />
+<meta property="og:description" content="使用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-replace-nfs-storage/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2023-08-14T00:00:00+00:00" />
@@ -21,7 +21,7 @@
 <meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
 
 <meta name="twitter:title" content="生产案例-Kubernetes 替换后端存储"/>
-<meta name="twitter:description" content="# /etc/rsyncd: configuration file for rsync daemon mode # See rsyncd.conf man page for more options. # configuration example: uid = root gid = root use chroot = no max connections = 200 timeout = 6000 ignore errors read only = false list = false auth users = rsync_backup secrets file = /etc/rsync.passwd log file = /var/log/rsyncd.log # pid file = /var/run/rsyncd.pid # exclude = lost&#43;found/ # transfer logging ="/>
+<meta name="twitter:description" content="使用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储"/>
 <meta name="application-name" content="Ryan’s Notebook">
 <meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-replace-nfs-storage/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/blog/%E4%BA%94%E8%8A%B1%E5%85%AB%E9%97%A8%E7%9A%84-markdown-admonitions/" /><link rel="next" href="https://hg-xnlog.github.io/posts/kubernetes/advanced/redis-on-k8scluster/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/advanced\/k8s-replace-nfs-storage\/"
-    },"genre": "posts","keywords": "Kubernetes, NFS","wordcount":  230 ,
+    },"genre": "posts","keywords": "Kubernetes, NFS","wordcount":  3950 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/advanced\/k8s-replace-nfs-storage\/","datePublished": "2023-08-14T00:00:00+00:00","dateModified": "2023-08-14T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -170,7 +170,8 @@
   </div>
   <div class="search-dropdown mobile">
     <div id="search-dropdown-mobile"></div>
-  </div><main class="container"><aside class="toc" id="toc-auto"></aside>
+  </div><main class="container"><aside class="toc" id="toc-auto"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside>
 
   <aside class="aside-custom">
     </aside>
@@ -180,10 +181,359 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/kubernetes/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Kubernetes</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-08-14 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-08-14">2023-08-14</time></span>&nbsp;<span title="更新于 2023-08-14 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-08-14">2023-08-14</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 230 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 1 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="生产案例-Kubernetes 替换后端存储">
+      <div class="post-meta-line"><span title="发布于 2023-08-14 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-08-14">2023-08-14</time></span>&nbsp;<span title="更新于 2023-08-14 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-08-14">2023-08-14</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 3950 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 8 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="生产案例-Kubernetes 替换后端存储">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
-    </div><div class="content" id="content"><div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># /etc/rsyncd: configuration file for rsync daemon mode</span>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#情况说明">情况说明</a>
+      <ul>
+        <li><a href="#示例">示例</a></li>
+        <li><a href="#storageclass回收策略"><strong>StorageClass回收策略</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#1将多块磁盘组合成-lvm卷">1.将多块磁盘组合成 LVM卷</a>
+      <ul>
+        <li><a href="#11-安装gdisk工具">1.1 安装gdisk工具</a></li>
+        <li><a href="#12-磁盘分区">1.2 磁盘分区</a></li>
+        <li><a href="#13-创建物理卷physical-volumes"><strong>1.3 创建物理卷（Physical Volumes）</strong></a></li>
+        <li><a href="#14-创建卷组volume-group">1.4 <strong>创建卷组（Volume Group）</strong></a></li>
+        <li><a href="#创建逻辑卷logical-volume"><strong>创建逻辑卷（Logical Volume）</strong>：</a></li>
+        <li><a href="#15-格式化逻辑卷"><strong>1.5 格式化逻辑卷</strong></a></li>
+        <li><a href="#16-挂载逻辑卷"><strong>1.6 挂载逻辑卷</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#2-更换后端存储">2. 更换后端存储</a>
+      <ul>
+        <li><a href="#21更改nfs服务器地址">2.1更改NFS服务器地址</a></li>
+        <li><a href="#22-查看当前pvc">2.2 查看当前pvc</a></li>
+        <li><a href="#23-使用rsync同步数据">2.3 使用rsync同步数据</a></li>
+        <li><a href="#24-同步命令">2.4 同步命令</a></li>
+        <li><a href="#25-查看日志">2.5 查看日志</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-验证pv状态">3. 验证pv状态</a></li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content"><p>使用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储。
+持久卷目录的命名规则为:</p>
+<p>y用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储。</p>
+<p>用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储。</p>
+<h2 id="情况说明">情况说明</h2>
+<p>业务使用 <strong>Kubernetes NFS Subdir External Provisioner</strong> 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储。</p>
+<p>命名规则 <code>${namespace}-${pvcName}-${pvName}</code></p>
+<p>出现磁盘空间严重不足情况，需要更换存储。</p>
+<p><img loading="lazy" src="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20230901145753230.png" srcset="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20230901145753230.png, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20230901145753230.png 1.5x, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20230901145753230.png 2x" sizes="auto" data-title="image-20230901145753230" data-alt="image-20230901145753230" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p>项目地址:</p>
+<p><a href="https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/blob/master/charts/nfs-subdir-external-provisioner/README.md"target="_blank" rel="external nofollow noopener noreferrer">https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/blob/master/charts/nfs-subdir-external-provisioner/README.md</a></p>
+<p>Kubernetes 提供了一种动态创建 Persistent Volumes (PV) 的机制，称为 Dynamic Provisioning。这个机制允许集群管理员事先配置 StorageClass，然后用户只需创建 Persistent Volume Claims (PVC)，PV 就会自动根据 <a href="https://kubernetes.io/docs/concepts/storage/storage-classes/"target="_blank" rel="external nofollow noopener noreferrer">StorageClass</a> 规则动态创建。</p>
+<h3 id="示例">示例</h3>
+<div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">nfs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="l">013f2dsb-4m2d.cn-beijing.extreme.nas.aliyuncs.com   </span><span class="w"> </span><span class="c">#NFS 服务器的主机名（必填）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/share </span><span class="w"> </span><span class="c">#要使用的挂载点的基本路径</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">mountOptions</span><span class="p">:</span><span class="w"> </span><span class="c">#安装选项（例如“nfs.vers=3”）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">vers=3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">noacl</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">nolock</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">proto=tcp</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">rsize=1048576</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">wsize=1048576</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">hard</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">timeo=600</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">retrans=2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">noresvport</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">storageClass</span><span class="p">:</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-client-speed </span><span class="w"> </span><span class="c"># 存储类的名称</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">defaultClass</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="c">#设置为默认 StorageClass</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">allowVolumeExpansion</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="c">#允许扩大卷</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">reclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Delete</span><span class="w"> </span><span class="c">#回收策略</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">provisionerName</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-client-speed</span><span class="w"> </span><span class="c">#动态卷分配者名称，必须和创建的&#34;provisioner&#34;变量中设置的name一致</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">archiveOnDelete</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="c">##设置为&#34;false&#34;时删除PVC不会保留数据,&#34;true&#34;则保留数据 </span></span></span></code></pre></div><h3 id="storageclass回收策略"><strong>StorageClass回收策略</strong></h3>
+<p>由 StorageClass 动态创建的 PersistentVolume 会在类的 <a href="https://kubernetes.io/zh-cn/docs/concepts/storage/persistent-volumes/#reclaiming"target="_blank" rel="external nofollow noopener noreferrer">reclaimPolicy</a> 字段中指定<a href="https://kubernetes.io/zh-cn/docs/concepts/storage/persistent-volumes/#reclaiming"target="_blank" rel="external nofollow noopener noreferrer">回收策略</a>，可以是 Delete 或者 Retain。</p>
+<p>如果 StorageClass 对象被创建时没有指定 reclaimPolicy，它将默认为 Delete。</p>
+<h4 id="回收reclaiming">回收（Reclaiming）</h4>
+<p>当用户不再使用其存储卷时，他们可以从 API 中将 PVC 对象删除， 从而允许该资源被回收再利用。PersistentVolume 对象的回收策略告诉集群， 当其被从申领中释放时如何处理该数据卷。 目前，数据卷可以被 Retained（保留）、Recycled（回收）或 Deleted（删除）。</p>
+<h4 id="保留retain">保留（Retain）</h4>
+<p>回收策略 Retain 使得用户可以手动回收资源。当 PersistentVolumeClaim 对象被删除时，PersistentVolume 卷仍然存在，对应的数据卷被视为&quot;已释放（released）&quot;。 由于卷上仍然存在这前一申领人的数据，该卷还不能用于其他申领。 管理员可以通过下面的步骤来手动回收该卷：</p>
+<ol>
+<li>删除 PersistentVolume 对象。与之相关的、位于外部基础设施中的存储资产 （例如 AWS EBS、GCE PD、Azure Disk 或 Cinder 卷）在 PV 删除之后仍然存在。</li>
+<li>根据情况，手动清除所关联的存储资产上的数据。</li>
+<li>手动删除所关联的存储资产。</li>
+</ol>
+<p>如果你希望重用该存储资产，可以基于存储资产的定义创建新的 PersistentVolume 卷对象。</p>
+<h4 id="删除delete">删除（Delete）</h4>
+<p>对于支持 Delete 回收策略的卷插件，删除动作会将 PersistentVolume 对象从 Kubernetes 中移除，同时也会从外部基础设施（如 AWS EBS、GCE PD、Azure Disk 或 Cinder 卷）中移除所关联的存储资产。 动态制备的卷会继承<a href="https://kubernetes.io/zh-cn/docs/concepts/storage/persistent-volumes/#reclaim-policy"target="_blank" rel="external nofollow noopener noreferrer">其 StorageC</a><a href="https://kubernetes.io/zh-cn/docs/concepts/storage/persistent-volumes/#reclaim-policy"target="_blank" rel="external nofollow noopener noreferrer">lass 中设置的回收策略</a>， 该策略默认为 Delete。管理员需要根据用户的期望来配置 StorageClass； 否则 PV 卷被创建之后必须要被编辑或者修补。 参阅<a href="https://kubernetes.io/zh-cn/docs/tasks/administer-cluster/change-pv-reclaim-policy/"target="_blank" rel="external nofollow noopener noreferrer">更改 PV 卷的回收策略</a>。</p>
+<h2 id="1将多块磁盘组合成-lvm卷">1.将多块磁盘组合成 LVM卷</h2>
+<h3 id="11-安装gdisk工具">1.1 安装gdisk工具</h3>
+<div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">yum install gdisk</span></span></code></pre></div><h3 id="12-磁盘分区">1.2 磁盘分区</h3>
+<p>使用 gdisk 或其他分区工具（例如 fdisk）来为每个磁盘(sdc,sdd,sde,sdf 共8T)创建分区。</p>
+<div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@xx-worker-05 ~<span class="o">]</span><span class="c1"># lsblk</span>
+</span></span><span class="line"><span class="cl">NAME                               MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+</span></span><span class="line"><span class="cl">fd0                                  2:0    <span class="m">1</span>     4K  <span class="m">0</span> disk
+</span></span><span class="line"><span class="cl">sda                                  8:0    <span class="m">0</span>     1T  <span class="m">0</span> disk
+</span></span><span class="line"><span class="cl">├─sda1                               8:1    <span class="m">0</span>     1G  <span class="m">0</span> part /boot
+</span></span><span class="line"><span class="cl">├─sda2                               8:2    <span class="m">0</span>   199G  <span class="m">0</span> part
+</span></span><span class="line"><span class="cl">│ ├─centos-root                    253:0    <span class="m">0</span>    50G  <span class="m">0</span> lvm  /
+</span></span><span class="line"><span class="cl">│ ├─centos-swap                    253:1    <span class="m">0</span>   3.9G  <span class="m">0</span> lvm
+</span></span><span class="line"><span class="cl">│ └─centos-home                    253:2    <span class="m">0</span> 145.1G  <span class="m">0</span> lvm  /home
+</span></span><span class="line"><span class="cl">└─sda3                               8:3    <span class="m">0</span>   824G  <span class="m">0</span> part /nfs-server
+</span></span><span class="line"><span class="cl">sdb                                  8:16   <span class="m">0</span>     1T  <span class="m">0</span> disk
+</span></span><span class="line"><span class="cl">sdc                                  8:32   <span class="m">0</span>     2T  <span class="m">0</span> disk
+</span></span><span class="line"><span class="cl">sdd                                  8:48   <span class="m">0</span>     2T  <span class="m">0</span> disk
+</span></span><span class="line"><span class="cl">sde                                  8:64   <span class="m">0</span>     2T  <span class="m">0</span> disk
+</span></span><span class="line"><span class="cl">sdf                                  8:80   <span class="m">0</span>     2T  <span class="m">0</span> disk
+</span></span><span class="line"><span class="cl">sr0                                 11:0    <span class="m">1</span>  1024M  <span class="m">0</span> rom</span></span></code></pre></div><p>在 <code>gdisk</code> 中，你可以使用 <code>n</code> 命令创建新的分区，然后按照提示创建分区。重复这个步骤来创建所需数量的分区。</p>
+<p>然后，对每个硬盘进行相同的操作。</p>
+<div class="highlight" id="id-4"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Command <span class="o">(</span>? <span class="k">for</span> <span class="nb">help</span><span class="o">)</span>: ?
+</span></span><span class="line"><span class="cl">b       back up GPT data to a file
+</span></span><span class="line"><span class="cl">c       change a partition<span class="s1">&#39;s name
+</span></span></span><span class="line"><span class="cl"><span class="s1">d       delete a partition
+</span></span></span><span class="line"><span class="cl"><span class="s1">i       show detailed information on a partition
+</span></span></span><span class="line"><span class="cl"><span class="s1">l       list known partition types
+</span></span></span><span class="line"><span class="cl"><span class="s1">n       add a new partition
+</span></span></span><span class="line"><span class="cl"><span class="s1">o       create a new empty GUID partition table (GPT)
+</span></span></span><span class="line"><span class="cl"><span class="s1">p       print the partition table
+</span></span></span><span class="line"><span class="cl"><span class="s1">q       quit without saving changes
+</span></span></span><span class="line"><span class="cl"><span class="s1">r       recovery and transformation options (experts only)
+</span></span></span><span class="line"><span class="cl"><span class="s1">s       sort partitions
+</span></span></span><span class="line"><span class="cl"><span class="s1">t       change a partition&#39;</span>s <span class="nb">type</span> code
+</span></span><span class="line"><span class="cl">v       verify disk
+</span></span><span class="line"><span class="cl">w       write table to disk and <span class="nb">exit</span>
+</span></span><span class="line"><span class="cl">x       extra functionality <span class="o">(</span>experts only<span class="o">)</span>
+</span></span><span class="line"><span class="cl">?       print this menu</span></span></code></pre></div><p>将硬盘模式改为lvm，代码是<code>8e00 Linux LVM</code></p>
+<div class="highlight" id="id-5"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Command <span class="o">(</span>? <span class="k">for</span> <span class="nb">help</span><span class="o">)</span>: l
+</span></span><span class="line"><span class="cl"><span class="m">0700</span> Microsoft basic data  0c01 Microsoft reserved    <span class="m">2700</span> Windows RE
+</span></span><span class="line"><span class="cl"><span class="m">3000</span> ONIE boot             <span class="m">3001</span> ONIE config           <span class="m">4100</span> PowerPC PReP boot
+</span></span><span class="line"><span class="cl"><span class="m">4200</span> Windows LDM data      <span class="m">4201</span> Windows LDM metadata  <span class="m">7501</span> IBM GPFS
+</span></span><span class="line"><span class="cl">7f00 ChromeOS kernel       7f01 ChromeOS root         7f02 ChromeOS reserved
+</span></span><span class="line"><span class="cl"><span class="m">8200</span> Linux swap            <span class="m">8300</span> Linux filesystem      <span class="m">8301</span> Linux reserved
+</span></span><span class="line"><span class="cl"><span class="m">8302</span> Linux /home           <span class="m">8400</span> Intel Rapid Start     8e00 Linux LVM
+</span></span><span class="line"><span class="cl">a500 FreeBSD disklabel     a501 FreeBSD boot          a502 FreeBSD swap
+</span></span><span class="line"><span class="cl">a503 FreeBSD UFS           a504 FreeBSD ZFS           a505 FreeBSD Vinum/RAID
+</span></span><span class="line"><span class="cl">a580 Midnight BSD data     a581 Midnight BSD boot     a582 Midnight BSD swap
+</span></span><span class="line"><span class="cl">a583 Midnight BSD UFS      a584 Midnight BSD ZFS      a585 Midnight BSD Vinum
+</span></span><span class="line"><span class="cl">a800 Apple UFS             a901 NetBSD swap           a902 NetBSD FFS
+</span></span><span class="line"><span class="cl">a903 NetBSD LFS            a904 NetBSD concatenated   a905 NetBSD encrypted
+</span></span><span class="line"><span class="cl">a906 NetBSD RAID           ab00 Apple boot            af00 Apple HFS/HFS+
+</span></span><span class="line"><span class="cl">af01 Apple RAID            af02 Apple RAID offline    af03 Apple label
+</span></span><span class="line"><span class="cl">af04 AppleTV recovery      af05 Apple Core Storage    be00 Solaris boot
+</span></span><span class="line"><span class="cl">bf00 Solaris root          bf01 Solaris /usr <span class="p">&amp;</span> Mac Z  bf02 Solaris swap
+</span></span><span class="line"><span class="cl">bf03 Solaris backup        bf04 Solaris /var          bf05 Solaris /home
+</span></span><span class="line"><span class="cl">bf06 Solaris alternate se  bf07 Solaris Reserved <span class="m">1</span>    bf08 Solaris Reserved <span class="m">2</span>
+</span></span><span class="line"><span class="cl">bf09 Solaris Reserved <span class="m">3</span>    bf0a Solaris Reserved <span class="m">4</span>    bf0b Solaris Reserved <span class="m">5</span>
+</span></span><span class="line"><span class="cl">c001 HP-UX data            c002 HP-UX service         ea00 Freedesktop <span class="nv">$BOOT</span>
+</span></span><span class="line"><span class="cl">eb00 Haiku BFS             ed00 Sony system partitio  ed01 Lenovo system partit</span></span></code></pre></div><div class="highlight" id="id-6"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@xx-worker-05 ~<span class="o">]</span><span class="c1"># gdisk /dev/sdc</span>
+</span></span><span class="line"><span class="cl">GPT fdisk <span class="o">(</span>gdisk<span class="o">)</span> version 0.8.10
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Partition table scan:
+</span></span><span class="line"><span class="cl">  MBR: protective
+</span></span><span class="line"><span class="cl">  BSD: not present
+</span></span><span class="line"><span class="cl">  APM: not present
+</span></span><span class="line"><span class="cl">  GPT: present
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Found valid GPT with protective MBR<span class="p">;</span> using GPT.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Command <span class="o">(</span>? <span class="k">for</span> <span class="nb">help</span><span class="o">)</span>: p
+</span></span><span class="line"><span class="cl">Disk /dev/sdc: <span class="m">4294967296</span> sectors, 2.0 TiB
+</span></span><span class="line"><span class="cl">Logical sector size: <span class="m">512</span> bytes
+</span></span><span class="line"><span class="cl">Disk identifier <span class="o">(</span>GUID<span class="o">)</span>: B62A55C1-A5DE-445A-B8CA-AC489E6B49DE
+</span></span><span class="line"><span class="cl">Partition table holds up to <span class="m">128</span> entries
+</span></span><span class="line"><span class="cl">First usable sector is 34, last usable sector is <span class="m">4294967262</span>
+</span></span><span class="line"><span class="cl">Partitions will be aligned on 2048-sector boundaries
+</span></span><span class="line"><span class="cl">Total free space is <span class="m">2014</span> sectors <span class="o">(</span>1007.0 KiB<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Number  Start <span class="o">(</span>sector<span class="o">)</span>    End <span class="o">(</span>sector<span class="o">)</span>  Size       Code  Name
+</span></span><span class="line"><span class="cl">   <span class="m">1</span>            <span class="m">2048</span>      <span class="m">4294967262</span>   2.0 TiB     8E00  Linux LVM</span></span></code></pre></div><h3 id="13-创建物理卷physical-volumes"><strong>1.3 创建物理卷（Physical Volumes）</strong></h3>
+<div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pvcreate /dev/sdc1 /dev/sdd1 /dev/sde1 /dev/sdf1</span></span></code></pre></div><div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@xx-worker-05 ~<span class="o">]</span><span class="c1"># pvdisplay</span>
+</span></span><span class="line"><span class="cl">  --- Physical volume ---
+</span></span><span class="line"><span class="cl">  PV Name               /dev/sda2
+</span></span><span class="line"><span class="cl">  VG Name               centos
+</span></span><span class="line"><span class="cl">  PV Size               &lt;199.00 GiB / not usable 3.00 MiB
+</span></span><span class="line"><span class="cl">  Allocatable           yes
+</span></span><span class="line"><span class="cl">  PE Size               4.00 MiB
+</span></span><span class="line"><span class="cl">  Total PE              <span class="m">50943</span>
+</span></span><span class="line"><span class="cl">  Free PE               <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  Allocated PE          <span class="m">50942</span>
+</span></span><span class="line"><span class="cl">  PV UUID               9ALLQS-tNe2-f2zD-WG09-2rn1-xH21-lkXfhm
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  --- Physical volume ---
+</span></span><span class="line"><span class="cl">  PV Name               /dev/sdd1
+</span></span><span class="line"><span class="cl">  VG Name               k8s_nfs_data
+</span></span><span class="line"><span class="cl">  PV Size               &lt;2.00 TiB / not usable 2.98 MiB
+</span></span><span class="line"><span class="cl">  Allocatable           yes <span class="o">(</span>but full<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  PE Size               4.00 MiB
+</span></span><span class="line"><span class="cl">  Total PE              <span class="m">524287</span>
+</span></span><span class="line"><span class="cl">  Free PE               <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  Allocated PE          <span class="m">524287</span>
+</span></span><span class="line"><span class="cl">  PV UUID               GRJKYB-DPcn-XE28-YAze-eoDU-526F-XydILb
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  --- Physical volume ---
+</span></span><span class="line"><span class="cl">  PV Name               /dev/sdc1
+</span></span><span class="line"><span class="cl">  VG Name               k8s_nfs_data
+</span></span><span class="line"><span class="cl">  PV Size               &lt;2.00 TiB / not usable 2.98 MiB
+</span></span><span class="line"><span class="cl">  Allocatable           yes <span class="o">(</span>but full<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  PE Size               4.00 MiB
+</span></span><span class="line"><span class="cl">  Total PE              <span class="m">524287</span>
+</span></span><span class="line"><span class="cl">  Free PE               <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  Allocated PE          <span class="m">524287</span>
+</span></span><span class="line"><span class="cl">  PV UUID               ulkd9R-aoaU-104h-e2PM-eKl7-bZY3-FCEm3W
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  --- Physical volume ---
+</span></span><span class="line"><span class="cl">  PV Name               /dev/sde1
+</span></span><span class="line"><span class="cl">  VG Name               k8s_nfs_data
+</span></span><span class="line"><span class="cl">  PV Size               &lt;2.00 TiB / not usable 2.98 MiB
+</span></span><span class="line"><span class="cl">  Allocatable           yes <span class="o">(</span>but full<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  PE Size               4.00 MiB
+</span></span><span class="line"><span class="cl">  Total PE              <span class="m">524287</span>
+</span></span><span class="line"><span class="cl">  Free PE               <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  Allocated PE          <span class="m">524287</span>
+</span></span><span class="line"><span class="cl">  PV UUID               0hLr2k-IVYf-XRHi-2VSZ-PH6N-Z0ma-OG4A3w
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  --- Physical volume ---
+</span></span><span class="line"><span class="cl">  PV Name               /dev/sdf1
+</span></span><span class="line"><span class="cl">  VG Name               k8s_nfs_data
+</span></span><span class="line"><span class="cl">  PV Size               &lt;2.00 TiB / not usable 2.98 MiB
+</span></span><span class="line"><span class="cl">  Allocatable           yes
+</span></span><span class="line"><span class="cl">  PE Size               4.00 MiB
+</span></span><span class="line"><span class="cl">  Total PE              <span class="m">524287</span>
+</span></span><span class="line"><span class="cl">  Free PE               <span class="m">26210</span>
+</span></span><span class="line"><span class="cl">  Allocated PE          <span class="m">498077</span>
+</span></span><span class="line"><span class="cl">  PV UUID               H1aYjs-pPDV-STyr-IvPe-6RcF-xUC4-eOoWiI</span></span></code></pre></div><h3 id="14-创建卷组volume-group">1.4 <strong>创建卷组（Volume Group）</strong></h3>
+<div class="highlight" id="id-9"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#创建一个卷组，将物理卷添加到卷组中：</span>
+</span></span><span class="line"><span class="cl">vgcreate k8s_nfs_data /dev/sdc1 /dev/sdd1 /dev/sde1 /dev/sdf1</span></span></code></pre></div><div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#这里 k8s_nfs_data 是卷组的名称，你可以自己命名。</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@xx-worker-05 ~<span class="o">]</span><span class="c1"># vgdisplay k8s_nfs_data</span>
+</span></span><span class="line"><span class="cl">  --- Volume group ---
+</span></span><span class="line"><span class="cl">  VG Name               k8s_nfs_data
+</span></span><span class="line"><span class="cl">  System ID
+</span></span><span class="line"><span class="cl">  Format                lvm2
+</span></span><span class="line"><span class="cl">  Metadata Areas        <span class="m">4</span>
+</span></span><span class="line"><span class="cl">  Metadata Sequence No  <span class="m">2</span>
+</span></span><span class="line"><span class="cl">  VG Access             read/write
+</span></span><span class="line"><span class="cl">  VG Status             resizable
+</span></span><span class="line"><span class="cl">  MAX LV                <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  Cur LV                <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  Open LV               <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  Max PV                <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  Cur PV                <span class="m">4</span>
+</span></span><span class="line"><span class="cl">  Act PV                <span class="m">4</span>
+</span></span><span class="line"><span class="cl">  VG Size               &lt;8.00 TiB
+</span></span><span class="line"><span class="cl">  PE Size               4.00 MiB
+</span></span><span class="line"><span class="cl">  Total PE              <span class="m">2097148</span>
+</span></span><span class="line"><span class="cl">  Alloc PE / Size       <span class="m">2070938</span> / 7.90 TiB
+</span></span><span class="line"><span class="cl">  Free  PE / Size       <span class="m">26210</span> / 102.38 GiB
+</span></span><span class="line"><span class="cl">  VG UUID               etAQEx-IDaa-soo5-6d5k-9YHo-JpHX-OpG9Oy</span></span></code></pre></div><h3 id="创建逻辑卷logical-volume"><strong>创建逻辑卷（Logical Volume）</strong>：</h3>
+<p>使用 <code>lvcreate</code> 命令创建逻辑卷，并指定大小：</p>
+<div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">lvcreate -n k8s_nfs_lvmdata_1 -L 7.9T  k8s_nfs_data</span></span></code></pre></div><p>这里 <code>my_lv</code> 是逻辑卷的名称，<code>7.9T</code> 是逻辑卷的大小。</p>
+<div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"> --- Logical volume ---
+</span></span><span class="line"><span class="cl">  LV Path                /dev/k8s_nfs_data/k8s_nfs_lvmdata_1
+</span></span><span class="line"><span class="cl">  LV Name                k8s_nfs_lvmdata_1
+</span></span><span class="line"><span class="cl">  VG Name                k8s_nfs_data
+</span></span><span class="line"><span class="cl">  LV UUID                T9NOtS-ElEw-y287-mG41-dzul-b30H-en1fV1
+</span></span><span class="line"><span class="cl">  LV Write Access        read/write
+</span></span><span class="line"><span class="cl">  LV Creation host, <span class="nb">time</span> xx-worker-05, 2023-08-18 15:55:29 +0800
+</span></span><span class="line"><span class="cl">  LV Status              available
+</span></span><span class="line"><span class="cl">  <span class="c1"># open                 1</span>
+</span></span><span class="line"><span class="cl">  LV Size                7.90 TiB
+</span></span><span class="line"><span class="cl">  Current LE             <span class="m">2070938</span>
+</span></span><span class="line"><span class="cl">  Segments               <span class="m">4</span>
+</span></span><span class="line"><span class="cl">  Allocation             inherit
+</span></span><span class="line"><span class="cl">  Read ahead sectors     auto
+</span></span><span class="line"><span class="cl">  - currently <span class="nb">set</span> to     <span class="m">8192</span>
+</span></span><span class="line"><span class="cl">  Block device           253:3</span></span></code></pre></div><div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@xx-worker-05 ~<span class="o">]</span><span class="c1"># lsblk</span>
+</span></span><span class="line"><span class="cl">NAME                               MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
+</span></span><span class="line"><span class="cl">fd0                                  2:0    <span class="m">1</span>     4K  <span class="m">0</span> disk
+</span></span><span class="line"><span class="cl">sda                                  8:0    <span class="m">0</span>     1T  <span class="m">0</span> disk
+</span></span><span class="line"><span class="cl">├─sda1                               8:1    <span class="m">0</span>     1G  <span class="m">0</span> part /boot
+</span></span><span class="line"><span class="cl">├─sda2                               8:2    <span class="m">0</span>   199G  <span class="m">0</span> part
+</span></span><span class="line"><span class="cl">│ ├─centos-root                    253:0    <span class="m">0</span>    50G  <span class="m">0</span> lvm  /
+</span></span><span class="line"><span class="cl">│ ├─centos-swap                    253:1    <span class="m">0</span>   3.9G  <span class="m">0</span> lvm
+</span></span><span class="line"><span class="cl">│ └─centos-home                    253:2    <span class="m">0</span> 145.1G  <span class="m">0</span> lvm  /home
+</span></span><span class="line"><span class="cl">└─sda3                               8:3    <span class="m">0</span>   824G  <span class="m">0</span> part /nfs-server
+</span></span><span class="line"><span class="cl">sdb                                  8:16   <span class="m">0</span>     1T  <span class="m">0</span> disk
+</span></span><span class="line"><span class="cl">sdc                                  8:32   <span class="m">0</span>     2T  <span class="m">0</span> disk
+</span></span><span class="line"><span class="cl">└─sdc1                               8:33   <span class="m">0</span>     2T  <span class="m">0</span> part
+</span></span><span class="line"><span class="cl">  └─k8s_nfs_data-k8s_nfs_lvmdata_1 253:3    <span class="m">0</span>   7.9T  <span class="m">0</span> lvm  /nfs-server2
+</span></span><span class="line"><span class="cl">sdd                                  8:48   <span class="m">0</span>     2T  <span class="m">0</span> disk
+</span></span><span class="line"><span class="cl">└─sdd1                               8:49   <span class="m">0</span>     2T  <span class="m">0</span> part
+</span></span><span class="line"><span class="cl">  └─k8s_nfs_data-k8s_nfs_lvmdata_1 253:3    <span class="m">0</span>   7.9T  <span class="m">0</span> lvm  /nfs-server2
+</span></span><span class="line"><span class="cl">sde                                  8:64   <span class="m">0</span>     2T  <span class="m">0</span> disk
+</span></span><span class="line"><span class="cl">└─sde1                               8:65   <span class="m">0</span>     2T  <span class="m">0</span> part
+</span></span><span class="line"><span class="cl">  └─k8s_nfs_data-k8s_nfs_lvmdata_1 253:3    <span class="m">0</span>   7.9T  <span class="m">0</span> lvm  /nfs-server2
+</span></span><span class="line"><span class="cl">sdf                                  8:80   <span class="m">0</span>     2T  <span class="m">0</span> disk
+</span></span><span class="line"><span class="cl">└─sdf1                               8:81   <span class="m">0</span>     2T  <span class="m">0</span> part
+</span></span><span class="line"><span class="cl">  └─k8s_nfs_data-k8s_nfs_lvmdata_1 253:3    <span class="m">0</span>   7.9T  <span class="m">0</span> lvm  /nfs-server2
+</span></span><span class="line"><span class="cl">sr0                                 11:0    <span class="m">1</span>  1024M  <span class="m">0</span> rom</span></span></code></pre></div><h3 id="15-格式化逻辑卷"><strong>1.5 格式化逻辑卷</strong></h3>
+<p>格式化逻辑卷以准备使用：</p>
+<div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkfs.ext4 /dev/k8s_nfs_data/k8s_nfs_lvmdata_1</span></span></code></pre></div><p>使用的是 ext4 文件系统，你可以根据需要选择其他文件系统。</p>
+<h3 id="16-挂载逻辑卷"><strong>1.6 挂载逻辑卷</strong></h3>
+<p>创建一个目录来挂载逻辑卷，并将逻辑卷挂载到该目录：</p>
+<div class="highlight" id="id-15"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir /nfs-server2
+</span></span><span class="line"><span class="cl">mount /dev/k8s_nfs_data/k8s_nfs_lvmdata_1 /nfs-server2</span></span></code></pre></div><h2 id="2-更换后端存储">2. 更换后端存储</h2>
+<div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/exports
+</span></span><span class="line"><span class="cl"><span class="c1">#/nfs-server  *(rw,sync,insecure,no_root_squash)</span>
+</span></span><span class="line"><span class="cl">/nfs-server2 *<span class="o">(</span>rw,sync,insecure,no_root_squash<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">systemctl restart nfs
+</span></span><span class="line"><span class="cl">systemctl restart rpcbind</span></span></code></pre></div><h3 id="21更改nfs服务器地址">2.1更改NFS服务器地址</h3>
+<div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">vim nfs-client.values</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">nfs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="m">192.168.10.135</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/nfs-server</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">mountOptions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">vers=4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">minorversion=0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">rsize=1048576</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">wsize=1048576</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">hard</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">timeo=600</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">retrans=2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">noresvport</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">storageClass</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-client</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">defaultClass</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">allowVolumeExpansion</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">reclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Delete</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">provisionerName</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-client</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">archiveOnDelete</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span></span></span></code></pre></div><div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm install -n kube-system -f nfs-client.values.yaml nfs-client rmxc/nfs-subdir-external-provisioner
+</span></span><span class="line"><span class="cl"><span class="c1">#-n 命名空间</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#-f 指定values文件</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#nfs-client helm项目名字</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># rmxc/nfs-subdir-external-provisioner CHART文件</span></span></span></code></pre></div><h3 id="22-查看当前pvc">2.2 查看当前pvc</h3>
+<p>需要删除当前pvc，然后重新自动获取绑定pv</p>
+<div class="highlight" id="id-19"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl delete pvc -n xx-prod pvc-0770e2e6-70c4-4426-9a43-75e2cab94290
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#如果卡住直接删除k8s etcd数据库中的记录</span>
+</span></span><span class="line"><span class="cl">$ kubectl patch pv xxx -p <span class="s1">&#39;{&#34;metadata&#34;:{&#34;finalizers&#34;:null}}&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ kubectl patch pvc xxx -p <span class="s1">&#39;{&#34;metadata&#34;:{&#34;finalizers&#34;:null}}&#39;</span></span></span></code></pre></div><p>查看原PVC的数据目录</p>
+<div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>xx@xx-worker-05 nfs-server<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">24</span>
+</span></span><span class="line"><span class="cl">drwxrwxrwx  <span class="m">3</span> root root   <span class="m">37</span> Nov <span class="m">19</span>  <span class="m">2021</span> xx-prod-app-data-pvc-0770e2e6-70c4-4426-9a43-75e2cab94290
+</span></span><span class="line"><span class="cl">drwxrwxrwx <span class="m">60</span> root root <span class="m">8192</span> May <span class="m">19</span> 21:26 xx-prod-fe-nginx-data-pvc-b2d082a0-9df3-42a2-8817-dc4eb4a587ca
+</span></span><span class="line"><span class="cl">drwxrwxrwx  <span class="m">2</span> root root  <span class="m">227</span> Feb <span class="m">17</span>  <span class="m">2022</span> xx-prod-fe-nginx-log-pvc-66e5f78a-e952-4a18-8a9f-6173d7d2485a
+</span></span><span class="line"><span class="cl">drwxrwxrwx <span class="m">21</span> root root <span class="m">4096</span> Mar <span class="m">27</span> 15:32 xx-prod-log-pvc-d717b996-7b65-4c23-be9c-fcdc988266be
+</span></span><span class="line"><span class="cl">drwxrwxrwx <span class="m">15</span> root root <span class="m">4096</span> Aug <span class="m">22</span> 18:06 xx-prod-mysql57-data-pvc-d4968732-0cf1-4395-9854-fd4581d2906d
+</span></span><span class="line"><span class="cl">drwxrwxrwx  <span class="m">2</span> root root   <span class="m">45</span> Nov <span class="m">14</span>  <span class="m">2021</span> xx-prod-mysql57-log-pvc-7f831088-8828-4ab5-8e20-03ab5b048cdd
+</span></span><span class="line"><span class="cl">drwxrwxrwx  <span class="m">2</span> root root   <span class="m">44</span> Aug <span class="m">23</span> 09:27 xx-prod-redis-data-redis-master-0-pvc-7f2b4078-a441-400a-b8e1-8046c3999a8f</span></span></code></pre></div><p>查看新PVC的数据目录</p>
+<div class="highlight" id="id-21"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>xxu@xx-worker-05 nfs-server2<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">drwxrwxrwx  <span class="m">3</span> root root  <span class="m">4096</span> Nov <span class="m">19</span>  <span class="m">2021</span> xx-prod-app-data-pvc-0770e2e6-70c4-4426-9a43-75e2cab94291
+</span></span><span class="line"><span class="cl">drwxrwxrwx  <span class="m">3</span> root root  <span class="m">4096</span> Aug <span class="m">25</span> 17:04 xx-prod-app-data-pvc-51174db7-fd78-4448-b9fb-21b6f8577e58
+</span></span><span class="line"><span class="cl">drwxrwxrwx  <span class="m">2</span> root root  <span class="m">4096</span> Sep  <span class="m">1</span> 14:21 xx-prod-data-redis-0-pvc-45801e2d-282d-47cc-8020-a157fd9b14de
+</span></span><span class="line"><span class="cl">drwxrwxrwx <span class="m">60</span> root root  <span class="m">4096</span> May <span class="m">19</span> 21:26 xx-prod-fe-nginx-data-pvc-4ef671bb-4cb3-4012-b637-0564b27637f9
+</span></span><span class="line"><span class="cl">drwxrwxrwx  <span class="m">2</span> root root  <span class="m">4096</span> Aug <span class="m">25</span> 09:46 xx-prod-fe-nginx-log-pvc-14f3a9a9-415d-43ea-840b-c39fa5a28ab7
+</span></span><span class="line"><span class="cl">drwxrwxrwx <span class="m">10</span> root root  <span class="m">4096</span> Aug <span class="m">25</span> 10:32 xx-prod-log-pvc-fe904a2f-a94d-4f5f-8587-a425417d8612
+</span></span><span class="line"><span class="cl">drwxrwxrwx <span class="m">15</span> root root  <span class="m">4096</span> Aug <span class="m">26</span> 05:23 xx-prod-mysql57-data2-pvc-085dee0e-1c0e-4a0e-9278-d5ea45ab37c6
+</span></span><span class="line"><span class="cl">drwxrwxrwx  <span class="m">2</span> root root  <span class="m">4096</span> Nov <span class="m">14</span>  <span class="m">2021</span> xx-prod-mysql57-log2-pvc-67bf033b-f1a4-4df0-8f77-59e47539f3d5</span></span></code></pre></div><h3 id="23-使用rsync同步数据">2.3 使用rsync同步数据</h3>
+<p>停止各服务，将老PVC中的数据同步到新PVC中，Rsync使用守护进程方式后台运行避免数据同步时间过长导致中断。</p>
+<p>服务端配置文件</p>
+<div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># /etc/rsyncd: configuration file for rsync daemon mode</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># See rsyncd.conf man page for more options.</span>
 </span></span><span class="line"><span class="cl">
@@ -211,18 +561,19 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"> <span class="o">[</span>mysql-data-backup<span class="o">]</span>
 </span></span><span class="line"><span class="cl"> <span class="nv">comment</span> <span class="o">=</span> welcome to backup!
-</span></span><span class="line"><span class="cl"> <span class="nv">path</span> <span class="o">=</span> /nfs-server2/tj-prod-mysql57-data-pvc-d4968732-0cf1-4395-9854-fd4581d2906d
+</span></span><span class="line"><span class="cl"> <span class="nv">path</span> <span class="o">=</span> /nfs-server2/xx-prod-mysql57-data-pvc-d4968732-0cf1-4395-9854-fd4581d2906d
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"> <span class="o">[</span>mysql-log-backup<span class="o">]</span>
 </span></span><span class="line"><span class="cl"> <span class="nv">comment</span> <span class="o">=</span> welcome to backup!
-</span></span><span class="line"><span class="cl"> <span class="nv">path</span> <span class="o">=</span> /nfs-server2/tj-prod-mysql57-log-pvc-7f831088-8828-4ab5-8e20-03ab5b048cdd
+</span></span><span class="line"><span class="cl"> <span class="nv">path</span> <span class="o">=</span> /nfs-server2/xx-prod-mysql57-log-pvc-7f831088-8828-4ab5-8e20-03ab5b048cdd
 </span></span><span class="line"><span class="cl"> <span class="o">[</span>tree-file-backup<span class="o">]</span>
 </span></span><span class="line"><span class="cl"> <span class="nv">comment</span> <span class="o">=</span> welcome to backup!
-</span></span><span class="line"><span class="cl"> <span class="nv">path</span> <span class="o">=</span> /nfs-server2/tj-prod-app-data-pvc-0770e2e6-70c4-4426-9a43-75e2cab94291
+</span></span><span class="line"><span class="cl"> <span class="nv">path</span> <span class="o">=</span> /nfs-server2/xx-prod-app-data-pvc-0770e2e6-70c4-4426-9a43-75e2cab94291
 </span></span><span class="line"><span class="cl"><span class="c1"># [ftp]</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#        path = /home/ftp</span>
-</span></span><span class="line"><span class="cl"><span class="c1">#        comment = ftp export area</span></span></span></code></pre></div><pre tabindex="0"><code>nohup rsync -avzrogpP --append-verify rsync_backup@127.0.0.1::tree-file-backup /nfs-server2/tj-prod-app-data-pvc-51174db7-fd78-4448-b9fb-21b6f8577e58 &gt; /var/log/rsync-log-treefile.log 2&gt;&amp;1 &amp;</code></pre><div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"> tail -f /var/log/rsync-log-treefile.log
-</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"><span class="c1">#        comment = ftp export area</span></span></span></code></pre></div><h3 id="24-同步命令">2.4 同步命令</h3>
+<div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">nohup rsync -avzrogpP --append-verify rsync_backup@127.0.0.1::tree-file-backup /nfs-server2/xx-prod-app-data-pvc-51174db7-fd78-4448-b9fb-21b6f8577e58 &gt; /var/log/rsync-log-treefile.log 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">&amp;</span></span></span></code></pre></div><h3 id="25-查看日志">2.5 查看日志</h3>
+<div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"> tail -f /var/log/rsync-log-treefile.log
 </span></span><span class="line"><span class="cl"> 
 </span></span><span class="line"><span class="cl">tree-file-server-for-pt/storage/high/2022/02/14/86b7f9c882e744a5b51be2c551f24a4b.jpg
 </span></span><span class="line"><span class="cl">         32,827 100%  244.71kB/s    0:00:00 <span class="o">(</span>xfr#138425, ir-chk<span class="o">=</span>149321/287796<span class="o">)</span>
@@ -246,7 +597,18 @@
 </span></span><span class="line"><span class="cl">         33,953 100%  240.27kB/s    0:00:00 <span class="o">(</span>xfr#138434, ir-chk<span class="o">=</span>149312/287796<span class="o">)</span>
 </span></span><span class="line"><span class="cl">tree-file-server-for-pt/storage/high/2022/02/14/86bbc7d02a5f4076a6a2545f6cfc729d.jpg
 </span></span><span class="line"><span class="cl">         30,784 100%  216.28kB/s    0:00:00 <span class="o">(</span>xfr#138435, ir-chk<span class="o">=</span>149311/287796<span class="o">)</span>
-</span></span><span class="line"><span class="cl">tree-file-server-for-pt/storage/high/2022/02/14/86bc058ff7e847dd9c6b6c7a69d551a8.jpg</span></span></code></pre></div></div><div class="post-footer" id="post-footer">
+</span></span><span class="line"><span class="cl">tree-file-server-for-pt/storage/high/2022/02/14/86bc058ff7e847dd9c6b6c7a69d551a8.jpg</span></span></code></pre></div><h2 id="3-验证pv状态">3. 验证pv状态</h2>
+<div class="highlight" id="id-25"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@xx-master-01 ~<span class="o">]</span><span class="c1"># kubectl get pv</span>
+</span></span><span class="line"><span class="cl">NAME                                            CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                                                        STORAGECLASS   REASON   AGE
+</span></span><span class="line"><span class="cl">pv-nfs-client-nfs-subdir-external-provisioner   10Mi       RWO            Retain           Bound    kube-system/pvc-nfs-client-nfs-subdir-external-provisioner                           9d
+</span></span><span class="line"><span class="cl">pvc-085dee0e-1c0e-4a0e-9278-d5ea45ab37c6        50Gi       RWO            Delete           Bound    xx-prod/mysql57-data2                                        nfs-client              9d
+</span></span><span class="line"><span class="cl">pvc-14f3a9a9-415d-43ea-840b-c39fa5a28ab7        8Gi        RWX            Delete           Bound    xx-prod/fe-nginx-log                                         nfs-client              7d6h
+</span></span><span class="line"><span class="cl">pvc-45801e2d-282d-47cc-8020-a157fd9b14de        8Gi        RWO            Delete           Bound    xx-prod/data-redis-0                                         nfs-client              8d
+</span></span><span class="line"><span class="cl">pvc-4ef671bb-4cb3-4012-b637-0564b27637f9        8Gi        RWX            Delete           Bound    xx-prod/fe-nginx-data                                        nfs-client              7d6h
+</span></span><span class="line"><span class="cl">pvc-51174db7-fd78-4448-b9fb-21b6f8577e58        8Gi        RWX            Delete           Bound    xx-prod/app-data                                             nfs-client              7d23h
+</span></span><span class="line"><span class="cl">pvc-67bf033b-f1a4-4df0-8f77-59e47539f3d5        50Gi       RWO            Delete           Bound    xx-prod/mysql57-log2                                         nfs-client              9d
+</span></span><span class="line"><span class="cl">pvc-d4968732-0cf1-4395-9854-fd4581d2906d        50Gi       RWO            Delete           Bound    xx-prod/mysql57-data                                         nfs-client              655d
+</span></span><span class="line"><span class="cl">pvc-fe904a2f-a94d-4f5f-8587-a425417d8612        8Gi        RWX            Delete           Bound    xx-prod/log                                                  nfs-client              8d</span></span></code></pre></div></div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">

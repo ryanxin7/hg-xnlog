@@ -26,7 +26,7 @@
   <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-replace-nfs-storage/</guid>
-  <description><![CDATA[# /etc/rsyncd: configuration file for rsync daemon mode # See rsyncd.conf man page for more options. # configuration example: uid = root gid = root use chroot = no max connections = 200 timeout = 6000 ignore errors read only = false list = false auth users = rsync_backup secrets file = /etc/rsync.passwd log file = /var/log/rsyncd.log # pid file = /var/run/rsyncd.pid # exclude = lost+found/ # transfer logging =]]></description>
+  <description><![CDATA[使用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储]]></description>
 </item>
 <item>
   <title>Kubernetes 基础</title>
