@@ -4,7 +4,15 @@
     <link>https://hg-xnlog.github.io/posts/</link>
     <description>所有文章 | Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Fri, 25 Aug 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Wed, 06 Sep 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+  <title>使用节点标签（Node Labels）和节点选择器（Node Selector）来控制将 Pod 调度到特定的节点</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/%E7%94%A8label%E6%8E%A7%E5%88%B6pod%E7%9A%84%E4%BD%8D%E7%BD%AE/</link>
+  <pubDate>Wed, 06 Sep 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/%E7%94%A8label%E6%8E%A7%E5%88%B6pod%E7%9A%84%E4%BD%8D%E7%BD%AE/</guid>
+  <description><![CDATA[用label控制Pod的位置 在 Kubernetes 中，你可以使用节点标签（Node Labels）和节点选择器（Node Selector）来控制将 Pod 调度到特定的]]></description>
+</item>
+<item>
   <title>使用Github Action 构建Docker镜像并上传Registry</title>
   <link>https://hg-xnlog.github.io/posts/blog/push-docker-images-github-registry/</link>
   <pubDate>Fri, 25 Aug 2023 00:00:00 &#43;0000</pubDate>
@@ -75,14 +83,6 @@
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/cicd/jenkins-autodeploy/</guid>
   <description><![CDATA[1.安装插件 1.1 安装NodeJS插件 点击系统管理,然后点击插件管理,在可选插件里面搜索NodeJS插件,然后安装 1.2 安装连接SSH的插件 Publish Over SS]]></description>
-</item>
-<item>
-  <title>K8S集群证书到期问题</title>
-  <link>https://hg-xnlog.github.io/posts/notes/k8s-certificate-missery/</link>
-  <pubDate>Tue, 16 May 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/notes/k8s-certificate-missery/</guid>
-  <description><![CDATA[前情回顾： 开发在Jenkins发版出现问题 然后更新了一下证书时间 Jenkins 还是无法更新，这次是timeout 于是查看helm 执行历史，还是timed]]></description>
 </item>
 </channel>
 </rss>

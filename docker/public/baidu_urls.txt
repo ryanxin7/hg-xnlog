@@ -1,3 +1,4 @@
+https://hg-xnlog.github.io/posts/kubernetes/primary/%E7%94%A8label%E6%8E%A7%E5%88%B6pod%E7%9A%84%E4%BD%8D%E7%BD%AE/
 https://hg-xnlog.github.io/posts/blog/push-docker-images-github-registry/
 https://hg-xnlog.github.io/posts/blog/%E4%BD%BF%E7%94%A8algolia%E5%AE%9E%E7%8E%B0hugo%E6%9C%AC%E5%9C%B0%E6%99%BA%E8%83%BD%E6%90%9C%E7%B4%A2/
 https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E5%BC%BA%E5%88%B6%E5%88%A0%E9%99%A4podpvpvc%E5%92%8Cnsnamespace%E6%96%B9%E6%B3%95/
