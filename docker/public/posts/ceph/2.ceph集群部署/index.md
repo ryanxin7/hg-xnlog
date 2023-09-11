@@ -79,7 +79,7 @@ Ceph-deploy 只用于部署和管理 ceph 集群，客户端需要访问 ceph，
 
 硬件推荐：https://docs.ceph.com/en/latest/start/hardware-recommendations/#
 
-![](http://cdn1.ryanxin.live/13141847_61b6e5c75614065563.webp)
+![](https://cdn1.ryanxin.live/13141847_61b6e5c75614065563.webp)
 
 
 
@@ -135,7 +135,7 @@ Ceph-deploy 只用于部署和管理 ceph 集群，客户端需要访问 ceph，
 
 
 
-![](http://cdn1.ryanxin.live/%E6%9C%AA%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6.png)
+![](https://cdn1.ryanxin.live/%E6%9C%AA%E5%91%BD%E5%90%8D%E6%96%87%E4%BB%B6.png)
 
 
 
@@ -390,7 +390,7 @@ chronyc activity -v
 200 OK
 ```
 
-![](http://cdn1.ryanxin.live/1685437828034-ee86b801-b500-46ca-88c4-29e14b474792.png)
+![](https://cdn1.ryanxin.live/1685437828034-ee86b801-b500-46ca-88c4-29e14b474792.png)
 
 
 
@@ -959,9 +959,9 @@ xceo@ceph-mon1:~/ceph-cluster$ ceph-deploy --overwrite-conf admin ceph-node1 cep
 
 
 
-![](http://cdn1.ryanxin.live/1685340529539-a5f5aa54-59e7-4d83-80d5-fe7f359f2ce8.png)
+![](https://cdn1.ryanxin.live/1685340529539-a5f5aa54-59e7-4d83-80d5-fe7f359f2ce8.png)
 
-![](http://cdn1.ryanxin.live/1685340558088-3db6d1c8-71bb-49dd-a203-2e04463ff3ef.png)
+![](https://cdn1.ryanxin.live/1685340558088-3db6d1c8-71bb-49dd-a203-2e04463ff3ef.png)
 
 认证文件的属主和属组为了安全考虑，默认设置为了root 用户和root组，如果需要ceph用户也能执行ceph 命令,那么就需要对ceph 用户进行授权  
  `setfacl -m u:ceph:rw /etc/ceph/ceph.client.admin.keyring`
@@ -1068,17 +1068,17 @@ Warning: Permanently added 'ceph-mgr2' (ECDSA) to the list of known hosts.
 
 **验证Mgr服务**
 
-![](http://cdn1.ryanxin.live/1685340969835-70f851f8-f0eb-41ef-95cf-64ac614503ea.png)
+![](https://cdn1.ryanxin.live/1685340969835-70f851f8-f0eb-41ef-95cf-64ac614503ea.png)
 
 
 
-![img](http://cdn1.ryanxin.live/1685340995744-eb4dc0e2-c70f-4c33-b924-1278ee9d9dc4.png)
+![img](https://cdn1.ryanxin.live/1685340995744-eb4dc0e2-c70f-4c33-b924-1278ee9d9dc4.png)
 
 
 
 **在deploy上 查看 ceph -s**  
 
-![](http://cdn1.ryanxin.live/1685341057072-8c8cc7f4-f1ea-431d-981f-7fa5c95a4d59.png)
+![](https://cdn1.ryanxin.live/1685341057072-8c8cc7f4-f1ea-431d-981f-7fa5c95a4d59.png)
 
 
 
@@ -1089,7 +1089,7 @@ Warning: Permanently added 'ceph-mgr2' (ECDSA) to the list of known hosts.
 ceph config set mon auth_allow_insecure_global_id_reclaim false
 ```
 
-![](http://cdn1.ryanxin.live/1685341193126-32816fe4-3dd0-445b-bac5-7479fdc702e6.png)
+![](https://cdn1.ryanxin.live/1685341193126-32816fe4-3dd0-445b-bac5-7479fdc702e6.png)
 
 
 
@@ -1318,7 +1318,7 @@ xceo@ceph-mon1:~/ceph-cluster$ ceph-deploy disk zap  ceph-node1 /dev/vdd
 
 **擦除成功的提示**
 
-  ![](http://cdn1.ryanxin.live/1685342554033-94f633d3-3be6-4522-a4b6-c0049fa78c2b.png)
+  ![](https://cdn1.ryanxin.live/1685342554033-94f633d3-3be6-4522-a4b6-c0049fa78c2b.png)
 
 
 
@@ -1336,7 +1336,7 @@ xceo@ceph-mon1:~/ceph-cluster$ ceph-deploy disk zap  ceph-node1 /dev/vdd
 
 **添加OSD节点前的告警**
 
-![](http://cdn1.ryanxin.live/1685342766168-79dbda16-51c5-48fa-9374-daf989f4d94d.png)
+![](https://cdn1.ryanxin.live/1685342766168-79dbda16-51c5-48fa-9374-daf989f4d94d.png)
 
 
 
@@ -1456,13 +1456,13 @@ ceph-deploy osd create ceph-node3 --data /dev/vdf
 
  **在OSD节点上查看进程**
 
-![](http://cdn1.ryanxin.live/1685343473333-7a63dcf3-c194-4799-bad1-40ed2251a362.png)
+![](https://cdn1.ryanxin.live/1685343473333-7a63dcf3-c194-4799-bad1-40ed2251a362.png)
 
 
 
 **备注**：特别要注意 添加一定要记录 每个硬盘对应的数字， 以免后续故障后排查  
 
-![](http://cdn1.ryanxin.live/1685343405077-d33e4517-b9c3-48e4-b3b9-99fc1c69bbfe.png)
+![](https://cdn1.ryanxin.live/1685343405077-d33e4517-b9c3-48e4-b3b9-99fc1c69bbfe.png)
 
 
 
@@ -1967,7 +1967,7 @@ ceph quorum_status --format json-pretty
 
 
 
-![](http://cdn1.ryanxin.live/1685432625919-a9560c77-28a0-4a8d-a356-bfee1b09a8a4.png)
+![](https://cdn1.ryanxin.live/1685432625919-a9560c77-28a0-4a8d-a356-bfee1b09a8a4.png)
 
 
 
@@ -2173,7 +2173,7 @@ ceph-deploy mgr create ceph-mgr2
 
  
 
-![](http://cdn1.ryanxin.live/1685341057072-8c8cc7f4-f1ea-431d-981f-7fa5c95a4d59.png)
+![](https://cdn1.ryanxin.live/1685341057072-8c8cc7f4-f1ea-431d-981f-7fa5c95a4d59.png)
 
 
 ---

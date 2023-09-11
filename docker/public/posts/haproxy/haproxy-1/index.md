@@ -11,11 +11,11 @@
 
 
 ### 3.1 源码包安装
-官方提供了Ubuntu和Debian的包，没有Centos的包<br />![](http://cdn1.ryanxin.live/1675997727329-efbe55ed-cb1e-4446-b7d2-40fd13d1031b.png)
+官方提供了Ubuntu和Debian的包，没有Centos的包<br />![](https://cdn1.ryanxin.live/1675997727329-efbe55ed-cb1e-4446-b7d2-40fd13d1031b.png)
 
 ---
 
-![image.png](http://cdn1.ryanxin.live/xxlog/1675997822880-a7a98a7a-9d66-4040-902e-4575f17bcaf5.png)
+![image.png](https://cdn1.ryanxin.live/xxlog/1675997822880-a7a98a7a-9d66-4040-902e-4575f17bcaf5.png)
 
 
 #### ubuntu 安装
@@ -533,7 +533,7 @@ LISTEN      0      128                         *:9999                 *:*
 
 #### 3.3.2 查看haproxy的状态页面
 
- 浏览器访问：[http://haproxy-server:9999/haproxy-status](http://www.yunweipai.com/go?_=84a56fb1feaHR0cDovL2hhcHJveHktc2VydmVyOjk5OTkvaGFwcm94eS1zdGF0dXM%3D)<br />![](http://cdn1.ryanxin.live/1676021477593-8a91dd15-dde3-4cc1-a009-f117f39f08f9.png)
+ 浏览器访问：[http://haproxy-server:9999/haproxy-status](http://www.yunweipai.com/go?_=84a56fb1feaHR0cDovL2hhcHJveHktc2VydmVyOjk5OTkvaGFwcm94eS1zdGF0dXM%3D)<br />![](https://cdn1.ryanxin.live/1676021477593-8a91dd15-dde3-4cc1-a009-f117f39f08f9.png)
 
 
 
@@ -541,7 +541,7 @@ LISTEN      0      128                         *:9999                 *:*
 #### 3.3.3 测试转发
 10.1.0.6:30013 转发到 10.1.0.31:30013 ✅
 
-![](http://cdn1.ryanxin.live/1676254179452-d15ddfd6-e6e2-4d2c-8d3a-691d48309fcf.png)
+![](https://cdn1.ryanxin.live/1676254179452-d15ddfd6-e6e2-4d2c-8d3a-691d48309fcf.png)
 
 
 

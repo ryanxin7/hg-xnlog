@@ -36,9 +36,9 @@
 
 ## 创建拥有上传权限的token
 
-![image-20230825140715736](http://cdn1.ryanxin.live/image-20230825140715736.png)
+![image-20230825140715736](https://cdn1.ryanxin.live/image-20230825140715736.png)
 
-![image-20230825140743709](http://cdn1.ryanxin.live/image-20230825140743709.png)
+![image-20230825140743709](https://cdn1.ryanxin.live/image-20230825140743709.png)
 
 
 
@@ -109,7 +109,7 @@ ghcr.io/ryanxin7/xnlog:latest
 
 ## 在packages中查看镜像
 
-![image-20230825144820540](http://cdn1.ryanxin.live/image-20230825144820540.png)
+![image-20230825144820540](https://cdn1.ryanxin.live/image-20230825144820540.png)
 
 
 
@@ -117,7 +117,7 @@ ghcr.io/ryanxin7/xnlog:latest
 
 ## 配置action secret
 
-![image-20230825145746677](http://cdn1.ryanxin.live/image-20230825145746677.png)
+![image-20230825145746677](https://cdn1.ryanxin.live/image-20230825145746677.png)
 
 
 
@@ -182,9 +182,9 @@ To github.com:ryanxin7/hg-xnlog.git
 
 
 
-![image-20230829143031062](http://cdn1.ryanxin.live/image-20230829143031062.png)
+![image-20230829143031062](https://cdn1.ryanxin.live/image-20230829143031062.png)
 
-![image-20230829143215614](http://cdn1.ryanxin.live/image-20230829143215614.png)
+![image-20230829143215614](https://cdn1.ryanxin.live/image-20230829143215614.png)
 
 
 ---

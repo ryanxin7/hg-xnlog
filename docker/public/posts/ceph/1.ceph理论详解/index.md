@@ -10,7 +10,7 @@
 
 
 
-![](http://cdn1.ryanxin.live/image-20230523141624566.png)
+![](https://cdn1.ryanxin.live/image-20230523141624566.png)
 
 
 
@@ -28,7 +28,7 @@ Ceph 是一个对象(object)式存储系统，它把每一个待管理的数据�
 
 **LibRADOS** 是 **RADOS** 存储集群的 API，支持 C/C++/JAVA/python/ruby/php 等编程语言客户端。
 
-![](http://cdn1.ryanxin.live/image-20230523142829116.png)
+![](https://cdn1.ryanxin.live/image-20230523142829116.png)
 
 
 
@@ -110,7 +110,7 @@ x将从9 算起它代表 Infernalis(首字母I是英文单词中的第九个字�
 
 
 
-![](http://cdn1.ryanxin.live/image-20230523150832745.png)
+![](https://cdn1.ryanxin.live/image-20230523150832745.png)
 
 
 
@@ -148,7 +148,7 @@ Ceph把客户端数据保存为存储池内的对象。通过使用CRUSH算法�
 
 
 
-![](http://cdn1.ryanxin.live/image-20230523152201676.png)
+![](https://cdn1.ryanxin.live/image-20230523152201676.png)
 
 
 
@@ -216,7 +216,7 @@ Ceph 元数据，主要保存的是Ceph文件系统(NFS/CIFS)的元数据。
 
 ## 3.Ceph的逻辑架构
 
-![](http://cdn1.ryanxin.live/20210514222140801.png)
+![](https://cdn1.ryanxin.live/20210514222140801.png)
 
 
 
@@ -332,7 +332,7 @@ Ceph推荐主要使用两个网络，这么做，注意从性能(OSD节点之间
 
 
 
-![](http://cdn1.ryanxin.live/20210515202236665.png)
+![](https://cdn1.ryanxin.live/20210515202236665.png)
 
 
 
@@ -346,7 +346,7 @@ Ceph 集群部署好之后,要先创建存储池才能向Ceph 写入数据，文
 
 
 
-![无标题](http://cdn1.ryanxin.live/%E6%97%A0%E6%A0%87%E9%A2%98.jpg)
+![无标题](https://cdn1.ryanxin.live/%E6%97%A0%E6%A0%87%E9%A2%98.jpg)
 
 
 
@@ -404,7 +404,7 @@ Ceph中数据写入，会有三次映射
 
 
 
-![](http://cdn1.ryanxin.live/image-20230524091126000.png)
+![](https://cdn1.ryanxin.live/image-20230524091126000.png)
 
 
 
@@ -480,7 +480,7 @@ FileStore 将数据保存到与 Posix 兼容的文件系统(例如 Btrfs、XFS�
 - 支持多种设备类型。
   
 
-![](http://cdn1.ryanxin.live/9909245-5e248f10f2e5ba08.webp)
+![](https://cdn1.ryanxin.live/9909245-5e248f10f2e5ba08.webp)
 
 
 
@@ -532,7 +532,7 @@ BlueStore 的设计考虑了 FileStore 中存在的一些硬伤，抛弃了传�
 
 
 
-![Ceph 理论](http://cdn1.ryanxin.live/Ceph%20%E7%90%86%E8%AE%BA.png)
+![Ceph 理论](https://cdn1.ryanxin.live/Ceph%20%E7%90%86%E8%AE%BA.png)
 
 
 

@@ -16,7 +16,7 @@ winget install JanDeDobbeleer.OhMyPosh -s winget
 
 主题列表：https://ohmyposh.dev/docs/themes
 
-![](http://cdn1.ryanxin.live/image-20230517105339263.png)
+![](https://cdn1.ryanxin.live/image-20230517105339263.png)
 
 选择主题，并使用此命令更新 PowerShell 配置文件。 （可以将 `notepad` 替换为你选择的文本编辑器。）
 
@@ -44,7 +44,7 @@ oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\cloud-native-azure.omp.json
 
 
 
-![](http://cdn1.ryanxin.live/image-20230517110124776.png)
+![](https://cdn1.ryanxin.live/image-20230517110124776.png)
 
 官方推荐字体：**MesloLGM NF**
 
@@ -55,7 +55,7 @@ oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\cloud-native-azure.omp.json
 oh-my-posh font install
 ```
 
-![](http://cdn1.ryanxin.live/image-20230517104759748.png)
+![](https://cdn1.ryanxin.live/image-20230517104759748.png)
 
 **结果老是timeout**
 
@@ -65,14 +65,14 @@ oh-my-posh font install
 
 https://www.nerdfonts.com/font-downloads
 
-![](http://cdn1.ryanxin.live/image-20230517104937861.png)
+![](https://cdn1.ryanxin.live/image-20230517104937861.png)
 
 ```bash
 #直接导入字体
 oh-my-posh font install .\Meslo.zip 
 ```
 
-![](http://cdn1.ryanxin.live/image-20230517101113664.png)
+![](https://cdn1.ryanxin.live/image-20230517101113664.png)
 
 
 
@@ -91,13 +91,13 @@ oh-my-posh font install .\Meslo.zip
 
 找不到所选字体 **MesloLGM NF** 🤮
 
-![](http://cdn1.ryanxin.live/image-20230517103815943.png)
+![](https://cdn1.ryanxin.live/image-20230517103815943.png)
 
 
 
 找不到？  字体名称是 **MesloLGM Nerd Font** 替换一下 ？
 
-![](http://cdn1.ryanxin.live/image-20230517104001794.png)
+![](https://cdn1.ryanxin.live/image-20230517104001794.png)
 
 ```
     "profiles": 
@@ -114,7 +114,7 @@ oh-my-posh font install .\Meslo.zip
 
 可以看到已经正常显示了
 
-![image-20230517104548750](http://cdn1.ryanxin.live/image-20230517104548750.png)
+![image-20230517104548750](https://cdn1.ryanxin.live/image-20230517104548750.png)
 
 
 
@@ -134,7 +134,7 @@ load(io.popen('oh-my-posh init cmd'):read("*a"))()
 
 
 
-![](http://cdn1.ryanxin.live/image-20230517125959310.png)
+![](https://cdn1.ryanxin.live/image-20230517125959310.png)
 
 
 

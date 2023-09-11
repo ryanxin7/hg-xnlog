@@ -24,21 +24,21 @@
 
 开发在Jenkins发版出现问题
 
-![](http://cdn1.ryanxin.live/1684134967131.png)
+![](https://cdn1.ryanxin.live/1684134967131.png)
 
 然后更新了一下证书时间
 
-![](http://cdn1.ryanxin.live/0daf32a5ed056ed3b8b3ee286dfffa4.png)
+![](https://cdn1.ryanxin.live/0daf32a5ed056ed3b8b3ee286dfffa4.png)
 
 Jenkins 还是无法更新，这次是timeout
 
-![](http://cdn1.ryanxin.live/image-20230515153404275.png)
+![](https://cdn1.ryanxin.live/image-20230515153404275.png)
 
 
 
 于是查看helm 执行历史，还是timed out 
 
-![](http://cdn1.ryanxin.live/image-20230515160912584.png)
+![](https://cdn1.ryanxin.live/image-20230515160912584.png)
 
 
 
@@ -78,7 +78,7 @@ subjects:
 
 获取token 填写到 context中
 
-![](http://cdn1.ryanxin.live/7246559e5e920a77f638c7064cf9081.png)
+![](https://cdn1.ryanxin.live/7246559e5e920a77f638c7064cf9081.png)
 
 
 
@@ -137,7 +137,7 @@ type: kubernetes.io/service-account-token
 
 此时已经感觉K8S集群有点不对劲，跟被什么东西卡住了一样🙃,开始排查四大金刚
 
-![](http://cdn1.ryanxin.live/image-20230515162428235.png)
+![](https://cdn1.ryanxin.live/image-20230515162428235.png)
 
 
 
@@ -295,7 +295,7 @@ systemctl restart kubelet  systremctl restart containerd
 
 
 
-![](http://cdn1.ryanxin.live/824941-20221010172857637-35455519.png)
+![](https://cdn1.ryanxin.live/824941-20221010172857637-35455519.png)
 
 可以看到提示让重启 kube-apiserver, kube-controller-manager, kube-scheduler 和 etcd 服务证书才能生效。
 
@@ -325,7 +325,7 @@ echo | openssl s_client -showcerts -connect 127.0.0.1:6443 -servername api 2>/de
 
 **重启containerd 运行镜像**
 
-![](http://cdn1.ryanxin.live/image-20230515164716199.png)
+![](https://cdn1.ryanxin.live/image-20230515164716199.png)
 
 
 
@@ -340,19 +340,19 @@ crictl stop 7a7bad1c7dd70
 
 重启后,查看相关日志
 
-![](http://cdn1.ryanxin.live/image-20230515164818560.png)
+![](https://cdn1.ryanxin.live/image-20230515164818560.png)
 
 
 
 服务正常了
 
-![](http://cdn1.ryanxin.live/image-20230515165658387.png)
+![](https://cdn1.ryanxin.live/image-20230515165658387.png)
 
 
 
 token也出来了
 
-![](http://cdn1.ryanxin.live/image-20230515165731075.png)
+![](https://cdn1.ryanxin.live/image-20230515165731075.png)
 
 
 
@@ -360,7 +360,7 @@ token也出来了
 
 Jenkins 构建也成功了 😆
 
-![](http://cdn1.ryanxin.live/image-20230515165900088.png)
+![](https://cdn1.ryanxin.live/image-20230515165900088.png)
 
 ---
 

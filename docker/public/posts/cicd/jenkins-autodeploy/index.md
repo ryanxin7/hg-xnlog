@@ -10,7 +10,7 @@
 
 点击系统管理,然后点击插件管理,在可选插件里面搜索NodeJS插件,然后安装
 
-![](http://cdn1.ryanxin.live/image-20230517144020337.png)
+![](https://cdn1.ryanxin.live/image-20230517144020337.png)
 
 
 
@@ -20,7 +20,7 @@
 
 Publish Over SSH用于连接远程服务器
 
-![](http://cdn1.ryanxin.live/image-20230517144326164.png)
+![](https://cdn1.ryanxin.live/image-20230517144326164.png)
 
 
 
@@ -30,7 +30,7 @@ Publish Over SSH用于连接远程服务器
 
 **Deploy to container **插件用于把打包的应用发布到远程服务
 
-![](http://cdn1.ryanxin.live/image-20230517144416905.png)
+![](https://cdn1.ryanxin.live/image-20230517144416905.png)
 
 
 
@@ -52,7 +52,7 @@ git: /usr/bin/git /usr/share/man/man1/git.1.gz
 
 
 
-![](http://cdn1.ryanxin.live/image-20230517144940156.png)
+![](https://cdn1.ryanxin.live/image-20230517144940156.png)
 
 
 
@@ -75,7 +75,7 @@ ln -sv node-v16.18.1-linux-x64/  /usr/local/node
 
 填写本地node路径
 
-![](http://cdn1.ryanxin.live/image-20230517150947230.png)
+![](https://cdn1.ryanxin.live/image-20230517150947230.png)
 
 
 
@@ -83,23 +83,23 @@ ln -sv node-v16.18.1-linux-x64/  /usr/local/node
 
 ### 3.1  源码管理
 
-![](http://cdn1.ryanxin.live/image-20230517151201485.png)
+![](https://cdn1.ryanxin.live/image-20230517151201485.png)
 
 
 
 填写项目仓库地址
 
-![image-20230518161509712](http://cdn1.ryanxin.live/image-20230518161509712.png)
+![image-20230518161509712](https://cdn1.ryanxin.live/image-20230518161509712.png)
 
 配置免密公钥认证
 
-![ss](http://cdn1.ryanxin.live/image-20230518162443881.png)
+![ss](https://cdn1.ryanxin.live/image-20230518162443881.png)
 
 ### 3.2 构建触发器
 
 定时每五分钟检查一次代码仓库有没有新的提交，如果有新的提交就自动构建项目并发布到目标前端服务器。
 
-![](http://cdn1.ryanxin.live/image-20230518162525400.png)
+![](https://cdn1.ryanxin.live/image-20230518162525400.png)
 
 
 
@@ -107,7 +107,7 @@ ln -sv node-v16.18.1-linux-x64/  /usr/local/node
 
 ### 3.3 构建环境
 
-![image-20230518162814972](http://cdn1.ryanxin.live/image-20230518162814972.png)
+![image-20230518162814972](https://cdn1.ryanxin.live/image-20230518162814972.png)
 
 
 
@@ -138,11 +138,11 @@ rm -rf $WORKSPACE/src/.vuepress/dist
 
 系统管理—> 系统配置 —> Publish over SSH
 
-![image-20230518163252080](http://cdn1.ryanxin.live/image-20230518163252080.png)
+![image-20230518163252080](https://cdn1.ryanxin.live/image-20230518163252080.png)
 
  
 
-![image-20230518163357826](http://cdn1.ryanxin.live/image-20230518163357826.png)
+![image-20230518163357826](https://cdn1.ryanxin.live/image-20230518163357826.png)
 
 
 
@@ -166,23 +166,23 @@ rm -rf $WORKSPACE/src/.vuepress/dist
 
 **立即构建**
 
-![image-20230518165104498](http://cdn1.ryanxin.live/image-20230518165104498.png)
+![image-20230518165104498](https://cdn1.ryanxin.live/image-20230518165104498.png)
 
 
 
 **控制台输出查看任务进度**
 
-![image-20230518164918778](http://cdn1.ryanxin.live/image-20230518164918778.png)
+![image-20230518164918778](https://cdn1.ryanxin.live/image-20230518164918778.png)
 
 **构建成功**
 
-![image-20230518164846503](http://cdn1.ryanxin.live/image-20230518164846503.png)
+![image-20230518164846503](https://cdn1.ryanxin.live/image-20230518164846503.png)
 
 
 
 **前端服务器目录下验证**
 
-![image-20230518165232579](http://cdn1.ryanxin.live/image-20230518165232579.png)
+![image-20230518165232579](https://cdn1.ryanxin.live/image-20230518165232579.png)
 
 
 
@@ -192,11 +192,11 @@ rm -rf $WORKSPACE/src/.vuepress/dist
 
 代码更新后自动构建并发布
 
-![](http://cdn1.ryanxin.live/image-20230518170955693.png)
+![](https://cdn1.ryanxin.live/image-20230518170955693.png)
 
 
 
-![](http://cdn1.ryanxin.live/image-20230518171204946.png)
+![](https://cdn1.ryanxin.live/image-20230518171204946.png)
 
 
 

@@ -5,12 +5,12 @@ ceph FS即**ceph filesystem**，**可以实现文件系统共享功能**，客�
 
 **Ceph FS需要运行Meta Data Services(MDS)服务**，其守护进程为**ceph-mds**, **ceph-mds**<br />进程管理与Ceph FS上存储的文件相关的元数据，并协调对ceph存储集群的访问。<br />[http://docs.ceph.org.cn/cephfs/](http://docs.ceph.org.cn/cephfs/)<br />**Ceph FS**的元数据使用的动态子树分区,把元数据划分名称空间对应到不同的mds,写入元数据的时候将元数据按照名称保存到不同主mds上，有点类似于nginx中的缓存目录分层一样。但是最终元数据都会保存在ceph 元数据池中。
 
-![image.png](http://cdn1.ryanxin.live/xxlog/1670032830978-7c4700c6-742c-4c85-985c-303502b3c04a.png)
+![image.png](https://cdn1.ryanxin.live/xxlog/1670032830978-7c4700c6-742c-4c85-985c-303502b3c04a.png)
 
-![image.png](http://cdn1.ryanxin.live/xxlog/1670031679816-4f17d48b-c55b-46da-8e2c-9bbc7c330469.png)
+![image.png](https://cdn1.ryanxin.live/xxlog/1670031679816-4f17d48b-c55b-46da-8e2c-9bbc7c330469.png)
 
 
-![image.png](http://cdn1.ryanxin.live/xxlog/1670031795634-590ba06c-1248-4907-9d35-816f5541eef7.png)
+![image.png](https://cdn1.ryanxin.live/xxlog/1670031795634-590ba06c-1248-4907-9d35-816f5541eef7.png)
 
 ## 7.1 部署MDS 服务
 如果要使用cephFS,需要部署cephfs服务。
@@ -130,7 +130,7 @@ root@ceph-client3 ~]# mkdir /data
 [root@ceph-client3~]# mount -t ceph 172.31.6.104:6789,172.31.6.105:6789,172.31.6.106:6789:/ /data -o name-yanyan,secretfile=/etc/ceph/yanyan.key
 ```
 
-![image.png](http://cdn1.ryanxin.live/xxlog/1670036201261-4009e08b-2948-4d04-947e-f09a08a3da8c.png)
+![image.png](https://cdn1.ryanxin.live/xxlog/1670036201261-4009e08b-2948-4d04-947e-f09a08a3da8c.png)
 
 
 ### 7.9.2 客户端通过key挂载
@@ -156,7 +156,7 @@ root@ceph-client3 ~]# cat /etc/fstab
 ```
 
 ### 7.9.4 客户端模块 
-客户端内核加载**ceph.ko**模块挂载**cephfs**文件系统<br />![image.png](http://cdn1.ryanxin.live/xxlog/1670038472628-cd3e7bdd-23a7-4238-b1ec-ff6dd9ff8445.png)
+客户端内核加载**ceph.ko**模块挂载**cephfs**文件系统<br />![image.png](https://cdn1.ryanxin.live/xxlog/1670038472628-cd3e7bdd-23a7-4238-b1ec-ff6dd9ff8445.png)
 
 ## 7.10 用户空间挂载ceph-fs
 如果内核本较低而没有ceph模块,那么可以安装**ceph-fuse** 挂载，但是推荐使用内核模块挂载。 
@@ -236,7 +236,7 @@ mycephfs-1/1/1 up {0=ceph-mgr1 =up:active}, 3 up:standby
 [ceph@ceph-deploy ceph-cluster]$ ceph fs status
 ```
 
-![image.png](http://cdn1.ryanxin.live/xxlog/1670041951106-d3c42f57-0357-4a1c-928e-088b46fdef38.png)
+![image.png](https://cdn1.ryanxin.live/xxlog/1670041951106-d3c42f57-0357-4a1c-928e-088b46fdef38.png)
 
 ### 7.11.4 当前的文件系统状态
 ```bash
@@ -333,7 +333,7 @@ ceph fs status
 
 
 
-把Ceph Fs 中转成NFS协议<br />![image.png](http://cdn1.ryanxin.live/xxlog/1670053186530-4c6a1261-8e83-4b2c-bd94-a455b5411136.png)
+把Ceph Fs 中转成NFS协议<br />![image.png](https://cdn1.ryanxin.live/xxlog/1670053186530-4c6a1261-8e83-4b2c-bd94-a455b5411136.png)
 ### 7.12.1 服务端配置  
 ```bash
 root@ceph-mgr1:~# apt install nfs-ganesha-ceph

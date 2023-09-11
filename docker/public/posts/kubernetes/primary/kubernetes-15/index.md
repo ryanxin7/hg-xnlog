@@ -28,7 +28,7 @@ kubeadm certs renew --help
 kubeadm certs renew all
 ```
 
-![](http://cdn1.ryanxin.live/824941-20221010172857637-35455519.png)
+![](https://cdn1.ryanxin.live/824941-20221010172857637-35455519.png)
 
 可以看到提示让重启 `kube-apiserver`, `kube-controller-manager`, `kube-scheduler` 和 `etcd` 服务证书才能生效。
 
@@ -64,7 +64,7 @@ kube-system     kube-scheduler-tj-master-01
 
 **可以看到证书时间已经更新**
 
-![](http://cdn1.ryanxin.live/1684504977403-0ce1a21d-265c-40b2-9d22-465fafc66a5a.png)
+![](https://cdn1.ryanxin.live/1684504977403-0ce1a21d-265c-40b2-9d22-465fafc66a5a.png)
 
 
 
@@ -82,7 +82,7 @@ cp /etc/kubernetes/admin.conf /root/.kube/config
 
 **重启containerd 运行镜像**
 
-![](http://cdn1.ryanxin.live/image-20230515164716199.png)
+![](https://cdn1.ryanxin.live/image-20230515164716199.png)
 
 ```bash
 crictl stop 9731cb9e5b723
@@ -97,7 +97,7 @@ crictl stop 7a7bad1c7dd70
 
 
 
-![](http://cdn1.ryanxin.live/image-20230515164818560.png)
+![](https://cdn1.ryanxin.live/image-20230515164818560.png)
 
 
 

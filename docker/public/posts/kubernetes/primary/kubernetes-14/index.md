@@ -22,7 +22,7 @@
 
 1. 监控比较完备且与发布系统集成
 
-![金丝雀发布](http://cdn1.ryanxin.live/1676623429005-57e87756-d254-44eb-b6ba-1681e04b6679.png)
+![金丝雀发布](https://cdn1.ryanxin.live/1676623429005-57e87756-d254-44eb-b6ba-1681e04b6679.png)
 
 ### 1.2 灰度/滚动发布
 灰度发布是金丝雀发布的延伸，是将发布分成不同的阶段/批次，每个阶段/批次的用户数量逐级增加。如果新版本在当前阶段没有发现问题，就再增加用户数量进入下一个阶段，直至扩展到全部用户。
@@ -31,7 +31,7 @@
 
 结合特性开关等技术，灰度发布可以实现更复杂灵活的发布策略。
 
-![滚动发布](http://cdn1.ryanxin.live/1676623454891-4883876b-4022-447f-bd8c-3a8b5f848104.png)
+![滚动发布](https://cdn1.ryanxin.live/1676623454891-4883876b-4022-447f-bd8c-3a8b5f848104.png)
 
 优势：
 
@@ -65,7 +65,7 @@ Kubernetes的默认发布策略。
 - 不易回滚
 -  有影响范围较大
 
-![滚动发布](http://cdn1.ryanxin.live/1676623521344-a5370e0c-871d-4c52-b3a8-0eeb9d42c93e.png)
+![滚动发布](https://cdn1.ryanxin.live/1676623521344-a5370e0c-871d-4c52-b3a8-0eeb9d42c93e.png)
 
 ## 2.版本升级及回滚
 ** 原理**：在指定的deployment 控制器中通过`kubectl set image` 指定新版本的镜像tag,来实现代码更新的目的。<br />** 例如**:<br />更新deployment中的2个pod,busybox ，pod更新到2.1版本,nginx pod更新到1.21.1版本 。
@@ -481,7 +481,7 @@ update-tomcat-app1-service   NodePort   10.10.31.155    <none>        80:30022/T
 
 http://10.1.0.31:38880/users/sign_in
 
-![gitlab](http://cdn1.ryanxin.live/image-20230227155127621.png)
+![gitlab](https://cdn1.ryanxin.live/image-20230227155127621.png)
 
 ##### 3.1.2.4  初始用户名和密码
 
@@ -495,7 +495,7 @@ $ cat /etc/gitlab/initial_root_password
 
 由于是容器部署，所以，需要进入到容器中，找到对应文件，拷贝密码进行登录。文件内容类似：
 
-![初始用户名和密码](http://cdn1.ryanxin.live/image-20230227155649965.png)
+![初始用户名和密码](https://cdn1.ryanxin.live/image-20230227155649965.png)
 
 
 
@@ -515,7 +515,7 @@ Password: F5o6JeW+jH2qmgyc/yXwlp++DiKX0XchafdYvKB7cdo=
 
 进入后修改admin密码
 
-![修改密码](http://cdn1.ryanxin.live/image-20230227155828572.png)
+![修改密码](https://cdn1.ryanxin.live/image-20230227155828572.png)
 
 
 
@@ -529,7 +529,7 @@ Password: F5o6JeW+jH2qmgyc/yXwlp++DiKX0XchafdYvKB7cdo=
 
 ##### 3.1.2.1 下载deb包
 
-![](http://cdn1.ryanxin.live/image-20230306152500322.png)
+![](https://cdn1.ryanxin.live/image-20230306152500322.png)
 
 
 
@@ -573,7 +573,7 @@ Password: HepNFhKpXwvQo4rHpYF0t4/ijMMa8CXfghj55frY7b0=
 
 
 
-![](http://cdn1.ryanxin.live/image-20230306153348145.png)
+![](https://cdn1.ryanxin.live/image-20230306153348145.png)
 
 
 
@@ -610,7 +610,7 @@ Jenkins 团队已经开发了近 1000 个插件，使得应用程序可以与其
 
 从 Jenkins 2.357 版本开始，Jenkins只支持**Java 11** 和 **Java 17**
 
-![JDK需求](http://cdn1.ryanxin.live/image-20230228131827753.png)
+![JDK需求](https://cdn1.ryanxin.live/image-20230228131827753.png)
 
 
 
@@ -624,7 +624,7 @@ Jenkins 团队已经开发了近 1000 个插件，使得应用程序可以与其
 
 
 
-![版本选择](http://cdn1.ryanxin.live/image-20230228143025864.png)
+![版本选择](https://cdn1.ryanxin.live/image-20230228143025864.png)
 
 
 
@@ -664,7 +664,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 17.0.6+9-LTS-190, mixed mode, sharing)
 
 ##### 3.2.3.1 下载war包
 
-![版本选择](http://cdn1.ryanxin.live/image-20230228134158814.png)
+![版本选择](https://cdn1.ryanxin.live/image-20230228134158814.png)
 
 ##### 3.2.3.2 指定Jenkins文件保存路径
 
@@ -733,7 +733,7 @@ AWT is not properly configured on this server. Perhaps you need to run  your con
 
 
 
-![](http://cdn1.ryanxin.live/image-20230228141015641.png)
+![](https://cdn1.ryanxin.live/image-20230228141015641.png)
 
 
 
@@ -741,7 +741,7 @@ AWT is not properly configured on this server. Perhaps you need to run  your con
 
 
 
-![ttf](http://cdn1.ryanxin.live/image-20230228140851725.png)
+![ttf](https://cdn1.ryanxin.live/image-20230228140851725.png)
 
 
 
@@ -783,11 +783,11 @@ root@etcd01[14:12:31]/data/jenkins #:nohup java -jar -Xms512m -Xmx2048m /apps/je
 
 好了，终于出现熟悉而正常的页面了。稍等片刻就可以继续了。
 
-![](http://cdn1.ryanxin.live/image-20230228145503677.png)
+![](https://cdn1.ryanxin.live/image-20230228145503677.png)
 
 ##### 3.2.3.5 初始化Jenkins
 
-![](http://cdn1.ryanxin.live/image-20230228153103526.png)
+![](https://cdn1.ryanxin.live/image-20230228153103526.png)
 
 
 
@@ -804,7 +804,7 @@ root@etcd01[14:13:21]~ #:cat /data/jenkins/secrets/initialAdminPassword
 
 **如果出现以下情况**
 
-![](http://cdn1.ryanxin.live/1461466-20220905180926789-1769783018.png)
+![](https://cdn1.ryanxin.live/1461466-20220905180926789-1769783018.png)
 
 
 
@@ -827,19 +827,19 @@ vim /data/jenkins/hudson.model.UpdateCenter.xml
 
 **安装插件**
 
-![](http://cdn1.ryanxin.live/image-20230228155707831.png)
+![](https://cdn1.ryanxin.live/image-20230228155707831.png)
 
 **创建用户**
 
 
 
-![](http://cdn1.ryanxin.live/image-20230228155519214.png)
+![](https://cdn1.ryanxin.live/image-20230228155519214.png)
 
 
 
 **完成安装**
 
-![](http://cdn1.ryanxin.live/image-20230228160122539.png)
+![](https://cdn1.ryanxin.live/image-20230228160122539.png)
 
 
 
@@ -854,13 +854,13 @@ vim /data/jenkins/hudson.model.UpdateCenter.xml
 
 **插件库下载需要的插件**
 
-![](http://cdn1.ryanxin.live/image-20230228160333483.png)
+![](https://cdn1.ryanxin.live/image-20230228160333483.png)
 
 
 
-![](http://cdn1.ryanxin.live/image-20230228160443692.png)
+![](https://cdn1.ryanxin.live/image-20230228160443692.png)
 
-![更换升级中心](http://cdn1.ryanxin.live/image-20230228160528892.png)
+![更换升级中心](https://cdn1.ryanxin.live/image-20230228160528892.png)
 
 
 
@@ -868,7 +868,7 @@ vim /data/jenkins/hudson.model.UpdateCenter.xml
 
 **上传插件**
 
-![上传插件](http://cdn1.ryanxin.live/image-20230228160705653.png)
+![上传插件](https://cdn1.ryanxin.live/image-20230228160705653.png)
 
 
 
@@ -884,7 +884,7 @@ vim /data/jenkins/users/jenkins_3715012869271617135/config.xml
 
 
 
-![](http://cdn1.ryanxin.live/image-20230228161235971.png)
+![](https://cdn1.ryanxin.live/image-20230228161235971.png)
 
 
 
@@ -913,17 +913,17 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCvFuqsriXcIcyRQG7KpYbwtM+Fn5BSyJSvfGdDIbOy
 
 
 
-![](http://cdn1.ryanxin.live/image-20230306153936964.png)
+![](https://cdn1.ryanxin.live/image-20230306153936964.png)
 
 <br>
 
 **测试免密克隆项目代码**
 
-![](http://cdn1.ryanxin.live/image-20230228162255183.png)
+![](https://cdn1.ryanxin.live/image-20230228162255183.png)
 
 
 
-![](http://cdn1.ryanxin.live/image-20230306154053941.png)
+![](https://cdn1.ryanxin.live/image-20230306154053941.png)
 
 
 
@@ -982,7 +982,7 @@ Receiving objects: 100% (3/3), done.
 
 ### 安装npm 
 
-![选择长期维护版本](http://cdn1.ryanxin.live/image-20230303150036697.png)
+![选择长期维护版本](https://cdn1.ryanxin.live/image-20230303150036697.png)
 
 
 
@@ -1051,7 +1051,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCvFuqsriXcIcyRQG7KpYbwtM+Fn5BSyJSvfGdDIbOy
 
 
 
-![](http://cdn1.ryanxin.live/image-20230303152055911.png)
+![](https://cdn1.ryanxin.live/image-20230303152055911.png)
 
 
 

@@ -4,7 +4,7 @@
 
 
 
-**Pod状态**<br />![Pod状态](http://cdn1.ryanxin.live/1674895053415-2477036f-d642-41c9-90c7-942d1a238360.png)
+**Pod状态**<br />![Pod状态](https://cdn1.ryanxin.live/1674895053415-2477036f-d642-41c9-90c7-942d1a238360.png)
 
 
 > **第一阶段 **
@@ -25,7 +25,7 @@
 
 
 
-![](http://cdn1.ryanxin.live/1674895376985-f56a789b-45f8-418b-836c-22314b8775f4.png)
+![](https://cdn1.ryanxin.live/1674895376985-f56a789b-45f8-418b-836c-22314b8775f4.png)
 
 ```bash
 Error: #pod 启动过程中发生错误
@@ -192,7 +192,7 @@ spec:
     app: ng-deploy-80
 ```
 
-验证http探针： <br /> ![](http://cdn1.ryanxin.live/1674961913237-ed82df48-ae02-4275-aa5c-2099f4fd5fae.png)
+验证http探针： <br /> ![](https://cdn1.ryanxin.live/1674961913237-ed82df48-ae02-4275-aa5c-2099f4fd5fae.png)
 
 
 ### TCP 探针示例
@@ -300,7 +300,7 @@ spec:
     app: redis-deploy-6379
 ```
 
-如果端⼝检测连续超过指定的三次都没有通过，则Pod状态如下： <br /> ![](http://cdn1.ryanxin.live/1674961899934-85e91869-b0af-44bb-ad5b-21f9466b891b.png)
+如果端⼝检测连续超过指定的三次都没有通过，则Pod状态如下： <br /> ![](https://cdn1.ryanxin.live/1674961899934-85e91869-b0af-44bb-ad5b-21f9466b891b.png)
 
 
 

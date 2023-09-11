@@ -16,7 +16,7 @@
 
 
 
-![dubbo 架构](http://cdn1.ryanxin.live/1675737775849-f438cf10-e5c5-4a72-a68f-6206a722476f.png)
+![dubbo 架构](https://cdn1.ryanxin.live/1675737775849-f438cf10-e5c5-4a72-a68f-6206a722476f.png)
 
 
 

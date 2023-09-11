@@ -7,7 +7,7 @@
 
 ```yaml
 - nickname: Ryan's NoteBooks
-  avatar: http://cdn1.ryanxin.live/ryan-ai11.png
+  avatar: https://cdn1.ryanxin.live/ryan-ai11.png
   url: http://xinn.cc
   description: 记录文字，遇见共鸣
 ```
