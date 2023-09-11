@@ -104,4 +104,4 @@ export PS1='\[\033[01;31m\]\u\[\033[00m\]@\[\033[01;32m\]\h\[\033[00m\][\[\033[0
 
 
 
-![](http://cdn1.ryanxin.live/image-20230525120611910.png)
+![](https://cdn1.ryanxin.live/image-20230525120611910.png)

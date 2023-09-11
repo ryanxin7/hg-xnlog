@@ -37,7 +37,7 @@ cert-manager 是一个云原生证书管理开源项目，它简化了在 Kubern
 
 
 
-![](http://cdn1.ryanxin.live/high-level-overview.svg)
+![](https://cdn1.ryanxin.live/high-level-overview.svg)
 
 
 
@@ -379,7 +379,7 @@ kubectl apply -f cluster-issuer.yaml
 
 
 
-![image-20230616164228233](http://cdn1.ryanxin.live/image-20230616164228233.png)
+![image-20230616164228233](https://cdn1.ryanxin.live/image-20230616164228233.png)
 
 ### 3. 创建证书资源
 
@@ -499,7 +499,7 @@ E0616 06:12:27.072543       1 sync.go:190] "cert-manager/challenges: propagation
 
 1.排查DNS解析
 
-![](http://cdn1.ryanxin.live/image-20230616173738013.png)
+![](https://cdn1.ryanxin.live/image-20230616173738013.png)
 
 
 
@@ -522,7 +522,7 @@ PING k8s.ceamg.com (10.1.0.91): 56 data bytes
 
 3.排查外网防火墙NAT地址转换策略
 
-![image-20230616173901963](http://cdn1.ryanxin.live/image-20230616173901963.png)
+![image-20230616173901963](https://cdn1.ryanxin.live/image-20230616173901963.png)
 
 
 
@@ -532,7 +532,7 @@ PING k8s.ceamg.com (10.1.0.91): 56 data bytes
 
 4.排查WAF防火墙端口策略
 
-![](http://cdn1.ryanxin.live/image-20230616174217817.png)
+![](https://cdn1.ryanxin.live/image-20230616174217817.png)
 
 ACME 认证只需要放通80和443端口即可
 
@@ -566,7 +566,7 @@ kubectl describe certificaterequests.cert-manager.io
 
 这里因为k8s版本为1.26.2所以选择 V1.71版本
 
-![image-20230619104014430](http://cdn1.ryanxin.live/xxlog/image-20230619104014430.png)
+![image-20230619104014430](https://cdn1.ryanxin.live/xxlog/image-20230619104014430.png)
 
 ```sh
 wget https://github.com/kubernetes/ingress-nginx/archive/refs/tag/controller-v1.7.1.tar.gz
@@ -794,11 +794,11 @@ WantedBy=multi-user.target
 
 80端口
 
-![](http://cdn1.ryanxin.live/xxlog/image-20230619110149057.png)
+![](https://cdn1.ryanxin.live/xxlog/image-20230619110149057.png)
 
 443端口
 
-![](http://cdn1.ryanxin.live/xxlog/image-20230619110233665.png)
+![](https://cdn1.ryanxin.live/xxlog/image-20230619110233665.png)
 
 
 
@@ -917,7 +917,7 @@ tls-cert-ingress   <none>   k8s.ceamg.com   10.1.0.34,10.1.0.35,10.1.0.37   80, 
 
 ### 7.通过域名访问测试
 
-![](http://cdn1.ryanxin.live/xxlog/image-20230619111343825.png)
+![](https://cdn1.ryanxin.live/xxlog/image-20230619111343825.png)
 
 
 

@@ -142,4 +142,4 @@ listen http_80
 ```
 
 
-![](http://cdn1.ryanxin.live/1676360033704-f88d33b8-5094-44d7-af63-0e04b1a88ae1.png)
+![](https://cdn1.ryanxin.live/1676360033704-f88d33b8-5094-44d7-af63-0e04b1a88ae1.png)

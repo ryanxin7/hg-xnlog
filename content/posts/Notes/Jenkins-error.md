@@ -57,7 +57,7 @@ systemctl daemon-reload
 
 **2.361.1 以后的版本需要 java 11 或 java 17 ，java 8 无法正常使用。**
 
-![image-20230516174854447](http://cdn1.ryanxin.live/image-20230516174854447.png)
+![image-20230516174854447](https://cdn1.ryanxin.live/image-20230516174854447.png)
 
 **更换java 17** 
 
@@ -191,7 +191,7 @@ apt-get install fontconfig
 
 Jenkins 一直卡在 Please wait while Jenkins is getting ready to work ...
 
-![](http://cdn1.ryanxin.live/xxlog/image-20230516201248296.png)
+![](https://cdn1.ryanxin.live/xxlog/image-20230516201248296.png)
 
 ```bash
 find / -name *.UpdateCenter.xml 

@@ -47,7 +47,7 @@ y用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes �
 
 出现磁盘空间严重不足情况，需要更换存储。
 
-![image-20230901145753230](http://cdn1.ryanxin.live/image-20230901145753230.png)
+![image-20230901145753230](https://cdn1.ryanxin.live/image-20230901145753230.png)
 
 
 

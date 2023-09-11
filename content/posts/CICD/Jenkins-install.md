@@ -25,7 +25,7 @@ expirationReminder:
 
 **版本jdk要求**:
 
-![image-20230516165044384](http://cdn1.ryanxin.live/image-20230516165044384.png)
+![image-20230516165044384](https://cdn1.ryanxin.live/image-20230516165044384.png)
 
 
 
@@ -82,7 +82,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.371-b11, mixed mode)
 
 https://mirrors.tuna.tsinghua.edu.cn/jenkins/debian-stable/
 
-![image-20230516144314123](http://cdn1.ryanxin.live/image-20230516144314123.png)
+![image-20230516144314123](https://cdn1.ryanxin.live/image-20230516144314123.png)
 
 #### 安装安装依赖
 
@@ -93,13 +93,13 @@ dpkg -i jenkins_2.361.4_all.deb
 
 
 
-![image-20230516180049815](http://cdn1.ryanxin.live/image-20230516180049815.png)
+![image-20230516180049815](https://cdn1.ryanxin.live/image-20230516180049815.png)
 
 
 
 #### **获取密码**
 
-![image-20230516202608708](http://cdn1.ryanxin.live/xxlog/image-20230516202608708.png)
+![image-20230516202608708](https://cdn1.ryanxin.live/xxlog/image-20230516202608708.png)
 
 
 
@@ -128,11 +128,11 @@ vim /var/lib/jenkins/hudson.model.UpdateCenter.xml
 
 #### 下载插件
 
-![](http://cdn1.ryanxin.live/xxlog/image-20230516202918543.png)
+![](https://cdn1.ryanxin.live/xxlog/image-20230516202918543.png)
 
-![](http://cdn1.ryanxin.live/xxlog/image-20230516203918051.png)
+![](https://cdn1.ryanxin.live/xxlog/image-20230516203918051.png)
 
-![image-20230516203952363](http://cdn1.ryanxin.live/xxlog/image-20230516203952363.png)
+![image-20230516203952363](https://cdn1.ryanxin.live/xxlog/image-20230516203952363.png)
 
 
 

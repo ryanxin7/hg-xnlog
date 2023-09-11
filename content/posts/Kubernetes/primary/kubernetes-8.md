@@ -18,7 +18,7 @@ expirationReminder:
 
 **运行一个有状态的应用程序：**<br />[https://kubernetes.io/zh-cn/docs/tasks/run-application/run-replicated-stateful-application/](https://kubernetes.io/zh-cn/docs/tasks/run-application/run-replicated-stateful-application/)
 
- <br />![有状态的应用启动顺序](http://cdn1.ryanxin.live/1675045229487-bc9ccd32-8c67-4f4c-8097-e358c394297b.png)
+ <br />![有状态的应用启动顺序](https://cdn1.ryanxin.live/1675045229487-bc9ccd32-8c67-4f4c-8097-e358c394297b.png)
 
 
 
@@ -421,8 +421,8 @@ mysql-1   2/2     Running   0          64s
 mysql-2   1/2     Running   0          18s
 ```
 
-![](http://cdn1.ryanxin.live/1675321021708-f97227f0-ef0f-484e-977a-eb4be4d79421.png)
+![](https://cdn1.ryanxin.live/1675321021708-f97227f0-ef0f-484e-977a-eb4be4d79421.png)
 
 
 ### 验证MySQL主从同步是否正常 <br /> 
-![](http://cdn1.ryanxin.live/1675063510415-a66964a9-27e4-466f-92d9-1185adfa1ce7.png)
+![](https://cdn1.ryanxin.live/1675063510415-a66964a9-27e4-466f-92d9-1185adfa1ce7.png)
