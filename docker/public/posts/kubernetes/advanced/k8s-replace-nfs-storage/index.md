@@ -11,19 +11,6 @@
 
 
 
-
-y用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储。
-
-
-
-用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储。
-
-
-
-
-
-
-
 ## 情况说明
 
 业务使用 **Kubernetes NFS Subdir External Provisioner** 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储。
