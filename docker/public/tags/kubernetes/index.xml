@@ -4,7 +4,15 @@
     <link>https://hg-xnlog.github.io/tags/kubernetes/</link>
     <description>Kubernetes - 标签 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/kubernetes/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Wed, 13 Sep 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/kubernetes/" rel="self" type="application/rss+xml" /><item>
+  <title>K8S集群证书过期处理-Node NoReady状态</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/</link>
+  <pubDate>Wed, 13 Sep 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/</guid>
+  <description><![CDATA[警告 Kubelet 客户端证书在 Kubernetes 集群中扮演着重要的角色，因为它们用于节点与控制平面之间的安全通信和身份验证。当 kubelet 客户端证书在主节点和工作节点之间不一致时]]></description>
+</item>
+<item>
   <title>k8s强制删除pod&amp;pv&amp;pvc和ns&amp;namespace方法</title>
   <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E5%BC%BA%E5%88%B6%E5%88%A0%E9%99%A4podpvpvc%E5%92%8Cnsnamespace%E6%96%B9%E6%B3%95/</link>
   <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>

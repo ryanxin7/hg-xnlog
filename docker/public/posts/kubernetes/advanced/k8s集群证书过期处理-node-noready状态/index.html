@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>K8S集群证书过期处理-Node NoReady状态 - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
+<meta name="author-link" content="https://github.com/ryanxin7">
+<meta name="description" content="警告 Kubelet 客户端证书在 Kubernetes 集群中扮演着重要的角色，因为它们用于节点与控制平面之间的安全通信和身份验证。当 kubelet 客户端证书在主节点和工作节点之间不一致时" /><meta name="keywords" content='Kubernetes' /><meta itemprop="name" content="K8S集群证书过期处理-Node NoReady状态">
+<meta itemprop="description" content="警告 Kubelet 客户端证书在 Kubernetes 集群中扮演着重要的角色，因为它们用于节点与控制平面之间的安全通信和身份验证。当 kubelet 客户端证书在主节点和工作节点之间不一致时"><meta itemprop="datePublished" content="2023-09-13T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-09-13T00:00:00+00:00" />
+<meta itemprop="wordCount" content="3630"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="keywords" content="Kubernetes," /><meta property="og:title" content="K8S集群证书过期处理-Node NoReady状态" />
+<meta property="og:description" content="警告 Kubelet 客户端证书在 Kubernetes 集群中扮演着重要的角色，因为它们用于节点与控制平面之间的安全通信和身份验证。当 kubelet 客户端证书在主节点和工作节点之间不一致时" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-09-13T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-09-13T00:00:00+00:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
+
+<meta name="twitter:title" content="K8S集群证书过期处理-Node NoReady状态"/>
+<meta name="twitter:description" content="警告 Kubelet 客户端证书在 Kubernetes 集群中扮演着重要的角色，因为它们用于节点与控制平面之间的安全通信和身份验证。当 kubelet 客户端证书在主节点和工作节点之间不一致时"/>
+<meta name="application-name" content="Ryan’s Notebook">
+<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/primary/%E7%94%A8label%E6%8E%A7%E5%88%B6pod%E7%9A%84%E4%BD%8D%E7%BD%AE/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "K8S集群证书过期处理-Node NoReady状态",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/advanced\/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81\/"
+    },"genre": "posts","keywords": "Kubernetes","wordcount":  3630 ,
+    "url": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/advanced\/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81\/","datePublished": "2023-09-13T00:00:00+00:00","dateModified": "2023-09-13T00:00:00+00:00","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "Ryan"
+      },"description": ""
+  }
+  </script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><script>(window.localStorage?.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('data-theme', 'dark');</script><div class="wrapper" data-page-style="wide"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper" data-github-corner="right">
+    <div class="header-title">
+      <a href="/" title="Ryan&#39;s Notebook"><img loading="lazy" src="/images/pow.png" srcset="/images/pow.png, /images/pow.png 1.5x, /images/pow.png 2x" sizes="auto" data-title="Ryan&#39;s Notebook" data-alt="Ryan&#39;s Notebook" class="logo" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/><span class="header-title-text">Ryan’s Notebook</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 所有文章</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/friends/"
+                title="友情链接"
+                
+              ><i class="fa-solid fa-users fa-fw fa-sm" aria-hidden="true"></i> 友链</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/about/"
+                
+                
+              ><i class="fa-solid fa-user-tie fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容……" id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="Ryan&#39;s Notebook"><img loading="lazy" src="/images/pow.png" srcset="/images/pow.png, /images/pow.png 1.5x, /images/pow.png 2x" sizes="auto" data-title="/images/pow.png" data-alt="/images/pow.png" class="logo" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/><span class="header-title-text">Ryan’s Notebook</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容……" id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/posts/"
+                  
+                  
+                ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 所有文章</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/categories/"
+                  
+                  
+                ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/tags/"
+                  
+                  
+                ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/friends/"
+                  title="友情链接"
+                  
+                ><i class="fa-solid fa-users fa-fw fa-sm" aria-hidden="true"></i> 友链</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/about/"
+                  
+                  
+                ><i class="fa-solid fa-user-tie fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li
+              class="menu-item text-center"
+            ><a
+                  class="menu-link"
+                  href="https://github.com/ryanxin7/hg-xnlog"
+                  title="GitHub"
+                  rel="noopener noreferrer" target="_blank"
+                ><i class='fa-brands fa-github fa-fw' aria-hidden='true'></i> </a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="切换主题"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container"><aside class="toc" id="toc-auto"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside>
+
+  <aside class="aside-custom">
+    </aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>K8S集群证书过期处理-Node NoReady状态</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
+          <span class="post-category">收录于 <a href="/categories/kubernetes/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Kubernetes</a></span></div>
+      <div class="post-meta-line"><span title="发布于 2023-09-13 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-09-13">2023-09-13</time></span>&nbsp;<span title="更新于 2023-09-13 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-09-13">2023-09-13</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 3630 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 8 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="K8S集群证书过期处理-Node NoReady状态">
+            <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
+          </span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-排查过程">1. 排查过程</a></li>
+    <li><a href="#2处理过程">2.处理过程</a></li>
+    <li><a href="#3验证集群状态">3.验证集群状态</a></li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content"><hr>
+<div class="details admonition warning open">
+    <div class="details-summary admonition-title">
+      <i class="icon fa-solid fa-exclamation-triangle fa-fw" aria-hidden="true"></i>警告<i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i>
+    </div>
+    <div class="details-content">
+      <div class="admonition-content"><p>Kubelet 客户端证书在 Kubernetes 集群中扮演着重要的角色，因为它们用于节点与控制平面之间的安全通信和身份验证。当 kubelet 客户端证书在主节点和工作节点之间不一致时，可能会导致以下问题：</p>
+<ol>
+<li>
+<p><strong>认证问题</strong>：如果主节点和工作节点上的 kubelet 客户端证书不匹配，工作节点可能无法成功通过 kube-apiserver 连接到集群控制平面。这可能会导致节点在集群中无法注册，或者在节点重新启动后无法重新加入集群。</p>
+</li>
+<li>
+<p><strong>授权问题</strong>：证书不匹配可能导致工作节点无法获得所需的授权来执行其任务。这可能会影响到节点上运行的 Pod 的权限，导致访问受限或拒绝访问控制。</p>
+</li>
+<li>
+<p><strong>安全性问题</strong>：证书不一致可能会降低集群的整体安全性，因为节点身份的验证不再可靠。攻击者可能会利用此漏洞来伪装为不同的节点，试图执行恶意操作或访问敏感数据。</p>
+</li>
+<li>
+<p><strong>集群稳定性问题</strong>：证书问题可能导致节点的异常行为，例如节点的意外停机或无法访问。这可能会导致应用程序中断和集群不稳定</p>
+</li>
+</ol>
+</div>
+    </div>
+  </div>
+<h2 id="1-排查过程">1. 排查过程</h2>
+<p>查看pod状态发现 <code>zz-biz-01</code>节点上的pod全部为 <strong>Terminating</strong> 状态</p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/dbc44720c0482997709674bb501eb98.png" srcset="https://cdn1.ryanxin.live/dbc44720c0482997709674bb501eb98.png, https://cdn1.ryanxin.live/dbc44720c0482997709674bb501eb98.png 1.5x, https://cdn1.ryanxin.live/dbc44720c0482997709674bb501eb98.png 2x" sizes="auto" data-title="dbc44720c0482997709674bb501eb98" data-alt="dbc44720c0482997709674bb501eb98" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p>查看集群节点状态 zz-biz-01 为<strong>NoReady</strong> 状态</p>
+<pre tabindex="0"><code>[root@zz-front-01 ~]# kubectl get node
+NAME          STATUS   ROLES                  AGE    VERSION
+zz-biz-01     NoReady    &lt;none&gt;                 729d   v1.21.4
+zz-front-01   Ready    control-plane,master   729d   v1.21.4</code></pre><p>查看该节点详细信息:</p>
+<p>在Conditions中显示<strong>NodeStatusUnknown</strong>，说明该节点与master节点通信异常，可能是网络问题也可能是证书认证问题。</p>
+<div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@zz-front-01 pki<span class="o">]</span><span class="c1"># kubectl describe node zz-biz-01</span>
+</span></span><span class="line"><span class="cl">Name:               zz-biz-01
+</span></span><span class="line"><span class="cl">Roles:              &lt;none&gt;
+</span></span><span class="line"><span class="cl">Labels:             beta.kubernetes.io/arch<span class="o">=</span>amd64
+</span></span><span class="line"><span class="cl">                    beta.kubernetes.io/os<span class="o">=</span>linux
+</span></span><span class="line"><span class="cl">                    kubernetes.io/arch<span class="o">=</span>amd64
+</span></span><span class="line"><span class="cl">                    kubernetes.io/hostname<span class="o">=</span>zz-biz-01
+</span></span><span class="line"><span class="cl">                    kubernetes.io/os<span class="o">=</span>linux
+</span></span><span class="line"><span class="cl">Annotations:        flannel.alpha.coreos.com/backend-data: <span class="o">{</span><span class="s2">&#34;VNI&#34;</span>:1,<span class="s2">&#34;VtepMAC&#34;</span>:<span class="s2">&#34;9e:4b:af:c8:84:39&#34;</span><span class="o">}</span>
+</span></span><span class="line"><span class="cl">                    flannel.alpha.coreos.com/backend-type: vxlan
+</span></span><span class="line"><span class="cl">                    flannel.alpha.coreos.com/kube-subnet-manager: <span class="nb">true</span>
+</span></span><span class="line"><span class="cl">                    flannel.alpha.coreos.com/public-ip: 172.21.10.158
+</span></span><span class="line"><span class="cl">                    kubeadm.alpha.kubernetes.io/cri-socket: /run/containerd/containerd.sock
+</span></span><span class="line"><span class="cl">                    node.alpha.kubernetes.io/ttl: <span class="m">0</span>
+</span></span><span class="line"><span class="cl">                    volumes.kubernetes.io/controller-managed-attach-detach: <span class="nb">true</span>
+</span></span><span class="line"><span class="cl">CreationTimestamp:  Mon, <span class="m">13</span> Sep <span class="m">2021</span> 20:43:32 +0800
+</span></span><span class="line"><span class="cl">Taints:             node.kubernetes.io/unreachable:NoExecute
+</span></span><span class="line"><span class="cl">                    node.kubernetes.io/unreachable:NoSchedule
+</span></span><span class="line"><span class="cl">Unschedulable:      <span class="nb">false</span>
+</span></span><span class="line"><span class="cl">Lease:
+</span></span><span class="line"><span class="cl">  HolderIdentity:  zz-biz-01
+</span></span><span class="line"><span class="cl">  AcquireTime:     &lt;unset&gt;
+</span></span><span class="line"><span class="cl">  RenewTime:       Wed, <span class="m">17</span> May <span class="m">2023</span> 12:11:16 +0800
+</span></span><span class="line"><span class="cl">Conditions:
+</span></span><span class="line"><span class="cl">  Type                 Status    LastHeartbeatTime                 LastTransitionTime                Reason              Message
+</span></span><span class="line"><span class="cl">  ----                 ------    -----------------                 ------------------                ------              -------
+</span></span><span class="line"><span class="cl">  NetworkUnavailable   False     Sat, <span class="m">22</span> Apr <span class="m">2023</span> 13:18:44 +0800   Sat, <span class="m">22</span> Apr <span class="m">2023</span> 13:18:44 +0800   FlannelIsUp         Flannel is running on thi                      s node
+</span></span><span class="line"><span class="cl">  MemoryPressure       Unknown   Wed, <span class="m">17</span> May <span class="m">2023</span> 12:10:38 +0800   Tue, <span class="m">12</span> Sep <span class="m">2023</span> 11:07:27 +0800   NodeStatusUnknown   Kubelet stopped posting n                      ode status.
+</span></span><span class="line"><span class="cl">  DiskPressure         Unknown   Wed, <span class="m">17</span> May <span class="m">2023</span> 12:10:38 +0800   Tue, <span class="m">12</span> Sep <span class="m">2023</span> 11:07:27 +0800   NodeStatusUnknown   Kubelet stopped posting n                      ode status.
+</span></span><span class="line"><span class="cl">  PIDPressure          Unknown   Wed, <span class="m">17</span> May <span class="m">2023</span> 12:10:38 +0800   Tue, <span class="m">12</span> Sep <span class="m">2023</span> 11:07:27 +0800   NodeStatusUnknown   Kubelet stopped posting n                      ode status.
+</span></span><span class="line"><span class="cl">  Ready                Unknown   Wed, <span class="m">17</span> May <span class="m">2023</span> 12:10:38 +0800   Tue, <span class="m">12</span> Sep <span class="m">2023</span> 11:07:27 +0800   NodeStatusUnknown   Kubelet stopped posting n                      ode status.
+</span></span><span class="line"><span class="cl">Addresses:
+</span></span><span class="line"><span class="cl">  InternalIP:  172.21.10.158
+</span></span><span class="line"><span class="cl">  Hostname:    zz-biz-01
+</span></span><span class="line"><span class="cl">Capacity:
+</span></span><span class="line"><span class="cl">  cpu:                <span class="m">8</span>
+</span></span><span class="line"><span class="cl">  ephemeral-storage:  51175Mi
+</span></span><span class="line"><span class="cl">  hugepages-1Gi:      <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  hugepages-2Mi:      <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  memory:             16265960Ki
+</span></span><span class="line"><span class="cl">  pods:               <span class="m">110</span>
+</span></span><span class="line"><span class="cl">Allocatable:
+</span></span><span class="line"><span class="cl">  cpu:                <span class="m">8</span>
+</span></span><span class="line"><span class="cl">  ephemeral-storage:  <span class="m">48294789041</span>
+</span></span><span class="line"><span class="cl">  hugepages-1Gi:      <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  hugepages-2Mi:      <span class="m">0</span>
+</span></span><span class="line"><span class="cl">  memory:             16163560Ki
+</span></span><span class="line"><span class="cl">  pods:               <span class="m">110</span>
+</span></span><span class="line"><span class="cl">System Info:
+</span></span><span class="line"><span class="cl">  Machine ID:                 9f225d6ba3fa4e24acb9d493fcc2a126
+</span></span><span class="line"><span class="cl">  System UUID:                420B4078-BE8A-D926-2521-CFE406B4A8B9
+</span></span><span class="line"><span class="cl">  Boot ID:                    14618e98-5f60-4483-8afe-dffe3ecb1319
+</span></span><span class="line"><span class="cl">  Kernel Version:             3.10.0-1160.42.2.el7.x86_64
+</span></span><span class="line"><span class="cl">  OS Image:                   CentOS Linux <span class="m">7</span> <span class="o">(</span>Core<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  Operating System:           linux
+</span></span><span class="line"><span class="cl">  Architecture:               amd64
+</span></span><span class="line"><span class="cl">  Container Runtime Version:  containerd://1.4.9
+</span></span><span class="line"><span class="cl">  Kubelet Version:            v1.21.4
+</span></span><span class="line"><span class="cl">  Kube-Proxy Version:         v1.21.4
+</span></span><span class="line"><span class="cl">PodCIDR:                      10.244.1.0/24
+</span></span><span class="line"><span class="cl">PodCIDRs:                     10.244.1.0/24
+</span></span><span class="line"><span class="cl">Non-terminated Pods:          <span class="o">(</span><span class="m">2</span> in total<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  Namespace                   Name                     CPU Requests  CPU Limits  Memory Requests  Memory Limits  Age
+</span></span><span class="line"><span class="cl">  ---------                   ----                     ------------  ----------  ---------------  -------------  ---
+</span></span><span class="line"><span class="cl">  kube-system                 kube-flannel-ds-lk647    100m <span class="o">(</span>1%<span class="o">)</span>     100m <span class="o">(</span>1%<span class="o">)</span>   50Mi <span class="o">(</span>0%<span class="o">)</span>        50Mi <span class="o">(</span>0%<span class="o">)</span>      728d
+</span></span><span class="line"><span class="cl">  kube-system                 kube-proxy-vgd4p         <span class="m">0</span> <span class="o">(</span>0%<span class="o">)</span>        <span class="m">0</span> <span class="o">(</span>0%<span class="o">)</span>      <span class="m">0</span> <span class="o">(</span>0%<span class="o">)</span>           <span class="m">0</span> <span class="o">(</span>0%<span class="o">)</span>         728d
+</span></span><span class="line"><span class="cl">Allocated resources:
+</span></span><span class="line"><span class="cl">  <span class="o">(</span>Total limits may be over <span class="m">100</span> percent, i.e., overcommitted.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  Resource           Requests   Limits
+</span></span><span class="line"><span class="cl">  --------           --------   ------
+</span></span><span class="line"><span class="cl">  cpu                100m <span class="o">(</span>1%<span class="o">)</span>  100m <span class="o">(</span>1%<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  memory             50Mi <span class="o">(</span>0%<span class="o">)</span>  50Mi <span class="o">(</span>0%<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  ephemeral-storage  <span class="m">0</span> <span class="o">(</span>0%<span class="o">)</span>     <span class="m">0</span> <span class="o">(</span>0%<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  hugepages-1Gi      <span class="m">0</span> <span class="o">(</span>0%<span class="o">)</span>     <span class="m">0</span> <span class="o">(</span>0%<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  hugepages-2Mi      <span class="m">0</span> <span class="o">(</span>0%<span class="o">)</span>     <span class="m">0</span> <span class="o">(</span>0%<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Events:
+</span></span><span class="line"><span class="cl">  Type     Reason                   Age                     From     Message
+</span></span><span class="line"><span class="cl">  ----     ------                   ----                    ----     -------
+</span></span><span class="line"><span class="cl">  Normal   Starting                 60m                     kubelet  Starting kubelet.
+</span></span><span class="line"><span class="cl">  Warning  InvalidDiskCapacity      60m                     kubelet  invalid capacity <span class="m">0</span> on image filesystem
+</span></span><span class="line"><span class="cl">  Normal   NodeAllocatableEnforced  60m                     kubelet  Updated Node Allocatable limit across pods
+</span></span><span class="line"><span class="cl">  Normal   NodeHasSufficientMemory  60m <span class="o">(</span>x5 over 60m<span class="o">)</span>       kubelet  Node zz-biz-01 status is now: NodeHasSufficientMemory
+</span></span><span class="line"><span class="cl">  Normal   NodeHasNoDiskPressure    60m <span class="o">(</span>x5 over 60m<span class="o">)</span>       kubelet  Node zz-biz-01 status is now: NodeHasNoDiskPressure
+</span></span><span class="line"><span class="cl">  Normal   NodeHasSufficientPID     60m <span class="o">(</span>x5 over 60m<span class="o">)</span>       kubelet  Node zz-biz-01 status is now: NodeHasSufficientPID
+</span></span><span class="line"><span class="cl">  Warning  InvalidDiskCapacity      59m                     kubelet  invalid capacity <span class="m">0</span> on image filesystem
+</span></span><span class="line"><span class="cl">  Normal   Starting                 59m                     kubelet  Starting kubelet.
+</span></span><span class="line"><span class="cl">  Normal   NodeAllocatableEnforced  59m                     kubelet  Updated Node Allocatable limit across pods
+</span></span><span class="line"><span class="cl">  Normal   NodeHasNoDiskPressure    59m <span class="o">(</span>x7 over 59m<span class="o">)</span>       kubelet  Node zz-biz-01 status is now: NodeHasNoDiskPressure
+</span></span><span class="line"><span class="cl">  Normal   NodeHasSufficientPID     59m <span class="o">(</span>x7 over 59m<span class="o">)</span>       kubelet  Node zz-biz-01 status is now: NodeHasSufficientPID
+</span></span><span class="line"><span class="cl">  Normal   NodeHasSufficientMemory  49m <span class="o">(</span>x86 over 59m<span class="o">)</span>      kubelet  Node zz-biz-01 status is now: NodeHasSufficientMemory
+</span></span><span class="line"><span class="cl">  Normal   Starting                 49m                     kubelet  Starting kubelet.
+</span></span><span class="line"><span class="cl">  Normal   Starting                 49m                     kubelet  Starting kubelet.
+</span></span><span class="line"><span class="cl">  Normal   Starting                 48m                     kubelet  Starting kubelet.
+</span></span><span class="line"><span class="cl">  Normal   Starting                 47m                     kubelet  Starting kubelet.
+</span></span><span class="line"><span class="cl">  Normal   Starting                 46m                     kubelet  Starting kubelet.
+</span></span><span class="line"><span class="cl">  Warning  InvalidDiskCapacity      46m                     kubelet  invalid capacity <span class="m">0</span> on image filesystem
+</span></span><span class="line"><span class="cl">  Normal   NodeAllocatableEnforced  46m                     kubelet  Updated Node Allocatable limit across pods
+</span></span><span class="line"><span class="cl">  Normal   NodeHasSufficientMemory  46m <span class="o">(</span>x3 over 46m<span class="o">)</span>       kubelet  Node zz-biz-01 status is now: NodeHasSufficientMemory
+</span></span><span class="line"><span class="cl">  Normal   NodeHasNoDiskPressure    46m <span class="o">(</span>x3 over 46m<span class="o">)</span>       kubelet  Node zz-biz-01 status is now: NodeHasNoDiskPressure
+</span></span><span class="line"><span class="cl">  Normal   NodeHasSufficientPID     46m <span class="o">(</span>x3 over 46m<span class="o">)</span>       kubelet  Node zz-biz-01 status is now: NodeHasSufficientPID
+</span></span><span class="line"><span class="cl">  Normal   Starting                 46m                     kubelet  Starting kubelet.
+</span></span><span class="line"><span class="cl">  Warning  InvalidDiskCapacity      46m                     kubelet  invalid capacity <span class="m">0</span> on image filesystem
+</span></span><span class="line"><span class="cl">  Normal   NodeAllocatableEnforced  45m                     kubelet  Updated Node Allocatable limit across pods
+</span></span><span class="line"><span class="cl">  Normal   NodeHasNoDiskPressure    45m <span class="o">(</span>x7 over 46m<span class="o">)</span>       kubelet  Node zz-biz-01 status is now: NodeHasNoDiskPressure
+</span></span><span class="line"><span class="cl">  Normal   NodeHasSufficientPID     45m <span class="o">(</span>x7 over 46m<span class="o">)</span>       kubelet  Node zz-biz-01 status is now: NodeHasSufficientPID
+</span></span><span class="line"><span class="cl">  Normal   NodeHasSufficientMemory  15m <span class="o">(</span>x253 over 46m<span class="o">)</span>     kubelet  Node zz-biz-01 status is now: NodeHasSufficientMemory
+</span></span><span class="line"><span class="cl">  Normal   Starting                 14m                     kubelet  Starting kubelet.
+</span></span><span class="line"><span class="cl">  Warning  InvalidDiskCapacity      14m                     kubelet  invalid capacity <span class="m">0</span> on image filesystem
+</span></span><span class="line"><span class="cl">  Normal   NodeAllocatableEnforced  14m                     kubelet  Updated Node Allocatable limit across pods
+</span></span><span class="line"><span class="cl">  Normal   NodeHasNoDiskPressure    13m <span class="o">(</span>x7 over 14m<span class="o">)</span>       kubelet  Node zz-biz-01 status is now: NodeHasNoDiskPressure
+</span></span><span class="line"><span class="cl">  Normal   NodeHasSufficientPID     13m <span class="o">(</span>x7 over 14m<span class="o">)</span>       kubelet  Node zz-biz-01 status is now: NodeHasSufficientPID
+</span></span><span class="line"><span class="cl">  Normal   NodeHasSufficientMemory  13m <span class="o">(</span>x8 over 14m<span class="o">)</span>       kubelet  Node zz-biz-01 status is now: NodeHasSufficientMemory
+</span></span><span class="line"><span class="cl">  Normal   Starting                 12m                     kubelet  Starting kubelet.
+</span></span><span class="line"><span class="cl">  Warning  InvalidDiskCapacity      12m                     kubelet  invalid capacity <span class="m">0</span> on image filesystem
+</span></span><span class="line"><span class="cl">  Normal   NodeAllocatableEnforced  12m                     kubelet  Updated Node Allocatable limit across pods
+</span></span><span class="line"><span class="cl">  Normal   NodeHasNoDiskPressure    11m <span class="o">(</span>x7 over 12m<span class="o">)</span>       kubelet  Node zz-biz-01 status is now: NodeHasNoDiskPressure
+</span></span><span class="line"><span class="cl">  Normal   NodeHasSufficientPID     11m <span class="o">(</span>x7 over 12m<span class="o">)</span>       kubelet  Node zz-biz-01 status is now: NodeHasSufficientPID
+</span></span><span class="line"><span class="cl">  Normal   NodeHasSufficientMemory  11m <span class="o">(</span>x8 over 12m<span class="o">)</span>       kubelet  Node zz-biz-01 status is now: NodeHasSufficientMemory
+</span></span><span class="line"><span class="cl">  Normal   Starting                 9m55s                   kubelet  Starting kubelet.
+</span></span><span class="line"><span class="cl">  Warning  InvalidDiskCapacity      9m55s                   kubelet  invalid capacity <span class="m">0</span> on image filesystem
+</span></span><span class="line"><span class="cl">  Normal   NodeAllocatableEnforced  9m55s                   kubelet  Updated Node Allocatable limit across pods
+</span></span><span class="line"><span class="cl">  Normal   NodeHasNoDiskPressure    9m42s <span class="o">(</span>x7 over 9m55s<span class="o">)</span>   kubelet  Node zz-biz-01 status is now: NodeHasNoDiskPressure
+</span></span><span class="line"><span class="cl">  Normal   NodeHasSufficientPID     9m42s <span class="o">(</span>x7 over 9m55s<span class="o">)</span>   kubelet  Node zz-biz-01 status is now: NodeHasSufficientPID
+</span></span><span class="line"><span class="cl">  Normal   NodeHasSufficientMemory  4m53s <span class="o">(</span>x47 over 9m55s<span class="o">)</span>  kubelet  Node zz-biz-01 status is now: NodeHasSufficientMemory
+</span></span><span class="line"><span class="cl">  Normal   Starting                 3m20s                   kubelet  Starting kubelet.
+</span></span><span class="line"><span class="cl">  Warning  InvalidDiskCapacity      3m20s                   kubelet  invalid capacity <span class="m">0</span> on image filesystem
+</span></span><span class="line"><span class="cl">  Normal   NodeAllocatableEnforced  3m20s                   kubelet  Updated Node Allocatable limit across pods
+</span></span><span class="line"><span class="cl">  Normal   NodeHasNoDiskPressure    3m7s <span class="o">(</span>x7 over 3m20s<span class="o">)</span>    kubelet  Node zz-biz-01 status is now: NodeHasNoDiskPressure
+</span></span><span class="line"><span class="cl">  Normal   NodeHasSufficientPID     3m7s <span class="o">(</span>x7 over 3m20s<span class="o">)</span>    kubelet  Node zz-biz-01 status is now: NodeHasSufficientPID
+</span></span><span class="line"><span class="cl">  Normal   NodeHasSufficientMemory  3m <span class="o">(</span>x8 over 3m20s<span class="o">)</span>      kubelet  Node zz-biz-01 status is now: NodeHasSufficientMemory</span></span></code></pre></div><p>查看master节点kubelet日志信息</p>
+<div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@zz-front-01 ~<span class="o">]</span><span class="c1"># systemctl status kubelet.service -l</span>
+</span></span><span class="line"><span class="cl">● kubelet.service - kubelet: The Kubernetes Node Agent
+</span></span><span class="line"><span class="cl">   Loaded: loaded <span class="o">(</span>/usr/lib/systemd/system/kubelet.service<span class="p">;</span> enabled<span class="p">;</span> vendor preset: disabled<span class="o">)</span>
+</span></span><span class="line"><span class="cl">  Drop-In: /usr/lib/systemd/system/kubelet.service.d
+</span></span><span class="line"><span class="cl">           └─10-kubeadm.conf
+</span></span><span class="line"><span class="cl">   Active: active <span class="o">(</span>running<span class="o">)</span> since 六 2023-04-22 13:16:49 CST<span class="p">;</span> <span class="m">4</span> months <span class="m">21</span> days ago
+</span></span><span class="line"><span class="cl">     Docs: https://kubernetes.io/docs/
+</span></span><span class="line"><span class="cl"> Main PID: <span class="m">1202</span> <span class="o">(</span>kubelet<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    Tasks: <span class="m">27</span>
+</span></span><span class="line"><span class="cl">   Memory: 151.1M
+</span></span><span class="line"><span class="cl">   CGroup: /system.slice/kubelet.service
+</span></span><span class="line"><span class="cl">           └─1202 /usr/bin/kubelet --bootstrap-kubeconfig<span class="o">=</span>/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig<span class="o">=</span>/etc/kubernetes/kubelet.conf --config<span class="o">=</span>/var/lib/kubele     t/config.yaml --container-runtime<span class="o">=</span>remote --container-runtime-endpoint<span class="o">=</span>unix:///run/containerd/containerd.sock --pod-infra-container-image<span class="o">=</span>harbor.rmxc.tech/k8s-gcr-i     mages/pause:3.4.1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">9月 <span class="m">12</span> 10:31:36 zz-front-01 kubelet<span class="o">[</span>1202<span class="o">]</span>: E0912 10:31:36.403864    <span class="m">1202</span> nestedpendingoperations.go:301<span class="o">]</span> Operation <span class="k">for</span> <span class="s2">&#34;{volumeName:kubernetes.io/projected/f1b313c     c-311f-4ab9-8aee-da22ca5416a2-kube-api-access-82qbr podName:f1b313cc-311f-4ab9-8aee-da22ca5416a2 nodeName:}&#34;</span> failed. No retries permitted <span class="k">until</span> 2023-09-12 10:33:38     .403807746 +0800 CST <span class="nv">m</span><span class="o">=</span>+12345406.211185998 <span class="o">(</span>durationBeforeRetry 2m2s<span class="o">)</span>. Error: <span class="s2">&#34;MountVolume.SetUp failed for volume \&#34;kube-api-access-82qbr\&#34; (UniqueName: \&#34;kuberne     tes.io/projected/f1b313cc-311f-4ab9-8aee-da22ca5416a2-kube-api-access-82qbr\&#34;) pod \&#34;ingress-nginx-controller-5687cff78c-cfvbt\&#34; (UID: \&#34;f1b313cc-311f-4ab9-8aee-da     22ca5416a2\&#34;) : failed to fetch token: Post \&#34;https://zz-front-01:6443/api/v1/namespaces/ingress-nginx/serviceaccounts/ingress-nginx/token\&#34;: dial tcp 172.21.10.15     7:6443: connect: connection refused&#34;</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">12</span> 10:31:38 zz-front-01 kubelet<span class="o">[</span>1202<span class="o">]</span>: E0912 10:31:38.394737    <span class="m">1202</span> reflector.go:138<span class="o">]</span> object-<span class="s2">&#34;ingress-nginx&#34;</span>/<span class="s2">&#34;ingress-nginx-admission&#34;</span>: Failed to watch *v1.Se     cret: failed to list *v1.Secret: Get <span class="s2">&#34;https://zz-front-01:6443/api/v1/namespaces/ingress-nginx/secrets?fieldSelector=metadata.name%3Dingress-nginx-admission&amp;resour     ceVersion=132547327&#34;</span>: dial tcp 172.21.10.157:6443: connect: connection refused
+</span></span><span class="line"><span class="cl">9月 <span class="m">12</span> 10:31:39 zz-front-01 kubelet<span class="o">[</span>1202<span class="o">]</span>: I0912 10:31:39.161512    <span class="m">1202</span> status_manager.go:566<span class="o">]</span> <span class="s2">&#34;Failed to get status for pod&#34;</span> <span class="nv">podUID</span><span class="o">=</span>887f7c42-fe79-4471-8cdc-4d94f     894d4c5 <span class="nv">pod</span><span class="o">=</span><span class="s2">&#34;zz-prod/fe-nginx-84fbf5cbcc-zvmsf&#34;</span> <span class="nv">error</span><span class="o">=</span><span class="s2">&#34;Get \&#34;https://zz-front-01:6443/api/v1/namespaces/zz-prod/pods/fe-nginx-84fbf5cbcc-zvmsf\&#34;: dial tcp 172.21.1     0.157:6443: connect: connection refused&#34;</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">12</span> 10:31:39 zz-front-01 kubelet<span class="o">[</span>1202<span class="o">]</span>: I0912 10:31:39.161970    <span class="m">1202</span> status_manager.go:566<span class="o">]</span> <span class="s2">&#34;Failed to get status for pod&#34;</span> <span class="nv">podUID</span><span class="o">=</span>f1b313cc-311f-4ab9-8aee-da22c     a5416a2 <span class="nv">pod</span><span class="o">=</span><span class="s2">&#34;ingress-nginx/ingress-nginx-controller-5687cff78c-cfvbt&#34;</span> <span class="nv">error</span><span class="o">=</span><span class="s2">&#34;Get \&#34;https://zz-front-01:6443/api/v1/namespaces/ingress-nginx/pods/ingress-nginx-cont     roller-5687cff78c-cfvbt\&#34;: dial tcp 172.21.10.157:6443: connect: connection refused&#34;</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">12</span> 10:31:39 zz-front-01 kubelet<span class="o">[</span>1202<span class="o">]</span>: I0912 10:31:39.162338    <span class="m">1202</span> status_manager.go:566<span class="o">]</span> <span class="s2">&#34;Failed to get status for pod&#34;</span> <span class="nv">podUID</span><span class="o">=</span>b68b9cc1-df20-44e5-ad09-3e06b     ad98bb3 <span class="nv">pod</span><span class="o">=</span><span class="s2">&#34;zz-prod/mysql57-5d46dc4786-x9nb7&#34;</span> <span class="nv">error</span><span class="o">=</span><span class="s2">&#34;Get \&#34;https://zz-front-01:6443/api/v1/namespaces/zz-prod/pods/mysql57-5d46dc4786-x9nb7\&#34;: dial tcp 172.21.10.     157:6443: connect: connection refused&#34;</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">12</span> 10:31:39 zz-front-01 kubelet<span class="o">[</span>1202<span class="o">]</span>: I0912 10:31:39.162601    <span class="m">1202</span> status_manager.go:566<span class="o">]</span> <span class="s2">&#34;Failed to get status for pod&#34;</span> <span class="nv">podUID</span><span class="o">=</span>c053119073c29f2af21835ffd25ec     d51 <span class="nv">pod</span><span class="o">=</span><span class="s2">&#34;kube-system/kube-apiserver-zz-front-01&#34;</span> <span class="nv">error</span><span class="o">=</span><span class="s2">&#34;Get \&#34;https://zz-front-01:6443/api/v1/namespaces/kube-system/pods/kube-apiserver-zz-front-01\&#34;: dial tcp 17     2.21.10.157:6443: connect: connection refused&#34;</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">12</span> 10:31:39 zz-front-01 kubelet<span class="o">[</span>1202<span class="o">]</span>: I0912 10:31:39.162818    <span class="m">1202</span> status_manager.go:566<span class="o">]</span> <span class="s2">&#34;Failed to get status for pod&#34;</span> <span class="nv">podUID</span><span class="o">=</span>844359d0-0d59-4e4d-8014-12c5d     930c9f8 <span class="nv">pod</span><span class="o">=</span><span class="s2">&#34;kube-system/nfs-client-nfs-subdir-external-provisioner-7b4dcd59f8-79mk8&#34;</span> <span class="nv">error</span><span class="o">=</span><span class="s2">&#34;Get \&#34;https://zz-front-01:6443/api/v1/namespaces/kube-system/pods/nfs-     client-nfs-subdir-external-provisioner-7b4dcd59f8-79mk8\&#34;: dial tcp 172.21.10.157:6443: connect: connection refused&#34;</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">12</span> 10:31:40 zz-front-01 kubelet<span class="o">[</span>1202<span class="o">]</span>: E0912 10:31:40.834602    <span class="m">1202</span> reflector.go:138<span class="o">]</span> k8s.io/client-go/informers/factory.go:134: Failed to watch *v1.Node: fai     led to list *v1.Node: Get <span class="s2">&#34;https://zz-front-01:6443/api/v1/nodes?fieldSelector=metadata.name%3Dzz-front-01&amp;resourceVersion=132547450&#34;</span>: dial tcp 172.21.10.157:6443:      connect: connection refused
+</span></span><span class="line"><span class="cl">9月 <span class="m">12</span> 10:31:41 zz-front-01 kubelet<span class="o">[</span>1202<span class="o">]</span>: I0912 10:31:41.161636    <span class="m">1202</span> scope.go:111<span class="o">]</span> <span class="s2">&#34;RemoveContainer&#34;</span> <span class="nv">containerID</span><span class="o">=</span><span class="s2">&#34;9de69e79721d6ab0ee407dfcd8bd16eba150b941175b2     c1b9606c2dbd4ab4940&#34;</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">12</span> 10:31:41 zz-front-01 kubelet<span class="o">[</span>1202<span class="o">]</span>: E0912 10:31:41.162682    <span class="m">1202</span> pod_workers.go:190<span class="o">]</span> <span class="s2">&#34;Error syncing pod, skipping&#34;</span> <span class="nv">err</span><span class="o">=</span><span class="s2">&#34;failed to \&#34;StartContainer\&#34; for \&#34;     controller\&#34; with CrashLoopBackOff: \&#34;back-off 5m0s restarting failed container=controller pod=ingress-nginx-controller-5687cff78c-cfvbt_ingress-nginx(f1b313cc-311     f-4ab9-8aee-da22ca5416a2)\&#34;&#34;</span> <span class="nv">pod</span><span class="o">=</span><span class="s2">&#34;ingress-nginx/ingress-nginx-controller-5687cff78c-cfvbt&#34;</span> <span class="nv">podUID</span><span class="o">=</span>f1b313cc-311f-4ab9-8aee-da22ca5416a2</span></span></code></pre></div><p>这些日志条目是来自一个名为 &ldquo;zz-front-01&rdquo; 的节点上运行的 Kubernetes kubelet 的记录。这些日志指示 kubelet 与 Kubernetes API 服务器的连接存在一些问题，kubelet 在连接到 API 服务器时遇到问题，导致出现各种错误。</p>
+<p>以下是日志中提到的主要问题的解释：</p>
+<ol>
+<li><strong>连接被拒绝到 API 服务器</strong>：kubelet 报告无法连接到 &ldquo;<a href="https://zz-front-01:6443/"target="_blank" rel="external nofollow noopener noreferrer">https://zz-front-01:6443</a>&rdquo; 上的 Kubernetes API 服务器。这由错误消息 &ldquo;dial tcp 172.21.10.157:6443: connect: connection refused&rdquo; 表示。kubelet 依赖 API 服务器执行各种任务，所以这个连接问题会导致各种问题。</li>
+<li><strong>无法监视资源</strong>：kubelet 无法监视和列出来自 API 服务器的资源，如 Secrets 和 Nodes。这个失败很可能与上述连接问题有关。它影响了各种组件，例如 Ingress 控制器、MySQL pods、kube-apiserver 等。</li>
+<li><strong>无法获取 Pod 的状态</strong>：kubelet 也无法获取来自 API 服务器的 pod 状态。这会影响不同命名空间中的各种 pod，包括 &ldquo;zz-prod/fe-nginx-84fbf5cbcc-zvmsf&rdquo;、&ldquo;ingress-nginx/ingress-nginx-controller-5687cff78c-cfvbt&rdquo;、&ldquo;zz-prod/mysql57-5d46dc4786-x9nb7&rdquo;、&ldquo;kube-system/kube-apiserver-zz-front-01&rdquo; 等等。</li>
+<li><strong>同步 Pod 时出错</strong>：在尝试同步 &ldquo;ingress-nginx-controller-5687cff78c-cfvbt&rdquo; pod 时报告了一个错误。错误提到了 &ldquo;CrashLoopBackOff&rdquo; 条件，通常表示 pod 反复启动失败。</li>
+</ol>
+<p>这些问题的根本原因似乎是 kubelet 无法建立与运行在 &ldquo;zz-front-01:6443&rdquo; 上的 Kubernetes API 服务器的连接。</p>
+<p>检查集群证书</p>
+<p>可以看到已经过期了</p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20230912104901164.png" srcset="https://cdn1.ryanxin.live/image-20230912104901164.png, https://cdn1.ryanxin.live/image-20230912104901164.png 1.5x, https://cdn1.ryanxin.live/image-20230912104901164.png 2x" sizes="auto" data-title="image-20230912104901164" data-alt="image-20230912104901164" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20230912105524775.png" srcset="https://cdn1.ryanxin.live/image-20230912105524775.png, https://cdn1.ryanxin.live/image-20230912105524775.png 1.5x, https://cdn1.ryanxin.live/image-20230912105524775.png 2x" sizes="auto" data-title="image-20230912105524775" data-alt="image-20230912105524775" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h2 id="2处理过程">2.处理过程</h2>
+<p>刷新master证书，过程参考
+<a href="https://www.xinn.cc/posts/notes/k8s-certificate-missery/"target="_blank" rel="external nofollow noopener noreferrer">https://www.xinn.cc/posts/notes/k8s-certificate-missery/</a>
+<a href="https://www.jianshu.com/p/10269275239d"target="_blank" rel="external nofollow noopener noreferrer">https://www.jianshu.com/p/10269275239d</a></p>
+<p>通过查看<code>/etc/kubernetes/kubelet.conf</code> 发现证书路径<code>/var/lib/kubelet/pki/kubelet-client-current.pem</code></p>
+<p>到<code>/var/lib/kubelet/pki/</code> 路径下查看证书日期</p>
+<div class="highlight" id="id-4"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@zz-biz-01 pki<span class="o">]</span><span class="c1"># ls</span>
+</span></span><span class="line"><span class="cl">apiserver-kubelet-client.crt  kubelet-client-2021-09-13-20-43-21.pem  kubelet-client-current.pem  kubelet.key
+</span></span><span class="line"><span class="cl">apiserver-kubelet-client.key  kubelet-client-2022-08-16-09-23-17.pem  kubelet.crt                 kubelet.key.bak
+</span></span><span class="line"><span class="cl">bak                           kubelet-client-2023-04-25-14-58-57.pem  kubelet.crt.bak</span></span></code></pre></div><p>查看证书有效期</p>
+<div class="highlight" id="id-5"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">openssl x509 -in /var/lib/kubelet/pki/kubelet-client-current.pem -noout -text <span class="p">|</span> grep Not</span></span></code></pre></div><p>批量清除<code>zz-biz-01</code>节点上全部为 <strong>Terminating</strong> 状态的Pod</p>
+<div class="highlight" id="id-6"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">kubectl get pods -n kube-system <span class="p">|</span> grep Terminating <span class="p">|</span> awk <span class="s1">&#39;{print $1}&#39;</span> <span class="p">|</span> xargs kubectl delete pod -n kube-system --force --grace-period<span class="o">=</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">kubectl get pods -n zz-prod <span class="p">|</span> grep Terminating <span class="p">|</span> awk <span class="s1">&#39;{print $1}&#39;</span> <span class="p">|</span> xargs kubectl delete pod -n zz-prod --force --grace-period<span class="o">=</span><span class="m">0</span></span></span></code></pre></div><p>查看worker 节点的kubelet日志</p>
+<p>证书已经更新了但是worker节点还是出现认证问题：</p>
+<div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:36 zz-biz-01 systemd<span class="o">[</span>1<span class="o">]</span>: Unit kubelet.service entered failed state.
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:36 zz-biz-01 systemd<span class="o">[</span>1<span class="o">]</span>: kubelet.service failed.
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:47 zz-biz-01 systemd<span class="o">[</span>1<span class="o">]</span>: kubelet.service holdoff <span class="nb">time</span> over, scheduling restart.
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:47 zz-biz-01 systemd<span class="o">[</span>1<span class="o">]</span>: Stopped kubelet: The Kubernetes Node Agent.
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:47 zz-biz-01 systemd<span class="o">[</span>1<span class="o">]</span>: Started kubelet: The Kubernetes Node Agent.
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:47 zz-biz-01 kubelet<span class="o">[</span>14097<span class="o">]</span>: I0913 09:21:47.127825   <span class="m">14097</span> server.go:197<span class="o">]</span> <span class="s2">&#34;Warning: For remote container runtime, --pod-infra-contain                      er-image is ignored in kubelet, which should be set in that remote runtime instead&#34;</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:47 zz-biz-01 kubelet<span class="o">[</span>14097<span class="o">]</span>: I0913 09:21:47.155032   <span class="m">14097</span> server.go:440<span class="o">]</span> <span class="s2">&#34;Kubelet version&#34;</span> <span class="nv">kubeletVersion</span><span class="o">=</span><span class="s2">&#34;v1.21.4&#34;</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:47 zz-biz-01 kubelet<span class="o">[</span>14097<span class="o">]</span>: I0913 09:21:47.155367   <span class="m">14097</span> server.go:851<span class="o">]</span> <span class="s2">&#34;Client rotation is on, will bootstrap in background&#34;</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:47 zz-biz-01 kubelet<span class="o">[</span>14097<span class="o">]</span>: E0913 09:21:47.158797   <span class="m">14097</span> bootstrap.go:240<span class="o">]</span> unable to <span class="nb">read</span> existing bootstrap client config from /et                      c/kubernetes/kubelet.conf: invalid configuration: <span class="o">[</span>unable to <span class="nb">read</span> client-cert /var/lib/kubelet/pki/kubelet-client-current.pem <span class="k">for</span> default-auth due                       to open /var/lib/kubelet/pki/kubelet-client-current.pem: no such file or directory, unable to <span class="nb">read</span> client-key /var/lib/kubelet/pki/kubelet-client                      -current.pem <span class="k">for</span> default-auth due to open /var/lib/kubelet/pki/kubelet-client-current.pem: no such file or directory<span class="o">]</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:47 zz-biz-01 systemd<span class="o">[</span>1<span class="o">]</span>: kubelet.service: main process exited, <span class="nv">code</span><span class="o">=</span>exited, <span class="nv">status</span><span class="o">=</span>1/FAILURE
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:47 zz-biz-01 kubelet<span class="o">[</span>14097<span class="o">]</span>: E0913 09:21:47.158910   <span class="m">14097</span> server.go:292<span class="o">]</span> <span class="s2">&#34;Failed to run kubelet&#34;</span> <span class="nv">err</span><span class="o">=</span><span class="s2">&#34;failed to run Kubelet: unable                       to load bootstrap kubeconfig: stat /etc/kubernetes/bootstrap-kubelet.conf: no such file or directory&#34;</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:47 zz-biz-01 systemd<span class="o">[</span>1<span class="o">]</span>: Unit kubelet.service entered failed state.
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:47 zz-biz-01 systemd<span class="o">[</span>1<span class="o">]</span>: kubelet.service failed.
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:57 zz-biz-01 systemd<span class="o">[</span>1<span class="o">]</span>: kubelet.service holdoff <span class="nb">time</span> over, scheduling restart.
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:57 zz-biz-01 systemd<span class="o">[</span>1<span class="o">]</span>: Stopped kubelet: The Kubernetes Node Agent.
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:57 zz-biz-01 systemd<span class="o">[</span>1<span class="o">]</span>: Started kubelet: The Kubernetes Node Agent.
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:57 zz-biz-01 kubelet<span class="o">[</span>14136<span class="o">]</span>: I0913 09:21:57.395574   <span class="m">14136</span> server.go:197<span class="o">]</span> <span class="s2">&#34;Warning: For remote container runtime, --pod-infra-contain                      er-image is ignored in kubelet, which should be set in that remote runtime instead&#34;</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:57 zz-biz-01 kubelet<span class="o">[</span>14136<span class="o">]</span>: I0913 09:21:57.413917   <span class="m">14136</span> server.go:440<span class="o">]</span> <span class="s2">&#34;Kubelet version&#34;</span> <span class="nv">kubeletVersion</span><span class="o">=</span><span class="s2">&#34;v1.21.4&#34;</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:57 zz-biz-01 kubelet<span class="o">[</span>14136<span class="o">]</span>: I0913 09:21:57.414228   <span class="m">14136</span> server.go:851<span class="o">]</span> <span class="s2">&#34;Client rotation is on, will bootstrap in background&#34;</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:57 zz-biz-01 kubelet<span class="o">[</span>14136<span class="o">]</span>: E0913 09:21:57.415375   <span class="m">14136</span> bootstrap.go:240<span class="o">]</span> unable to <span class="nb">read</span> existing bootstrap client config from /et                      c/kubernetes/kubelet.conf: invalid configuration: <span class="o">[</span>unable to <span class="nb">read</span> client-cert /var/lib/kubelet/pki/kubelet-client-current.pem <span class="k">for</span> default-auth due                       to open /var/lib/kubelet/pki/kubelet-client-current.pem: no such file or directory, unable to <span class="nb">read</span> client-key /var/lib/kubelet/pki/kubelet-client                      -current.pem <span class="k">for</span> default-auth due to open /var/lib/kubelet/pki/kubelet-client-current.pem: no such file or directory<span class="o">]</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:57 zz-biz-01 systemd<span class="o">[</span>1<span class="o">]</span>: kubelet.service: main process exited, <span class="nv">code</span><span class="o">=</span>exited, <span class="nv">status</span><span class="o">=</span>1/FAILURE
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:57 zz-biz-01 kubelet<span class="o">[</span>14136<span class="o">]</span>: E0913 09:21:57.415411   <span class="m">14136</span> server.go:292<span class="o">]</span> <span class="s2">&#34;Failed to run kubelet&#34;</span> <span class="nv">err</span><span class="o">=</span><span class="s2">&#34;failed to run Kubelet: unable                       to load bootstrap kubeconfig: stat /etc/kubernetes/bootstrap-kubelet.conf: no such file or directory&#34;</span>
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:57 zz-biz-01 systemd<span class="o">[</span>1<span class="o">]</span>: Unit kubelet.service entered failed state.
+</span></span><span class="line"><span class="cl">9月 <span class="m">13</span> 09:21:57 zz-biz-01 systemd<span class="o">[</span>1<span class="o">]</span>: kubelet.service failed.</span></span></code></pre></div><p><strong>解决方法</strong>：在master节点证书更新完成后，获取加入集群token，重新将worker节点加入集群</p>
+<p><strong>注意</strong>: woker节点添加进集群（需删除原先kubelet配置文件，否则加入失败）</p>
+<p>先备份下配置文件的存放目录</p>
+<div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#备份文件</span>
+</span></span><span class="line"><span class="cl">cp -r /etc/kubernetes /etc/kubernetes.bak</span></span></code></pre></div><div class="highlight" id="id-9"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#删除kubelet配置文件并停止kubelet服务</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@zz-biz-01 kubernetes<span class="o">]</span><span class="c1"># rm -rf /etc/kubernetes/kubelet.conf</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@zz-biz-01 kubernetes<span class="o">]</span><span class="c1"># rm -rf /etc/kubernetes/pki/ca.crt</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@zz-biz-01 kubernetes<span class="o">]</span><span class="c1"># systemctl stop kubelet.service</span></span></span></code></pre></div><div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#woker节点重新加入集群</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@zz-biz-01 kubernetes<span class="o">]</span><span class="c1"># kubeadm join zz-front-01:6443 --token 4ekwze.3et9dyulz179u68x --discovery-token-ca-cert-hash sha256:f33bd69abd60e75ebebdd28526c535e6e93acf3b80a45629dfe5be59cb38e1bc</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>preflight<span class="o">]</span> Running pre-flight checks
+</span></span><span class="line"><span class="cl"><span class="o">[</span>preflight<span class="o">]</span> Reading configuration from the cluster...
+</span></span><span class="line"><span class="cl"><span class="o">[</span>preflight<span class="o">]</span> FYI: You can look at this config file with <span class="s1">&#39;kubectl -n kube-system get cm kubeadm-config -o yaml&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>kubelet-start<span class="o">]</span> Writing kubelet configuration to file <span class="s2">&#34;/var/lib/kubelet/config.yaml&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>kubelet-start<span class="o">]</span> Writing kubelet environment file with flags to file <span class="s2">&#34;/var/lib/kubelet/kubeadm-flags.env&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>kubelet-start<span class="o">]</span> Starting the kubelet
+</span></span><span class="line"><span class="cl"><span class="o">[</span>kubelet-start<span class="o">]</span> Waiting <span class="k">for</span> the kubelet to perform the TLS Bootstrap...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">This node has joined the cluster:
+</span></span><span class="line"><span class="cl">* Certificate signing request was sent to apiserver and a response was received.
+</span></span><span class="line"><span class="cl">* The Kubelet was informed of the new secure connection details.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Run <span class="s1">&#39;kubectl get nodes&#39;</span> on the control-plane to see this node join the cluster.</span></span></code></pre></div><h2 id="3验证集群状态">3.验证集群状态</h2>
+<div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@zz-front-01 ~<span class="o">]</span><span class="c1"># kubectl get node</span>
+</span></span><span class="line"><span class="cl">NAME          STATUS   ROLES                  AGE    VERSION
+</span></span><span class="line"><span class="cl">zz-biz-01     Ready    &lt;none&gt;                 729d   v1.21.4
+</span></span><span class="line"><span class="cl">zz-front-01   Ready    control-plane,master   729d   v1.21.4</span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20230913163810231.png" srcset="https://cdn1.ryanxin.live/image-20230913163810231.png, https://cdn1.ryanxin.live/image-20230913163810231.png 1.5x, https://cdn1.ryanxin.live/image-20230913163810231.png 2x" sizes="auto" data-title="image-20230913163810231" data-alt="image-20230913163810231" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20230913164046844.png" srcset="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20230913164046844.png, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20230913164046844.png 1.5x, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20230913164046844.png 2x" sizes="auto" data-title="image-20230913164046844" data-alt="image-20230913164046844" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20230913163837544.png" srcset="https://cdn1.ryanxin.live/image-20230913163837544.png, https://cdn1.ryanxin.live/image-20230913163837544.png 1.5x, https://cdn1.ryanxin.live/image-20230913163837544.png 2x" sizes="auto" data-title="image-20230913163837544" data-alt="image-20230913163837544" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title="更新于 2023-09-13 00:00:00">更新于 2023-09-13&nbsp;</span>
+      </div><div class="post-info-license">
+          <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+        </div></div>
+    <div class="post-info-line">
+      <div class="post-info-md"><span><a href="/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
+      <div class="post-info-share">
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/" data-title="K8S集群证书过期处理-Node NoReady状态" data-hashtags="Kubernetes"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/" data-hashtag="Kubernetes"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/" data-title="K8S集群证书过期处理-Node NoReady状态" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/" data-title="K8S集群证书过期处理-Node NoReady状态"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/" data-title="K8S集群证书过期处理-Node NoReady状态"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/" data-title="K8S集群证书过期处理-Node NoReady状态" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/" data-title="K8S集群证书过期处理-Node NoReady状态" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/" data-title="K8S集群证书过期处理-Node NoReady状态"><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
+  </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href='/tags/kubernetes/' class="post-tag">Kubernetes</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div>
+
+  <div class="post-nav"><a href="/posts/kubernetes/primary/%E7%94%A8label%E6%8E%A7%E5%88%B6pod%E7%9A%84%E4%BD%8D%E7%BD%AE/" class="post-nav-item" rel="prev" title="使用节点标签（Node Labels）和节点选择器（Node Selector）来控制将 Pod 调度到特定的节点"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>使用节点标签（Node Labels）和节点选择器（Node Selector）来控制将 Pod 调度到特定的节点</a></div>
+</div>
+</article></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2021 - 2023</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/ryanxin7"target="_blank" rel="external nofollow noopener noreferrer">Ryan</a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics"><span class="site-time" title='网站运行中……'><i class="fa-solid fa-heartbeat fa-fw animate-icon" aria-hidden="true"></i><span class="run-times ms-1">网站运行中……</span></span></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='总访客数'><i class="fa-regular fa-user fa-fw" aria-hidden="true"></i>&nbsp;<span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='总访问量'><i class="fa-regular fa-eye fa-fw" aria-hidden="true"></i>&nbsp;<span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div></div><a href="https://github.com/ryanxin7" title="在 GitHub 上查看源代码"target="_blank" rel="external nofollow" class="github-corner right d-none-mobile"><svg viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><link rel="stylesheet" href="/lib/pace/themes/blue/pace-theme-minimal.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async defer></script><script src="/lib/pace/pace.min.js" async defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":80},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"enablePWA":true,"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"HFAFNY4NX2","algoliaIndex":"xn-log","algoliaSearchKey":"bd08388586b2f88b20753c17c60ba92f","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"siteTime":"2021-09-09T09:09:09+09:00"};</script><script src="/js/theme.min.js" defer></script></body>
+</html>
