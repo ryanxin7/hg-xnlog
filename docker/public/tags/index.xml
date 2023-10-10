@@ -4,7 +4,15 @@
     <link>https://hg-xnlog.github.io/tags/</link>
     <description>Tags - 标签 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Wed, 13 Sep 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 09 Oct 2023 21:23:22 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+  <title>Brocade</title>
+  <link>https://hg-xnlog.github.io/tags/brocade/</link>
+  <pubDate>Mon, 09 Oct 2023 21:23:22 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/tags/brocade/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
   <title>Kubernetes</title>
   <link>https://hg-xnlog.github.io/tags/kubernetes/</link>
   <pubDate>Wed, 13 Sep 2023 00:00:00 &#43;0000</pubDate>
@@ -74,14 +82,6 @@
   <pubDate>Tue, 16 May 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/tags/terminal/</guid>
-  <description><![CDATA[]]></description>
-</item>
-<item>
-  <title>k8s进阶训练营</title>
-  <link>https://hg-xnlog.github.io/tags/k8s%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/</link>
-  <pubDate>Mon, 24 Apr 2023 21:23:22 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/tags/k8s%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/</guid>
   <description><![CDATA[]]></description>
 </item>
 </channel>

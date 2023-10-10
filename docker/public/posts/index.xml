@@ -4,7 +4,15 @@
     <link>https://hg-xnlog.github.io/posts/</link>
     <description>所有文章 | Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Wed, 13 Sep 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 09 Oct 2023 21:23:22 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+  <title>Brocade ICX 6450交换机简单配置命令</title>
+  <link>https://hg-xnlog.github.io/posts/notes/2023-10-09-brocade-icx-6450%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE%E5%91%BD%E4%BB%A4/</link>
+  <pubDate>Mon, 09 Oct 2023 21:23:22 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/notes/2023-10-09-brocade-icx-6450%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE%E5%91%BD%E4%BB%A4/</guid>
+  <description><![CDATA[登录到交换机： 使用SSH、Telnet或串口连接登录到Brocade ICX 6450交换机。 进入特权EXEC模式： 输入以下命令，进入特权EXEC模]]></description>
+</item>
+<item>
   <title>K8S集群证书过期处理-Node NoReady状态</title>
   <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/</link>
   <pubDate>Wed, 13 Sep 2023 00:00:00 &#43;0000</pubDate>
@@ -75,14 +83,6 @@
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/cicd/github-synctogitee/</guid>
   <description><![CDATA[1. 开通 Github Aciton 上传代码一般已Github仓库为主，但Jenkins由于网络原因经常无法拉取Github上的代码，于是考虑将Github仓库自动同]]></description>
-</item>
-<item>
-  <title>Jenkins 安装与基础配置</title>
-  <link>https://hg-xnlog.github.io/posts/cicd/jenkins-install/</link>
-  <pubDate>Mon, 12 Jun 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/cicd/jenkins-install/</guid>
-  <description><![CDATA[Jenkins 安装与基础配置 配置java环境 Jdk下载：https://www.oracle.com/java/technologies/downloa]]></description>
 </item>
 </channel>
 </rss>

@@ -1,0 +1,117 @@
+# Brocade ICX 6450交换机简单配置命令
+
+
+
+
+<img src="https://cdn1.ryanxin.live/506ccd45e05f52bf9595d428f2599e5.jpg" alt="506ccd45e05f52bf9595d428f2599e5" style="zoom:50%;" />
+
+
+
+1. 登录到交换机： 使用SSH、Telnet或串口连接登录到Brocade ICX 6450交换机。
+
+2. 进入特权EXEC模式： 输入以下命令，进入特权EXEC模式，并输入特权级别的密码（如果已设置）：
+
+   ```
+   bashCopy code
+   enable
+   ```
+
+3. 进入配置模式：
+
+   ```
+   Copy code
+   configure terminal
+   ```
+
+4. 将端口1到23配置为VLAN 70： 使用以下命令将端口1到23配置为VLAN 70：
+
+   ```
+   interface range ethernet 1/1/1 to 1/1/23
+   untagged ethernet 1/1/1 to 1/1/23
+   #取消配置
+   untagged ethernet 1/1/1 to 1/1/23
+   ```
+
+5. 将端口24配置为Trunk： 使用以下命令将端口24配置为Trunk，并允许VLAN 70的标签通过：
+
+   ```
+   interface ethernet 1/1/24
+   tagged ethernet 1/1/24
+   exit
+   ```
+
+6. 保存配置： 在您完成所有配置后，确保保存配置以使其永久生效：
+
+   ```
+   write memory
+   ```
+
+7. 退出配置模式： 输入以下命令退出配置模式：
+
+   ```
+   exit
+   ```
+
+8. 验证配置： 您可以使用以下命令来验证端口范围的配置和Trunk端口的配置：
+
+   ```
+   show interfaces ethernet 1/1/1 to 1/1/24 status
+   ```
+
+这些步骤将帮助您将1到23个端口配置为VLAN 70，并将24号端口配置为Trunk以连接到上层设备。
+
+
+
+
+
+其他配置：
+
+\# Create interface IP (MODE FIRMWARE SWITCH - SPS08080b)
+
+```
+ICX7150-C12 Switch# ip address 192.168.1.27 255.255.255.0
+ICX7150-C12 Switch# show ip
+ICX7150-C12 Switch# ip default-gateway 192.168.1.1
+```
+
+
+
+\# Create interface vlan IP (MODE FIRMWARE ROUTER - SPR08061b)
+
+```
+ICX7150-C12 Switch(config)# vlan 1
+ICX7150-C12 Router(config-vlan-1)# router-interface ve1
+ICX7150-C12 Router(config-vlan-1)# exit
+ICX7150-C12 Switch(config)# interface ve1
+ICX7150-C12 Switch(config-vif-1)# ip address 192.168.1.170/24
+ICX7150-C12 Switch(config-vif-1)# exit
+ICX7150-C12 Switch(config)# ip route 0.0.0.0/0 192.168.158.151
+ICX7150-C12 Switch(config)# show ip interface
+```
+
+
+
+
+
+\# Disable ip dhcp-client 
+
+```
+ICX7150-C12 Switch(config)# no ip dhcp-client enable
+ICX7150-C12 Switch(config-if-e1000-2/1/1)# no ip dhcp-client enable 
+```
+
+
+
+
+
+[配置命令参考来源](https://community.ruckuswireless.com/t5/ICX-Switches/Help-with-setting-up-VLAN-trunk-ports-on-ICX-switches-is-this/m-p/21922)
+
+
+
+
+
+---
+
+> 作者: [Ryan](https://github.com/ryanxin7)  
+> URL: https://hg-xnlog.github.io/posts/notes/2023-10-09-brocade-icx-6450%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE%E5%91%BD%E4%BB%A4/  
+
