@@ -150,7 +150,554 @@ kubeadm init 命令在内部分为多个阶段，每个阶段执行不同的任�
 
 
 
-4.kubeadm join 工作流程
+## 4.kubeadm join 工作流程
+
+**环境预检**
+
+kubeadm join 命令也需要进行环境预检操作，确定所在节点满足可加入集群中的前提条件。
+
+
+
+这类关键检测的步骤包括：
+
+- **Kubernetes 版本匹配**：`kubeadm join` 会检查所在节点上的 Kubernetes 组件版本是否与控制平面节点上的版本匹配。版本不匹配可能导致问题。
+- **操作系统支持**：`kubeadm join` 确保所在节点使用的操作系统是 Kubernetes 支持的操作系统之一。通常，Kubernetes 支持多种 Linux 发行版。
+- **Docker 或容器运行时支持**：`kubeadm join` 检查所在节点上是否安装了 Docker 或其他容器运行时，并验证其版本是否与 Kubernetes 兼容。
+- **网络插件支持**：如果您的集群使用了网络插件（如 Calico、Flannel 等），`kubeadm join` 确保已安装并配置了适当的网络插件。
+- **授权检查**：确保新节点有权加入集群。通常，`kubeadm join` 命令需要提供有效的加入令牌（Join Token）以进行身份验证。
+- **网络互通性**：`kubeadm join` 会验证新节点是否可以与集群中的控制平面节点建立网络连接。这包括检查 API Server 的可访问性。
+- **证书和密钥检查**：确保节点上存在必要的证书和密钥文件，以便安全地连接到集群。
+- **操作系统设置检查**：检查所在节点的操作系统设置，例如防火墙规则、SELinux 设置等，以确保它们不会阻止必要的通信。
+
+
+
+
+
+**同控制平面建立双向信任关系**
+
+
+
+与控制平面建立双向信任关系是新节点加入 Kubernetes 集群的关键一步。这一信任关系的建立通过证书和令牌进行身份验证，确保新节点和集群的控制平面能够互相信任和安全地通信。
+
+
+
+**双向信任建立的过程可以分为两个主要阶段：发现阶段和 TLS 引导阶段。**
+
+1.**发现阶段**：
+
+在发现阶段，新节点请求加入集群，通常使用一个特定的令牌（共享令牌 Bootstrap Token）。这个令牌由集群管理员或初始化控制平面节点生成，新节点使用令牌向指定的API Server发送请求以获取集群信息。
+
+
+
+2.**TLS 引导阶段**：
+
+Bootstrap Token 主要用于节点确定 API Server 的身份，以进行加入请求的授权。它确保了节点具有加入集群的权限，但在数据传输过程中，并没有提供数据的加密和验证数据真实性。为了确保数据在传输过程中的安全性，TLS 引导程序阶段起到了关键作用。
+
+在 TLS 引导程序阶段，控制平面通过 TLS Bootstrap 机制为新节点签发数字证书，这个证书用于加密通信和验证数据的真实性。这确保了新节点与控制平面之间的通信是安全的，同时确保了数据不会被篡改。
+
+
+
+TLS 引导程序的主要步骤包括：
+
+1. **证书签发**：kubelet 通 TLS Bootstrap 使用共享令牌向API Server 进行身份验证后提交证书并签署请求（CSR）,随后控制平面自动签署该请求从而生成数字证书。
+2. **证书传输**：控制平面节点通过安全的 TLS 连接将签发的证书传输给新节点。
+3. **配置新节点**：新节点接收到证书后，将其保存在本地，并配置节点的 kubelet、kube-proxy 等组件，以使用这些证书与控制平面节点建立安全连接。
+
+
+
+
+
+
+
+## 5.部署分布式Kubernetes 集群
+
+### 5.1 基础环境设置
+
+- 系统版本：Ubuntu 18.04.6
+- 容器运行时引擎：Docker 19.03.15
+- Kubernetes: v1.19
+
+https://mirrors.tuna.tsinghua.edu.cn/ubuntu-releases/18.04.6/
+
+
+
+
+
+| IP 地址    | 主机名                                                | 角色   |
+| ---------- | :---------------------------------------------------- | ------ |
+| 10.1.0.110 | k8s-master01 k8s-master01.ilinux.io k8s-api.ilinux.io | master |
+| 10.1.0.111 | k8s-node01 k8s-node01.ilinux.io                       | node   |
+| 10.1.0.112 | k8s-node02 k8s-node02.ilinux.io                       | node   |
+| 10.1.0.113 | k8s-node03 k8s-node03.ilinux.io                       | node   |
+
+
+
+
+
+
+
+#### 5.1.1 主机时间同步
+
+```bash
+#设置时区
+timedatectl set-timezone Asia/Shanghai
+
+
+#安装chrony
+#三节点安装
+apt install chrony -y
+
+
+##服务端配置
+vim /etc/chrony/chrony.conf
+pool time1.aliyun.com      iburst maxsources 1
+allow all
+
+systemctl start chrony
+systemctl enable chrony
+```
+
+
+
+
+
+
+
+#### 5.1.2 Hosts
+
+```
+10.1.0.110 k8s-master01 k8s-master01.ilinux.io k8s-api.ilinux.io
+10.1.0.111 k8s-node01 k8s-node01.ilinux.io
+10.1.0.112 k8s-node02 k8s-node02.ilinux.io
+10.1.0.113 k8s-node03 k8s-node03.ilinux.io
+```
+
+
+
+```bash
+systemctl stop ufw && systemctl disable ufw
+
+swapoff -a
+```
+
+
+
+#### 5.1.3关闭swap和SElinux
+
+```bash
+swapoff -a | sed -i '/swap/d' /etc/fstab
+vim /etc/selinu/config
+disable
+```
+
+```sh
+swapoff -a | sed -i '/swap/d' /etc/fstab
+vim /etc/selinu/config
+disable
+```
+
+
+
+
+
+#### 5.1.4 修改内核参数
+
+在 Kubernetes (K8s) 集群上，为了优化性能、安全性和容器工作负载的稳定性，您可能需要修改 Linux 内核参数。以下是一些常见的内核参数，以及如何进行修改：
+
+**sysctl 配置文件**：sysctl 是用于修改和查询内核参数的工具。您可以通过修改 sysctl 配置文件来永久更改内核参数。配置文件通常位于 `/etc/sysctl.conf` 或 `/etc/sysctl.d/` 目录中。例如，要增加 TCP 连接的最大数量，可以在配置文件中添加以下行：
+
+```sh
+vim /etc/sysctl.conf
+net.ipv4.ip_local_port_range = 1024 65000
+sysctl -p
+```
+
+
+
+然后，使用 `sysctl -p` 命令重新加载配置。
+
+
+
+**ulimit 设置**：通过修改用户的 `ulimit` 设置，您可以更改每个进程可以打开的文件描述符数、进程数等。这可以通过修改 `/etc/security/limits.conf` 文件实现。
+
+```sh
+vim /etc/security/limits.conf
+*   soft    nofile   65536
+*   hard    nofile   65536
+ulimit -a
+```
+
+
+
+```bash
+cat <<EOF > /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
+EOF
+
+sysctl -p  /etc/sysctl.d/k8s.conf
+```
+
+
+
+- `net.bridge.bridge-nf-call-ip6tables = 1`：允许 IPv6 数据包通过 iptables 进行处理，这对于容器网络通信非常重要。
+- `net.bridge.bridge-nf-call-iptables = 1`：允许 iptables 处理桥接的数据包，这对于容器网络和服务发现也很重要。
+- `net.ipv4.ip_forward = 1`：启用 IPv4 数据包的转发，这对于在 Kubernetes 集群中进行路由和流量管理很重要。
+
+```sh
+cat <<EOF > /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+net.ipv4.ip_forward = 1
+EOF
+
+sysctl -p  /etc/sysctl.d/k8s.conf
+```
+
+
+
+
+
+### 5.2 配置容器运行时引擎
+
+
+
+```sh
+apt update
+apt install -y apt-transport-https ca-certificates \
+curl gnupg-agent software-properties-common
+```
+
+
+
+**添加Docker 官方GPG 证书，以验证程序包签名**
+
+```sh
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+```
+
+
+
+**添加稳定版本的Docker-CE 仓库**
+
+```bash
+add-apt-repository \
+"deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu \
+$(lsb_release -cs) stable"
+```
+
+
+
+ 在生产系统上，可能会需要应该安装一个特定版本的Docker CE，而不是总是使用最新版本：
+ 列出可用的版本：
+
+```sh
+sudo apt update 
+```
+
+
+
+```bash
+root@k8s-master01:/sh# apt-cache madison docker-ce
+ docker-ce | 5:24.0.2-1~ubuntu.18.04~bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:24.0.2-1~ubuntu.18.04~bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:24.0.1-1~ubuntu.18.04~bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:24.0.1-1~ubuntu.18.04~bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:24.0.0-1~ubuntu.18.04~bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:24.0.0-1~ubuntu.18.04~bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:23.0.6-1~ubuntu.18.04~bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:23.0.6-1~ubuntu.18.04~bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:23.0.5-1~ubuntu.18.04~bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:23.0.5-1~ubuntu.18.04~bionic | https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/stable amd64 Packages
+ docker-ce | 5:23.0.4-1~ubuntu.18.04~bionic | https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+```
+
+
+
+**更新apt索引后安装Docker-ce**
+
+```bash
+ sudo apt install docker-ce=5:19.03.15~3-0~ubuntu-bionic docker-ce-cli=5:19.03.15~3-0~ubuntu-bionic containerd.io=1.5.11-1 -y
+```
+
+
+
+**自定义docker配置 **
+
+```json
+vim /etc/docker/daemon.json
+
+{
+    "exec-opts": ["native.cgroupdriver=systemd"],
+    "log-driver": "json-file",
+    "log-opts":{
+       "max-size": "100m"
+},
+"storage-driver": "overlay2",
+"registry-mirrors": ["https://sqytbycc.mirror.aliyuncs.com"]
+}
+```
+
+
+
+- `exec-opts` 配置了 CGroup 驱动程序，将其设置为 "systemd"，这是许多现代 Linux 系统上的推荐设置。
+- `log-driver` 配置了容器日志驱动程序，将其设置为 "json-file"，表示容器的日志将以 JSON 格式记录在文件中。
+- `log-opts` 用于配置日志选项，其中 `max-size` 设置容器日志文件的最大大小为 "100m"，即 100 兆字节。
+- `storage-driver` 配置了 Docker 存储驱动程序，将其设置为 "overlay2"，这是常见的存储驱动程序之一，用于管理容器的文件系统层
+
+
+
+```bash
+systemctl daemon-reload && systemctl restart docker && systemctl enable docker
+```
+
+
+
+
+
+### 5.3 安装kubeadm、kubelet 和kubectl 
+
+
+
+添加kubernetes 官方程序密钥：
+
+```bash
+curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add -
+```
+
+
+
+为apt添加kubernetes程序包仓库
+
+```bash
+vim /etc/apt/sources.list
+
+echo deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main >> /etc/apt/sources.list && apt update 
+```
+
+**软件包版本**：
+
+- "kubernetes-xenial" 的软件包版本可能与 Ubuntu 16.04 中的软件包版本相匹配。
+- "kubernetes-bionic" 的软件包版本可能与 Ubuntu 18.04 中的软件包版本相匹配。
+
+**支持周期**：
+
+- "kubernetes-xenial" 针对 Ubuntu 16.04，已于 2021 年 4 月结束官方支持，不再收到常规更新。
+- "kubernetes-bionic" 针对 Ubuntu 18.04，官方支持周期较长，支持至 2023 年 4 月
+
+
+
+#### 5.3.1 **更新软件包索引并安装程序包**
+
+```sh
+apt update 
+#查看可用版本
+apt-cache madison kubelet
+#选择 1.19.16-00 版本
+
+apt install -y kubelet=1.19.16-00 kubeadm=1.19.16-00 kubectl=1.19.16-00
+sudo systemctl enable kubelet && sudo systemctl start kubelet
+```
+
+
+
+
+
+
+
+#### 5.3.2 **初始化控制平面**
+
+```
+sudo kubeadm init \
+--image-repository registry.aliyuncs.com/google_containers \
+--kubernetes-version v1.19.16 \
+--control-plane-endpoint k8s-api.ilinux.io \
+--apiserver-advertise-address 10.1.0.110 \
+--pod-network-cidr 10.244.0.0/16 \
+--token-ttl 0
+```
+
+
+
+`--image-repository` 指定要使用的镜像仓库，这里使用的是阿里云的，默认为gcr.io
+
+`--kubernetes-version ` kubernetes 程序组件的版本号，他必须与安装的kubelet 程序包的版本相同。
+
+`--kubernetes-version` 控制平面的固定访问端点，可以是IP地址或DNS 名称，作为集群管理员与集群组件的kubeconfig配置文件的API Server 的访问地址。单控制面板部署时可以不使用该选项。
+
+`--apiserver-advertise-address` API Server 通告给其他组件的IP地址，一般为Master节点用于集群内通信的IP地址，0.0.0.0 表示节点上所有可用地址。
+
+`--pod-network-cidr `  Pod 网络的地址范围，用于容器间通信的 IP 地址段，通常Flannel 网络插件的默认值为10.244.0.0/16，Project Calico 插件的默认值为 192.168.0.0/16。
+
+`--service-cidr`  Service 的网络地址范围，默认为10.96.0.0/12。通常仅Flannel一类的网络插件需要手动指定该地址。
+
+`--token-ttl` 共享令牌的过期时长，默认为24小时，0表示永不过期。 为防止不安全的存储等原因导致令牌泄露危及集群安装，建议为其设定过期时长。
+
+
+
+
+
+```bash
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now join any number of control-plane nodes by copying certificate authorities
+and service account keys on each node and then running the following as root:
+
+  kubeadm join k8s-api.ilinux.io:6443 --token 60jbc3.cse8z5eiqgdtt1nf \
+    --discovery-token-ca-cert-hash sha256:252d584d53ef359d98219cabcd9d7cb07b3c898058d1045e3feeaf5773585ba6 \
+    --control-plane
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join k8s-api.ilinux.io:6443 --token 60jbc3.cse8z5eiqgdtt1nf \
+    --discovery-token-ca-cert-hash sha256:252d584d53ef359d98219cabcd9d7cb07b3c898058d1045e3feeaf5773585ba6
+
+```
+
+
+
+
+
+```sh
+vim /etc/profile
+source <(kubectl completion bash)
+
+
+source /etc/profile
+```
+
+
+
+
+
+#### 5.3.3 **配置命令行工具**
+
+kubectl 是 Kubernetes 集群的最常用命令行工具，它默认搜索当前用户主目录（保存于环境变量HOME中的值）中名为.kube 的隐藏目录，定位其中名为config 的配置文件以读取必要的配置。包括要接入Kubernetes 集群以及用于集群认证的证书或令牌等信息。
+
+
+
+```bash
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+```
+
+
+
+kubeconfig 文件通常包括以下信息：
+
+- **cluster**：描述了要连接的 Kubernetes 集群的名称、API 服务器的地址和证书信息。
+- **user**：定义了用于身份验证的用户信息，通常包括用户名和证书。
+- **context**：将 cluster 和 user 关联在一起，并指定默认上下文。
+- **current-context**：指定默认使用的上下文，这决定了用户与集群的交互。
+
+`/etc/kubernetes/admin.conf` 通常用于控制平面管理操作，如部署、管理和监视集群的操作。这个配置文件是敏感的，应该受到保护，只允许有权限的用户访问。
+
+
+
+用户可在任何能够通过k8s-api.ilinux.io 与 API Server 通信的主机上安装Kubectl，并为其复制或生成的kubeconfig文件以访问控制平面。
+
+
+
+
+
+### 5.4 部署 Flannel 网络插件
+
+通过执行**kubectl get node** 命令获取集群节点相关状态信息，出现NotReady状态是因为集群中未部署网络插件所致。
+
+```bash
+root@k8s-master01:~# kubectl get node
+NAME           STATUS     ROLES    AGE     VERSION
+k8s-master01   NotReady   master   9m37s   v1.19.16
+```
+
+
+
+较为流行的为K8S提供Pod网络的插件有 Flannel、Calico和WeaveNet 等。相较来说Flannel以其简单、模式丰富、易部署、易使用等特性颇受用户欢迎。
+
+Flannel同样可运行为K8S的集群附件，用DaemonSet控制器为每个节点（包括Master）运行一个Pod实例。
+
+[flannel项目地址](https://github.com/flannel-io/flannel)
+
+[Deploying Flannel with kubectl](https://github.com/flannel-io/flannel#deploying-flannel-with-kubectl)
+
+```bash
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+```
+
+If you use custom `podCIDR` (not `10.244.0.0/16`) you first need to download the above manifest and modify the network to match your one.
+
+
+
+命令结果显示Pod的状态为Running时表示网络插件Flannel部署完成。
+
+```bash
+root@k8s-master01:/yaml# kubectl get pods -n kube-flannel | grep flannel
+kube-flannel-ds-sbwf9   1/1     Running   0          93s
+```
+
+
+
+当前节点状态也转为Ready状态。
+
+```sh
+root@k8s-master01:/yaml# kubectl get node
+NAME           STATUS   ROLES    AGE   VERSION
+k8s-master01   Ready    master   24m   v1.19.16
+```
+
+
+
+
+
+### 5.5 添加工作节点
+
+
+
+当主机基础环境准备好后可使用Kubeadm join命令加入集群，该命令需要借助共享令牌进行首次与控制平面通信时的认证操作。相关的令牌信息及完成的命令由初始化控制平面的命令结果得出。
+
+```sh
+kubeadm join k8s-api.ilinux.io:6443 --token 8pq5xn.waqfh238255rpvwl \
+    --discovery-token-ca-cert-hash sha256:c204bc29c51c0df7e79b2a2dd1b49b89f3c5152189cb4f6f26c8c82dc525fa56
+```
+
+
+
+```sh
+root@k8s-node02:~# kubeadm join k8s-api.ilinux.io:6443 --token 8pq5xn.waqfh238255rpvwl \
+>     --discovery-token-ca-cert-hash sha256:c204bc29c51c0df7e79b2a2dd1b49b89f3c5152189cb4f6f26c8c82dc525fa56
+[preflight] Running pre-flight checks
+        [WARNING IsDockerSystemdCheck]: detected "cgroupfs" as the Docker cgroup driver. The recommended driver is "systemd". Please follow the guide at https://kubernetes.io/docs/setup/cri/
+[preflight] Reading configuration from the cluster...
+[preflight] FYI: You can look at this config file with 'kubectl -n kube-system get cm kubeadm-config -oyaml'
+[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet-start] Starting the kubelet
+[kubelet-start] Waiting for the kubelet to perform the TLS Bootstrap...
+
+This node has joined the cluster:
+* Certificate signing request was sent to apiserver and a response was received.
+* The Kubelet was informed of the new secure connection details.
+
+Run 'kubectl get nodes' on the control-plane to see this node join the cluster.
+```
+
+
+
+
+
+
 
 ---
 

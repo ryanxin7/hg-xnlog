@@ -10,7 +10,7 @@
 <meta name="description" content="1.kubeadm 部署工具 kubeadm 是kubernetes 集群全生命周期管理工具，可用于实现集群的部署、升级/降级及卸载等。 kubeadm 的核心工具是 kubeadm init 和 kubeadm join ，前者用于创建新" /><meta name="keywords" content='kubeadm' /><meta itemprop="name" content="利用kubeadm部署kubernetes集群">
 <meta itemprop="description" content="1.kubeadm 部署工具 kubeadm 是kubernetes 集群全生命周期管理工具，可用于实现集群的部署、升级/降级及卸载等。 kubeadm 的核心工具是 kubeadm init 和 kubeadm join ，前者用于创建新"><meta itemprop="datePublished" content="2023-02-24T21:23:22+00:00" />
 <meta itemprop="dateModified" content="2023-09-15T00:00:00+00:00" />
-<meta itemprop="wordCount" content="5193"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="9266"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="kubeadm," /><meta property="og:title" content="利用kubeadm部署kubernetes集群" />
 <meta property="og:description" content="1.kubeadm 部署工具 kubeadm 是kubernetes 集群全生命周期管理工具，可用于实现集群的部署、升级/降级及卸载等。 kubeadm 的核心工具是 kubeadm init 和 kubeadm join ，前者用于创建新" />
 <meta property="og:type" content="article" />
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/primary\/1.%E5%88%A9%E7%94%A8-kubeadm%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4\/"
-    },"genre": "posts","keywords": "kubeadm","wordcount":  5193 ,
+    },"genre": "posts","keywords": "kubeadm","wordcount":  9266 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/primary\/1.%E5%88%A9%E7%94%A8-kubeadm%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4\/","datePublished": "2023-02-24T21:23:22+00:00","dateModified": "2023-09-15T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -181,7 +181,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/kubernetes/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Kubernetes</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-02-24 21:23:22"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-24">2023-02-24</time></span>&nbsp;<span title="更新于 2023-09-15 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-09-15">2023-09-15</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 5193 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 11 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="利用kubeadm部署kubernetes集群">
+      <div class="post-meta-line"><span title="发布于 2023-02-24 21:23:22"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-24">2023-02-24</time></span>&nbsp;<span title="更新于 2023-09-15 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-09-15">2023-09-15</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 9266 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 19 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="利用kubeadm部署kubernetes集群">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -194,6 +194,16 @@
     <li><a href="#1kubeadm-部署工具">1.kubeadm 部署工具</a></li>
     <li><a href="#2集群组件运行模式">2.集群组件运行模式</a></li>
     <li><a href="#3kubeadm-inti-工作流程">3.kubeadm inti 工作流程</a></li>
+    <li><a href="#4kubeadm-join-工作流程">4.kubeadm join 工作流程</a></li>
+    <li><a href="#5部署分布式kubernetes-集群">5.部署分布式Kubernetes 集群</a>
+      <ul>
+        <li><a href="#51-基础环境设置">5.1 基础环境设置</a></li>
+        <li><a href="#52-配置容器运行时引擎">5.2 配置容器运行时引擎</a></li>
+        <li><a href="#53-安装kubeadmkubelet-和kubectl">5.3 安装kubeadm、kubelet 和kubectl</a></li>
+        <li><a href="#54-部署-flannel-网络插件">5.4 部署 Flannel 网络插件</a></li>
+        <li><a href="#55-添加工作节点">5.5 添加工作节点</a></li>
+      </ul>
+    </li>
   </ul>
 </nav></div>
       </div><div class="content" id="content"><h2 id="1kubeadm-部署工具">1.kubeadm 部署工具</h2>
@@ -340,8 +350,273 @@
 </tr>
 </tbody>
 </table>
-<p>4.kubeadm join 工作流程</p>
-</div><div class="post-footer" id="post-footer">
+<h2 id="4kubeadm-join-工作流程">4.kubeadm join 工作流程</h2>
+<p><strong>环境预检</strong></p>
+<p>kubeadm join 命令也需要进行环境预检操作，确定所在节点满足可加入集群中的前提条件。</p>
+<p>这类关键检测的步骤包括：</p>
+<ul>
+<li><strong>Kubernetes 版本匹配</strong>：<code>kubeadm join</code> 会检查所在节点上的 Kubernetes 组件版本是否与控制平面节点上的版本匹配。版本不匹配可能导致问题。</li>
+<li><strong>操作系统支持</strong>：<code>kubeadm join</code> 确保所在节点使用的操作系统是 Kubernetes 支持的操作系统之一。通常，Kubernetes 支持多种 Linux 发行版。</li>
+<li><strong>Docker 或容器运行时支持</strong>：<code>kubeadm join</code> 检查所在节点上是否安装了 Docker 或其他容器运行时，并验证其版本是否与 Kubernetes 兼容。</li>
+<li><strong>网络插件支持</strong>：如果您的集群使用了网络插件（如 Calico、Flannel 等），<code>kubeadm join</code> 确保已安装并配置了适当的网络插件。</li>
+<li><strong>授权检查</strong>：确保新节点有权加入集群。通常，<code>kubeadm join</code> 命令需要提供有效的加入令牌（Join Token）以进行身份验证。</li>
+<li><strong>网络互通性</strong>：<code>kubeadm join</code> 会验证新节点是否可以与集群中的控制平面节点建立网络连接。这包括检查 API Server 的可访问性。</li>
+<li><strong>证书和密钥检查</strong>：确保节点上存在必要的证书和密钥文件，以便安全地连接到集群。</li>
+<li><strong>操作系统设置检查</strong>：检查所在节点的操作系统设置，例如防火墙规则、SELinux 设置等，以确保它们不会阻止必要的通信。</li>
+</ul>
+<p><strong>同控制平面建立双向信任关系</strong></p>
+<p>与控制平面建立双向信任关系是新节点加入 Kubernetes 集群的关键一步。这一信任关系的建立通过证书和令牌进行身份验证，确保新节点和集群的控制平面能够互相信任和安全地通信。</p>
+<p><strong>双向信任建立的过程可以分为两个主要阶段：发现阶段和 TLS 引导阶段。</strong></p>
+<p>1.<strong>发现阶段</strong>：</p>
+<p>在发现阶段，新节点请求加入集群，通常使用一个特定的令牌（共享令牌 Bootstrap Token）。这个令牌由集群管理员或初始化控制平面节点生成，新节点使用令牌向指定的API Server发送请求以获取集群信息。</p>
+<p>2.<strong>TLS 引导阶段</strong>：</p>
+<p>Bootstrap Token 主要用于节点确定 API Server 的身份，以进行加入请求的授权。它确保了节点具有加入集群的权限，但在数据传输过程中，并没有提供数据的加密和验证数据真实性。为了确保数据在传输过程中的安全性，TLS 引导程序阶段起到了关键作用。</p>
+<p>在 TLS 引导程序阶段，控制平面通过 TLS Bootstrap 机制为新节点签发数字证书，这个证书用于加密通信和验证数据的真实性。这确保了新节点与控制平面之间的通信是安全的，同时确保了数据不会被篡改。</p>
+<p>TLS 引导程序的主要步骤包括：</p>
+<ol>
+<li><strong>证书签发</strong>：kubelet 通 TLS Bootstrap 使用共享令牌向API Server 进行身份验证后提交证书并签署请求（CSR）,随后控制平面自动签署该请求从而生成数字证书。</li>
+<li><strong>证书传输</strong>：控制平面节点通过安全的 TLS 连接将签发的证书传输给新节点。</li>
+<li><strong>配置新节点</strong>：新节点接收到证书后，将其保存在本地，并配置节点的 kubelet、kube-proxy 等组件，以使用这些证书与控制平面节点建立安全连接。</li>
+</ol>
+<h2 id="5部署分布式kubernetes-集群">5.部署分布式Kubernetes 集群</h2>
+<h3 id="51-基础环境设置">5.1 基础环境设置</h3>
+<ul>
+<li>系统版本：Ubuntu 18.04.6</li>
+<li>容器运行时引擎：Docker 19.03.15</li>
+<li>Kubernetes: v1.19</li>
+</ul>
+<p><a href="https://mirrors.tuna.tsinghua.edu.cn/ubuntu-releases/18.04.6/"target="_blank" rel="external nofollow noopener noreferrer">https://mirrors.tuna.tsinghua.edu.cn/ubuntu-releases/18.04.6/</a></p>
+<table>
+<thead>
+<tr>
+<th>IP 地址</th>
+<th style="text-align:left">主机名</th>
+<th>角色</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10.1.0.110</td>
+<td style="text-align:left">k8s-master01 k8s-master01.ilinux.io k8s-api.ilinux.io</td>
+<td>master</td>
+</tr>
+<tr>
+<td>10.1.0.111</td>
+<td style="text-align:left">k8s-node01 k8s-node01.ilinux.io</td>
+<td>node</td>
+</tr>
+<tr>
+<td>10.1.0.112</td>
+<td style="text-align:left">k8s-node02 k8s-node02.ilinux.io</td>
+<td>node</td>
+</tr>
+<tr>
+<td>10.1.0.113</td>
+<td style="text-align:left">k8s-node03 k8s-node03.ilinux.io</td>
+<td>node</td>
+</tr>
+</tbody>
+</table>
+<h4 id="511-主机时间同步">5.1.1 主机时间同步</h4>
+<div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#设置时区</span>
+</span></span><span class="line"><span class="cl">timedatectl set-timezone Asia/Shanghai
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#安装chrony</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#三节点安装</span>
+</span></span><span class="line"><span class="cl">apt install chrony -y
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">##服务端配置</span>
+</span></span><span class="line"><span class="cl">vim /etc/chrony/chrony.conf
+</span></span><span class="line"><span class="cl">pool time1.aliyun.com      iburst maxsources <span class="m">1</span>
+</span></span><span class="line"><span class="cl">allow all
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">systemctl start chrony
+</span></span><span class="line"><span class="cl">systemctl <span class="nb">enable</span> chrony</span></span></code></pre></div><h4 id="512-hosts">5.1.2 Hosts</h4>
+<pre tabindex="0"><code>10.1.0.110 k8s-master01 k8s-master01.ilinux.io k8s-api.ilinux.io
+10.1.0.111 k8s-node01 k8s-node01.ilinux.io
+10.1.0.112 k8s-node02 k8s-node02.ilinux.io
+10.1.0.113 k8s-node03 k8s-node03.ilinux.io</code></pre><div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl stop ufw <span class="o">&amp;&amp;</span> systemctl disable ufw
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">swapoff -a</span></span></code></pre></div><h4 id="513关闭swap和selinux">5.1.3关闭swap和SElinux</h4>
+<div class="highlight" id="id-4"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">swapoff -a <span class="p">|</span> sed -i <span class="s1">&#39;/swap/d&#39;</span> /etc/fstab
+</span></span><span class="line"><span class="cl">vim /etc/selinu/config
+</span></span><span class="line"><span class="cl">disable</span></span></code></pre></div><div class="highlight" id="id-5"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">swapoff -a <span class="p">|</span> sed -i <span class="s1">&#39;/swap/d&#39;</span> /etc/fstab
+</span></span><span class="line"><span class="cl">vim /etc/selinu/config
+</span></span><span class="line"><span class="cl">disable</span></span></code></pre></div><h4 id="514-修改内核参数">5.1.4 修改内核参数</h4>
+<p>在 Kubernetes (K8s) 集群上，为了优化性能、安全性和容器工作负载的稳定性，您可能需要修改 Linux 内核参数。以下是一些常见的内核参数，以及如何进行修改：</p>
+<p><strong>sysctl 配置文件</strong>：sysctl 是用于修改和查询内核参数的工具。您可以通过修改 sysctl 配置文件来永久更改内核参数。配置文件通常位于 <code>/etc/sysctl.conf</code> 或 <code>/etc/sysctl.d/</code> 目录中。例如，要增加 TCP 连接的最大数量，可以在配置文件中添加以下行：</p>
+<div class="highlight" id="id-6"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">vim /etc/sysctl.conf
+</span></span><span class="line"><span class="cl">net.ipv4.ip_local_port_range <span class="o">=</span> <span class="m">1024</span> <span class="m">65000</span>
+</span></span><span class="line"><span class="cl">sysctl -p</span></span></code></pre></div><p>然后，使用 <code>sysctl -p</code> 命令重新加载配置。</p>
+<p><strong>ulimit 设置</strong>：通过修改用户的 <code>ulimit</code> 设置，您可以更改每个进程可以打开的文件描述符数、进程数等。这可以通过修改 <code>/etc/security/limits.conf</code> 文件实现。</p>
+<div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">vim /etc/security/limits.conf
+</span></span><span class="line"><span class="cl">*   soft    nofile   <span class="m">65536</span>
+</span></span><span class="line"><span class="cl">*   hard    nofile   <span class="m">65536</span>
+</span></span><span class="line"><span class="cl"><span class="nb">ulimit</span> -a</span></span></code></pre></div><div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat <span class="s">&lt;&lt;EOF &gt; /etc/sysctl.d/k8s.conf
+</span></span></span><span class="line"><span class="cl"><span class="s">net.bridge.bridge-nf-call-ip6tables = 1
+</span></span></span><span class="line"><span class="cl"><span class="s">net.bridge.bridge-nf-call-iptables = 1
+</span></span></span><span class="line"><span class="cl"><span class="s">net.ipv4.ip_forward = 1
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sysctl -p  /etc/sysctl.d/k8s.conf</span></span></code></pre></div><ul>
+<li><code>net.bridge.bridge-nf-call-ip6tables = 1</code>：允许 IPv6 数据包通过 iptables 进行处理，这对于容器网络通信非常重要。</li>
+<li><code>net.bridge.bridge-nf-call-iptables = 1</code>：允许 iptables 处理桥接的数据包，这对于容器网络和服务发现也很重要。</li>
+<li><code>net.ipv4.ip_forward = 1</code>：启用 IPv4 数据包的转发，这对于在 Kubernetes 集群中进行路由和流量管理很重要。</li>
+</ul>
+<div class="highlight" id="id-9"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">cat <span class="s">&lt;&lt;EOF &gt; /etc/sysctl.d/k8s.conf
+</span></span></span><span class="line"><span class="cl"><span class="s">net.bridge.bridge-nf-call-ip6tables = 1
+</span></span></span><span class="line"><span class="cl"><span class="s">net.bridge.bridge-nf-call-iptables = 1
+</span></span></span><span class="line"><span class="cl"><span class="s">net.ipv4.ip_forward = 1
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sysctl -p  /etc/sysctl.d/k8s.conf</span></span></code></pre></div><h3 id="52-配置容器运行时引擎">5.2 配置容器运行时引擎</h3>
+<div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">apt update
+</span></span><span class="line"><span class="cl">apt install -y apt-transport-https ca-certificates <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>curl gnupg-agent software-properties-common</span></span></code></pre></div><p><strong>添加Docker 官方GPG 证书，以验证程序包签名</strong></p>
+<div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">curl -fsSL https://download.docker.com/linux/ubuntu/gpg <span class="p">|</span> sudo apt-key add -</span></span></code></pre></div><p><strong>添加稳定版本的Docker-CE 仓库</strong></p>
+<div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">add-apt-repository <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span><span class="s2">&#34;deb [arch=amd64] https://mirrors.aliyun.com/docker-ce/linux/ubuntu \
+</span></span></span><span class="line"><span class="cl"><span class="s2"></span><span class="k">$(</span>lsb_release -cs<span class="k">)</span><span class="s2"> stable&#34;</span></span></span></code></pre></div><p>在生产系统上，可能会需要应该安装一个特定版本的Docker CE，而不是总是使用最新版本：
+列出可用的版本：</p>
+<div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">sudo apt update </span></span></code></pre></div><div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/sh# apt-cache madison docker-ce
+</span></span><span class="line"><span class="cl"> docker-ce <span class="p">|</span> 5:24.0.2-1~ubuntu.18.04~bionic <span class="p">|</span> https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+</span></span><span class="line"><span class="cl"> docker-ce <span class="p">|</span> 5:24.0.2-1~ubuntu.18.04~bionic <span class="p">|</span> https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/stable amd64 Packages
+</span></span><span class="line"><span class="cl"> docker-ce <span class="p">|</span> 5:24.0.1-1~ubuntu.18.04~bionic <span class="p">|</span> https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+</span></span><span class="line"><span class="cl"> docker-ce <span class="p">|</span> 5:24.0.1-1~ubuntu.18.04~bionic <span class="p">|</span> https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/stable amd64 Packages
+</span></span><span class="line"><span class="cl"> docker-ce <span class="p">|</span> 5:24.0.0-1~ubuntu.18.04~bionic <span class="p">|</span> https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+</span></span><span class="line"><span class="cl"> docker-ce <span class="p">|</span> 5:24.0.0-1~ubuntu.18.04~bionic <span class="p">|</span> https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/stable amd64 Packages
+</span></span><span class="line"><span class="cl"> docker-ce <span class="p">|</span> 5:23.0.6-1~ubuntu.18.04~bionic <span class="p">|</span> https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+</span></span><span class="line"><span class="cl"> docker-ce <span class="p">|</span> 5:23.0.6-1~ubuntu.18.04~bionic <span class="p">|</span> https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/stable amd64 Packages
+</span></span><span class="line"><span class="cl"> docker-ce <span class="p">|</span> 5:23.0.5-1~ubuntu.18.04~bionic <span class="p">|</span> https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages
+</span></span><span class="line"><span class="cl"> docker-ce <span class="p">|</span> 5:23.0.5-1~ubuntu.18.04~bionic <span class="p">|</span> https://mirrors.aliyun.com/docker-ce/linux/ubuntu bionic/stable amd64 Packages
+</span></span><span class="line"><span class="cl"> docker-ce <span class="p">|</span> 5:23.0.4-1~ubuntu.18.04~bionic <span class="p">|</span> https://download.docker.com/linux/ubuntu bionic/stable amd64 Packages</span></span></code></pre></div><p><strong>更新apt索引后安装Docker-ce</strong></p>
+<div class="highlight" id="id-15"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"> sudo apt install docker-ce<span class="o">=</span>5:19.03.15~3-0~ubuntu-bionic docker-ce-cli<span class="o">=</span>5:19.03.15~3-0~ubuntu-bionic containerd.io<span class="o">=</span>1.5.11-1 -y</span></span></code></pre></div><p>**自定义docker配置 **</p>
+<div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">vim</span> <span class="err">/etc/docker/daemon.json</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;exec-opts&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;native.cgroupdriver=systemd&#34;</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;log-driver&#34;</span><span class="p">:</span> <span class="s2">&#34;json-file&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;log-opts&#34;</span><span class="p">:{</span>
+</span></span><span class="line"><span class="cl">       <span class="nt">&#34;max-size&#34;</span><span class="p">:</span> <span class="s2">&#34;100m&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">},</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&#34;storage-driver&#34;</span><span class="p">:</span> <span class="s2">&#34;overlay2&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="nt">&#34;registry-mirrors&#34;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&#34;https://sqytbycc.mirror.aliyuncs.com&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div><ul>
+<li><code>exec-opts</code> 配置了 CGroup 驱动程序，将其设置为 &ldquo;systemd&rdquo;，这是许多现代 Linux 系统上的推荐设置。</li>
+<li><code>log-driver</code> 配置了容器日志驱动程序，将其设置为 &ldquo;json-file&rdquo;，表示容器的日志将以 JSON 格式记录在文件中。</li>
+<li><code>log-opts</code> 用于配置日志选项，其中 <code>max-size</code> 设置容器日志文件的最大大小为 &ldquo;100m&rdquo;，即 100 兆字节。</li>
+<li><code>storage-driver</code> 配置了 Docker 存储驱动程序，将其设置为 &ldquo;overlay2&rdquo;，这是常见的存储驱动程序之一，用于管理容器的文件系统层</li>
+</ul>
+<div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemctl daemon-reload <span class="o">&amp;&amp;</span> systemctl restart docker <span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> docker</span></span></code></pre></div><h3 id="53-安装kubeadmkubelet-和kubectl">5.3 安装kubeadm、kubelet 和kubectl</h3>
+<p>添加kubernetes 官方程序密钥：</p>
+<div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg <span class="p">|</span> apt-key add -</span></span></code></pre></div><p>为apt添加kubernetes程序包仓库</p>
+<div class="highlight" id="id-19"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/apt/sources.list
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main &gt;&gt; /etc/apt/sources.list <span class="o">&amp;&amp;</span> apt update </span></span></code></pre></div><p><strong>软件包版本</strong>：</p>
+<ul>
+<li>&ldquo;kubernetes-xenial&rdquo; 的软件包版本可能与 Ubuntu 16.04 中的软件包版本相匹配。</li>
+<li>&ldquo;kubernetes-bionic&rdquo; 的软件包版本可能与 Ubuntu 18.04 中的软件包版本相匹配。</li>
+</ul>
+<p><strong>支持周期</strong>：</p>
+<ul>
+<li>&ldquo;kubernetes-xenial&rdquo; 针对 Ubuntu 16.04，已于 2021 年 4 月结束官方支持，不再收到常规更新。</li>
+<li>&ldquo;kubernetes-bionic&rdquo; 针对 Ubuntu 18.04，官方支持周期较长，支持至 2023 年 4 月</li>
+</ul>
+<h4 id="531-更新软件包索引并安装程序包">5.3.1 <strong>更新软件包索引并安装程序包</strong></h4>
+<div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">apt update 
+</span></span><span class="line"><span class="cl"><span class="c1">#查看可用版本</span>
+</span></span><span class="line"><span class="cl">apt-cache madison kubelet
+</span></span><span class="line"><span class="cl"><span class="c1">#选择 1.19.16-00 版本</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">apt install -y <span class="nv">kubelet</span><span class="o">=</span>1.19.16-00 <span class="nv">kubeadm</span><span class="o">=</span>1.19.16-00 <span class="nv">kubectl</span><span class="o">=</span>1.19.16-00
+</span></span><span class="line"><span class="cl">sudo systemctl <span class="nb">enable</span> kubelet <span class="o">&amp;&amp;</span> sudo systemctl start kubelet</span></span></code></pre></div><h4 id="532-初始化控制平面">5.3.2 <strong>初始化控制平面</strong></h4>
+<pre tabindex="0"><code>sudo kubeadm init \
+--image-repository registry.aliyuncs.com/google_containers \
+--kubernetes-version v1.19.16 \
+--control-plane-endpoint k8s-api.ilinux.io \
+--apiserver-advertise-address 10.1.0.110 \
+--pod-network-cidr 10.244.0.0/16 \
+--token-ttl 0</code></pre><p><code>--image-repository</code> 指定要使用的镜像仓库，这里使用的是阿里云的，默认为gcr.io</p>
+<p><code>--kubernetes-version </code> kubernetes 程序组件的版本号，他必须与安装的kubelet 程序包的版本相同。</p>
+<p><code>--kubernetes-version</code> 控制平面的固定访问端点，可以是IP地址或DNS 名称，作为集群管理员与集群组件的kubeconfig配置文件的API Server 的访问地址。单控制面板部署时可以不使用该选项。</p>
+<p><code>--apiserver-advertise-address</code> API Server 通告给其他组件的IP地址，一般为Master节点用于集群内通信的IP地址，0.0.0.0 表示节点上所有可用地址。</p>
+<p><code>--pod-network-cidr </code>  Pod 网络的地址范围，用于容器间通信的 IP 地址段，通常Flannel 网络插件的默认值为10.244.0.0/16，Project Calico 插件的默认值为 192.168.0.0/16。</p>
+<p><code>--service-cidr</code>  Service 的网络地址范围，默认为10.96.0.0/12。通常仅Flannel一类的网络插件需要手动指定该地址。</p>
+<p><code>--token-ttl</code> 共享令牌的过期时长，默认为24小时，0表示永不过期。 为防止不安全的存储等原因导致令牌泄露危及集群安装，建议为其设定过期时长。</p>
+<div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Your Kubernetes control-plane has initialized successfully!
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">To start using your cluster, you need to run the following as a regular user:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  mkdir -p <span class="nv">$HOME</span>/.kube
+</span></span><span class="line"><span class="cl">  sudo cp -i /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+</span></span><span class="line"><span class="cl">  sudo chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="nv">$HOME</span>/.kube/config
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">You should now deploy a pod network to the cluster.
+</span></span><span class="line"><span class="cl">Run <span class="s2">&#34;kubectl apply -f [podnetwork].yaml&#34;</span> with one of the options listed at:
+</span></span><span class="line"><span class="cl">  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">You can now join any number of control-plane nodes by copying certificate authorities
+</span></span><span class="line"><span class="cl">and service account keys on each node and <span class="k">then</span> running the following as root:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  kubeadm join k8s-api.ilinux.io:6443 --token 60jbc3.cse8z5eiqgdtt1nf <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --discovery-token-ca-cert-hash sha256:252d584d53ef359d98219cabcd9d7cb07b3c898058d1045e3feeaf5773585ba6 <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --control-plane
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Then you can join any number of worker nodes by running the following on each as root:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">kubeadm join k8s-api.ilinux.io:6443 --token 60jbc3.cse8z5eiqgdtt1nf <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --discovery-token-ca-cert-hash sha256:252d584d53ef359d98219cabcd9d7cb07b3c898058d1045e3feeaf5773585ba6</span></span></code></pre></div><div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">vim /etc/profile
+</span></span><span class="line"><span class="cl"><span class="nb">source</span> &lt;<span class="o">(</span>kubectl completion bash<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">source</span> /etc/profile</span></span></code></pre></div><h4 id="533-配置命令行工具">5.3.3 <strong>配置命令行工具</strong></h4>
+<p>kubectl 是 Kubernetes 集群的最常用命令行工具，它默认搜索当前用户主目录（保存于环境变量HOME中的值）中名为.kube 的隐藏目录，定位其中名为config 的配置文件以读取必要的配置。包括要接入Kubernetes 集群以及用于集群认证的证书或令牌等信息。</p>
+<div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">  mkdir -p <span class="nv">$HOME</span>/.kube
+</span></span><span class="line"><span class="cl">  sudo cp -i /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+</span></span><span class="line"><span class="cl">  sudo chown <span class="k">$(</span>id -u<span class="k">)</span>:<span class="k">$(</span>id -g<span class="k">)</span> <span class="nv">$HOME</span>/.kube/config</span></span></code></pre></div><p>kubeconfig 文件通常包括以下信息：</p>
+<ul>
+<li><strong>cluster</strong>：描述了要连接的 Kubernetes 集群的名称、API 服务器的地址和证书信息。</li>
+<li><strong>user</strong>：定义了用于身份验证的用户信息，通常包括用户名和证书。</li>
+<li><strong>context</strong>：将 cluster 和 user 关联在一起，并指定默认上下文。</li>
+<li><strong>current-context</strong>：指定默认使用的上下文，这决定了用户与集群的交互。</li>
+</ul>
+<p><code>/etc/kubernetes/admin.conf</code> 通常用于控制平面管理操作，如部署、管理和监视集群的操作。这个配置文件是敏感的，应该受到保护，只允许有权限的用户访问。</p>
+<p>用户可在任何能够通过k8s-api.ilinux.io 与 API Server 通信的主机上安装Kubectl，并为其复制或生成的kubeconfig文件以访问控制平面。</p>
+<h3 id="54-部署-flannel-网络插件">5.4 部署 Flannel 网络插件</h3>
+<p>通过执行<strong>kubectl get node</strong> 命令获取集群节点相关状态信息，出现NotReady状态是因为集群中未部署网络插件所致。</p>
+<div class="highlight" id="id-25"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:~# kubectl get node
+</span></span><span class="line"><span class="cl">NAME           STATUS     ROLES    AGE     VERSION
+</span></span><span class="line"><span class="cl">k8s-master01   NotReady   master   9m37s   v1.19.16</span></span></code></pre></div><p>较为流行的为K8S提供Pod网络的插件有 Flannel、Calico和WeaveNet 等。相较来说Flannel以其简单、模式丰富、易部署、易使用等特性颇受用户欢迎。</p>
+<p>Flannel同样可运行为K8S的集群附件，用DaemonSet控制器为每个节点（包括Master）运行一个Pod实例。</p>
+<p><a href="https://github.com/flannel-io/flannel"target="_blank" rel="external nofollow noopener noreferrer">flannel项目地址</a></p>
+<p><a href="https://github.com/flannel-io/flannel#deploying-flannel-with-kubectl"target="_blank" rel="external nofollow noopener noreferrer">Deploying Flannel with kubectl</a></p>
+<div class="highlight" id="id-26"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml</span></span></code></pre></div><p>If you use custom <code>podCIDR</code> (not <code>10.244.0.0/16</code>) you first need to download the above manifest and modify the network to match your one.</p>
+<p>命令结果显示Pod的状态为Running时表示网络插件Flannel部署完成。</p>
+<div class="highlight" id="id-27"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml# kubectl get pods -n kube-flannel <span class="p">|</span> grep flannel
+</span></span><span class="line"><span class="cl">kube-flannel-ds-sbwf9   1/1     Running   <span class="m">0</span>          93s</span></span></code></pre></div><p>当前节点状态也转为Ready状态。</p>
+<div class="highlight" id="id-28"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@k8s-master01:/yaml# kubectl get node
+</span></span><span class="line"><span class="cl">NAME           STATUS   ROLES    AGE   VERSION
+</span></span><span class="line"><span class="cl">k8s-master01   Ready    master   24m   v1.19.16</span></span></code></pre></div><h3 id="55-添加工作节点">5.5 添加工作节点</h3>
+<p>当主机基础环境准备好后可使用Kubeadm join命令加入集群，该命令需要借助共享令牌进行首次与控制平面通信时的认证操作。相关的令牌信息及完成的命令由初始化控制平面的命令结果得出。</p>
+<div class="highlight" id="id-29"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">kubeadm join k8s-api.ilinux.io:6443 --token 8pq5xn.waqfh238255rpvwl <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --discovery-token-ca-cert-hash sha256:c204bc29c51c0df7e79b2a2dd1b49b89f3c5152189cb4f6f26c8c82dc525fa56</span></span></code></pre></div><div class="highlight" id="id-30"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@k8s-node02:~# kubeadm join k8s-api.ilinux.io:6443 --token 8pq5xn.waqfh238255rpvwl <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>&gt;     --discovery-token-ca-cert-hash sha256:c204bc29c51c0df7e79b2a2dd1b49b89f3c5152189cb4f6f26c8c82dc525fa56
+</span></span><span class="line"><span class="cl"><span class="o">[</span>preflight<span class="o">]</span> Running pre-flight checks
+</span></span><span class="line"><span class="cl">        <span class="o">[</span>WARNING IsDockerSystemdCheck<span class="o">]</span>: detected <span class="s2">&#34;cgroupfs&#34;</span> as the Docker cgroup driver. The recommended driver is <span class="s2">&#34;systemd&#34;</span>. Please follow the guide at https://kubernetes.io/docs/setup/cri/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>preflight<span class="o">]</span> Reading configuration from the cluster...
+</span></span><span class="line"><span class="cl"><span class="o">[</span>preflight<span class="o">]</span> FYI: You can look at this config file with <span class="s1">&#39;kubectl -n kube-system get cm kubeadm-config -oyaml&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>kubelet-start<span class="o">]</span> Writing kubelet configuration to file <span class="s2">&#34;/var/lib/kubelet/config.yaml&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>kubelet-start<span class="o">]</span> Writing kubelet environment file with flags to file <span class="s2">&#34;/var/lib/kubelet/kubeadm-flags.env&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>kubelet-start<span class="o">]</span> Starting the kubelet
+</span></span><span class="line"><span class="cl"><span class="o">[</span>kubelet-start<span class="o">]</span> Waiting <span class="k">for</span> the kubelet to perform the TLS Bootstrap...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">This node has joined the cluster:
+</span></span><span class="line"><span class="cl">* Certificate signing request was sent to apiserver and a response was received.
+</span></span><span class="line"><span class="cl">* The Kubelet was informed of the new secure connection details.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Run <span class="s1">&#39;kubectl get nodes&#39;</span> on the control-plane to see this node join the cluster.</span></span></code></pre></div></div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">
