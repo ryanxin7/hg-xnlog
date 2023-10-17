@@ -80,4 +80,5 @@ https://hg-xnlog.github.io/posts/linux-basic/linux1/
 https://hg-xnlog.github.io/posts/linux-basic/linux-network/
 https://hg-xnlog.github.io/posts/linux-basic/linux-technology-stack/
 https://hg-xnlog.github.io/posts/linux-basic/nfs/
+https://hg-xnlog.github.io/posts/cicd/ansible%E6%89%B9%E9%87%8F%E7%94%9F%E6%88%90%E5%B9%B6%E4%BF%AE%E6%94%B9%E5%AF%86%E7%A0%81/
 https://hg-xnlog.github.io/posts/kubernetes/primary/cert-manager-&#43;-zerossl-%E7%9A%84%E4%B8%80%E4%BA%9B%E9%85%8D%E7%BD%AE%E7%9A%84%E7%A0%94%E7%A9%B6/
