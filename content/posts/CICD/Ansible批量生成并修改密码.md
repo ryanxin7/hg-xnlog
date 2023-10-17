@@ -1,3 +1,4 @@
+---
 author: Ryan
 title: Ansible 批量生成并服务器密码
 date: 2023-10-17 21:23:22
