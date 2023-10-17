@@ -11,7 +11,7 @@ category:
    - Git
    - Vue
 expirationReminder:
-  enable: true
+  enable: false
 ---
 
 

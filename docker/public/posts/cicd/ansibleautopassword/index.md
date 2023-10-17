@@ -1,15 +1,6 @@
----
-author: Ryan
-title: Ansible 批量生成并服务器密码
-date: 2023-10-17 21:23:22
-lastmod: 2023-10-17
-tags:
-  - 自动化和配置工具
-categories:
-  - Ansible
-expirationReminder:
-  enable: true
----
+# Ansible 批量生成并服务器密码
+
+
 
 **生成密码的 Bash 脚本**：
 
@@ -1066,4 +1057,11 @@ webservers-server7         : ok=6    changed=3    unreachable=0    failed=0    s
 webservers-server8         : ok=6    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 webservers-server9         : ok=6    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
+
+
+
+---
+
+> 作者: [Ryan](https://github.com/ryanxin7)  
+> URL: https://hg-xnlog.github.io/posts/cicd/ansibleautopassword/  
 

@@ -4,7 +4,15 @@
     <link>https://hg-xnlog.github.io/posts/</link>
     <description>所有文章 | Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 09 Oct 2023 21:23:22 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Tue, 17 Oct 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+  <title>Ansible 批量生成并服务器密码</title>
+  <link>https://hg-xnlog.github.io/posts/cicd/ansibleautopassword/</link>
+  <pubDate>Tue, 17 Oct 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/cicd/ansibleautopassword/</guid>
+  <description><![CDATA[生成密码的 Bash 脚本： #!/bin/bash #Maintainer： Zhangxinxin #Email: xx9z@outlook.com #Time: 2023.10 password=&#34;XXXXX$(ifconfig | awk &#39;/ether/{print $2}&#39; | md5sum | cut -b -6)&#34; host=$(ifconfig | awk -F&#39;[: ]+&#39; &#39;/inet /{print $3}&#39; | sed &#39;2d&#39;) user=root timestamp=$(date +&#34;%Y-%m-%d %H:%M:%S&#34;) if echo &#34;$user:$password&#34; | chpasswd; then success_message=&#34;[$timestamp] 当前主机: $host, 账号: $user,]]></description>
+</item>
+<item>
   <title>Brocade ICX 6450交换机简单配置命令</title>
   <link>https://hg-xnlog.github.io/posts/notes/2023-10-09-brocade-icx-6450%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE%E5%91%BD%E4%BB%A4/</link>
   <pubDate>Mon, 09 Oct 2023 21:23:22 &#43;0000</pubDate>
@@ -75,14 +83,6 @@
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/blog/%E4%BA%94%E8%8A%B1%E5%85%AB%E9%97%A8%E7%9A%84-markdown-admonitions/</guid>
   <description><![CDATA[语法 admonition shortcode 支持 12 种 帮助你在页面中插入提示的横幅。 支持 Markdown 或者 HTML 格式。 注意 一个 注意 横幅 摘要 一个 摘要 横幅 信息 一个 信息 横幅 技巧 一个 技巧 横幅 成功 一个 成功]]></description>
-</item>
-<item>
-  <title>Github Actions 自动同步到 Gitee</title>
-  <link>https://hg-xnlog.github.io/posts/cicd/github-synctogitee/</link>
-  <pubDate>Mon, 12 Jun 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/cicd/github-synctogitee/</guid>
-  <description><![CDATA[1. 开通 Github Aciton 上传代码一般已Github仓库为主，但Jenkins由于网络原因经常无法拉取Github上的代码，于是考虑将Github仓库自动同]]></description>
 </item>
 </channel>
 </rss>

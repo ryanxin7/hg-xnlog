@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>自动化和配置工具 - 标签 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E5%92%8C%E9%85%8D%E7%BD%AE%E5%B7%A5%E5%85%B7/</link>
+    <description>自动化和配置工具 - 标签 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Tue, 17 Oct 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/%E8%87%AA%E5%8A%A8%E5%8C%96%E5%92%8C%E9%85%8D%E7%BD%AE%E5%B7%A5%E5%85%B7/" rel="self" type="application/rss+xml" /><item>
+  <title>Ansible 批量生成并服务器密码</title>
+  <link>https://hg-xnlog.github.io/posts/cicd/ansibleautopassword/</link>
+  <pubDate>Tue, 17 Oct 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/cicd/ansibleautopassword/</guid>
+  <description><![CDATA[生成密码的 Bash 脚本： #!/bin/bash #Maintainer： Zhangxinxin #Email: xx9z@outlook.com #Time: 2023.10 password=&#34;XXXXX$(ifconfig | awk &#39;/ether/{print $2}&#39; | md5sum | cut -b -6)&#34; host=$(ifconfig | awk -F&#39;[: ]+&#39; &#39;/inet /{print $3}&#39; | sed &#39;2d&#39;) user=root timestamp=$(date +&#34;%Y-%m-%d %H:%M:%S&#34;) if echo &#34;$user:$password&#34; | chpasswd; then success_message=&#34;[$timestamp] 当前主机: $host, 账号: $user,]]></description>
+</item>
+</channel>
+</rss>

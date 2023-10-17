@@ -8,7 +8,7 @@ tags:
 category: 
    - Jenkins
 expirationReminder:
-  enable: true
+  enable: false
 ---
 
 
