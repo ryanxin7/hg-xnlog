@@ -7,12 +7,12 @@
     <meta name="robots" content="noodp" />
     <title>Ansible 批量生成并服务器密码 - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
 <meta name="author-link" content="https://github.com/ryanxin7">
-<meta name="description" content="生成密码的 Bash 脚本： #!/bin/bash #Maintainer： Zhangxinxin #Email: xx9z@outlook.com #Time: 2023.10 password=&#34;XXXXX$(ifconfig | awk &#39;/ether/{print $2}&#39; | md5sum | cut -b -6)&#34; host=$(ifconfig | awk -F&#39;[: ]&#43;&#39; &#39;/inet /{print $3}&#39; | sed &#39;2d&#39;) user=root timestamp=$(date &#43;&#34;%Y-%m-%d %H:%M:%S&#34;) if echo &#34;$user:$password&#34; | chpasswd; then success_message=&#34;[$timestamp] 当前主机: $host, 账号: $user," /><meta name="keywords" content='自动化和配置工具' /><meta itemprop="name" content="Ansible 批量生成并服务器密码">
-<meta itemprop="description" content="生成密码的 Bash 脚本： #!/bin/bash #Maintainer： Zhangxinxin #Email: xx9z@outlook.com #Time: 2023.10 password=&#34;XXXXX$(ifconfig | awk &#39;/ether/{print $2}&#39; | md5sum | cut -b -6)&#34; host=$(ifconfig | awk -F&#39;[: ]&#43;&#39; &#39;/inet /{print $3}&#39; | sed &#39;2d&#39;) user=root timestamp=$(date &#43;&#34;%Y-%m-%d %H:%M:%S&#34;) if echo &#34;$user:$password&#34; | chpasswd; then success_message=&#34;[$timestamp] 当前主机: $host, 账号: $user,"><meta itemprop="datePublished" content="2023-10-17T00:00:00+00:00" />
+<meta name="description" content="为了满足三级等保中服务器密码更改周期的要求。通过使用 Ansible 执行密码生成脚本，并将执行结果记录在日志文件中，可以确保密码的自动生成和周期性更改，并" /><meta name="keywords" content='自动化和配置工具' /><meta itemprop="name" content="Ansible 批量生成并服务器密码">
+<meta itemprop="description" content="为了满足三级等保中服务器密码更改周期的要求。通过使用 Ansible 执行密码生成脚本，并将执行结果记录在日志文件中，可以确保密码的自动生成和周期性更改，并"><meta itemprop="datePublished" content="2023-10-17T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-10-17T00:00:00+00:00" />
-<meta itemprop="wordCount" content="6863"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="6949"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="自动化和配置工具," /><meta property="og:title" content="Ansible 批量生成并服务器密码" />
-<meta property="og:description" content="生成密码的 Bash 脚本： #!/bin/bash #Maintainer： Zhangxinxin #Email: xx9z@outlook.com #Time: 2023.10 password=&#34;XXXXX$(ifconfig | awk &#39;/ether/{print $2}&#39; | md5sum | cut -b -6)&#34; host=$(ifconfig | awk -F&#39;[: ]&#43;&#39; &#39;/inet /{print $3}&#39; | sed &#39;2d&#39;) user=root timestamp=$(date &#43;&#34;%Y-%m-%d %H:%M:%S&#34;) if echo &#34;$user:$password&#34; | chpasswd; then success_message=&#34;[$timestamp] 当前主机: $host, 账号: $user," />
+<meta property="og:description" content="为了满足三级等保中服务器密码更改周期的要求。通过使用 Ansible 执行密码生成脚本，并将执行结果记录在日志文件中，可以确保密码的自动生成和周期性更改，并" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hg-xnlog.github.io/posts/cicd/ansibleautopassword/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2023-10-17T00:00:00+00:00" />
@@ -21,7 +21,7 @@
 <meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
 
 <meta name="twitter:title" content="Ansible 批量生成并服务器密码"/>
-<meta name="twitter:description" content="生成密码的 Bash 脚本： #!/bin/bash #Maintainer： Zhangxinxin #Email: xx9z@outlook.com #Time: 2023.10 password=&#34;XXXXX$(ifconfig | awk &#39;/ether/{print $2}&#39; | md5sum | cut -b -6)&#34; host=$(ifconfig | awk -F&#39;[: ]&#43;&#39; &#39;/inet /{print $3}&#39; | sed &#39;2d&#39;) user=root timestamp=$(date &#43;&#34;%Y-%m-%d %H:%M:%S&#34;) if echo &#34;$user:$password&#34; | chpasswd; then success_message=&#34;[$timestamp] 当前主机: $host, 账号: $user,"/>
+<meta name="twitter:description" content="为了满足三级等保中服务器密码更改周期的要求。通过使用 Ansible 执行密码生成脚本，并将执行结果记录在日志文件中，可以确保密码的自动生成和周期性更改，并"/>
 <meta name="application-name" content="Ryan’s Notebook">
 <meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/cicd/ansibleautopassword/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/notes/2023-10-09-brocade-icx-6450%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE%E5%91%BD%E4%BB%A4/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/cicd\/ansibleautopassword\/"
-    },"genre": "posts","keywords": "自动化和配置工具","wordcount":  6863 ,
+    },"genre": "posts","keywords": "自动化和配置工具","wordcount":  6949 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/cicd\/ansibleautopassword\/","datePublished": "2023-10-17T00:00:00+00:00","dateModified": "2023-10-17T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -181,7 +181,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/ansible/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Ansible</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-10-17 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-17">2023-10-17</time></span>&nbsp;<span title="更新于 2023-10-17 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-17">2023-10-17</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 6863 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 14 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Ansible 批量生成并服务器密码">
+      <div class="post-meta-line"><span title="发布于 2023-10-17 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-17">2023-10-17</time></span>&nbsp;<span title="更新于 2023-10-17 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-17">2023-10-17</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 6949 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 14 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Ansible 批量生成并服务器密码">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -203,7 +203,8 @@
     </li>
   </ul>
 </nav></div>
-      </div><div class="content" id="content"><p><strong>生成密码的 Bash 脚本</strong>：</p>
+      </div><div class="content" id="content"><p>为了满足三级等保中服务器密码更改周期的要求。通过使用 Ansible 执行密码生成脚本，并将执行结果记录在日志文件中，可以确保密码的自动生成和周期性更改，并在需要时审计密码更改的历史记录。</p>
+<p><strong>生成密码的 Bash 脚本</strong>：</p>
 <div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">#Maintainer： Zhangxinxin</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#Email: xx9z@outlook.com</span>

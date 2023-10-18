@@ -10,7 +10,7 @@
   <pubDate>Tue, 17 Oct 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/cicd/ansibleautopassword/</guid>
-  <description><![CDATA[生成密码的 Bash 脚本： #!/bin/bash #Maintainer： Zhangxinxin #Email: xx9z@outlook.com #Time: 2023.10 password=&#34;XXXXX$(ifconfig | awk &#39;/ether/{print $2}&#39; | md5sum | cut -b -6)&#34; host=$(ifconfig | awk -F&#39;[: ]+&#39; &#39;/inet /{print $3}&#39; | sed &#39;2d&#39;) user=root timestamp=$(date +&#34;%Y-%m-%d %H:%M:%S&#34;) if echo &#34;$user:$password&#34; | chpasswd; then success_message=&#34;[$timestamp] 当前主机: $host, 账号: $user,]]></description>
+  <description><![CDATA[为了满足三级等保中服务器密码更改周期的要求。通过使用 Ansible 执行密码生成脚本，并将执行结果记录在日志文件中，可以确保密码的自动生成和周期性更改，并]]></description>
 </item>
 <item>
   <title>Brocade ICX 6450交换机简单配置命令</title>
