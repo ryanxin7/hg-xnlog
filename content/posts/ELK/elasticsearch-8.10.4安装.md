@@ -1,0 +1,480 @@
+
+
+## 1.下载Elasticserch安装包
+
+
+
+![image-20231020133656380](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231020133656380.png)
+
+https://www.elastic.co/cn/downloads/elasticsearch
+
+
+
+当前最新版本为 8.10.4
+
+
+
+## 集群规划
+
+
+
+| 服务器                | 角色        |
+| --------------------- | ----------- |
+| 192.168.10.107,eslg01 | master/data |
+| 192.168.10.108,eslg02 | master/data |
+| 192.168.10.109,eslg03 | master/data |
+
+
+
+#### 各节点创建普通用户
+
+ES不能使用root用户来启动，否则会报错，使用普通用户来安装启动。创建一个普通用户以及定义一些常规目录用于存放我们的数据文件以及安装包等
+
+```sh
+root@LogServer02:/softws/elasticsearch-8.10.4/jdk# useradd es
+root@LogServer02:/softws/elasticsearch-8.10.4/jdk# passwd es
+New password:
+Retype new password:
+passwd: password updated successfully
+
+
+echo "$user:$password" | chpasswd
+```
+
+
+
+```sh
+vim /etc/hosts
+192.168.10.107 eslg01
+192.168.10.108 eslg02
+192.168.10.109 eslg03
+```
+
+
+
+
+
+
+
+## 调整操作系统参数
+
+elasticsearch要求进程最大打开数量为最低65536
+
+```sh
+vim /etc/security/limits.conf
+```
+
+
+
+
+
+修改`/etc/sysctl.conf`文件，增加配置`vm.max_map_count=262144`
+
+```sh
+vim /etc/sysctl.conf
+vm.max_map_count=262144
+# 退出执行
+sysctl -p
+```
+
+`vm.max_map_count`用于限制单个进程的VMA（虚拟内存区域）数量。默认值为`65530`，对于绝大多数应用程序来说已经足够。如果应用程序因为内存消耗过大而报错，请增大本参数的值
+
+https://docs.nebula-graph.com.cn/2.5.0/5.configurations-and-logs/1.configurations/6.kernel-config/
+
+
+
+
+
+## 安装Elasticsearch
+
+```sh
+tar -xvf 
+```
+
+
+
+
+
+配置环境变量
+
+```bash
+vim /etc/profile.d/elasticsearch.sh
+export JAVA_HOME=/softws/elasticsearch-8.10.4/jdk
+export ES_HOME=/softws/elasticsearch-8.10.4
+export PATH=$ES_HOME/bin:$PATH
+
+source /etc/profile.d/elasticsearch.sh
+```
+
+
+
+
+
+### 配置es
+
+创建数据文件，证书目录, 并修改 Elasticsearch 文件拥有者
+
+```shell
+# 创建数据文件目录
+mkdir /softws/elasticsearch-8.10.4/data
+# 创建证书目录
+mkdir /softws/elasticsearch-8.10.4/config/certs
+
+# 修改文件拥有者
+chown -R es:es /softws/elasticsearch-8.10.4
+
+# 分发到其他节点,并chown
+scp -r /opt/elasticsearch-8.3.2 lsyk02:/opt
+scp -r /opt/elasticsearch-8.3.2 lsyk03:/opt
+ssh lsyk02 chown -R es:es /opt/elasticsearch-8.3.2
+ssh lsyk03 chown -R es:es /opt/elasticsearch-8.3.2
+```
+
+
+
+
+
+签发 ca 证书，过程中需按两次回车键,生成目录：es的home:/opt/elasticsearch-8.3.2/
+
+```sh
+$ ./elasticsearch-certutil ca
+warning: ignoring JAVA_HOME=/softws/elasticsearch-8.10.4/jdk; using bundled JDK
+This tool assists you in the generation of X.509 certificates and certificate
+signing requests for use with SSL/TLS in the Elastic stack.
+
+The 'ca' mode generates a new 'certificate authority'
+This will create a new X.509 certificate and private key that can be used
+to sign certificate when running in 'cert' mode.
+
+Use the 'ca-dn' option if you wish to configure the 'distinguished name'
+of the certificate authority
+
+By default the 'ca' mode produces a single PKCS#12 output file which holds:
+    * The CA certificate
+    * The CA's private key
+
+If you elect to generate PEM format certificates (the -pem option), then the output                                                                                will
+be a zip file containing individual files for the CA certificate and private key
+
+Please enter the desired output file [elastic-stack-ca.p12]:
+Enter password for elastic-stack-ca.p12 :
+```
+
+
+
+用 ca 证书签发节点证书，过程中需按三次回车键,生成目录：es的home:/opt/elasticsearch-8.3.2/
+
+```bash
+$ ./elasticsearch-certutil cert --ca /softws/elasticsearch-8.10.4/elastic-stack-ca.p12
+warning: ignoring JAVA_HOME=/softws/elasticsearch-8.10.4/jdk; using bundled JDK
+This tool assists you in the generation of X.509 certificates and certificate
+signing requests for use with SSL/TLS in the Elastic stack.
+
+The 'cert' mode generates X.509 certificate and private keys.
+    * By default, this generates a single certificate and key for use
+       on a single instance.
+    * The '-multiple' option will prompt you to enter details for multiple
+       instances and will generate a certificate and key for each one
+    * The '-in' option allows for the certificate generation to be automated by describing
+       the details of each instance in a YAML file
+
+    * An instance is any piece of the Elastic Stack that requires an SSL certificate.
+      Depending on your configuration, Elasticsearch, Logstash, Kibana, and Beats
+      may all require a certificate and private key.
+    * The minimum required value for each instance is a name. This can simply be the
+      hostname, which will be used as the Common Name of the certificate. A full
+      distinguished name may also be used.
+    * A filename value may be required for each instance. This is necessary when the
+      name would result in an invalid file or directory name. The name provided here
+      is used as the directory name (within the zip) and the prefix for the key and
+      certificate files. The filename is required if you are prompted and the name
+      is not displayed in the prompt.
+    * IP addresses and DNS names are optional. Multiple values can be specified as a
+      comma separated string. If no IP addresses or DNS names are provided, you may
+      disable hostname verification in your SSL configuration.
+
+
+    * All certificates generated by this tool will be signed by a certificate authority (CA)
+      unless the --self-signed command line option is specified.
+      The tool can automatically generate a new CA for you, or you can provide your own with
+      the --ca or --ca-cert command line options.
+
+
+By default the 'cert' mode produces a single PKCS#12 output file which holds:
+    * The instance certificate
+    * The private key for the instance certificate
+    * The CA certificate
+
+If you specify any of the following options:
+    * -pem (PEM formatted output)
+    * -multiple (generate multiple certificates)
+    * -in (generate certificates from an input file)
+then the output will be be a zip file containing individual certificate/key files
+
+Enter password for CA (/softws/elasticsearch-8.10.4/elastic-stack-ca.p12) :
+Please enter the desired output file [elastic-certificates.p12]:
+Enter password for elastic-certificates.p12 :
+
+Certificates written to /softws/elasticsearch-8.10.4/elastic-certificates.p12
+
+This file should be properly secured as it contains the private key for
+your instance.
+This file is a self contained file and can be copied and used 'as is'
+For each Elastic product that you wish to configure, you should copy
+this '.p12' file to the relevant configuration directory
+and then follow the SSL configuration instructions in the product guide.
+
+For client applications, you may only need to copy the CA certificate and
+configure the client to trust this certificate.
+```
+
+
+
+```bash
+# 用 ca 证书签发节点证书，过程中需按三次回车键,生成目录：es的home:/opt/elasticsearch-8.3.2/
+./elasticsearch-certutil cert --ca elastic-stack-ca.p12
+# 将生成的证书文件移动到 config/certs 目录中
+mv /softws/elasticsearch-8.10.4/elastic-stack-ca.p12 /softws/elasticsearch-8.10.4/elastic-certificates.p12 /softws/elasticsearch-8.10.4/config/certs
+
+```
+
+
+
+在第一台服务器节点 lsyk01 设置集群多节点 HTTP 证书
+
+交互过程
+
+```bash
+$ ./elasticsearch-certutil http
+warning: ignoring JAVA_HOME=/softws/elasticsearch-8.10.4/jdk; using bundled JDK
+
+## Elasticsearch HTTP Certificate Utility
+
+The 'http' command guides you through the process of generating certificates
+for use on the HTTP (Rest) interface for Elasticsearch.
+
+This tool will ask you a number of questions in order to generate the right
+set of files for your needs.
+
+## Do you wish to generate a Certificate Signing Request (CSR)?
+
+A CSR is used when you want your certificate to be created by an existing
+Certificate Authority (CA) that you do not control (that is, you don't have
+access to the keys for that CA).
+
+If you are in a corporate environment with a central security team, then you
+may have an existing Corporate CA that can generate your certificate for you.
+Infrastructure within your organisation may already be configured to trust this
+CA, so it may be easier for clients to connect to Elasticsearch if you use a
+CSR and send that request to the team that controls your CA.
+
+If you choose not to generate a CSR, this tool will generate a new certificate
+for you. That certificate will be signed by a CA under your control. This is a
+quick and easy way to secure your cluster with TLS, but you will need to
+configure all your clients to trust that custom CA.
+
+Generate a CSR? [y/N]n
+
+## Do you have an existing Certificate Authority (CA) key-pair that you wish to use to sign your certificate?
+
+If you have an existing CA certificate and key, then you can use that CA to
+sign your new http certificate. This allows you to use the same CA across
+multiple Elasticsearch clusters which can make it easier to configure clients,
+and may be easier for you to manage.
+
+If you do not have an existing CA, one will be generated for you.
+
+Use an existing CA? [y/N]y
+
+## What is the path to your CA?
+
+Please enter the full pathname to the Certificate Authority that you wish to
+use for signing your new http certificate. This can be in PKCS#12 (.p12), JKS
+(.jks) or PEM (.crt, .key, .pem) format.
+CA Path: /softws/elasticsearch-8.10.4/config/certs/elastic-stack-ca.p12
+Reading a PKCS12 keystore requires a password.
+It is possible for the keystore's password to be blank,
+in which case you can simply press <ENTER> at the prompt
+Password for elastic-stack-ca.p12:
+
+## How long should your certificates be valid?
+
+Every certificate has an expiry date. When the expiry date is reached clients
+will stop trusting your certificate and TLS connections will fail.
+
+Best practice suggests that you should either:
+(a) set this to a short duration (90 - 120 days) and have automatic processes
+to generate a new certificate before the old one expires, or
+(b) set it to a longer duration (3 - 5 years) and then perform a manual update
+a few months before it expires.
+
+You may enter the validity period in years (e.g. 3Y), months (e.g. 18M), or days (e.g. 90D)
+
+For how long should your certificate be valid? [5y] 5y
+
+## Do you wish to generate one certificate per node?
+
+If you have multiple nodes in your cluster, then you may choose to generate a
+separate certificate for each of these nodes. Each certificate will have its
+own private key, and will be issued for a specific hostname or IP address.
+
+Alternatively, you may wish to generate a single certificate that is valid
+across all the hostnames or addresses in your cluster.
+
+If all of your nodes will be accessed through a single domain
+(e.g. node01.es.example.com, node02.es.example.com, etc) then you may find it
+simpler to generate one certificate with a wildcard hostname (*.es.example.com)
+and use that across all of your nodes.
+
+However, if you do not have a common domain name, and you expect to add
+additional nodes to your cluster in the future, then you should generate a
+certificate per node so that you can more easily generate new certificates when
+you provision new nodes.
+
+Generate a certificate per node? [y/N]n
+
+## Which hostnames will be used to connect to your nodes?
+
+These hostnames will be added as "DNS" names in the "Subject Alternative Name"
+(SAN) field in your certificate.
+
+You should list every hostname and variant that people will use to connect to
+your cluster over http.
+Do not list IP addresses here, you will be asked to enter them later.
+
+If you wish to use a wildcard certificate (for example *.es.example.com) you
+can enter that here.
+
+Enter all the hostnames that you need, one per line.
+When you are done, press <ENTER> once more to move on to the next step.
+
+192.168.10.107
+192.168.10.108
+192.168.10.109
+
+You entered the following hostnames.
+
+ - 192.168.10.107
+ - 192.168.10.108
+ - 192.168.10.109
+
+Is this correct [Y/n]y
+
+## Which IP addresses will be used to connect to your nodes?
+
+If your clients will ever connect to your nodes by numeric IP address, then you
+can list these as valid IP "Subject Alternative Name" (SAN) fields in your
+certificate.
+
+If you do not have fixed IP addresses, or not wish to support direct IP access
+to your cluster then you can just press <ENTER> to skip this step.
+
+Enter all the IP addresses that you need, one per line.
+When you are done, press <ENTER> once more to move on to the next step.
+
+192.168.10.107
+192.168.10.108
+192.168.10.109
+
+You entered the following IP addresses.
+
+ - 192.168.10.107
+ - 192.168.10.108
+ - 192.168.10.109
+
+Is this correct [Y/n]y
+
+## Other certificate options
+
+The generated certificate will have the following additional configuration
+values. These values have been selected based on a combination of the
+information you have provided above and secure defaults. You should not need to
+change these values unless you have specific requirements.
+
+Key Name: 192.168.10.107
+Subject DN: CN=192, DC=168, DC=10, DC=107
+Key Size: 2048
+
+Do you wish to change any of these options? [y/N]n
+
+## What password do you want for your private key(s)?
+
+Your private key(s) will be stored in a PKCS#12 keystore file named "http.p12".
+This type of keystore is always password protected, but it is possible to use a
+blank password.
+
+If you wish to use a blank password, simply press <enter> at the prompt below.
+Provide a password for the "http.p12" file:  [<ENTER> for none]
+
+## Where should we save the generated files?
+
+A number of files will be generated including your private key(s),
+public certificate(s), and sample configuration options for Elastic Stack products.
+
+These files will be included in a single zip archive.
+
+What filename should be used for the output zip file? [/softws/elasticsearch-8.10.4/elasticsearch-ssl-http.zip]
+
+Zip file written to /softws/elasticsearch-8.10.4/elasticsearch-ssl-http.zip
+```
+
+
+
+
+
+```bash
+# 解压
+cd /softws/elasticsearch-8.10.4/
+unzip elasticsearch-ssl-http.zip
+# 移动证书
+mv ./elasticsearch/http.p12 ./kibana/elasticsearch-ca.pem ./config/certs
+
+# 将证书分发到其他节点
+cd /softws/elasticsearch-8.10.4/config/certs
+scp * 192.168.10.108:/softws/elasticsearch-8.10.4/config/certs
+```
+
+
+
+```
+elastic-certificates.p12  elasticsearch-ca.pem  elastic-stack-ca.p12  http.p12
+```
+
+
+
+修改主配置文件：`./config/elasticsearch.yml`
+
+```yaml
+# 设置 ES 集群名称
+cluster.name: es-logs
+# 设置集群中当前节点名称
+node.name: 192.168.10.107
+# 设置数据，日志文件路径
+path.data: /softws/elasticsearch-8.10.4/data
+path.logs: /softws/elasticsearch-8.10.4/logs
+# 设置网络访问节点
+# network和端口号一定要配置，如果怕安全问题，把host设置成访问此elasticsearch服务器的ip地址，就是设置成唯一访问。 可以配置成 network.host: 0.0.0.0
+network.host: 192.168.10.107
+# 设置网络访问端口
+http.port: 9200
+# 初始节点
+discovery.seed_hosts: ["192.168.10.107"]
+cluster.initial_master_nodes: ["192.168.10.107", "192.168.10.108", "192.168.10.109"]
+# 安全认证
+xpack.security.enabled: true
+xpack.security.enrollment.enabled: true
+xpack.security.http.ssl:
+ enabled: true # 注意第一个空格
+ keystore.path: /softws/elasticsearch-8.10.4/config/certs/http.p12
+ truststore.path: /softws/elasticsearch-8.10.4/config/certs/http.p12
+xpack.security.transport.ssl:
+ enabled: true
+ verification_mode: certificate
+ keystore.path: /softws/elasticsearch-8.10.4/config/certs/elastic-certificates.p12
+ truststore.path: /softws/elasticsearch-8.10.4/config/certs/elastic-certificates.p12
+# 此处需注意，es-lsyk01 为上面配置的节点名称
+http.host: [_local_, _site_]
+ingest.geoip.downloader.enabled: false
+xpack.security.http.ssl.client_authentication: none
+```
+

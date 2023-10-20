@@ -4,12 +4,20 @@
     <link>https://hg-xnlog.github.io/categories/</link>
     <description>Categories - 分类 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Tue, 17 Oct 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/categories/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Fri, 20 Oct 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/categories/" rel="self" type="application/rss+xml" /><item>
   <title>Ansible</title>
   <link>https://hg-xnlog.github.io/categories/ansible/</link>
-  <pubDate>Tue, 17 Oct 2023 00:00:00 &#43;0000</pubDate>
+  <pubDate>Fri, 20 Oct 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/categories/ansible/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
+  <title>ElasticStack</title>
+  <link>https://hg-xnlog.github.io/categories/elasticstack/</link>
+  <pubDate>Fri, 20 Oct 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/categories/elasticstack/</guid>
   <description><![CDATA[]]></description>
 </item>
 <item>
@@ -74,14 +82,6 @@
   <pubDate>Wed, 18 Jan 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/categories/ceph/</guid>
-  <description><![CDATA[]]></description>
-</item>
-<item>
-  <title>Kafka</title>
-  <link>https://hg-xnlog.github.io/categories/kafka/</link>
-  <pubDate>Sat, 04 Dec 2021 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/categories/kafka/</guid>
   <description><![CDATA[]]></description>
 </item>
 </channel>
