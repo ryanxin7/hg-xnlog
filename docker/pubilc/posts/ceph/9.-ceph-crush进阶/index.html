@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>Ceph crush算法进阶 （九） - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
+<meta name="author-link" content="https://github.com/ryanxin7">
+<meta name="description" content="场景：集群内有固态和机械硬盘 如何让不重要的业务放到机械盘。 Ceph 集群中由 mon 服务器维护的的五种运行图: Monitor map 监视器运行图 OSD map OSD运行图 各个每隔6s" /><meta name="keywords" content='分布式存储' /><meta itemprop="name" content="Ceph crush算法进阶 （九）">
+<meta itemprop="description" content="场景：集群内有固态和机械硬盘 如何让不重要的业务放到机械盘。 Ceph 集群中由 mon 服务器维护的的五种运行图: Monitor map 监视器运行图 OSD map OSD运行图 各个每隔6s"><meta itemprop="datePublished" content="2023-01-17T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-01-17T00:00:00+00:00" />
+<meta itemprop="wordCount" content="3487"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="keywords" content="分布式存储," /><meta property="og:title" content="Ceph crush算法进阶 （九）" />
+<meta property="og:description" content="场景：集群内有固态和机械硬盘 如何让不重要的业务放到机械盘。 Ceph 集群中由 mon 服务器维护的的五种运行图: Monitor map 监视器运行图 OSD map OSD运行图 各个每隔6s" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hg-xnlog.github.io/posts/ceph/9.-ceph-crush%E8%BF%9B%E9%98%B6/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-01-17T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-01-17T00:00:00+00:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
+
+<meta name="twitter:title" content="Ceph crush算法进阶 （九）"/>
+<meta name="twitter:description" content="场景：集群内有固态和机械硬盘 如何让不重要的业务放到机械盘。 Ceph 集群中由 mon 服务器维护的的五种运行图: Monitor map 监视器运行图 OSD map OSD运行图 各个每隔6s"/>
+<meta name="application-name" content="Ryan’s Notebook">
+<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/ceph/9.-ceph-crush%E8%BF%9B%E9%98%B6/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-6/" /><link rel="next" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-7/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Ceph crush算法进阶 （九）",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/9.-ceph-crush%E8%BF%9B%E9%98%B6\/"
+    },"genre": "posts","keywords": "分布式存储","wordcount":  3487 ,
+    "url": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/9.-ceph-crush%E8%BF%9B%E9%98%B6\/","datePublished": "2023-01-17T00:00:00+00:00","dateModified": "2023-01-17T00:00:00+00:00","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "Ryan"
+      },"description": ""
+  }
+  </script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><script>(window.localStorage?.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('data-theme', 'dark');</script><div class="wrapper" data-page-style="wide"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper" data-github-corner="right">
+    <div class="header-title">
+      <a href="/" title="Ryan&#39;s Notebook"><img loading="lazy" src="/images/pow.png" srcset="/images/pow.png, /images/pow.png 1.5x, /images/pow.png 2x" sizes="auto" data-title="Ryan&#39;s Notebook" data-alt="Ryan&#39;s Notebook" class="logo" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/><span class="header-title-text">Ryan’s Notebook</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 所有文章</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/friends/"
+                title="友情链接"
+                
+              ><i class="fa-solid fa-users fa-fw fa-sm" aria-hidden="true"></i> 友链</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/about/"
+                
+                
+              ><i class="fa-solid fa-user-tie fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容……" id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="Ryan&#39;s Notebook"><img loading="lazy" src="/images/pow.png" srcset="/images/pow.png, /images/pow.png 1.5x, /images/pow.png 2x" sizes="auto" data-title="/images/pow.png" data-alt="/images/pow.png" class="logo" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/><span class="header-title-text">Ryan’s Notebook</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容……" id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/posts/"
+                  
+                  
+                ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 所有文章</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/categories/"
+                  
+                  
+                ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/tags/"
+                  
+                  
+                ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/friends/"
+                  title="友情链接"
+                  
+                ><i class="fa-solid fa-users fa-fw fa-sm" aria-hidden="true"></i> 友链</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/about/"
+                  
+                  
+                ><i class="fa-solid fa-user-tie fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li
+              class="menu-item text-center"
+            ><a
+                  class="menu-link"
+                  href="https://github.com/ryanxin7/hg-xnlog"
+                  title="GitHub"
+                  rel="noopener noreferrer" target="_blank"
+                ><i class='fa-brands fa-github fa-fw' aria-hidden='true'></i> </a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="切换主题"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container"><aside class="toc" id="toc-auto"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside>
+
+  <aside class="aside-custom">
+    </aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>Ceph crush算法进阶 （九）</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
+          <span class="post-category">收录于 <a href="/categories/ceph/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Ceph</a></span></div>
+      <div class="post-meta-line"><span title="发布于 2023-01-17 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-01-17">2023-01-17</time></span>&nbsp;<span title="更新于 2023-01-17 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-01-17">2023-01-17</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 3487 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 7 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Ceph crush算法进阶 （九）">
+            <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
+          </span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#91--pg与osd映射调整">9.1  PG与OSD映射调整</a>
+      <ul>
+        <li><a href="#911-查看当前状态">9.1.1 查看当前状态</a></li>
+        <li><a href="#912-修改weight并验证">9.1.2 修改WEIGHT并验证</a></li>
+        <li><a href="#913-修改-reweight-并验证">9.1.3 修改 REWEIGHT 并验证</a></li>
+      </ul>
+    </li>
+    <li><a href="#92---crush运行图管理">9.2   crush运行图管理</a>
+      <ul>
+        <li><a href="#921-导出crush运行图">9.2.1 导出crush运行图</a></li>
+        <li><a href="#922-将运行图转换为文本">9.2.2 将运行图转换为文本:</a></li>
+        <li><a href="#923-编辑文本">9.2.3 编辑文本</a></li>
+        <li><a href="#923-将文本转换为crush格式">9.2.3 将文本转换为crush格式</a></li>
+        <li><a href="#924-导入新的crush">9.2.4 导入新的crush</a></li>
+        <li><a href="#925-验证crush运行图是否生效">9.2.5 验证crush运行图是否生效</a></li>
+      </ul>
+    </li>
+    <li><a href="#93-crush数据分类管理">9.3 crush数据分类管理</a>
+      <ul>
+        <li><a href="#931-导出cursh运行图">9.3.1 导出cursh运行图</a></li>
+        <li><a href="#932-将运行图转换为文本">9.3.2 将运行图转换为文本</a></li>
+        <li><a href="#933-添加自定义配置">9.3.3 添加自定义配置</a></li>
+        <li><a href="#br-934-转换为crush二进制格式"><!-- raw HTML omitted -->9.3.4 转换为crush二进制格式</a></li>
+        <li><a href="#935-导入新的crush运行图">9.3.5 导入新的crush运行图</a></li>
+        <li><a href="#936-验证crush运行图是否生效">9.3.6 验证crush运行图是否生效</a></li>
+        <li><a href="#937-测试创建存储池">9.3.7 测试创建存储池</a></li>
+        <li><a href="#938-验证pgp状态">9.3.8 验证pgp状态</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content"><div class="details admonition warning open">
+      <div class="details-summary admonition-title">
+        <i class="icon fa-solid fa-exclamation-triangle fa-fw" aria-hidden="true"></i>警告<i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i>
+      </div>
+      <div class="details-content">
+        <div class="admonition-content">本文最后更新于 2023-01-17，文中内容可能已过时。</div>
+      </div>
+    </div><p>场景：集群内有固态和机械硬盘 如何让不重要的业务放到机械盘。 <!-- raw HTML omitted --><img loading="lazy" src="https://cdn1.ryanxin.live/xxlog/1670239925327-b0a6d81f-d49f-457f-ab71-329245a2c645.png" srcset="https://cdn1.ryanxin.live/xxlog/1670239925327-b0a6d81f-d49f-457f-ab71-329245a2c645.png, https://cdn1.ryanxin.live/xxlog/1670239925327-b0a6d81f-d49f-457f-ab71-329245a2c645.png 1.5x, https://cdn1.ryanxin.live/xxlog/1670239925327-b0a6d81f-d49f-457f-ab71-329245a2c645.png 2x" sizes="auto" data-title="image.png" data-alt="image.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><strong>Ceph 集群中由 mon 服务器维护的的五种运行图</strong>:</p>
+<ul>
+<li>Monitor map  监视器运行图</li>
+<li>OSD map  OSD运行图   各个每隔6s汇报状态同时监控其他OSD的状态，超过20秒就会被踢出去</li>
+<li>PG map  PG运行图   （一个存储池有哪些pg）</li>
+<li>Crush map  (Controllers replication under scalable hashing)  可控的、可复制的、可伸缩的一致性hash算法。crush运行图，当新建存储池时会基于OSD map创建出新的PG组合列表用于存储数据</li>
+<li>MDS map  cephfs metadata运行图</li>
+</ul>
+<p>数据的访问：</p>
+<p>obj&ndash;&gt;pg hash(oid)%pg=pgid   先将文件计算成一个hash值，这个数取pg数量的余数 最终得到分配到那个pg中<!-- raw HTML omitted -->Obj&ndash;&gt;OSD crush 根据当前的mon运行图返回pg内的最新的OSD组合,数据即可开始往主的写然后往副本OSD同步</p>
+<p><strong>crush 算法针对目的节点的选择</strong>:<!-- raw HTML omitted -->目前有5种算法来实现节点的选择，包括Uniform、List、 Tree、 Straw、 Straw2, 早期版<!-- raw HTML omitted -->本使用的是ceph项目的发起者发明的算法straw,目前已经发展到straw2版本。<!-- raw HTML omitted -->抽签算法</p>
+<h2 id="91--pg与osd映射调整">9.1  PG与OSD映射调整</h2>
+<p>默认情况下,crush算法自行对创建的pool中的PG分配OSD,但是可以手动基于权重设置 crush 算法分配数据的倾向性， 比如1T 的磁盘权重是1,  2T 的就是2, 推荐使用相同大小的设备。</p>
+<p>调整的方法有两种：<!-- raw HTML omitted -->  1. 调整weight值</p>
+<ol start="2">
+<li>调整reweight值</li>
+</ol>
+<h3 id="911-查看当前状态">9.1.1 查看当前状态</h3>
+<p><code>ceph osd df</code></p>
+<p>基于存储空间<!-- raw HTML omitted -->**weight **表示设备(device)的容量相对值，比如 1TB 对应1.00 ,那么500G的 OSD 的 weight 就应该是0.5, weight 是基于磁盘空间分配PG的数量，让crush算法尽可能往磁盘空间大的OSD多分配OSD。往磁盘空间小的OSD分配较少的OSD。</p>
+<p>那个磁盘快满了调整一下释放资源<!-- raw HTML omitted -->**Reweight **参数的目的是重新平衡 ceph的CRUSH算法随机分配的PG,默认的分配是概率上的均衡，即使OSD都是一 样的磁盘空间也会产生一些PG分布不均匀的情况， 此时可以通过调整reweight参数，让ceph集群立即重新平衡当前磁盘的PG,以达到数据均衡分布的目的，REWEIGHT 是PG已经分配完成，要在cepg集群重新平衡PG的分布。</p>
+<h3 id="912-修改weight并验证">9.1.2 修改WEIGHT并验证</h3>
+<div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#修改某个指定ID的osd的权重 调整完立即生效</span>
+</span></span><span class="line"><span class="cl">root@ceph-deploy:~# ceph osd crush reweight osd.10 1.5 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#验证OSD权重:</span>
+</span></span><span class="line"><span class="cl">root@ceph-deploy:~# ceph osd df</span></span></code></pre></div><h3 id="913-修改-reweight-并验证">9.1.3 修改 REWEIGHT 并验证</h3>
+<p>OSD 的 <strong>REWEIGHT</strong>的值默认为1 ,值可以调整，范围在0~1之间，值越低PG越小，如果调整了任何一个OSD的REWEIGHT值，那么OSD的PG会立即和其它OSD进行重新平衡，即数据的重新分配，用于当某个OSD的PG相对较多需要降低其PG 数量的场景。</p>
+<div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-deploy:~# ceph osd reweight <span class="m">9</span> 0.6</span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/xxlog/1670241465024-9c13f208-cb26-418d-9bcf-3fab74f0a0b1.png" srcset="https://cdn1.ryanxin.live/xxlog/1670241465024-9c13f208-cb26-418d-9bcf-3fab74f0a0b1.png, https://cdn1.ryanxin.live/xxlog/1670241465024-9c13f208-cb26-418d-9bcf-3fab74f0a0b1.png 1.5x, https://cdn1.ryanxin.live/xxlog/1670241465024-9c13f208-cb26-418d-9bcf-3fab74f0a0b1.png 2x" sizes="auto" data-title="image.png" data-alt="image.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h2 id="92---crush运行图管理">9.2   crush运行图管理</h2>
+<p>通过工具将 ceph 的crush 运行图导出并进行编辑，然后导入</p>
+<h3 id="921-导出crush运行图">9.2.1 导出crush运行图</h3>
+<p>注:  导出的 crush 运行图为二进制格式,无法通过文本编辑器直接打开，需要使用<strong>crushtool</strong>工具转换为文本格式后才能通过vim等文本编辑宫工具打开和编辑。</p>
+<div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-deploy:~# mkdir /data/ceph -p 
+</span></span><span class="line"><span class="cl"><span class="c1">#导出</span>
+</span></span><span class="line"><span class="cl">root@ceph-deploy:~# ceph osd getcrushmap -o /data/ceph/crushmap 
+</span></span><span class="line"><span class="cl"><span class="m">67</span></span></span></code></pre></div><h3 id="922-将运行图转换为文本">9.2.2 将运行图转换为文本:</h3>
+<p>导出的运行图不能直接编辑，需要转换为文本格式再进行查看与编辑</p>
+<div class="highlight" id="id-4"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-deploy:~# apt install ceph-base
+</span></span><span class="line"><span class="cl">root@ceph-deploy:~# crushtool -d /data/ceph/crushmap &gt; /data/ceph/crushmap.txt
+</span></span><span class="line"><span class="cl">root@ceph-deploy:~# file /data/ceph/crushmap.txt
+</span></span><span class="line"><span class="cl">/data/ceph/crushmap.txt: ASCII text</span></span></code></pre></div><h3 id="923-编辑文本">9.2.3 编辑文本</h3>
+<div class="highlight" id="id-5"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#自定义修改</span>
+</span></span><span class="line"><span class="cl">root@ceph-deploy:~# vim /data/ceph/crushmap.txt 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># begin crush map </span>
+</span></span><span class="line"><span class="cl"><span class="c1">#可调整的crush map参数</span>
+</span></span><span class="line"><span class="cl">tunable choose <span class="nb">local</span> tries <span class="m">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># devices #当前的设备列表</span>
+</span></span><span class="line"><span class="cl">device <span class="m">0</span> osd.0 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">1</span> osd.1 class hdd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># types #当前支持的bucket类型 以什么为单位</span>
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">0</span> osd  <span class="c1">#osd守护进程，对应到一个磁盘设备 </span>
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">1</span> host <span class="c1">#一个主机 (默认放在不同的主机)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">2</span> chassis <span class="c1">#刀片服务器的机箱</span>
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">3</span> rack  <span class="c1">#包含若干个服务器的机柜/机架</span>
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">4</span> row  <span class="c1">#包含若干个机柜的一排机柜</span>
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">5</span> pdu  <span class="c1">#机柜的接入电源插座</span>
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">7</span> room <span class="c1">#包含若干机柜的房间，一个数据中心有好多这样的房间组成</span>
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">8</span> datacenter <span class="c1">#一个数据中心或IDS</span>
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">9</span> region <span class="c1">#一个区域，比如AWS宁夏中卫数据中心</span>
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">10</span> root <span class="c1">#bucket分层的最顶部，根算法</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        item osd.0 weight 0.098 <span class="c1">#osd0权重比例，crush 会自动根据磁盘空间计算，不同的磁盘空间的权重不一样</span>
+</span></span><span class="line"><span class="cl">        tem osd.1 weight 0.098
+</span></span><span class="line"><span class="cl">        tem osd.2 weight 0.098
+</span></span><span class="line"><span class="cl">        tem osd.3 weight 0.098
+</span></span><span class="line"><span class="cl">        tem osd.4 weight 0.098
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root default <span class="o">{</span>  <span class="c1">#根的配置</span>
+</span></span><span class="line"><span class="cl">         id -1 <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">         id -2 class hdd  <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">         <span class="c1"># weight 3.256</span>
+</span></span><span class="line"><span class="cl">         alg straw2
+</span></span><span class="line"><span class="cl">         <span class="nb">hash</span> <span class="m">0</span> <span class="c1"># rjenkins1</span>
+</span></span><span class="line"><span class="cl">         item ceph-node1 weight 0.488
+</span></span><span class="line"><span class="cl">         item ceph-node2 weight 0.488
+</span></span><span class="line"><span class="cl">         item ceph-node3 weight 0.488
+</span></span><span class="line"><span class="cl">         item ceph-node4 weight 0.488
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># buckets</span>
+</span></span><span class="line"><span class="cl">host ceph-node1 <span class="o">{</span> 类型Host 名称为ceph-node1
+</span></span><span class="line"><span class="cl">        id -3 <span class="c1"># do not change unnecessarily #ceph生成的OSD ID,非必要不要改</span>
+</span></span><span class="line"><span class="cl">        id -4 class hdd <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># weight 0.488</span>
+</span></span><span class="line"><span class="cl">        alg straw2 <span class="c1">#crush算法，管理OSD角色</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">hash</span> <span class="m">0</span> <span class="c1"># rjenkins1 #使用是哪个hash算法，0表示选择rjenkins1这种hash算法</span>
+</span></span><span class="line"><span class="cl">        item osd.0 weight 0.098 <span class="c1">#osd 0 权重比例，crush 会自动根据磁盘空间计算，不同的磁盘空间的权重不一样</span>
+</span></span><span class="line"><span class="cl">        item osd.1 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.2 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.3 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.4 weight 0.098
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">host ceph-node2 <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        id -5 <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        id -6 class hdd <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># weight 0.461</span>
+</span></span><span class="line"><span class="cl">        alg st raw2
+</span></span><span class="line"><span class="cl">        <span class="nb">hash</span> <span class="m">0</span> <span class="c1"># rjenkins1</span>
+</span></span><span class="line"><span class="cl">        item osd.5 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.6 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.7 weight 0.070
+</span></span><span class="line"><span class="cl">        item osd.8 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.9 weight 0.098
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root default <span class="o">{</span> <span class="c1">#根的配置</span>
+</span></span><span class="line"><span class="cl">        id -1 <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        id -2 class hdd  <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># weight 3.256</span>
+</span></span><span class="line"><span class="cl">        alg straw2
+</span></span><span class="line"><span class="cl">        hash0 <span class="c1"># rjenkins1</span>
+</span></span><span class="line"><span class="cl">        item ceph-node1 weight 0.488
+</span></span><span class="line"><span class="cl">        item ceph-node2 weight 0.488
+</span></span><span class="line"><span class="cl">        item ceph-node3 weight 0.488
+</span></span><span class="line"><span class="cl">        item ceph-node4 weight 0.488
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># rules</span>
+</span></span><span class="line"><span class="cl">rule replicated _rule <span class="o">{</span> <span class="c1">#副本池的默认配置</span>
+</span></span><span class="line"><span class="cl">        id <span class="m">0</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">type</span> replicated
+</span></span><span class="line"><span class="cl">        min_size <span class="m">1</span>
+</span></span><span class="line"><span class="cl">        max_size <span class="m">10</span> <span class="c1">#默认最大副本为10</span>
+</span></span><span class="line"><span class="cl">        step take default <span class="c1">#基于default定义的主机分配OSD</span>
+</span></span><span class="line"><span class="cl">        step chooseleaf firstn <span class="m">0</span> <span class="nb">type</span> host <span class="c1">#选择主机，故障域类型为主机</span>
+</span></span><span class="line"><span class="cl">        step emit <span class="c1">#弹出配置即返回给客户端</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">rule erasure-code <span class="o">{</span> <span class="c1">#纠删码池的默认配置</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">type</span> erasure
+</span></span><span class="line"><span class="cl">        min_size <span class="m">3</span>
+</span></span><span class="line"><span class="cl">        max_size <span class="m">4</span>
+</span></span><span class="line"><span class="cl">        step set_chooseleaf_tries <span class="m">5</span>
+</span></span><span class="line"><span class="cl">        step set_choose_tries <span class="m">100</span>
+</span></span><span class="line"><span class="cl">        step take default
+</span></span><span class="line"><span class="cl">        step chooseleaf indep <span class="m">0</span> <span class="nb">type</span> host
+</span></span><span class="line"><span class="cl">        step emit
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></div><div class="highlight" id="id-6"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># rules </span>
+</span></span><span class="line"><span class="cl">rule replicated rule <span class="o">{</span>
+</span></span><span class="line"><span class="cl">         id <span class="m">0</span>
+</span></span><span class="line"><span class="cl">         <span class="nb">type</span> rep Licated
+</span></span><span class="line"><span class="cl">         min_size <span class="m">1</span>
+</span></span><span class="line"><span class="cl">         max_size <span class="m">6</span> <span class="c1">#修改最大副本数</span>
+</span></span><span class="line"><span class="cl">         step take default
+</span></span><span class="line"><span class="cl">         step chooseleaf firstn <span class="m">0</span> <span class="nb">type</span> host
+</span></span><span class="line"><span class="cl">         step emit
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></div><h3 id="923-将文本转换为crush格式">9.2.3 将文本转换为crush格式</h3>
+<div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-deploy:~# crushtool -c /data/ceph/crushmap.txt -o /data/ceph/newcrushmap</span></span></code></pre></div><h3 id="924-导入新的crush">9.2.4 导入新的crush</h3>
+<p>导入的运行图会立即覆盖原有的运行图并立即生效.</p>
+<div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-deploy:~# ceph osd setcrushmap -i /data/ceph/newcrushmap</span></span></code></pre></div><h3 id="925-验证crush运行图是否生效">9.2.5 验证crush运行图是否生效</h3>
+<div class="highlight" id="id-9"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-deploy:~# ceph osd crush rule dump
+</span></span><span class="line"><span class="cl"><span class="o">[</span>
+</span></span><span class="line"><span class="cl">    <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;rule_id&#34;</span>: 0,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;rule_name&#34;</span>: <span class="s2">&#34;replicated_rule&#34;</span>,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;ruleset&#34;</span>: 0,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;type&#34;</span>: 1,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;min_size&#34;</span>: 1,
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;max_size&#34;</span>: 6,</span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/xxlog/1670291279565-a52a21c1-3232-44ef-a78c-5acf15757a98.png" srcset="https://cdn1.ryanxin.live/xxlog/1670291279565-a52a21c1-3232-44ef-a78c-5acf15757a98.png, https://cdn1.ryanxin.live/xxlog/1670291279565-a52a21c1-3232-44ef-a78c-5acf15757a98.png 1.5x, https://cdn1.ryanxin.live/xxlog/1670291279565-a52a21c1-3232-44ef-a78c-5acf15757a98.png 2x" sizes="auto" data-title="image.png" data-alt="image.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h2 id="93-crush数据分类管理">9.3 crush数据分类管理</h2>
+<p>Cephcrush 算法分配的PG的时候可以将PG分配到不同主机的OSD上，以实现以主机为单位的高可用，这也是默认机制，但是无法保证不同PG位于不同机柜或者机房的主机。</p>
+<p>如果要实现基于机柜或者是更高级的IDC等方式的数据高可用，而且也不能实现A项目的数据在SSD,B项目的数据在机械磁盘，如果想要实现此功能则需要导出crush运行图并手动编辑，之后再导入并覆盖原有的crush运行图。</p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/xxlog/1670291396515-8d89ed36-5dd5-44df-a502-56b54f9a0c47.png" srcset="https://cdn1.ryanxin.live/xxlog/1670291396515-8d89ed36-5dd5-44df-a502-56b54f9a0c47.png, https://cdn1.ryanxin.live/xxlog/1670291396515-8d89ed36-5dd5-44df-a502-56b54f9a0c47.png 1.5x, https://cdn1.ryanxin.live/xxlog/1670291396515-8d89ed36-5dd5-44df-a502-56b54f9a0c47.png 2x" sizes="auto" data-title="image.png" data-alt="image.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h3 id="931-导出cursh运行图">9.3.1 导出cursh运行图</h3>
+<div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-deploy:~# mkdir /opt/ceph/
+</span></span><span class="line"><span class="cl">root@ceph-deploy:~# ceph osd getcrushmap -o /opt/ceph/crushmap
+</span></span><span class="line"><span class="cl"><span class="m">68</span></span></span></code></pre></div><h3 id="932-将运行图转换为文本">9.3.2 将运行图转换为文本</h3>
+<div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-deploy:~# crushtool -d /opt/ceph/crushmap &gt; /opt/ceph/crushmap.txt
+</span></span><span class="line"><span class="cl">root@ceph-deploy:- <span class="c1"># file /opt/ceph/crushmap.txt</span>
+</span></span><span class="line"><span class="cl">/opt/ceph/crushmap.txt: ASCII text</span></span></code></pre></div><h3 id="933-添加自定义配置">9.3.3 添加自定义配置</h3>
+<div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-deploy:~# cat topt/ceph/crushmap.txt
+</span></span><span class="line"><span class="cl"><span class="c1"># begin crush map</span>
+</span></span><span class="line"><span class="cl">tunable choose_local_tries <span class="m">0</span>
+</span></span><span class="line"><span class="cl">tunable choose_local_fallback_tries <span class="m">0</span>
+</span></span><span class="line"><span class="cl">tunable choose_total_tries <span class="m">50</span>
+</span></span><span class="line"><span class="cl">tunable chooseleaf_descend_once <span class="m">1</span>
+</span></span><span class="line"><span class="cl">tunable chooseleaf_vary_r <span class="m">1</span>
+</span></span><span class="line"><span class="cl">tunable chooseleaf_stable <span class="m">1</span> 
+</span></span><span class="line"><span class="cl">tunable straw_calc_version <span class="m">1</span>
+</span></span><span class="line"><span class="cl">tunable allowed_bucket_algs <span class="m">54</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># devices</span>
+</span></span><span class="line"><span class="cl">device <span class="m">0</span> osd.0 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">1</span> osd.1 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">2</span> osd.2 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">3</span> osd.3 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">4</span> osd.4 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">5</span> osd.5 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">6</span> osd.6 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">7</span> osd.7 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">8</span> osd.8 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">9</span> osd.9 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">10</span> osd.10 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">11</span> osd.11 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">12</span> osd.12 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">13</span> osd.13 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">14</span> osd.14 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">15</span> osd.15 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">16</span> osd.16 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">17</span> osd.17 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">18</span> osd.18 class hdd
+</span></span><span class="line"><span class="cl">device <span class="m">19</span> osd.19 class hdd
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># types</span>
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">0</span> osd
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">1</span> host
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">2</span> chassis
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">3</span> rack
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">4</span> row
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">5</span> pdu
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">6</span> pod
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">7</span> room
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">8</span> datacenter
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">9</span> zone
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">10</span> region
+</span></span><span class="line"><span class="cl"><span class="nb">type</span> <span class="m">11</span> root
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># buckets</span>
+</span></span><span class="line"><span class="cl">host ceph-node1 <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        id -3         <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        id -4 class hdd   <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># weight 0.490</span>
+</span></span><span class="line"><span class="cl">        alg straw2
+</span></span><span class="line"><span class="cl">        hash0 <span class="c1"># rjenkins1</span>
+</span></span><span class="line"><span class="cl">        item osd.0 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.1 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.2 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.3 weight 0.098
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">host ceph-node2 <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        id -5     <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        id -6 class hdd   <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># weight 0.490</span>
+</span></span><span class="line"><span class="cl">        alg straw2
+</span></span><span class="line"><span class="cl">        hash0 <span class="c1"># rjenkins1</span>
+</span></span><span class="line"><span class="cl">        item osd.5 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.6 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.7 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.8 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.9 weight 0.098
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">host ceph-node3 <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        id -7   <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        id -8 class hdd   <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># weight 1.792</span>
+</span></span><span class="line"><span class="cl">        alg straw2
+</span></span><span class="line"><span class="cl">        <span class="nb">hash</span> <span class="m">0</span> <span class="c1"># rjenkins1</span>
+</span></span><span class="line"><span class="cl">        item osd.10 weight 1.400
+</span></span><span class="line"><span class="cl">        item osd.11 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.12 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.13 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.14 weight 0.098
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">host ceph-node4 <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        id -9   <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        id -10 class hdd  <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># weight 0.490</span>
+</span></span><span class="line"><span class="cl">        alg straw2
+</span></span><span class="line"><span class="cl">        <span class="nb">hash</span> <span class="m">0</span> <span class="c1"># rjenkins1</span>
+</span></span><span class="line"><span class="cl">        item osd.15 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.16 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.17 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.18 weight 0.098
+</span></span><span class="line"><span class="cl">        item osd.19 weight 0.098
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root default <span class="o">{</span>
+</span></span><span class="line"><span class="cl">         id -1  <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">         id -2 class hdd  <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">         <span class="c1"># weight 3.255</span>
+</span></span><span class="line"><span class="cl">         alg straw2
+</span></span><span class="line"><span class="cl">         <span class="nb">hash</span> <span class="m">0</span> <span class="c1"># rjenkins1</span>
+</span></span><span class="line"><span class="cl">         item ceph-node1 weight 0.488
+</span></span><span class="line"><span class="cl">         item ceph-node2 weight 0.488
+</span></span><span class="line"><span class="cl">         item ceph-node3 weight 1.791
+</span></span><span class="line"><span class="cl">         item ceph-node4 weight 0.488
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#前面是机械节点，后面定义ssd节点，ID不能冲突</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#magedu ssd node</span>
+</span></span><span class="line"><span class="cl">host ceph-ssdnode1 <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        id -103  <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        id -104 class hdd  <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># weight 0.098</span>
+</span></span><span class="line"><span class="cl">        alg straw2
+</span></span><span class="line"><span class="cl">        <span class="nb">hash</span> <span class="m">0</span> <span class="c1"># rjenkins1</span>
+</span></span><span class="line"><span class="cl">        item osd.0 weight 0.098
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">host ceph-ssdnode2 <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        id -105
+</span></span><span class="line"><span class="cl">        <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        id -106 class hdd
+</span></span><span class="line"><span class="cl">        <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># weight 0.098</span>
+</span></span><span class="line"><span class="cl">        alg straw2
+</span></span><span class="line"><span class="cl">        hash0 <span class="c1"># rjenkins1</span>
+</span></span><span class="line"><span class="cl">        item osd.5 weight 0.098
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">host ceph-ssdnode3 <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        id -107   <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        id -108 class hdd  <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># weight 0.098</span>
+</span></span><span class="line"><span class="cl">        alg straw2
+</span></span><span class="line"><span class="cl">        <span class="nb">hash</span> <span class="m">0</span> <span class="c1"># rjenkins1</span>
+</span></span><span class="line"><span class="cl">        item osd.10 weight 0.098
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">host ceph-ssdnode4 <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        id -109   <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        id -110 class hdd  <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># weight 0.098</span>
+</span></span><span class="line"><span class="cl">        alg straw2
+</span></span><span class="line"><span class="cl">        <span class="nb">hash</span> <span class="m">0</span> <span class="c1"># rjenkins1</span>
+</span></span><span class="line"><span class="cl">        item osd.15 weight 0.098
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#magedu bucket 把定义node加进来</span>
+</span></span><span class="line"><span class="cl">root ssd <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        id -127      <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        id -111 class hdd    <span class="c1"># do not change unnecessarily</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># weight 1.952</span>
+</span></span><span class="line"><span class="cl">        alg straw
+</span></span><span class="line"><span class="cl">        <span class="nb">hash</span> <span class="m">0</span> <span class="c1"># rjenkins1</span>
+</span></span><span class="line"><span class="cl">        item ceph-ssdnode1 weight 0.488
+</span></span><span class="line"><span class="cl">        item ceph-ssdnode2 weight 0.488
+</span></span><span class="line"><span class="cl">        item ceph-ssdnode3 weight 0.488
+</span></span><span class="line"><span class="cl">        item ceph-ssdnode4 weight 0.488
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#magedu ssd-rules</span>
+</span></span><span class="line"><span class="cl">rule magedu_ssd_rule <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        id <span class="m">20</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">type</span> replicated  <span class="c1">#类型副本池</span>
+</span></span><span class="line"><span class="cl">        min_size <span class="m">1</span>
+</span></span><span class="line"><span class="cl">        max_size <span class="m">5</span>
+</span></span><span class="line"><span class="cl">        step take ssd <span class="c1">#定义使用的bucket</span>
+</span></span><span class="line"><span class="cl">        step chooseleaf firstn <span class="m">0</span> <span class="nb">type</span> host <span class="c1">#选择方法 选择当前副本数个主机下的OSD， 高可用类型host</span>
+</span></span><span class="line"><span class="cl">        step emit
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## chooseleaf表示在确定故障域后，还必须选出该域下面的OSD节点</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">rule replicated rule <span class="o">{</span>
+</span></span><span class="line"><span class="cl">          id <span class="m">0</span>
+</span></span><span class="line"><span class="cl">          <span class="nb">type</span> replicated
+</span></span><span class="line"><span class="cl">          min_size <span class="m">1</span>
+</span></span><span class="line"><span class="cl">          max_size <span class="m">10</span>
+</span></span><span class="line"><span class="cl">          step take default
+</span></span><span class="line"><span class="cl">          step chooseleaf firstn <span class="m">0</span> <span class="nb">type</span> host
+</span></span><span class="line"><span class="cl">          step emit
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">rule erasure-code <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        id <span class="m">1</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">type</span> erasure
+</span></span><span class="line"><span class="cl">        min_size <span class="m">3</span>
+</span></span><span class="line"><span class="cl">        max_size <span class="m">4</span>
+</span></span><span class="line"><span class="cl">        step set_chooseleaf_tries <span class="m">5</span>
+</span></span><span class="line"><span class="cl">        step set_choose_tries <span class="m">100</span>
+</span></span><span class="line"><span class="cl">        step take default
+</span></span><span class="line"><span class="cl">        step chooseleaf indep <span class="m">0</span> <span class="nb">type</span> host
+</span></span><span class="line"><span class="cl">        step emit
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">rule erasure-code <span class="o">{</span>
+</span></span><span class="line"><span class="cl">         id <span class="m">1</span>
+</span></span><span class="line"><span class="cl">         <span class="nb">type</span> erasure
+</span></span><span class="line"><span class="cl">         min_size <span class="m">3</span>
+</span></span><span class="line"><span class="cl">         max_size <span class="m">4</span>
+</span></span><span class="line"><span class="cl">         step set_chooseleaf_tries <span class="m">5</span>
+</span></span><span class="line"><span class="cl">         step set_choose_tries <span class="m">100</span>
+</span></span><span class="line"><span class="cl">         step take default
+</span></span><span class="line"><span class="cl">         step chooseleaf indep <span class="m">0</span> <span class="nb">type</span> host
+</span></span><span class="line"><span class="cl">         step emit
+</span></span><span class="line"><span class="cl"><span class="c1"># end crush map</span></span></span></code></pre></div><div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">rule data <span class="o">{</span>
+</span></span><span class="line"><span class="cl">        ruleset <span class="m">0</span>                             //ruleset 编号
+</span></span><span class="line"><span class="cl">        <span class="nb">type</span> replicated                       //多副本类型
+</span></span><span class="line"><span class="cl">        min_size <span class="m">1</span>                            //副本最小值为1
+</span></span><span class="line"><span class="cl">        max_size <span class="m">10</span>                           //副本最大值为10
+</span></span><span class="line"><span class="cl">        step take default                     //选择default buket输入<span class="o">{</span>take<span class="o">(</span>default<span class="o">)}</span>
+</span></span><span class="line"><span class="cl">        step chooseleaf firstn <span class="m">0</span> <span class="nb">type</span> host    //选择当前副本数个主机下的OSD<span class="o">{</span><span class="k">select</span><span class="o">(</span>replicas,                                                 <span class="nb">type</span><span class="o">)}</span>
+</span></span><span class="line"><span class="cl">        step emit                             //输出将要分布的bucket的列表<span class="o">{</span>emit<span class="o">(</span>void<span class="o">)}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></div><h3 id="br-934-转换为crush二进制格式"><!-- raw HTML omitted -->9.3.4 转换为crush二进制格式</h3>
+<div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-deploy:~# crushtool -C /opt/ceph/crushmap.txt -o /opt/ceph/newcrushmap</span></span></code></pre></div><h3 id="935-导入新的crush运行图">9.3.5 导入新的crush运行图</h3>
+<div class="highlight" id="id-15"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-deploy:~# ceph osd setcrushmap -i /opt/ceph/crushmap
+</span></span><span class="line"><span class="cl"><span class="m">70</span></span></span></code></pre></div><h3 id="936-验证crush运行图是否生效">9.3.6 验证crush运行图是否生效</h3>
+<div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-deploy:~# ceph osd crush rule dump</span></span></code></pre></div><h3 id="937-测试创建存储池">9.3.7 测试创建存储池</h3>
+<div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-deploy:~# peph osd pool create magedu-ssdpool <span class="m">32</span> <span class="m">32</span> magedu_ssd_rule
+</span></span><span class="line"><span class="cl">pool <span class="s1">&#39;magedu-ssdpool&#39;</span> created
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#指定存储池 rule 默认是defuse</span></span></span></code></pre></div><h3 id="938-验证pgp状态">9.3.8 验证pgp状态</h3>
+<div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ceph pg ls-by-pool magedu-ssdpool awk <span class="s1">&#39;{print $1, $2,$15} &#39;</span></span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/xxlog/1670295323891-1d92b007-cefb-449a-a54d-38d366d62bf9.png" srcset="https://cdn1.ryanxin.live/xxlog/1670295323891-1d92b007-cefb-449a-a54d-38d366d62bf9.png, https://cdn1.ryanxin.live/xxlog/1670295323891-1d92b007-cefb-449a-a54d-38d366d62bf9.png 1.5x, https://cdn1.ryanxin.live/xxlog/1670295323891-1d92b007-cefb-449a-a54d-38d366d62bf9.png 2x" sizes="auto" data-title="image.png" data-alt="image.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title="更新于 2023-01-17 00:00:00">更新于 2023-01-17&nbsp;</span>
+      </div><div class="post-info-license">
+          <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+        </div></div>
+    <div class="post-info-line">
+      <div class="post-info-md"><span><a href="/posts/ceph/9.-ceph-crush%E8%BF%9B%E9%98%B6/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
+      <div class="post-info-share">
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/ceph/9.-ceph-crush%E8%BF%9B%E9%98%B6/" data-title="Ceph crush算法进阶 （九）" data-hashtags="分布式存储"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/ceph/9.-ceph-crush%E8%BF%9B%E9%98%B6/" data-hashtag="分布式存储"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/ceph/9.-ceph-crush%E8%BF%9B%E9%98%B6/" data-title="Ceph crush算法进阶 （九）" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/ceph/9.-ceph-crush%E8%BF%9B%E9%98%B6/" data-title="Ceph crush算法进阶 （九）"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/ceph/9.-ceph-crush%E8%BF%9B%E9%98%B6/" data-title="Ceph crush算法进阶 （九）"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://hg-xnlog.github.io/posts/ceph/9.-ceph-crush%E8%BF%9B%E9%98%B6/" data-title="Ceph crush算法进阶 （九）" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://hg-xnlog.github.io/posts/ceph/9.-ceph-crush%E8%BF%9B%E9%98%B6/" data-title="Ceph crush算法进阶 （九）" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://hg-xnlog.github.io/posts/ceph/9.-ceph-crush%E8%BF%9B%E9%98%B6/" data-title="Ceph crush算法进阶 （九）"><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
+  </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href='/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/' class="post-tag">分布式存储</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div>
+
+  <div class="post-nav"><a href="/posts/kubernetes/primary/kubernetes-6/" class="post-nav-item" rel="prev" title="k8s实战案例-nginx与tomcat实现动静分离 (六)"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>k8s实战案例-nginx与tomcat实现动静分离 (六)</a>
+      <a href="/posts/kubernetes/primary/kubernetes-7/" class="post-nav-item" rel="next" title="Pod的状态和探针 (七)">Pod的状态和探针 (七)<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+</article></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2021 - 2023</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/ryanxin7"target="_blank" rel="external nofollow noopener noreferrer">Ryan</a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics"><span class="site-time" title='网站运行中……'><i class="fa-solid fa-heartbeat fa-fw animate-icon" aria-hidden="true"></i><span class="run-times ms-1">网站运行中……</span></span></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='总访客数'><i class="fa-regular fa-user fa-fw" aria-hidden="true"></i>&nbsp;<span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='总访问量'><i class="fa-regular fa-eye fa-fw" aria-hidden="true"></i>&nbsp;<span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div></div><a href="https://github.com/ryanxin7" title="在 GitHub 上查看源代码"target="_blank" rel="external nofollow" class="github-corner right d-none-mobile"><svg viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><link rel="stylesheet" href="/lib/pace/themes/blue/pace-theme-minimal.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async defer></script><script src="/lib/pace/pace.min.js" async defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":80},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"enablePWA":true,"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"HFAFNY4NX2","algoliaIndex":"xn-log","algoliaSearchKey":"bd08388586b2f88b20753c17c60ba92f","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"siteTime":"2021-09-09T09:09:09+09:00"};</script><script src="/js/theme.min.js" defer></script></body>
+</html>

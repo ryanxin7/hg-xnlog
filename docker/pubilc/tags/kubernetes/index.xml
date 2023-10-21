@@ -1,0 +1,48 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>Kubernetes - 标签 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/tags/kubernetes/</link>
+    <description>Kubernetes - 标签 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Wed, 13 Sep 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/kubernetes/" rel="self" type="application/rss+xml" /><item>
+  <title>K8S集群证书过期处理-Node NoReady状态</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/</link>
+  <pubDate>Wed, 13 Sep 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/</guid>
+  <description><![CDATA[警告 Kubelet 客户端证书在 Kubernetes 集群中扮演着重要的角色，因为它们用于节点与控制平面之间的安全通信和身份验证。当 kubelet 客户端证书在主节点和工作节点之间不一致时]]></description>
+</item>
+<item>
+  <title>k8s强制删除pod&amp;pv&amp;pvc和ns&amp;namespace方法</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E5%BC%BA%E5%88%B6%E5%88%A0%E9%99%A4podpvpvc%E5%92%8Cnsnamespace%E6%96%B9%E6%B3%95/</link>
+  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E5%BC%BA%E5%88%B6%E5%88%A0%E9%99%A4podpvpvc%E5%92%8Cnsnamespace%E6%96%B9%E6%B3%95/</guid>
+  <description><![CDATA[k8s强制删除pod&amp;pv&amp;pvc和ns&amp;namespace方法 注意：以下操作方法十分危险，三思而行！！！ 如果名称空]]></description>
+</item>
+<item>
+  <title>k8s中部署单节点redis</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/redis-on-k8scluster/</link>
+  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/redis-on-k8scluster/</guid>
+  <description><![CDATA[k8s中部署单节点redis https://gitee.com/zdevops/k8s-yaml/blob/main/redis/single/ redis-cm.yaml --- apiVersion: v1 kind: ConfigMap metadata: name: redis-config namespace: zdevops data: redis-config: | appendonly yes protected-mode no dir /data port 6379 requirepass redis@abc.com redis-sts.yaml --- apiVersion: apps/v1 kind: StatefulSet metadata: name: redis namespace: zdevops labels: app: redis spec: serviceName: redis-headless replicas: 1 selector: matchLabels: app: redis template: metadata: labels: app: redis spec: containers: -]]></description>
+</item>
+<item>
+  <title>生产案例-Kubernetes 替换后端存储</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-replace-nfs-storage/</link>
+  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-replace-nfs-storage/</guid>
+  <description><![CDATA[使用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储]]></description>
+</item>
+<item>
+  <title>K8S集群证书到期问题</title>
+  <link>https://hg-xnlog.github.io/posts/notes/k8s-certificate-missery/</link>
+  <pubDate>Tue, 16 May 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/notes/k8s-certificate-missery/</guid>
+  <description><![CDATA[前情回顾： 开发在Jenkins发版出现问题 然后更新了一下证书时间 Jenkins 还是无法更新，这次是timeout 于是查看helm 执行历史，还是timed]]></description>
+</item>
+</channel>
+</rss>

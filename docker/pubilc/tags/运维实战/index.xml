@@ -1,0 +1,24 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>运维实战 - 标签 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/tags/%E8%BF%90%E7%BB%B4%E5%AE%9E%E6%88%98/</link>
+    <description>运维实战 - 标签 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Thu, 21 Oct 2021 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/%E8%BF%90%E7%BB%B4%E5%AE%9E%E6%88%98/" rel="self" type="application/rss+xml" /><item>
+  <title>等保2.0项目-日志收集实践</title>
+  <link>https://hg-xnlog.github.io/posts/elk/elk-practice/</link>
+  <pubDate>Thu, 21 Oct 2021 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/elk/elk-practice/</guid>
+  <description><![CDATA[在等保2.0 测评单位对业务系统进行评测后，给出整改意见中提出： 应启用安全审计功能，审计覆盖到每个用户，对重要的用户行为和重要安全事件进行审计]]></description>
+</item>
+<item>
+  <title>ELK 综合实践-收集Nignx的日志数据 （五）</title>
+  <link>https://hg-xnlog.github.io/posts/elk/elk-experiment/</link>
+  <pubDate>Wed, 06 Oct 2021 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/elk/elk-experiment/</guid>
+  <description><![CDATA[ELK 综合实践 实践案例 项目实现效果图 需求简介 在我们的项目中，日志信息会输出到定制的目录里面了，那么接下来，我们就以nignx的日志数据为对象，使]]></description>
+</item>
+</channel>
+</rss>

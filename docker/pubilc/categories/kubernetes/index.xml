@@ -1,0 +1,88 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>Kubernetes - 分类 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/categories/kubernetes/</link>
+    <description>Kubernetes - 分类 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Wed, 13 Sep 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/categories/kubernetes/" rel="self" type="application/rss+xml" /><item>
+  <title>K8S集群证书过期处理-Node NoReady状态</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/</link>
+  <pubDate>Wed, 13 Sep 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/</guid>
+  <description><![CDATA[警告 Kubelet 客户端证书在 Kubernetes 集群中扮演着重要的角色，因为它们用于节点与控制平面之间的安全通信和身份验证。当 kubelet 客户端证书在主节点和工作节点之间不一致时]]></description>
+</item>
+<item>
+  <title>使用节点标签（Node Labels）和节点选择器（Node Selector）来控制将 Pod 调度到特定的节点</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/%E7%94%A8label%E6%8E%A7%E5%88%B6pod%E7%9A%84%E4%BD%8D%E7%BD%AE/</link>
+  <pubDate>Wed, 06 Sep 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/%E7%94%A8label%E6%8E%A7%E5%88%B6pod%E7%9A%84%E4%BD%8D%E7%BD%AE/</guid>
+  <description><![CDATA[用label控制Pod的位置 在 Kubernetes 中，你可以使用节点标签（Node Labels）和节点选择器（Node Selector）来控制将 Pod 调度到特定的]]></description>
+</item>
+<item>
+  <title>k8s强制删除pod&amp;pv&amp;pvc和ns&amp;namespace方法</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E5%BC%BA%E5%88%B6%E5%88%A0%E9%99%A4podpvpvc%E5%92%8Cnsnamespace%E6%96%B9%E6%B3%95/</link>
+  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E5%BC%BA%E5%88%B6%E5%88%A0%E9%99%A4podpvpvc%E5%92%8Cnsnamespace%E6%96%B9%E6%B3%95/</guid>
+  <description><![CDATA[k8s强制删除pod&amp;pv&amp;pvc和ns&amp;namespace方法 注意：以下操作方法十分危险，三思而行！！！ 如果名称空]]></description>
+</item>
+<item>
+  <title>k8s中部署单节点redis</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/redis-on-k8scluster/</link>
+  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/redis-on-k8scluster/</guid>
+  <description><![CDATA[k8s中部署单节点redis https://gitee.com/zdevops/k8s-yaml/blob/main/redis/single/ redis-cm.yaml --- apiVersion: v1 kind: ConfigMap metadata: name: redis-config namespace: zdevops data: redis-config: | appendonly yes protected-mode no dir /data port 6379 requirepass redis@abc.com redis-sts.yaml --- apiVersion: apps/v1 kind: StatefulSet metadata: name: redis namespace: zdevops labels: app: redis spec: serviceName: redis-headless replicas: 1 selector: matchLabels: app: redis template: metadata: labels: app: redis spec: containers: -]]></description>
+</item>
+<item>
+  <title>生产案例-Kubernetes 替换后端存储</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-replace-nfs-storage/</link>
+  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-replace-nfs-storage/</guid>
+  <description><![CDATA[使用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储]]></description>
+</item>
+<item>
+  <title>Kubernetes 基础</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/1.kubernetes%E5%9F%BA%E7%A1%80/</link>
+  <pubDate>Mon, 24 Apr 2023 21:23:22 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/1.kubernetes%E5%9F%BA%E7%A1%80/</guid>
+  <description><![CDATA[1.为什么需要容器编排系统？ Docker在管理单个容器时表现出色，对于一些由有限几个或十几个容器构建的应用程序来说，直接在Docker引擎上]]></description>
+</item>
+<item>
+  <title>利用kubeadm部署kubernetes集群</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/1.%E5%88%A9%E7%94%A8-kubeadm%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4/</link>
+  <pubDate>Fri, 24 Feb 2023 21:23:22 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/1.%E5%88%A9%E7%94%A8-kubeadm%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4/</guid>
+  <description><![CDATA[1.kubeadm 部署工具 kubeadm 是kubernetes 集群全生命周期管理工具，可用于实现集群的部署、升级/降级及卸载等。 kubeadm 的核心工具是 kubeadm init 和 kubeadm join ，前者用于创建新]]></description>
+</item>
+<item>
+  <title>Harbor 使用自签证书支持 Https 访问 (十七)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-17/</link>
+  <pubDate>Wed, 22 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-17/</guid>
+  <description><![CDATA[1、安装docker harbor依赖于docker 和docker-compose 2、安装docker-compose wget https://github.com/docker/compose/releases/download/v2.17.3/docker-compose-linux-x86_64 [root@harbor ~]# cp docker-compose-linux-x86_64 /usr/local/bin/docker-compose [root@harbor ~]# chmod +x /]]></description>
+</item>
+<item>
+  <title>实战案例-Cert-Manager 实现 K8s 服务域名证书自动化续签 (十六)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-16/</link>
+  <pubDate>Tue, 21 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-16/</guid>
+  <description><![CDATA[前言 说到免费的SSL证书，大家首先想到的肯定是Let’s Encrypt，而使用过Let’s Encrypt的同学应该也知道，其有效期只有三个月]]></description>
+</item>
+<item>
+  <title>K8S 持续集成与部署 (十四)</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-14/</link>
+  <pubDate>Fri, 17 Feb 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-14/</guid>
+  <description><![CDATA[1.发布方式解读 1.1 金丝雀发布 金丝雀发布这个术语源自20世纪初期，当时英国的煤矿工人在下井采矿之前，会把笼养的金丝雀携带到矿井中，如果矿井中一]]></description>
+</item>
+</channel>
+</rss>

@@ -1,0 +1,88 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>分布式存储 - 标签 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/</link>
+    <description>分布式存储 - 标签 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Wed, 18 Jan 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/" rel="self" type="application/rss+xml" /><item>
+  <title>Ceph Dashboard及监控 （十）</title>
+  <link>https://hg-xnlog.github.io/posts/ceph/10.-ceph-dashboard%E5%8F%8A%E7%9B%91%E6%8E%A7/</link>
+  <pubDate>Wed, 18 Jan 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/ceph/10.-ceph-dashboard%E5%8F%8A%E7%9B%91%E6%8E%A7/</guid>
+  <description><![CDATA[Ceph dashboard是通过一个 web界面，对已经运行的ceph集群进行状态查看及功能配置等功能，早期ceph使用的是第三方的dashboar]]></description>
+</item>
+<item>
+  <title>Ceph crush算法进阶 （九）</title>
+  <link>https://hg-xnlog.github.io/posts/ceph/9.-ceph-crush%E8%BF%9B%E9%98%B6/</link>
+  <pubDate>Tue, 17 Jan 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/ceph/9.-ceph-crush%E8%BF%9B%E9%98%B6/</guid>
+  <description><![CDATA[场景：集群内有固态和机械硬盘 如何让不重要的业务放到机械盘。 Ceph 集群中由 mon 服务器维护的的五种运行图: Monitor map 监视器运行图 OSD map OSD运行图 各个每隔6s]]></description>
+</item>
+<item>
+  <title>RGW对象存储网关 （八）</title>
+  <link>https://hg-xnlog.github.io/posts/ceph/8.-%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%BD%91%E5%85%B3rgw/</link>
+  <pubDate>Mon, 16 Jan 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/ceph/8.-%E5%AF%B9%E8%B1%A1%E5%AD%98%E5%82%A8%E7%BD%91%E5%85%B3rgw/</guid>
+  <description><![CDATA[Ceph中独立的服务如果不用可以不启用。 类似阿里云OSS对象存储。遵循亚马逊S3标准数据存在bucket中 官方文档：http:/docs.c]]></description>
+</item>
+<item>
+  <title>Ceph FS （七）</title>
+  <link>https://hg-xnlog.github.io/posts/ceph/7.-ceph-fs%E4%BD%BF%E7%94%A8/</link>
+  <pubDate>Sun, 15 Jan 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/ceph/7.-ceph-fs%E4%BD%BF%E7%94%A8/</guid>
+  <description><![CDATA[ceph FS即ceph filesystem，可以实现文件系统共享功能，客户端通过ceph协议挂载并使用ceph集群作为数据存储服务器。 （类似NFS]]></description>
+</item>
+<item>
+  <title>Ceph RBD （六）</title>
+  <link>https://hg-xnlog.github.io/posts/ceph/6.-ceph-rbd%E4%BD%BF%E7%94%A8/</link>
+  <pubDate>Sat, 14 Jan 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/ceph/6.-ceph-rbd%E4%BD%BF%E7%94%A8/</guid>
+  <description><![CDATA[6.1 RBD架构图 Ceph可以同时提供对象存储RADOSGW 、块存储RBD、文件系统存储Ceph FSRBD即RADOS Block Device的简称，RI]]></description>
+</item>
+<item>
+  <title>CephX 认证机制 （五）</title>
+  <link>https://hg-xnlog.github.io/posts/ceph/5.-cephx%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/</link>
+  <pubDate>Fri, 13 Jan 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/ceph/5.-cephx%E8%AE%A4%E8%AF%81%E6%9C%BA%E5%88%B6/</guid>
+  <description><![CDATA[Ceph使用cephx协议对客户端进行身份认证cephx用于对ceph保存的数据进行认证访问和授权，用于对访问ceph的请求进行认证和授权检]]></description>
+</item>
+<item>
+  <title>Ceph 集群维护 （四）</title>
+  <link>https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/</link>
+  <pubDate>Thu, 12 Jan 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/ceph/4.ceph%E9%9B%86%E7%BE%A4%E7%BB%B4%E6%8A%A4/</guid>
+  <description><![CDATA[ceph集群配置、部署与运维 http://docs.ceph.org.cn/rados/ 4.1:通过套接字进行单机管理 每个node节点上都有不同数量的OSD数量 启动osd进程会在 /var/run/c]]></description>
+</item>
+<item>
+  <title>Ceph 集群维护 （三）</title>
+  <link>https://hg-xnlog.github.io/posts/ceph/3.ceph-fs%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8/</link>
+  <pubDate>Wed, 11 Jan 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/ceph/3.ceph-fs%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8/</guid>
+  <description><![CDATA[https://docs.ceph.com/en/latest/cephfs/链接 Ceph FS即Ceph Filesy Stem,可以实现文件系统共享功能,客户]]></description>
+</item>
+<item>
+  <title>Ceph 集群部署 （二）</title>
+  <link>https://hg-xnlog.github.io/posts/ceph/2.ceph%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/</link>
+  <pubDate>Tue, 10 Jan 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/ceph/2.ceph%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/</guid>
+  <description><![CDATA[推荐配置 CPU 16C 或 32C 双路内存 64G以上磁盘 NVME 企业级SSD 推荐 intel D7 P5520 数据中心企业级固态硬盘U.2 nvme协议服务器工作站SSD P5520 3.84TB intel 英特尔 S4510/S4520 数据中]]></description>
+</item>
+<item>
+  <title>Ceph 理论详解 (一)</title>
+  <link>https://hg-xnlog.github.io/posts/ceph/1.ceph%E7%90%86%E8%AE%BA%E8%AF%A6%E8%A7%A3/</link>
+  <pubDate>Mon, 02 Jan 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/ceph/1.ceph%E7%90%86%E8%AE%BA%E8%AF%A6%E8%A7%A3/</guid>
+  <description><![CDATA[分布式存储简介 分布式存储的数据分为数据和元数据，元数据即是文件的属性信息(文件名、权限(属主、属组)、大小、时间戳等)，在分布式存储中当客户]]></description>
+</item>
+</channel>
+</rss>

@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>kubeadm - 标签 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/tags/kubeadm/</link>
+    <description>kubeadm - 标签 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Fri, 24 Feb 2023 21:23:22 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/kubeadm/" rel="self" type="application/rss+xml" /><item>
+  <title>利用kubeadm部署kubernetes集群</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/1.%E5%88%A9%E7%94%A8-kubeadm%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4/</link>
+  <pubDate>Fri, 24 Feb 2023 21:23:22 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/1.%E5%88%A9%E7%94%A8-kubeadm%E9%83%A8%E7%BD%B2kubernetes%E9%9B%86%E7%BE%A4/</guid>
+  <description><![CDATA[1.kubeadm 部署工具 kubeadm 是kubernetes 集群全生命周期管理工具，可用于实现集群的部署、升级/降级及卸载等。 kubeadm 的核心工具是 kubeadm init 和 kubeadm join ，前者用于创建新]]></description>
+</item>
+</channel>
+</rss>

@@ -1,0 +1,80 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>日志收集 - 标签 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/tags/%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86/</link>
+    <description>日志收集 - 标签 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Fri, 20 Oct 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86/" rel="self" type="application/rss+xml" /><item>
+  <title>Ansible批量配置rsyslog客户端</title>
+  <link>https://hg-xnlog.github.io/posts/elk/ansible%E6%89%B9%E9%87%8F%E9%85%8D%E7%BD%AErsyslog%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E9%80%81%E6%97%A5%E5%BF%97/</link>
+  <pubDate>Fri, 20 Oct 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/elk/ansible%E6%89%B9%E9%87%8F%E9%85%8D%E7%BD%AErsyslog%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E9%80%81%E6%97%A5%E5%BF%97/</guid>
+  <description><![CDATA[由于等保要求，需要收集所有服务器的日志，但是服务器这么多每个都配置工作量太大了，所以使用ansible 批量管理工具，配置并启用各个节点服务器]]></description>
+</item>
+<item>
+  <title>等保2.0项目-日志收集实践</title>
+  <link>https://hg-xnlog.github.io/posts/elk/elk-practice/</link>
+  <pubDate>Thu, 21 Oct 2021 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/elk/elk-practice/</guid>
+  <description><![CDATA[在等保2.0 测评单位对业务系统进行评测后，给出整改意见中提出： 应启用安全审计功能，审计覆盖到每个用户，对重要的用户行为和重要安全事件进行审计]]></description>
+</item>
+<item>
+  <title>日志处理-Grok正则捕获</title>
+  <link>https://hg-xnlog.github.io/posts/elk/grok-patterns/</link>
+  <pubDate>Thu, 21 Oct 2021 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/elk/grok-patterns/</guid>
+  <description><![CDATA[一般系统或服务生成的日志都是一大长串。每个字段之间用空格隔开。logstash在获取日志是整个一串获取，如果把日志中每个字段代表的意思分割开]]></description>
+</item>
+<item>
+  <title>ELK 综合实践-收集Nignx的日志数据 （五）</title>
+  <link>https://hg-xnlog.github.io/posts/elk/elk-experiment/</link>
+  <pubDate>Wed, 06 Oct 2021 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/elk/elk-experiment/</guid>
+  <description><![CDATA[ELK 综合实践 实践案例 项目实现效果图 需求简介 在我们的项目中，日志信息会输出到定制的目录里面了，那么接下来，我们就以nignx的日志数据为对象，使]]></description>
+</item>
+<item>
+  <title>ELK组件-Kibana （四）</title>
+  <link>https://hg-xnlog.github.io/posts/elk/elk-kibana/</link>
+  <pubDate>Tue, 05 Oct 2021 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/elk/elk-kibana/</guid>
+  <description><![CDATA[一张图片胜过千万行日志，Kibana 让您能够自由地选择如何呈现自己的数据。Kibana 是一个免费且开放的用户界面，能够让您对 Elasticsearch 数据进行可视化]]></description>
+</item>
+<item>
+  <title>ELK组件-Logstash （三）</title>
+  <link>https://hg-xnlog.github.io/posts/elk/elk-logstash/</link>
+  <pubDate>Sun, 03 Oct 2021 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/elk/elk-logstash/</guid>
+  <description><![CDATA[Logstash 能够动态地采集、转换和传输数据，不受格式或复杂度的影响。Logstash 采用可插拔框架，拥有 200 多个插件。您可以将不同的输入选择、过滤器和输]]></description>
+</item>
+<item>
+  <title>ELK日志收集系统 （一）</title>
+  <link>https://hg-xnlog.github.io/posts/elk/elk-elasticsearch/</link>
+  <pubDate>Sat, 02 Oct 2021 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/elk/elk-elasticsearch/</guid>
+  <description><![CDATA[两三年前ELK还是一套日志分析平台的解决方案 ，它是由Elastic公司开发，管理和维护的三款开源产品Elasticsearch，Logsta]]></description>
+</item>
+<item>
+  <title>ELK组件-beats （二）</title>
+  <link>https://hg-xnlog.github.io/posts/elk/elk-filebeat/</link>
+  <pubDate>Sat, 02 Oct 2021 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/elk/elk-filebeat/</guid>
+  <description><![CDATA[轻量型数据采集器 Beats 是一个免费且开放的平台，集合了多种单一用途数据采集器。它们从成百上千或成千上万台机器和系统向 Logstash 或 Elasticsearch 发送数据。Beats 是数]]></description>
+</item>
+<item>
+  <title>H3C-7506E核心交换机数据引流</title>
+  <link>https://hg-xnlog.github.io/posts/elk/h3c-mirroring-port/</link>
+  <pubDate>Wed, 29 Sep 2021 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/elk/h3c-mirroring-port/</guid>
+  <description><![CDATA[核心交换机数据引流 镜像源 镜像源是指被监控的对象，该对象可以是端口或单板上的 CPU，我们将之依次称为源端口和源 CPU。 经由被监控的对象收发的报]]></description>
+</item>
+</channel>
+</rss>

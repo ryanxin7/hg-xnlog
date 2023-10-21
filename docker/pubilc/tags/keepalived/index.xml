@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>Keepalived - 标签 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/tags/keepalived/</link>
+    <description>Keepalived - 标签 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 25 Nov 2019 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/keepalived/" rel="self" type="application/rss+xml" /><item>
+  <title>Keepalived 高可用服务部署</title>
+  <link>https://hg-xnlog.github.io/posts/linux-basic/linux3/</link>
+  <pubDate>Mon, 25 Nov 2019 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/linux-basic/linux3/</guid>
+  <description><![CDATA[Keepalived 高可用服务部署 ​ Keepalived 软件最早是配合 LVS 负载均衡软件而设计的，用来管理并监控LVS集群系统中各个服务节点的状态，后来又加入了VRRP 协议可以实现]]></description>
+</item>
+</channel>
+</rss>

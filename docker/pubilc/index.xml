@@ -1,0 +1,90 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/</link>
+    <description>Ryan’s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Fri, 20 Oct 2023 00:00:00 &#43;0000</lastBuildDate>
+      <atom:link href="https://hg-xnlog.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+  <title>Ansible批量配置rsyslog客户端</title>
+  <link>https://hg-xnlog.github.io/posts/elk/ansible%E6%89%B9%E9%87%8F%E9%85%8D%E7%BD%AErsyslog%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E9%80%81%E6%97%A5%E5%BF%97/</link>
+  <pubDate>Fri, 20 Oct 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/elk/ansible%E6%89%B9%E9%87%8F%E9%85%8D%E7%BD%AErsyslog%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E9%80%81%E6%97%A5%E5%BF%97/</guid>
+  <description><![CDATA[由于等保要求，需要收集所有服务器的日志，但是服务器这么多每个都配置工作量太大了，所以使用ansible 批量管理工具，配置并启用各个节点服务器]]></description>
+</item>
+<item>
+  <title>Ansible 批量生成并服务器密码</title>
+  <link>https://hg-xnlog.github.io/posts/cicd/ansibleautopassword/</link>
+  <pubDate>Tue, 17 Oct 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/cicd/ansibleautopassword/</guid>
+  <description><![CDATA[为了满足三级等保中服务器密码更改周期的要求。通过使用 Ansible 执行密码生成脚本，并将执行结果记录在日志文件中，可以确保密码的自动生成和周期性更改，并]]></description>
+</item>
+<item>
+  <title>Brocade ICX 6450交换机简单配置命令</title>
+  <link>https://hg-xnlog.github.io/posts/notes/2023-10-09-brocade-icx-6450%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE%E5%91%BD%E4%BB%A4/</link>
+  <pubDate>Mon, 09 Oct 2023 21:23:22 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/notes/2023-10-09-brocade-icx-6450%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE%E5%91%BD%E4%BB%A4/</guid>
+  <description><![CDATA[登录到交换机： 使用SSH、Telnet或串口连接登录到Brocade ICX 6450交换机。 进入特权EXEC模式： 输入以下命令，进入特权EXEC模]]></description>
+</item>
+<item>
+  <title>K8S集群证书过期处理-Node NoReady状态</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/</link>
+  <pubDate>Wed, 13 Sep 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/</guid>
+  <description><![CDATA[警告 Kubelet 客户端证书在 Kubernetes 集群中扮演着重要的角色，因为它们用于节点与控制平面之间的安全通信和身份验证。当 kubelet 客户端证书在主节点和工作节点之间不一致时]]></description>
+</item>
+<item>
+  <title>使用节点标签（Node Labels）和节点选择器（Node Selector）来控制将 Pod 调度到特定的节点</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/%E7%94%A8label%E6%8E%A7%E5%88%B6pod%E7%9A%84%E4%BD%8D%E7%BD%AE/</link>
+  <pubDate>Wed, 06 Sep 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/%E7%94%A8label%E6%8E%A7%E5%88%B6pod%E7%9A%84%E4%BD%8D%E7%BD%AE/</guid>
+  <description><![CDATA[用label控制Pod的位置 在 Kubernetes 中，你可以使用节点标签（Node Labels）和节点选择器（Node Selector）来控制将 Pod 调度到特定的]]></description>
+</item>
+<item>
+  <title>使用Github Action 构建Docker镜像并上传Registry</title>
+  <link>https://hg-xnlog.github.io/posts/blog/push-docker-images-github-registry/</link>
+  <pubDate>Fri, 25 Aug 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/blog/push-docker-images-github-registry/</guid>
+  <description><![CDATA[使用 GitHub Actions 来自动构建 Docker 镜像并将其上传到 Docker Registry 时，需要以下步骤进行设置： 工作流会在每次将代码推送到 main 分支时执行。它首先检出代码，然后设置 Docker Buildx 环境，]]></description>
+</item>
+<item>
+  <title>使用Algolia实现Hugo本地智能搜索</title>
+  <link>https://hg-xnlog.github.io/posts/blog/%E4%BD%BF%E7%94%A8algolia%E5%AE%9E%E7%8E%B0hugo%E6%9C%AC%E5%9C%B0%E6%99%BA%E8%83%BD%E6%90%9C%E7%B4%A2/</link>
+  <pubDate>Tue, 15 Aug 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/blog/%E4%BD%BF%E7%94%A8algolia%E5%AE%9E%E7%8E%B0hugo%E6%9C%AC%E5%9C%B0%E6%99%BA%E8%83%BD%E6%90%9C%E7%B4%A2/</guid>
+  <description><![CDATA[1.简介 Algolia是一家提供搜索即服务的技术公司，帮助开发者为他们的应用程序或网站构建高速、精准的搜索功能。 免费的计划每个月可以查询10]]></description>
+</item>
+<item>
+  <title>k8s强制删除pod&amp;pv&amp;pvc和ns&amp;namespace方法</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E5%BC%BA%E5%88%B6%E5%88%A0%E9%99%A4podpvpvc%E5%92%8Cnsnamespace%E6%96%B9%E6%B3%95/</link>
+  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E5%BC%BA%E5%88%B6%E5%88%A0%E9%99%A4podpvpvc%E5%92%8Cnsnamespace%E6%96%B9%E6%B3%95/</guid>
+  <description><![CDATA[k8s强制删除pod&amp;pv&amp;pvc和ns&amp;namespace方法 注意：以下操作方法十分危险，三思而行！！！ 如果名称空]]></description>
+</item>
+<item>
+  <title>k8s中部署单节点redis</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/redis-on-k8scluster/</link>
+  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/redis-on-k8scluster/</guid>
+  <description><![CDATA[k8s中部署单节点redis https://gitee.com/zdevops/k8s-yaml/blob/main/redis/single/ redis-cm.yaml --- apiVersion: v1 kind: ConfigMap metadata: name: redis-config namespace: zdevops data: redis-config: | appendonly yes protected-mode no dir /data port 6379 requirepass redis@abc.com redis-sts.yaml --- apiVersion: apps/v1 kind: StatefulSet metadata: name: redis namespace: zdevops labels: app: redis spec: serviceName: redis-headless replicas: 1 selector: matchLabels: app: redis template: metadata: labels: app: redis spec: containers: -]]></description>
+</item>
+<item>
+  <title>生产案例-Kubernetes 替换后端存储</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-replace-nfs-storage/</link>
+  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-replace-nfs-storage/</guid>
+  <description><![CDATA[使用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储]]></description>
+</item>
+</channel>
+</rss>
