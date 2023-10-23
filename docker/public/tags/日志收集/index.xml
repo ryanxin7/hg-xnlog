@@ -4,7 +4,15 @@
     <link>https://hg-xnlog.github.io/tags/%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86/</link>
     <description>日志收集 - 标签 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Fri, 20 Oct 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 23 Oct 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86/" rel="self" type="application/rss+xml" /><item>
+  <title>Elasticsearch8.10.4搭建部署</title>
+  <link>https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/</link>
+  <pubDate>Mon, 23 Oct 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/</guid>
+  <description><![CDATA[1.环境准备 1.1 集群规划 服务器 角色 192.168.10.107,eslg01 master/data节点 192.168.10.108,eslg02 master/data节点 192.168.10.109,eslg03 master/data节点 es各节点均为maste]]></description>
+</item>
+<item>
   <title>Ansible批量配置rsyslog客户端</title>
   <link>https://hg-xnlog.github.io/posts/elk/ansible%E6%89%B9%E9%87%8F%E9%85%8D%E7%BD%AErsyslog%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E9%80%81%E6%97%A5%E5%BF%97/</link>
   <pubDate>Fri, 20 Oct 2023 00:00:00 &#43;0000</pubDate>

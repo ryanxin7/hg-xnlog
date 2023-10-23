@@ -2,7 +2,7 @@
 author: Ryan
 title: Ansible批量配置rsyslog客户端
 date: 2023-10-20
-lastmod: 2021-10-20
+lastmod: 2023-10-20
 tags: 
     - 日志收集
     - rsyslog

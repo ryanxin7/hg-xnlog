@@ -4,7 +4,15 @@
     <link>https://hg-xnlog.github.io/posts/</link>
     <description>所有文章 | Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Fri, 20 Oct 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 23 Oct 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+  <title>Elasticsearch8.10.4搭建部署</title>
+  <link>https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/</link>
+  <pubDate>Mon, 23 Oct 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/</guid>
+  <description><![CDATA[1.环境准备 1.1 集群规划 服务器 角色 192.168.10.107,eslg01 master/data节点 192.168.10.108,eslg02 master/data节点 192.168.10.109,eslg03 master/data节点 es各节点均为maste]]></description>
+</item>
+<item>
   <title>Ansible批量配置rsyslog客户端</title>
   <link>https://hg-xnlog.github.io/posts/elk/ansible%E6%89%B9%E9%87%8F%E9%85%8D%E7%BD%AErsyslog%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E9%80%81%E6%97%A5%E5%BF%97/</link>
   <pubDate>Fri, 20 Oct 2023 00:00:00 &#43;0000</pubDate>
@@ -75,14 +83,6 @@
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/redis-on-k8scluster/</guid>
   <description><![CDATA[k8s中部署单节点redis https://gitee.com/zdevops/k8s-yaml/blob/main/redis/single/ redis-cm.yaml --- apiVersion: v1 kind: ConfigMap metadata: name: redis-config namespace: zdevops data: redis-config: | appendonly yes protected-mode no dir /data port 6379 requirepass redis@abc.com redis-sts.yaml --- apiVersion: apps/v1 kind: StatefulSet metadata: name: redis namespace: zdevops labels: app: redis spec: serviceName: redis-headless replicas: 1 selector: matchLabels: app: redis template: metadata: labels: app: redis spec: containers: -]]></description>
-</item>
-<item>
-  <title>生产案例-Kubernetes 替换后端存储</title>
-  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-replace-nfs-storage/</link>
-  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-replace-nfs-storage/</guid>
-  <description><![CDATA[使用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储]]></description>
 </item>
 </channel>
 </rss>

@@ -5,35 +5,35 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
     <meta name="robots" content="noodp" />
-    <title> - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
+    <title>Elasticsearch8.10.4搭建部署 - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
 <meta name="author-link" content="https://github.com/ryanxin7">
-<meta name="description" content="1.下载Elasticserch安装包 https://www.elastic.co/cn/downloads/elasticsearch 当前最新版本为 8.10.4 集群规划 服务器 角色 192.168.10.107,eslg01 master/data 192.168.10.108,eslg02 master/data 192.168.10.109,eslg03 master/data 各节点创建普通用户 ES不能使用root用户来启动，否则" /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="">
-<meta itemprop="description" content="1.下载Elasticserch安装包 https://www.elastic.co/cn/downloads/elasticsearch 当前最新版本为 8.10.4 集群规划 服务器 角色 192.168.10.107,eslg01 master/data 192.168.10.108,eslg02 master/data 192.168.10.109,eslg03 master/data 各节点创建普通用户 ES不能使用root用户来启动，否则">
-
-<meta itemprop="wordCount" content="2818"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
-<meta itemprop="keywords" content="" /><meta property="og:title" content="" />
-<meta property="og:description" content="1.下载Elasticserch安装包 https://www.elastic.co/cn/downloads/elasticsearch 当前最新版本为 8.10.4 集群规划 服务器 角色 192.168.10.107,eslg01 master/data 192.168.10.108,eslg02 master/data 192.168.10.109,eslg03 master/data 各节点创建普通用户 ES不能使用root用户来启动，否则" />
+<meta name="description" content="1.环境准备 1.1 集群规划 服务器 角色 192.168.10.107,eslg01 master/data节点 192.168.10.108,eslg02 master/data节点 192.168.10.109,eslg03 master/data节点 es各节点均为maste" /><meta name="keywords" content='日志收集' /><meta itemprop="name" content="Elasticsearch8.10.4搭建部署">
+<meta itemprop="description" content="1.环境准备 1.1 集群规划 服务器 角色 192.168.10.107,eslg01 master/data节点 192.168.10.108,eslg02 master/data节点 192.168.10.109,eslg03 master/data节点 es各节点均为maste"><meta itemprop="datePublished" content="2023-10-23T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-10-23T00:00:00+00:00" />
+<meta itemprop="wordCount" content="5055"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="keywords" content="日志收集," /><meta property="og:title" content="Elasticsearch8.10.4搭建部署" />
+<meta property="og:description" content="1.环境准备 1.1 集群规划 服务器 角色 192.168.10.107,eslg01 master/data节点 192.168.10.108,eslg02 master/data节点 192.168.10.109,eslg03 master/data节点 es各节点均为maste" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
-
-
+<meta property="article:published_time" content="2023-10-23T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-10-23T00:00:00+00:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
 
-<meta name="twitter:title" content=""/>
-<meta name="twitter:description" content="1.下载Elasticserch安装包 https://www.elastic.co/cn/downloads/elasticsearch 当前最新版本为 8.10.4 集群规划 服务器 角色 192.168.10.107,eslg01 master/data 192.168.10.108,eslg02 master/data 192.168.10.109,eslg03 master/data 各节点创建普通用户 ES不能使用root用户来启动，否则"/>
+<meta name="twitter:title" content="Elasticsearch8.10.4搭建部署"/>
+<meta name="twitter:description" content="1.环境准备 1.1 集群规划 服务器 角色 192.168.10.107,eslg01 master/data节点 192.168.10.108,eslg02 master/data节点 192.168.10.109,eslg03 master/data节点 es各节点均为maste"/>
 <meta name="application-name" content="Ryan’s Notebook">
-<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/primary/cert-manager-&#43;-zerossl-%E7%9A%84%E4%B8%80%E4%BA%9B%E9%85%8D%E7%BD%AE%E7%9A%84%E7%A0%94%E7%A9%B6/" /><link rel="next" href="https://hg-xnlog.github.io/posts/linux-basic/nfs/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/elk/ansible%E6%89%B9%E9%87%8F%E9%85%8D%E7%BD%AErsyslog%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E9%80%81%E6%97%A5%E5%BF%97/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
-    "headline": "",
+    "headline": "Elasticsearch8.10.4搭建部署",
     "inLanguage": "zh-CN",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/elk\/elasticsearch-8.10.4%E5%AE%89%E8%A3%85\/"
-    },"genre": "posts","wordcount":  2818 ,
-    "url": "https:\/\/hg-xnlog.github.io\/posts\/elk\/elasticsearch-8.10.4%E5%AE%89%E8%A3%85\/","publisher": {
+    },"genre": "posts","keywords": "日志收集","wordcount":  5055 ,
+    "url": "https:\/\/hg-xnlog.github.io\/posts\/elk\/elasticsearch-8.10.4%E5%AE%89%E8%A3%85\/","datePublished": "2023-10-23T00:00:00+00:00","dateModified": "2023-10-23T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
         "@type": "Person",
@@ -177,10 +177,11 @@
     </aside>
 
   <article class="page single">
-    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span></span>
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>Elasticsearch8.10.4搭建部署</span>
       </h1></div><div class="post-meta">
-      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span></div>
-      <div class="post-meta-line"><span title="发布于 0001-01-01 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="0001-01-01">0001-01-01</time></span>&nbsp;<span title="更新于 0001-01-01 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="0001-01-01">0001-01-01</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2818 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 6 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
+          <span class="post-category">收录于 <a href="/categories/elasticstack/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> ElasticStack</a></span></div>
+      <div class="post-meta-line"><span title="发布于 2023-10-23 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-23">2023-10-23</time></span>&nbsp;<span title="更新于 2023-10-23 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-23">2023-10-23</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 5055 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 11 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Elasticsearch8.10.4搭建部署">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -190,32 +191,37 @@
         </div>
         <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
-    <li><a href="#1下载elasticserch安装包">1.下载Elasticserch安装包</a></li>
-    <li><a href="#集群规划">集群规划</a>
+    <li><a href="#1环境准备">1.环境准备</a>
       <ul>
-        <li></li>
+        <li><a href="#11-集群规划">1.1 集群规划</a></li>
+        <li><a href="#12-各节点设置主机名">1.2 各节点设置主机名</a></li>
+        <li><a href="#13-各节点创建普通用户">1.3 各节点创建普通用户</a></li>
+        <li><a href="#14-各节点将普通用户权限提高">1.4 各节点将普通用户权限提高</a></li>
+        <li><a href="#15-各节点添加hosts主机名解析">1.5 各节点添加hosts主机名解析</a></li>
+        <li><a href="#16-安装包准备">1.6 安装包准备</a></li>
+        <li><a href="#17-各节点环境优化各节点">1.7 各节点环境优化(各节点)</a></li>
       </ul>
     </li>
-    <li><a href="#调整操作系统参数">调整操作系统参数</a></li>
-    <li><a href="#安装elasticsearch">安装Elasticsearch</a>
+    <li><a href="#2安装elasticsearch">2.安装Elasticsearch</a>
       <ul>
-        <li><a href="#配置es">配置es</a></li>
+        <li><a href="#21-解压安装">2.1 解压安装</a></li>
+        <li><a href="#22-配置环境变量">2.2 配置环境变量</a></li>
+        <li><a href="#23-创建es相关目录">2.3 创建es相关目录</a></li>
+        <li><a href="#24-证书签发">2.4 证书签发</a></li>
+        <li><a href="#25-设置集群多节点-http-证书">2.5 设置集群多节点 HTTP 证书</a></li>
+        <li><a href="#26-解压证书并分发">2.6 解压证书并分发</a></li>
+        <li><a href="#27-配置文件修改配置">2.7 配置文件修改配置</a></li>
+        <li><a href="#28-修改其余节点的配置文件">2.8 修改其余节点的配置文件</a></li>
+        <li><a href="#29-启动集群">2.9 启动集群</a></li>
+        <li><a href="#2-10-修改http登录密码">2-10 修改HTTP登录密码</a></li>
+        <li><a href="#211-页面访问验证">2.11 页面访问验证</a></li>
+        <li><a href="#212-集群启动停止">2.12 集群启动|停止</a></li>
       </ul>
     </li>
   </ul>
 </nav></div>
-      </div><div class="content" id="content"><div class="details admonition warning open">
-      <div class="details-summary admonition-title">
-        <i class="icon fa-solid fa-exclamation-triangle fa-fw" aria-hidden="true"></i>警告<i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i>
-      </div>
-      <div class="details-content">
-        <div class="admonition-content">本文最后更新于 0001-01-01，文中内容可能已过时。</div>
-      </div>
-    </div><h2 id="1下载elasticserch安装包">1.下载Elasticserch安装包</h2>
-<p><img loading="lazy" src="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231020133656380.png" srcset="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231020133656380.png, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231020133656380.png 1.5x, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231020133656380.png 2x" sizes="auto" data-title="image-20231020133656380" data-alt="image-20231020133656380" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p><a href="https://www.elastic.co/cn/downloads/elasticsearch"target="_blank" rel="external nofollow noopener noreferrer">https://www.elastic.co/cn/downloads/elasticsearch</a></p>
-<p>当前最新版本为 8.10.4</p>
-<h2 id="集群规划">集群规划</h2>
+      </div><div class="content" id="content"><h2 id="1环境准备">1.环境准备</h2>
+<h3 id="11-集群规划">1.1 集群规划</h3>
 <table>
 <thead>
 <tr>
@@ -226,65 +232,183 @@
 <tbody>
 <tr>
 <td>192.168.10.107,eslg01</td>
-<td>master/data</td>
+<td>master/data节点</td>
 </tr>
 <tr>
 <td>192.168.10.108,eslg02</td>
-<td>master/data</td>
+<td>master/data节点</td>
 </tr>
 <tr>
 <td>192.168.10.109,eslg03</td>
-<td>master/data</td>
+<td>master/data节点</td>
 </tr>
 </tbody>
 </table>
-<h4 id="各节点创建普通用户">各节点创建普通用户</h4>
+<blockquote>
+<p>es各节点均为master，Elasticsearch-8版本部署的集群无主模式,这里使用了三台全新的机器，考虑到es版本8对java的要求相对较高，如机器部署的应用较多，避免java环境混乱以及应用之间相互影响，所以es8不建议使用在已经部署较多java环境的应用机器。</p>
+</blockquote>
+<p><strong>ES各版本对java版本的需求：</strong></p>
+<pre><code>ES 7.x 及之前版本：选择 Java 8
+
+ES 8.x，支持 Java 17 和 Java 18，推荐版本：
+    其中对于ES 8.0：Java版本仅支持 Java 17
+    ES 8.1及以上版本：支持Java 17 以及 Java 18，建议使用Java 17,因为对应版本的 Logstash 不支持 Java 18
+</code></pre>
+<p>【注意】</p>
+<div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Java 9、Java 10、Java <span class="m">12</span> 和 Java <span class="m">13</span> 均为官方公布的短期版本，ES各版本均不推荐使用这几个
+</span></span><span class="line"><span class="cl">elasticsearch项目的jdk目录下现在已经内置了openjdk18，也可以直接使用</span></span></code></pre></div><p>由于es和jdk是一个强依赖的关系，所以当我们在新版本的ElasticSearch压缩包中包含有自带的jdk，但是当我们的Linux中已经安装了jdk之后，就会发现启动es的时候优先去找的是Linux中已经装好的jdk，此时如果jdk的版本不一致，就会造成jdk不能正常运行，报错如下：</p>
+<div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">warning: usage of JAVA_HOME is deprecated, use ES_JAVA_HOME
+</span></span><span class="line"><span class="cl">Future versions of Elasticsearch will require Java 11<span class="p">;</span> your Java version from <span class="o">[</span>/usr/local/jdk1.8.0_291/jre<span class="o">]</span> does not meet this requirement. Consider switching to a distribution of Elasticsearch with a bundled JDK. If you are already using a distribution with a bundled JDK, ensure the JAVA_HOME environment variable is not set.</span></span></code></pre></div><p>注：如果Linux服务本来没有配置jdk，则会直接使用es目录下默认的jdk，反而不会报错</p>
+<p><strong>添加配置解决jdk版本问题</strong></p>
+<div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#进入bin目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /usr/local/elasticsearch-7.15.2/bin
+</span></span><span class="line"><span class="cl">vim ./elasticsearch </span></span></code></pre></div><div class="highlight" id="id-4"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 将jdk修改为es中自带jdk的配置目录</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">JAVA_HOME</span><span class="o">=</span>/usr/local/softwore/elasticsearch-7.15.2/jdk
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>/bin:<span class="nv">$PATH</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> -x <span class="s2">&#34;</span><span class="nv">$JAVA_HOME</span><span class="s2">/bin/java&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">JAVA</span><span class="o">=</span><span class="s2">&#34;/usr/local/softwore/elasticsearch-7.15.2/jdk/bin/java&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">JAVA</span><span class="o">=</span><span class="sb">`</span>which java<span class="sb">`</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span></span></span></code></pre></div><h3 id="12-各节点设置主机名">1.2 各节点设置主机名</h3>
+<div class="highlight" id="id-5"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#192.168.10.107 </span>
+</span></span><span class="line"><span class="cl">hostnamectl set-hostname eslg01
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#192.168.10.107 </span>
+</span></span><span class="line"><span class="cl">hostnamectl set-hostname eslg01
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#192.168.10.107 </span>
+</span></span><span class="line"><span class="cl">hostnamectl set-hostname eslg01</span></span></code></pre></div><h3 id="13-各节点创建普通用户">1.3 各节点创建普通用户</h3>
+<blockquote>
 <p>ES不能使用root用户来启动，否则会报错，使用普通用户来安装启动。创建一个普通用户以及定义一些常规目录用于存放我们的数据文件以及安装包等</p>
-<div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">root@LogServer02:/softws/elasticsearch-8.10.4/jdk# useradd es
-</span></span><span class="line"><span class="cl">root@LogServer02:/softws/elasticsearch-8.10.4/jdk# passwd es
-</span></span><span class="line"><span class="cl">New password:
-</span></span><span class="line"><span class="cl">Retype new password:
-</span></span><span class="line"><span class="cl">passwd: password updated successfully
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$user</span><span class="s2">:</span><span class="nv">$password</span><span class="s2">&#34;</span> <span class="p">|</span> chpasswd</span></span></code></pre></div><div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">vim /etc/hosts
+</blockquote>
+<div class="highlight" id="id-6"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 3台机器都需要执行</span>
+</span></span><span class="line"><span class="cl">useradd essl <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;essl:Ceamg.com&#34;</span> <span class="p">|</span> chpasswd</span></span></code></pre></div><h3 id="14-各节点将普通用户权限提高">1.4 各节点将普通用户权限提高</h3>
+<div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># visudo</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 增加一行普通用户权限内容</span>
+</span></span><span class="line"><span class="cl">essl <span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span> NOPASSWD:ALL</span></span></code></pre></div><blockquote>
+<p>NOPASSWD 允许用户在执行被授权的命令时，不需要输入密码验证。这通常用于简化特定任务的自动化，但需要特别小心，确保仅分配给受信任的用户。</p>
+</blockquote>
+<h3 id="15-各节点添加hosts主机名解析">1.5 各节点添加hosts主机名解析</h3>
+<div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/hosts
 </span></span><span class="line"><span class="cl">192.168.10.107 eslg01
 </span></span><span class="line"><span class="cl">192.168.10.108 eslg02
-</span></span><span class="line"><span class="cl">192.168.10.109 eslg03</span></span></code></pre></div><h2 id="调整操作系统参数">调整操作系统参数</h2>
-<p>elasticsearch要求进程最大打开数量为最低65536</p>
-<div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">vim /etc/security/limits.conf</span></span></code></pre></div><p>修改<code>/etc/sysctl.conf</code>文件，增加配置<code>vm.max_map_count=262144</code></p>
-<div class="highlight" id="id-4"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">vim /etc/sysctl.conf
+</span></span><span class="line"><span class="cl">192.168.10.109 eslg03</span></span></code></pre></div><p>如果在各节点的/etc/hosts中都配置了节点的ip解析，那后续在配置文件中，相关的ip配置都可以用解析名代替</p>
+<h3 id="16-安装包准备">1.6 安装包准备</h3>
+<p>Releases: <a href="https://www.elastic.co/cn/downloads/past-releases#elasticsearch"target="_blank" rel="external nofollow noopener noreferrer">https://www.elastic.co/cn/downloads/past-releases#elasticsearch</a></p>
+<!-- raw HTML omitted -->
+<h3 id="17-各节点环境优化各节点">1.7 各节点环境优化(各节点)</h3>
+<p>注意环境优化为各节点均要执行的实施操作，需要自行在每个节点去执行命令</p>
+<h4 id="171-优化1最大文件数">1.7.1 优化1：最大文件数</h4>
+<p>系统允许 Elasticsearch 打开的最大文件数需要修改成65536</p>
+<div class="highlight" id="id-9"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># vim /etc/security/limits.conf</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># End of file</span>
+</span></span><span class="line"><span class="cl">* soft nofile <span class="m">65536</span>
+</span></span><span class="line"><span class="cl">* hard nofile <span class="m">131072</span>
+</span></span><span class="line"><span class="cl">* soft nproc <span class="m">2048</span>
+</span></span><span class="line"><span class="cl">* hard nproc <span class="m">65536</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 断开重连会话</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># ulimit -n</span>
+</span></span><span class="line"><span class="cl"><span class="m">65536</span></span></span></code></pre></div><blockquote>
+<p>如果这个配置不优化后续启动服务会出现：
+[error] max file descriptors [4096] for elasticsearch process likely too low, increase to at least [65536] elasticsearch</p>
+</blockquote>
+<h4 id="172-优化2最大进程数">1.7.2 优化2：最大进程数</h4>
+<p>允许最大进程数配置修该成4096；不是4096则需要修改优化</p>
+<div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># vim /etc/security/limits.d/20-nproc.conf</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Default limit for number of user&#39;s processes to prevent</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># accidental fork bombs.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># See rhbz #432903 for reasoning.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">*          soft    nproc     <span class="m">4096</span>
+</span></span><span class="line"><span class="cl">root       soft    nproc     unlimited</span></span></code></pre></div><blockquote>
+<p>这个配置不优化启动服务会出现：
+[error]max number of threads [1024] for user [judy2] likely too low, increase to at least [4096]</p>
+</blockquote>
+<h4 id="173-优化3虚拟内存">1.7.3 优化3：虚拟内存</h4>
+<div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 增加配置项vm.max_map_count</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># vim /etc/sysctl.conf </span>
 </span></span><span class="line"><span class="cl">vm.max_map_count<span class="o">=</span><span class="m">262144</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 退出执行</span>
-</span></span><span class="line"><span class="cl">sysctl -p</span></span></code></pre></div><p><code>vm.max_map_count</code>用于限制单个进程的VMA（虚拟内存区域）数量。默认值为<code>65530</code>，对于绝大多数应用程序来说已经足够。如果应用程序因为内存消耗过大而报错，请增大本参数的值</p>
-<p><a href="https://docs.nebula-graph.com.cn/2.5.0/5.configurations-and-logs/1.configurations/6.kernel-config/"target="_blank" rel="external nofollow noopener noreferrer">https://docs.nebula-graph.com.cn/2.5.0/5.configurations-and-logs/1.configurations/6.kernel-config/</a></p>
-<h2 id="安装elasticsearch">安装Elasticsearch</h2>
-<div class="highlight" id="id-5"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">tar -xvf </span></span></code></pre></div><p>配置环境变量</p>
-<div class="highlight" id="id-6"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/profile.d/elasticsearch.sh
-</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">JAVA_HOME</span><span class="o">=</span>/softws/elasticsearch-8.10.4/jdk
-</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">ES_HOME</span><span class="o">=</span>/softws/elasticsearch-8.10.4
-</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$ES_HOME</span>/bin:<span class="nv">$PATH</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 重载配置</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># sysctl -p</span></span></span></code></pre></div><blockquote>
+<p>这个配置不优化启动服务会出现：
+[error]max virtual memory areas vm.max_map_count [65530] likely too low, increase to at least [262144]</p>
+</blockquote>
+<h2 id="2安装elasticsearch">2.安装Elasticsearch</h2>
+<h3 id="21-解压安装">2.1 解压安装</h3>
+<div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># mkdir -p /opt/module/</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># chown -R wangting.wangting /opt/module/</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># tar -xf elasticsearch-8.3.2-linux-x86_64.tar.gz -C /opt/module/</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># chown -R wangting.wangting /opt/module/elasticsearch-8.3.2</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># cd /opt/module/elasticsearch-8.3.2/</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 elasticsearch-8.3.2<span class="o">]</span><span class="c1"># ls -l</span>
+</span></span><span class="line"><span class="cl">total <span class="m">892</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">2</span> wangting wangting   <span class="m">4096</span> Jul  <span class="m">6</span>  <span class="m">2022</span> bin
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">3</span> wangting wangting   <span class="m">4096</span> Feb <span class="m">10</span> 15:05 config
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">8</span> wangting wangting   <span class="m">4096</span> Jul  <span class="m">6</span>  <span class="m">2022</span> jdk
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">5</span> wangting wangting   <span class="m">4096</span> Jul  <span class="m">6</span>  <span class="m">2022</span> lib
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> wangting wangting   <span class="m">3860</span> Jul  <span class="m">6</span>  <span class="m">2022</span> LICENSE.txt
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">2</span> wangting wangting   <span class="m">4096</span> Jul  <span class="m">6</span>  <span class="m">2022</span> logs
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">66</span> wangting wangting   <span class="m">4096</span> Jul  <span class="m">6</span>  <span class="m">2022</span> modules
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> wangting wangting <span class="m">874704</span> Jul  <span class="m">6</span>  <span class="m">2022</span> NOTICE.txt
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">2</span> wangting wangting   <span class="m">4096</span> Jul  <span class="m">6</span>  <span class="m">2022</span> plugins
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> wangting wangting   <span class="m">2710</span> Jul  <span class="m">6</span>  <span class="m">2022</span> README.asciidoc</span></span></code></pre></div><h3 id="22-配置环境变量">2.2 配置环境变量</h3>
+<div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="o">[</span>root@es01 elasticsearch-8.3.2<span class="o">]</span><span class="c1"># vim /etc/profile</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ES</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">JAVA_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2/jdk
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">ES_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$ES_HOME</span>/bin
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nb">source</span> /etc/profile.d/elasticsearch.sh</span></span></code></pre></div><h3 id="配置es">配置es</h3>
-<p>创建数据文件，证书目录, 并修改 Elasticsearch 文件拥有者</p>
-<div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 创建数据文件目录</span>
-</span></span><span class="line"><span class="cl">mkdir /softws/elasticsearch-8.10.4/data
-</span></span><span class="line"><span class="cl"><span class="c1"># 创建证书目录</span>
-</span></span><span class="line"><span class="cl">mkdir /softws/elasticsearch-8.10.4/config/certs
+</span></span><span class="line"><span class="cl"><span class="c1"># 引用</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 elasticsearch-8.3.2<span class="o">]</span><span class="c1"># source /etc/profile</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># /opt/module/elasticsearch-8.3.2/jdk/bin/java -version</span>
+</span></span><span class="line"><span class="cl">openjdk version <span class="s2">&#34;18.0.1.1&#34;</span> 2022-04-22
+</span></span><span class="line"><span class="cl">OpenJDK Runtime Environment <span class="o">(</span>build 18.0.1.1+2-6<span class="o">)</span>
+</span></span><span class="line"><span class="cl">OpenJDK 64-Bit Server VM <span class="o">(</span>build 18.0.1.1+2-6, mixed mode, sharing<span class="o">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 修改文件拥有者</span>
-</span></span><span class="line"><span class="cl">chown -R es:es /softws/elasticsearch-8.10.4
+</span></span><span class="line"><span class="cl"><span class="c1"># ###节点es02上操作###</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es02 ~<span class="o">]</span><span class="c1"># vim /etc/profile</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ES</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">JAVA_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2/jdk
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">ES_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$ES_HOME</span>/bin
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 分发到其他节点,并chown</span>
-</span></span><span class="line"><span class="cl">scp -r /opt/elasticsearch-8.3.2 lsyk02:/opt
-</span></span><span class="line"><span class="cl">scp -r /opt/elasticsearch-8.3.2 lsyk03:/opt
-</span></span><span class="line"><span class="cl">ssh lsyk02 chown -R es:es /opt/elasticsearch-8.3.2
-</span></span><span class="line"><span class="cl">ssh lsyk03 chown -R es:es /opt/elasticsearch-8.3.2</span></span></code></pre></div><p>签发 ca 证书，过程中需按两次回车键,生成目录：es的home:/opt/elasticsearch-8.3.2/</p>
-<div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">$ ./elasticsearch-certutil ca
-</span></span><span class="line"><span class="cl">warning: ignoring <span class="nv">JAVA_HOME</span><span class="o">=</span>/softws/elasticsearch-8.10.4/jdk<span class="p">;</span> using bundled JDK
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es02 ~<span class="o">]</span><span class="c1"># source /etc/profile</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ###节点es03上操作###</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es03 ~<span class="o">]</span><span class="c1"># vim /etc/profile</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ES</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">JAVA_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2/jdk
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">ES_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$ES_HOME</span>/bin
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es03 ~<span class="o">]</span><span class="c1"># source /etc/profile</span></span></span></code></pre></div><h3 id="23-创建es相关目录">2.3 创建es相关目录</h3>
+<div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建数据文件目录</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># mkdir -p /opt/module/elasticsearch-8.3.2/data</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建证书生成目录</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># mkdir -p /opt/module/elasticsearch-8.3.2/config/certs</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 目录有改动，重新刷一下权限</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 module<span class="o">]</span><span class="c1"># chown -R wangting:wangting /opt/module/elasticsearch-8.3.2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 分发至es02、es03</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 新建目录</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es02 ~<span class="o">]</span><span class="c1"># mkdir -p /opt/module</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es03 ~<span class="o">]</span><span class="c1"># mkdir -p /opt/module</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 分发到其他节点,并在02 03上查看操作文件权限</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># scp -r /opt/module/elasticsearch-8.3.2 es02:/opt/module/elasticsearch-8.3.2</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># scp -r /opt/module/elasticsearch-8.3.2 es03:/opt/module/elasticsearch-8.3.2</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 目录文件权限刷用户所属</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es02 module<span class="o">]</span><span class="c1"># chown -R wangting:wangting /opt/module/elasticsearch-8.3.2</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es03 module<span class="o">]</span><span class="c1"># chown -R wangting:wangting /opt/module/elasticsearch-8.3.2</span></span></span></code></pre></div><h3 id="24-证书签发">2.4 证书签发</h3>
+<div class="highlight" id="id-15"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 在第一台服务器节点es01 设置集群多节点通信密钥</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 切换普通用户实施</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 module<span class="o">]</span><span class="c1"># su - wangting</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ <span class="nb">cd</span> /opt/module/elasticsearch-8.3.2/bin
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 bin<span class="o">]</span>$ ./elasticsearch-certutil ca
+</span></span><span class="line"><span class="cl">warning: ignoring <span class="nv">JAVA_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2/jdk<span class="p">;</span> using bundled JDK
 </span></span><span class="line"><span class="cl">This tool assists you in the generation of X.509 certificates and certificate
 </span></span><span class="line"><span class="cl">signing requests <span class="k">for</span> use with SSL/TLS in the Elastic stack.
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">The <span class="s1">&#39;ca&#39;</span> mode generates a new <span class="s1">&#39;certificate authority&#39;</span>
 </span></span><span class="line"><span class="cl">This will create a new X.509 certificate and private key that can be used
 </span></span><span class="line"><span class="cl">to sign certificate when running in <span class="s1">&#39;cert&#39;</span> mode.
@@ -294,52 +418,16 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">By default the <span class="s1">&#39;ca&#39;</span> mode produces a single PKCS#12 output file which holds:
 </span></span><span class="line"><span class="cl">    * The CA certificate
-</span></span><span class="line"><span class="cl">    * The CA<span class="err">&#39;</span>s private key
+</span></span><span class="line"><span class="cl">    * The CAs private key
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">If you elect to generate PEM format certificates <span class="o">(</span>the -pem option<span class="o">)</span>, <span class="k">then</span> the output                                                                                will
+</span></span><span class="line"><span class="cl">If you elect to generate PEM format certificates <span class="o">(</span>the -pem option<span class="o">)</span>, <span class="k">then</span> the output will
 </span></span><span class="line"><span class="cl">be a zip file containing individual files <span class="k">for</span> the CA certificate and private key
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Please enter the desired output file <span class="o">[</span>elastic-stack-ca.p12<span class="o">]</span>:
-</span></span><span class="line"><span class="cl">Enter password <span class="k">for</span> elastic-stack-ca.p12 :</span></span></code></pre></div><p>用 ca 证书签发节点证书，过程中需按三次回车键,生成目录：es的home:/opt/elasticsearch-8.3.2/</p>
-<div class="highlight" id="id-9"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ./elasticsearch-certutil cert --ca /softws/elasticsearch-8.10.4/elastic-stack-ca.p12
-</span></span><span class="line"><span class="cl">warning: ignoring <span class="nv">JAVA_HOME</span><span class="o">=</span>/softws/elasticsearch-8.10.4/jdk<span class="p">;</span> using bundled JDK
-</span></span><span class="line"><span class="cl">This tool assists you in the generation of X.509 certificates and certificate
-</span></span><span class="line"><span class="cl">signing requests <span class="k">for</span> use with SSL/TLS in the Elastic stack.
+</span></span><span class="line"><span class="cl">Please enter the desired output file <span class="o">[</span>elastic-stack-ca.p12<span class="o">]</span>: <span class="c1"># 回车即可</span>
+</span></span><span class="line"><span class="cl">Enter password <span class="k">for</span> elastic-stack-ca.p12 :  <span class="c1"># 回车即可</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">The <span class="s1">&#39;cert&#39;</span> mode generates X.509 certificate and private keys.
-</span></span><span class="line"><span class="cl">    * By default, this generates a single certificate and key <span class="k">for</span> use
-</span></span><span class="line"><span class="cl">       on a single instance.
-</span></span><span class="line"><span class="cl">    * The <span class="s1">&#39;-multiple&#39;</span> option will prompt you to enter details <span class="k">for</span> multiple
-</span></span><span class="line"><span class="cl">       instances and will generate a certificate and key <span class="k">for</span> each one
-</span></span><span class="line"><span class="cl">    * The <span class="s1">&#39;-in&#39;</span> option allows <span class="k">for</span> the certificate generation to be automated by describing
-</span></span><span class="line"><span class="cl">       the details of each instance in a YAML file
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    * An instance is any piece of the Elastic Stack that requires an SSL certificate.
-</span></span><span class="line"><span class="cl">      Depending on your configuration, Elasticsearch, Logstash, Kibana, and Beats
-</span></span><span class="line"><span class="cl">      may all require a certificate and private key.
-</span></span><span class="line"><span class="cl">    * The minimum required value <span class="k">for</span> each instance is a name. This can simply be the
-</span></span><span class="line"><span class="cl">      hostname, which will be used as the Common Name of the certificate. A full
-</span></span><span class="line"><span class="cl">      distinguished name may also be used.
-</span></span><span class="line"><span class="cl">    * A filename value may be required <span class="k">for</span> each instance. This is necessary when the
-</span></span><span class="line"><span class="cl">      name would result in an invalid file or directory name. The name provided here
-</span></span><span class="line"><span class="cl">      is used as the directory name <span class="o">(</span>within the zip<span class="o">)</span> and the prefix <span class="k">for</span> the key and
-</span></span><span class="line"><span class="cl">      certificate files. The filename is required <span class="k">if</span> you are prompted and the name
-</span></span><span class="line"><span class="cl">      is not displayed in the prompt.
-</span></span><span class="line"><span class="cl">    * IP addresses and DNS names are optional. Multiple values can be specified as a
-</span></span><span class="line"><span class="cl">      comma separated string. If no IP addresses or DNS names are provided, you may
-</span></span><span class="line"><span class="cl">      disable hostname verification in your SSL configuration.
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    * All certificates generated by this tool will be signed by a certificate authority <span class="o">(</span>CA<span class="o">)</span>
-</span></span><span class="line"><span class="cl">      unless the --self-signed <span class="nb">command</span> line option is specified.
-</span></span><span class="line"><span class="cl">      The tool can automatically generate a new CA <span class="k">for</span> you, or you can provide your own with
-</span></span><span class="line"><span class="cl">      the --ca or --ca-cert <span class="nb">command</span> line options.
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">By default the <span class="s1">&#39;cert&#39;</span> mode produces a single PKCS#12 output file which holds:
-</span></span><span class="line"><span class="cl">    * The instance certificate
-</span></span><span class="line"><span class="cl">    * The private key <span class="k">for</span> the instance certificate
-</span></span><span class="line"><span class="cl">    * The CA certificate
+</span></span><span class="line"><span class="cl"><span class="c1"># 用 ca 证书签发节点证书，过程中需按三次回车键,生成目录：es的home:/opt/elasticsearch-8.3.2/</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 bin<span class="o">]</span>$ ./elasticsearch-certutil cert --ca elastic-stack-ca.p12
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">If you specify any of the following options:
 </span></span><span class="line"><span class="cl">    * -pem <span class="o">(</span>PEM formatted output<span class="o">)</span>
@@ -347,13 +435,13 @@
 </span></span><span class="line"><span class="cl">    * -in <span class="o">(</span>generate certificates from an input file<span class="o">)</span>
 </span></span><span class="line"><span class="cl"><span class="k">then</span> the output will be be a zip file containing individual certificate/key files
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Enter password <span class="k">for</span> CA <span class="o">(</span>/softws/elasticsearch-8.10.4/elastic-stack-ca.p12<span class="o">)</span> :
-</span></span><span class="line"><span class="cl">Please enter the desired output file <span class="o">[</span>elastic-certificates.p12<span class="o">]</span>:
-</span></span><span class="line"><span class="cl">Enter password <span class="k">for</span> elastic-certificates.p12 :
+</span></span><span class="line"><span class="cl">Enter password <span class="k">for</span> CA <span class="o">(</span>elastic-stack-ca.p12<span class="o">)</span> :  <span class="c1"># 回车即可</span>
+</span></span><span class="line"><span class="cl">Please enter the desired output file <span class="o">[</span>elastic-certificates.p12<span class="o">]</span>:  <span class="c1"># 回车即可</span>
+</span></span><span class="line"><span class="cl">Enter password <span class="k">for</span> elastic-certificates.p12 :  <span class="c1"># 回车即可</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Certificates written to /softws/elasticsearch-8.10.4/elastic-certificates.p12
+</span></span><span class="line"><span class="cl">Certificates written to /opt/module/elasticsearch-8.3.2/elastic-certificates.p12
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">This file should be properly secured as it contains the private key <span class="k">for</span>
+</span></span><span class="line"><span class="cl">This file should be properly secured as it contains the private key <span class="k">for</span> 
 </span></span><span class="line"><span class="cl">your instance.
 </span></span><span class="line"><span class="cl">This file is a self contained file and can be copied and used <span class="s1">&#39;as is&#39;</span>
 </span></span><span class="line"><span class="cl">For each Elastic product that you wish to configure, you should copy
@@ -361,68 +449,78 @@
 </span></span><span class="line"><span class="cl">and <span class="k">then</span> follow the SSL configuration instructions in the product guide.
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">For client applications, you may only need to copy the CA certificate and
-</span></span><span class="line"><span class="cl">configure the client to trust this certificate.</span></span></code></pre></div><div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 用 ca 证书签发节点证书，过程中需按三次回车键,生成目录：es的home:/opt/elasticsearch-8.3.2/</span>
-</span></span><span class="line"><span class="cl">./elasticsearch-certutil cert --ca elastic-stack-ca.p12
+</span></span><span class="line"><span class="cl">configure the client to trust this certificate.
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 将生成的证书文件移动到 config/certs 目录中</span>
-</span></span><span class="line"><span class="cl">mv /softws/elasticsearch-8.10.4/elastic-stack-ca.p12 /softws/elasticsearch-8.10.4/elastic-certificates.p12 /softws/elasticsearch-8.10.4/config/certs</span></span></code></pre></div><p>在第一台服务器节点 lsyk01 设置集群多节点 HTTP 证书</p>
-<p>交互过程</p>
-<div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ./elasticsearch-certutil http
-</span></span><span class="line"><span class="cl">warning: ignoring <span class="nv">JAVA_HOME</span><span class="o">=</span>/softws/elasticsearch-8.10.4/jdk<span class="p">;</span> using bundled JDK
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 bin<span class="o">]</span>$ <span class="nb">cd</span> /opt/module/elasticsearch-8.3.2/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ ls -l <span class="p">|</span> grep <span class="s2">&#34;elastic-&#34;</span>
+</span></span><span class="line"><span class="cl">-rw-------  <span class="m">1</span> wangting wangting   <span class="m">3596</span> Feb <span class="m">10</span> 16:05 elastic-certificates.p12
+</span></span><span class="line"><span class="cl">-rw-------  <span class="m">1</span> wangting wangting   <span class="m">2672</span> Feb <span class="m">10</span> 16:03 elastic-stack-ca.p12
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ 
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ mv elastic-certificates.p12 config/certs/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ mv elastic-stack-ca.p12 config/certs/</span></span></code></pre></div><h3 id="25-设置集群多节点-http-证书">2.5 设置集群多节点 HTTP 证书</h3>
+<div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 签发 Https 证书</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ <span class="nb">cd</span> /opt/module/elasticsearch-8.3.2/bin/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 bin<span class="o">]</span>$ ./elasticsearch-certutil http
+</span></span><span class="line"><span class="cl">warning: ignoring <span class="nv">JAVA_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2/jdk<span class="p">;</span> using bundled JDK
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## Elasticsearch HTTP Certificate Utility</span>
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">The <span class="s1">&#39;http&#39;</span> <span class="nb">command</span> guides you through the process of generating certificates
 </span></span><span class="line"><span class="cl"><span class="k">for</span> use on the HTTP <span class="o">(</span>Rest<span class="o">)</span> interface <span class="k">for</span> Elasticsearch.
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">This tool will ask you a number of questions in order to generate the right
 </span></span><span class="line"><span class="cl"><span class="nb">set</span> of files <span class="k">for</span> your needs.
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## Do you wish to generate a Certificate Signing Request (CSR)?</span>
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">A CSR is used when you want your certificate to be created by an existing
-</span></span><span class="line"><span class="cl">Certificate Authority <span class="o">(</span>CA<span class="o">)</span> that you <span class="k">do</span> not control <span class="o">(</span>that is, you don<span class="s1">&#39;t have
-</span></span></span><span class="line"><span class="cl"><span class="s1">access to the keys for that CA).
-</span></span></span><span class="line"><span class="cl"><span class="s1">
-</span></span></span><span class="line"><span class="cl"><span class="s1">If you are in a corporate environment with a central security team, then you
-</span></span></span><span class="line"><span class="cl"><span class="s1">may have an existing Corporate CA that can generate your certificate for you.
-</span></span></span><span class="line"><span class="cl"><span class="s1">Infrastructure within your organisation may already be configured to trust this
-</span></span></span><span class="line"><span class="cl"><span class="s1">CA, so it may be easier for clients to connect to Elasticsearch if you use a
-</span></span></span><span class="line"><span class="cl"><span class="s1">CSR and send that request to the team that controls your CA.
-</span></span></span><span class="line"><span class="cl"><span class="s1">
-</span></span></span><span class="line"><span class="cl"><span class="s1">If you choose not to generate a CSR, this tool will generate a new certificate
-</span></span></span><span class="line"><span class="cl"><span class="s1">for you. That certificate will be signed by a CA under your control. This is a
-</span></span></span><span class="line"><span class="cl"><span class="s1">quick and easy way to secure your cluster with TLS, but you will need to
-</span></span></span><span class="line"><span class="cl"><span class="s1">configure all your clients to trust that custom CA.
-</span></span></span><span class="line"><span class="cl"><span class="s1">
-</span></span></span><span class="line"><span class="cl"><span class="s1">Generate a CSR? [y/N]n
-</span></span></span><span class="line"><span class="cl"><span class="s1">
-</span></span></span><span class="line"><span class="cl"><span class="s1">## Do you have an existing Certificate Authority (CA) key-pair that you wish to use to sign your certificate?
-</span></span></span><span class="line"><span class="cl"><span class="s1">
-</span></span></span><span class="line"><span class="cl"><span class="s1">If you have an existing CA certificate and key, then you can use that CA to
-</span></span></span><span class="line"><span class="cl"><span class="s1">sign your new http certificate. This allows you to use the same CA across
-</span></span></span><span class="line"><span class="cl"><span class="s1">multiple Elasticsearch clusters which can make it easier to configure clients,
-</span></span></span><span class="line"><span class="cl"><span class="s1">and may be easier for you to manage.
-</span></span></span><span class="line"><span class="cl"><span class="s1">
-</span></span></span><span class="line"><span class="cl"><span class="s1">If you do not have an existing CA, one will be generated for you.
-</span></span></span><span class="line"><span class="cl"><span class="s1">
-</span></span></span><span class="line"><span class="cl"><span class="s1">Use an existing CA? [y/N]y
-</span></span></span><span class="line"><span class="cl"><span class="s1">
-</span></span></span><span class="line"><span class="cl"><span class="s1">## What is the path to your CA?
-</span></span></span><span class="line"><span class="cl"><span class="s1">
-</span></span></span><span class="line"><span class="cl"><span class="s1">Please enter the full pathname to the Certificate Authority that you wish to
-</span></span></span><span class="line"><span class="cl"><span class="s1">use for signing your new http certificate. This can be in PKCS#12 (.p12), JKS
-</span></span></span><span class="line"><span class="cl"><span class="s1">(.jks) or PEM (.crt, .key, .pem) format.
-</span></span></span><span class="line"><span class="cl"><span class="s1">CA Path: /softws/elasticsearch-8.10.4/config/certs/elastic-stack-ca.p12
-</span></span></span><span class="line"><span class="cl"><span class="s1">Reading a PKCS12 keystore requires a password.
-</span></span></span><span class="line"><span class="cl"><span class="s1">It is possible for the keystore&#39;</span>s password to be blank,
+</span></span><span class="line"><span class="cl">Certificate Authority <span class="o">(</span>CA<span class="o">)</span> that you <span class="k">do</span> not control <span class="o">(</span>that is, you <span class="k">do</span> not have
+</span></span><span class="line"><span class="cl">access to the keys <span class="k">for</span> that CA<span class="o">)</span>. 
+</span></span><span class="line"><span class="cl">If you are in a corporate environment with a central security team, <span class="k">then</span> you
+</span></span><span class="line"><span class="cl">may have an existing Corporate CA that can generate your certificate <span class="k">for</span> you.
+</span></span><span class="line"><span class="cl">Infrastructure within your organisation may already be configured to trust this
+</span></span><span class="line"><span class="cl">CA, so it may be easier <span class="k">for</span> clients to connect to Elasticsearch <span class="k">if</span> you use a
+</span></span><span class="line"><span class="cl">CSR and send that request to the team that controls your CA.
+</span></span><span class="line"><span class="cl">If you choose not to generate a CSR, this tool will generate a new certificate
+</span></span><span class="line"><span class="cl"><span class="k">for</span> you. That certificate will be signed by a CA under your control. This is a
+</span></span><span class="line"><span class="cl">quick and easy way to secure your cluster with TLS, but you will need to
+</span></span><span class="line"><span class="cl">configure all your clients to trust that custom CA.
+</span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 是否生成CSR，选择 N ，不需要                           #</span>
+</span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
+</span></span><span class="line"><span class="cl">Generate a CSR? <span class="o">[</span>y/N<span class="o">]</span>N
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## Do you have an existing Certificate Authority (CA) key-pair that you wish to use to sign your certificate?</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">If you have an existing CA certificate and key, <span class="k">then</span> you can use that CA to
+</span></span><span class="line"><span class="cl">sign your new http certificate. This allows you to use the same CA across
+</span></span><span class="line"><span class="cl">multiple Elasticsearch clusters which can make it easier to configure clients,
+</span></span><span class="line"><span class="cl">and may be easier <span class="k">for</span> you to manage.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">If you <span class="k">do</span> not have an existing CA, one will be generated <span class="k">for</span> you.
+</span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 是否使用已经存在的CA证书，选择 y ，因为已经创建签发好了CA    #</span>
+</span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
+</span></span><span class="line"><span class="cl">Use an existing CA? <span class="o">[</span>y/N<span class="o">]</span>y
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## What is the path to your CA?</span>
+</span></span><span class="line"><span class="cl">Please enter the full pathname to the Certificate Authority that you wish to
+</span></span><span class="line"><span class="cl">use <span class="k">for</span> signing your new http certificate. This can be in PKCS#12 <span class="o">(</span>.p12<span class="o">)</span>, JKS
+</span></span><span class="line"><span class="cl"><span class="o">(</span>.jks<span class="o">)</span> or PEM <span class="o">(</span>.crt, .key, .pem<span class="o">)</span> format.
+</span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 指定CA证书的路径地址，CA Path:后写绝对路径               #</span>
+</span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
+</span></span><span class="line"><span class="cl">CA Path: /opt/module/elasticsearch-8.3.2/config/certs/elastic-stack-ca.p12
+</span></span><span class="line"><span class="cl">Reading a PKCS12 keystore requires a password.
+</span></span><span class="line"><span class="cl">It is possible <span class="k">for</span> the keystore<span class="err">&#39;</span>s password to be blank,
 </span></span><span class="line"><span class="cl">in which <span class="k">case</span> you can simply press &lt;ENTER&gt; at the prompt
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置密钥库的密码，直接 回车 即可                         #</span>
+</span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
 </span></span><span class="line"><span class="cl">Password <span class="k">for</span> elastic-stack-ca.p12:
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## How long should your certificates be valid?</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">Every certificate has an expiry date. When the expiry date is reached clients
 </span></span><span class="line"><span class="cl">will stop trusting your certificate and TLS connections will fail.
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">Best practice suggests that you should either:
 </span></span><span class="line"><span class="cl"><span class="o">(</span>a<span class="o">)</span> <span class="nb">set</span> this to a short duration <span class="o">(</span><span class="m">90</span> - <span class="m">120</span> days<span class="o">)</span> and have automatic processes
 </span></span><span class="line"><span class="cl">to generate a new certificate before the old one expires, or
@@ -430,7 +528,9 @@
 </span></span><span class="line"><span class="cl">a few months before it expires.
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">You may enter the validity period in years <span class="o">(</span>e.g. 3Y<span class="o">)</span>, months <span class="o">(</span>e.g. 18M<span class="o">)</span>, or days <span class="o">(</span>e.g. 90D<span class="o">)</span>
-</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置证书的失效时间，这里的y表示年，5y则代表失效时间5年       #</span>
+</span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
 </span></span><span class="line"><span class="cl">For how long should your certificate be valid? <span class="o">[</span>5y<span class="o">]</span> 5y
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## Do you wish to generate one certificate per node?</span>
@@ -452,13 +552,14 @@
 </span></span><span class="line"><span class="cl">certificate per node so that you can more easily generate new certificates when
 </span></span><span class="line"><span class="cl">you provision new nodes.
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Generate a certificate per node? <span class="o">[</span>y/N<span class="o">]</span>n
+</span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 是否需要为每个节点都生成证书，选择 N 无需每个节点都配置证书   #</span>
+</span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
+</span></span><span class="line"><span class="cl">Generate a certificate per node? <span class="o">[</span>y/N<span class="o">]</span>N
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## Which hostnames will be used to connect to your nodes?</span>
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">These hostnames will be added as <span class="s2">&#34;DNS&#34;</span> names in the <span class="s2">&#34;Subject Alternative Name&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="o">(</span>SAN<span class="o">)</span> field in your certificate.
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">You should list every hostname and variant that people will use to connect to
 </span></span><span class="line"><span class="cl">your cluster over http.
 </span></span><span class="line"><span class="cl">Do not list IP addresses here, you will be asked to enter them later.
@@ -467,22 +568,27 @@
 </span></span><span class="line"><span class="cl">can enter that here.
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">Enter all the hostnames that you need, one per line.
+</span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 输入需连接集群节点主机名信息，一行输入一个IP地址，空行回车结束 #</span>
+</span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
 </span></span><span class="line"><span class="cl">When you are <span class="k">done</span>, press &lt;ENTER&gt; once more to move on to the next step.
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">192.168.10.107
-</span></span><span class="line"><span class="cl">192.168.10.108
-</span></span><span class="line"><span class="cl">192.168.10.109
+</span></span><span class="line"><span class="cl">es01
+</span></span><span class="line"><span class="cl">es02
+</span></span><span class="line"><span class="cl">es03
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">You entered the following hostnames.
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> - 192.168.10.107
-</span></span><span class="line"><span class="cl"> - 192.168.10.108
-</span></span><span class="line"><span class="cl"> - 192.168.10.109
+</span></span><span class="line"><span class="cl"> - es01
+</span></span><span class="line"><span class="cl"> - es02
+</span></span><span class="line"><span class="cl"> - es03
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Is this correct <span class="o">[</span>Y/n<span class="o">]</span>y
+</span></span><span class="line"><span class="cl"><span class="c1">####################################################</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 确认以上是否为正确的配置，输入 Y 表示信息正确            #</span>
+</span></span><span class="line"><span class="cl"><span class="c1">####################################################</span>
+</span></span><span class="line"><span class="cl">Is this correct <span class="o">[</span>Y/n<span class="o">]</span>Y
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## Which IP addresses will be used to connect to your nodes?</span>
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">If your clients will ever connect to your nodes by numeric IP address, <span class="k">then</span> you
 </span></span><span class="line"><span class="cl">can list these as valid IP <span class="s2">&#34;Subject Alternative Name&#34;</span> <span class="o">(</span>SAN<span class="o">)</span> fields in your
 </span></span><span class="line"><span class="cl">certificate.
@@ -491,32 +597,40 @@
 </span></span><span class="line"><span class="cl">to your cluster <span class="k">then</span> you can just press &lt;ENTER&gt; to skip this step.
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">Enter all the IP addresses that you need, one per line.
+</span></span><span class="line"><span class="cl"><span class="c1">####################################################</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 输入需连接集群节点IP信息，一行输入一个IP地址，空行回车结束 #</span>
+</span></span><span class="line"><span class="cl"><span class="c1">####################################################</span>
 </span></span><span class="line"><span class="cl">When you are <span class="k">done</span>, press &lt;ENTER&gt; once more to move on to the next step.
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">192.168.10.107
-</span></span><span class="line"><span class="cl">192.168.10.108
-</span></span><span class="line"><span class="cl">192.168.10.109
+</span></span><span class="line"><span class="cl">172.28.54.213
+</span></span><span class="line"><span class="cl">172.28.54.214
+</span></span><span class="line"><span class="cl">172.28.54.215
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">You entered the following IP addresses.
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> - 192.168.10.107
-</span></span><span class="line"><span class="cl"> - 192.168.10.108
-</span></span><span class="line"><span class="cl"> - 192.168.10.109
+</span></span><span class="line"><span class="cl"> - 172.28.54.213
+</span></span><span class="line"><span class="cl"> - 172.28.54.214
+</span></span><span class="line"><span class="cl"> - 172.28.54.215
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Is this correct <span class="o">[</span>Y/n<span class="o">]</span>y
+</span></span><span class="line"><span class="cl"><span class="c1">####################################################</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 确认以上是否为正确的配置，输入 Y 表示信息正确            #</span>
+</span></span><span class="line"><span class="cl"><span class="c1">####################################################</span>
+</span></span><span class="line"><span class="cl">Is this correct <span class="o">[</span>Y/n<span class="o">]</span>Y
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## Other certificate options</span>
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">The generated certificate will have the following additional configuration
 </span></span><span class="line"><span class="cl">values. These values have been selected based on a combination of the
 </span></span><span class="line"><span class="cl">information you have provided above and secure defaults. You should not need to
 </span></span><span class="line"><span class="cl">change these values unless you have specific requirements.
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Key Name: 192.168.10.107
-</span></span><span class="line"><span class="cl">Subject DN: <span class="nv">CN</span><span class="o">=</span>192, <span class="nv">DC</span><span class="o">=</span>168, <span class="nv">DC</span><span class="o">=</span>10, <span class="nv">DC</span><span class="o">=</span><span class="m">107</span>
+</span></span><span class="line"><span class="cl">Key Name: es01
+</span></span><span class="line"><span class="cl">Subject DN: <span class="nv">CN</span><span class="o">=</span>es01
 </span></span><span class="line"><span class="cl">Key Size: <span class="m">2048</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Do you wish to change any of these options? <span class="o">[</span>y/N<span class="o">]</span>n
+</span></span><span class="line"><span class="cl"><span class="c1">####################################################</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 是否要更改以上这些选项，选择 N ，不更改证书选项配置       #</span>
+</span></span><span class="line"><span class="cl"><span class="c1">####################################################</span>
+</span></span><span class="line"><span class="cl">Do you wish to change any of these options? <span class="o">[</span>y/N<span class="o">]</span>N
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## What password do you want for your private key(s)?</span>
 </span></span><span class="line"><span class="cl">
@@ -524,90 +638,201 @@
 </span></span><span class="line"><span class="cl">This <span class="nb">type</span> of keystore is always password protected, but it is possible to use a
 </span></span><span class="line"><span class="cl">blank password.
 </span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">####################################################</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 是否要给证书加密，不需要加密，两次 回车 即可             #</span>
+</span></span><span class="line"><span class="cl"><span class="c1">####################################################</span>
 </span></span><span class="line"><span class="cl">If you wish to use a blank password, simply press &lt;enter&gt; at the prompt below.
 </span></span><span class="line"><span class="cl">Provide a password <span class="k">for</span> the <span class="s2">&#34;http.p12&#34;</span> file:  <span class="o">[</span>&lt;ENTER&gt; <span class="k">for</span> none<span class="o">]</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## Where should we save the generated files?</span>
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">A number of files will be generated including your private key<span class="o">(</span>s<span class="o">)</span>,
 </span></span><span class="line"><span class="cl">public certificate<span class="o">(</span>s<span class="o">)</span>, and sample configuration options <span class="k">for</span> Elastic Stack products.
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">These files will be included in a single zip archive.
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">What filename should be used <span class="k">for</span> the output zip file? <span class="o">[</span>/softws/elasticsearch-8.10.4/elasticsearch-ssl-http.zip<span class="o">]</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Zip file written to /softws/elasticsearch-8.10.4/elasticsearch-ssl-http.zip</span></span></code></pre></div><div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 解压</span>
-</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /softws/elasticsearch-8.10.4/
-</span></span><span class="line"><span class="cl">unzip elasticsearch-ssl-http.zip
+</span></span><span class="line"><span class="cl">What filename should be used <span class="k">for</span> the output zip file? <span class="o">[</span>/opt/module/elasticsearch-8.3.2/elasticsearch-ssl-http.zip<span class="o">]</span> 
+</span></span><span class="line"><span class="cl">Zip file written to /opt/module/elasticsearch-8.3.2/elasticsearch-ssl-http.zip</span></span></code></pre></div><h3 id="26-解压证书并分发">2.6 解压证书并分发</h3>
+<div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 解压</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 bin<span class="o">]</span>$ <span class="nb">cd</span> /opt/module/elasticsearch-8.3.2/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ unzip elasticsearch-ssl-http.zip 
 </span></span><span class="line"><span class="cl"><span class="c1"># 移动证书</span>
-</span></span><span class="line"><span class="cl">mv ./elasticsearch/http.p12 ./kibana/elasticsearch-ca.pem ./config/certs
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ mv ./elasticsearch/http.p12 config/certs/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ mv ./kibana/elasticsearch-ca.pem config/certs/
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 将证书分发到其他节点</span>
-</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /softws/elasticsearch-8.10.4/config/certs
-</span></span><span class="line"><span class="cl">scp * 192.168.10.108:/softws/elasticsearch-8.10.4/config/certs</span></span></code></pre></div><pre tabindex="0"><code>elastic-certificates.p12  elasticsearch-ca.pem  elastic-stack-ca.p12  http.p12</code></pre><p>修改主配置文件：<code>./config/elasticsearch.yml</code></p>
-<div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># 设置 ES 集群名称</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">cluster.name</span><span class="p">:</span><span class="w"> </span><span class="l">es-logs</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 设置集群中当前节点名称</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">node.name</span><span class="p">:</span><span class="w"> </span><span class="m">192.168.10.107</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 设置数据，日志文件路径</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">path.data</span><span class="p">:</span><span class="w"> </span><span class="l">/softws/elasticsearch-8.10.4/data</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">path.logs</span><span class="p">:</span><span class="w"> </span><span class="l">/softws/elasticsearch-8.10.4/logs</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 设置网络访问节点</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># network和端口号一定要配置，如果怕安全问题，把host设置成访问此elasticsearch服务器的ip地址，就是设置成唯一访问。 可以配置成 network.host: 0.0.0.0</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">network.host</span><span class="p">:</span><span class="w"> </span><span class="m">192.168.10.107</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 设置网络访问端口</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">http.port</span><span class="p">:</span><span class="w"> </span><span class="m">9200</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 初始节点</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">discovery.seed_hosts</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;192.168.10.107&#34;</span><span class="p">]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">cluster.initial_master_nodes</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;192.168.10.107&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;192.168.10.108&#34;</span><span class="p">,</span><span class="w"> </span><span class="s2">&#34;192.168.10.109&#34;</span><span class="p">]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 安全认证</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">xpack.security.enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">xpack.security.enrollment.enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">xpack.security.http.ssl</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="c"># 注意第一个空格</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">keystore.path</span><span class="p">:</span><span class="w"> </span><span class="l">/softws/elasticsearch-8.10.4/config/certs/http.p12</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">truststore.path</span><span class="p">:</span><span class="w"> </span><span class="l">/softws/elasticsearch-8.10.4/config/certs/http.p12</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">xpack.security.transport.ssl</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">verification_mode</span><span class="p">:</span><span class="w"> </span><span class="l">certificate</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">keystore.path</span><span class="p">:</span><span class="w"> </span><span class="l">/softws/elasticsearch-8.10.4/config/certs/elastic-certificates.p12</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">truststore.path</span><span class="p">:</span><span class="w"> </span><span class="l">/softws/elasticsearch-8.10.4/config/certs/elastic-certificates.p12</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># 此处需注意，es-lsyk01 为上面配置的节点名称</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">http.host</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="l">_local_, _site_]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">ingest.geoip.downloader.enabled</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">xpack.security.http.ssl.client_authentication</span><span class="p">:</span><span class="w"> </span><span class="l">none</span></span></span></code></pre></div></div><div class="post-footer" id="post-footer">
+</span></span><span class="line"><span class="cl"><span class="c1"># 将证书分发到其他节点02 03</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ <span class="nb">cd</span> /opt/module/elasticsearch-8.3.2/config/certs
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 certs<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">total <span class="m">16</span>
+</span></span><span class="line"><span class="cl">-rw------- <span class="m">1</span> wangting wangting <span class="m">3596</span> Feb <span class="m">10</span> 16:05 elastic-certificates.p12
+</span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> wangting wangting <span class="m">1200</span> Feb <span class="m">10</span> 16:13 elasticsearch-ca.pem
+</span></span><span class="line"><span class="cl">-rw------- <span class="m">1</span> wangting wangting <span class="m">2672</span> Feb <span class="m">10</span> 16:03 elastic-stack-ca.p12
+</span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> wangting wangting <span class="m">3652</span> Feb <span class="m">10</span> 16:13 http.p12
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 certs<span class="o">]</span>$ scp * es02:/opt/module/elasticsearch-8.3.2/config/certs/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 certs<span class="o">]</span>$ scp * es03:/opt/module/elasticsearch-8.3.2/config/certs/</span></span></code></pre></div><blockquote>
+<p>如果提示：-bash: unzip: command not found，使用yum安装即可</p>
+<p>[wangting@es01 elasticsearch-8.3.2]$ sudo yum install -y unzip</p>
+</blockquote>
+<h3 id="27-配置文件修改配置">2.7 配置文件修改配置</h3>
+<div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 certs<span class="o">]</span>$ <span class="nb">cd</span> /opt/module/elasticsearch-8.3.2/config/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 config<span class="o">]</span>$ vim elasticsearch.yml 
+</span></span><span class="line"><span class="cl">cluster.name: bigdata-es
+</span></span><span class="line"><span class="cl">node.name: es-es01
+</span></span><span class="line"><span class="cl">path.data: /opt/module/elasticsearch-8.3.2/data
+</span></span><span class="line"><span class="cl">path.logs: /opt/module/elasticsearch-8.3.2/logs
+</span></span><span class="line"><span class="cl">network.host: 0.0.0.0
+</span></span><span class="line"><span class="cl">http.port: <span class="m">9200</span>
+</span></span><span class="line"><span class="cl">discovery.seed_hosts: <span class="o">[</span><span class="s2">&#34;es01&#34;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">cluster.initial_master_nodes: <span class="o">[</span><span class="s2">&#34;es-es01&#34;</span>, <span class="s2">&#34;es-es02&#34;</span>,<span class="s2">&#34;es-es03&#34;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">xpack.security.enabled: <span class="nb">true</span>
+</span></span><span class="line"><span class="cl">xpack.security.enrollment.enabled: <span class="nb">true</span>
+</span></span><span class="line"><span class="cl">xpack.security.http.ssl:
+</span></span><span class="line"><span class="cl"> enabled: <span class="nb">true</span>
+</span></span><span class="line"><span class="cl"> keystore.path: /opt/module/elasticsearch-8.3.2/config/certs/http.p12
+</span></span><span class="line"><span class="cl"> truststore.path: /opt/module/elasticsearch-8.3.2/config/certs/http.p12
+</span></span><span class="line"><span class="cl">xpack.security.transport.ssl:
+</span></span><span class="line"><span class="cl"> enabled: <span class="nb">true</span>
+</span></span><span class="line"><span class="cl"> verification_mode: certificate
+</span></span><span class="line"><span class="cl"> keystore.path: /opt/module/elasticsearch-8.3.2/config/certs/elastic-certificates.p12
+</span></span><span class="line"><span class="cl"> truststore.path: /opt/module/elasticsearch-8.3.2/config/certs/elastic-certificates.p12
+</span></span><span class="line"><span class="cl">http.host: <span class="o">[</span>_local_, _site_<span class="o">]</span>
+</span></span><span class="line"><span class="cl">ingest.geoip.downloader.enabled: <span class="nb">false</span>
+</span></span><span class="line"><span class="cl">xpack.security.http.ssl.client_authentication: none</span></span></code></pre></div><p>【注意】：</p>
+<p><code>xpack.security.http.ssl</code> &amp; <code>xpack.security.transport.ssl</code>后的子配置需要空一格，遵循yml的格式要求</p>
+<p>如果不需要后续的http证书认证或者用户密码认证可以将xpack.security相关的功能falase关闭掉</p>
+<div class="highlight" id="id-19"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xpack.security.http.ssl:
+</span></span><span class="line"><span class="cl"> enabled: <span class="nb">false</span>
+</span></span><span class="line"><span class="cl">xpack.security.transport.ssl:
+</span></span><span class="line"><span class="cl"> enabled: false</span></span></code></pre></div><p>有些业务使用场景中，可能会遇到跨域问题，当elasticsearch需要涉及到跨域问题时，可以在配置文件中最后增加配置：</p>
+<div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">http.cors.enabled: <span class="nb">true</span>
+</span></span><span class="line"><span class="cl">http.cors.allow-origin: <span class="s2">&#34;*&#34;</span></span></span></code></pre></div><h3 id="28-修改其余节点的配置文件">2.8 修改其余节点的配置文件</h3>
+<div class="highlight" id="id-21"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ scp config/elasticsearch.yml es02:/opt/module/elasticsearch-8.3.2/config/
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ scp config/elasticsearch.yml es03:/opt/module/elasticsearch-8.3.2/config/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># es02修改 config/elasticsearch.yml</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es02 ~<span class="o">]</span><span class="c1"># vim /opt/module/elasticsearch-8.3.2/config/elasticsearch.yml </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置节点名称</span>
+</span></span><span class="line"><span class="cl">node.name: es-es02
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># es03修改 config/elasticsearch.yml</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es03 ~<span class="o">]</span><span class="c1"># vim /opt/module/elasticsearch-8.3.2/config/elasticsearch.yml </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 设置节点名称</span>
+</span></span><span class="line"><span class="cl">node.name: es-es03</span></span></code></pre></div><h3 id="29-启动集群">2.9 启动集群</h3>
+<p>每台节点依次启动（无顺序要求，只要多于2台，就可以启动集群，这就是es的无主模式，自动识别集群，选举master）：</p>
+<div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ /opt/module/elasticsearch-8.3.2/bin/elasticsearch  -d
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es02 elasticsearch-8.3.2<span class="o">]</span>$ /opt/module/elasticsearch-8.3.2/bin/elasticsearch  -d
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es03 elasticsearch-8.3.2<span class="o">]</span>$ /opt/module/elasticsearch-8.3.2/bin/elasticsearch  -d</span></span></code></pre></div><blockquote>
+<p>登录网页，都与之前的密码一致：elastic/bigdata</p>
+<p>https://es01:9200/_cat/nodes?v</p>
+</blockquote>
+<p>【注意】</p>
+<p>如果不留神使用root修改过目录下文件，则文件权限会变成root所属主，所以需要修改回普通用户</p>
+<div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chown -R wangting.wangting /opt/module/</span></span></code></pre></div><p>ES服务启动后有2个端口</p>
+<ul>
+<li>9200为客户端访问es的http协议RESTFUL端口</li>
+<li>9300为ES集群之间组件的通信端口</li>
+</ul>
+<h3 id="2-10-修改http登录密码">2-10 修改HTTP登录密码</h3>
+<div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 手工指定elastic的新密码 (-i参数)</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ /opt/module/elasticsearch-8.3.2/bin/elasticsearch-reset-password -u elastic -i
+</span></span><span class="line"><span class="cl">warning: ignoring <span class="nv">JAVA_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2/jdk<span class="p">;</span> using bundled JDK
+</span></span><span class="line"><span class="cl">bThis tool will reset the password of the <span class="o">[</span>elastic<span class="o">]</span> user.
+</span></span><span class="line"><span class="cl">You will be prompted to enter the password.
+</span></span><span class="line"><span class="cl">Please confirm that you would like to <span class="k">continue</span> <span class="o">[</span>y/N<span class="o">]</span>y 
+</span></span><span class="line"><span class="cl">Did not understand answer <span class="s1">&#39;by&#39;</span>
+</span></span><span class="line"><span class="cl">Please confirm that you would like to <span class="k">continue</span> <span class="o">[</span>y/N<span class="o">]</span>y
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Enter password <span class="k">for</span> <span class="o">[</span>elastic<span class="o">]</span>: <span class="c1"># 输入用户elastic的密码</span>
+</span></span><span class="line"><span class="cl">Re-enter password <span class="k">for</span> <span class="o">[</span>elastic<span class="o">]</span>: <span class="c1"># 输入用户elastic的密码</span>
+</span></span><span class="line"><span class="cl">Password <span class="k">for</span> the <span class="o">[</span>elastic<span class="o">]</span> user successfully reset.</span></span></code></pre></div><pre tabindex="0"><code># 也可以不加-i参数让系统随机给个字符串密码，但是很难记住，很少使用
+# 为elastic账号自动生成新的随机密码，输出至控制台；不加参数
+[wangting@es01 ~]$ /opt/module/elasticsearch-8.3.2/bin/elasticsearch-reset-password -u elastic</code></pre><h3 id="211-页面访问验证">2.11 页面访问验证</h3>
+<blockquote>
+<p>https://ip:9200 (注意是https)</p>
+<p>账号密码为上面创建的：elastic / elastic的密码</p>
+</blockquote>
+<h3 id="212-集群启动停止">2.12 集群启动|停止</h3>
+<ul>
+<li>启动服务方式</li>
+</ul>
+<div class="highlight" id="id-26"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ /opt/module/elasticsearch-8.3.2/bin/elasticsearch -d</span></span></code></pre></div><blockquote>
+<p>【注意】：</p>
+<ol>
+<li>-d 为后台运行，不加-d只能前台运行，关了会话窗口服务也会同时终止</li>
+<li>3台机器都需要启动elasticsearch</li>
+<li>运行日志没有配置定义，默认在服务目录下：elasticsearch-8.3.2/logs/ ，有异常可以先查看日志</li>
+</ol>
+</blockquote>
+<ul>
+<li>停止服务方式</li>
+</ul>
+<div class="highlight" id="id-27"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ ps -ef <span class="p">|</span> grep elasticsearch<span class="p">|</span>grep -vE <span class="s2">&#34;grep|controller&#34;</span> <span class="p">|</span>awk -F<span class="s2">&#34; &#34;</span> <span class="s1">&#39;{print $2}&#39;</span> <span class="p">|</span> xargs <span class="nb">kill</span> -9</span></span></code></pre></div><p>脚本</p>
+<div class="highlight" id="id-28"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 需先配置免密登录</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ ssh-keygen -t rsa
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ ssh-copy-id es01
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ ssh-copy-id es02
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ ssh-copy-id es03
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 编写脚本</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ vim my_es.sh
+</span></span><span class="line"><span class="cl"><span class="c1">#! /bin/bash</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">((</span><span class="nv">$#</span><span class="o">==</span>0<span class="o">))</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> -e <span class="s2">&#34;请输入参数：\n start  启动elasticsearch集群;\n stop  停止elasticsearch集群;\n&#34;</span> <span class="o">&amp;&amp;</span> <span class="nb">exit</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">case</span> <span class="nv">$1</span> in
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;start&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> host in es01 es02 es03
+</span></span><span class="line"><span class="cl">      <span class="k">do</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;---------- </span><span class="nv">$1</span><span class="s2"> </span><span class="nv">$host</span><span class="s2"> 的elasticsearch ----------&#34;</span>
+</span></span><span class="line"><span class="cl">        ssh <span class="nv">$host</span> <span class="s2">&#34;/opt/module/elasticsearch-8.3.2/bin/elasticsearch -d &gt;/dev/null 2&gt;&amp;1&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">done</span>
+</span></span><span class="line"><span class="cl">      <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">  <span class="s2">&#34;stop&#34;</span><span class="o">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> host in es01 es02 es03
+</span></span><span class="line"><span class="cl">      <span class="k">do</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;---------- </span><span class="nv">$1</span><span class="s2"> </span><span class="nv">$host</span><span class="s2"> 的elasticsearch ----------&#34;</span>
+</span></span><span class="line"><span class="cl">        ssh <span class="nv">$host</span> <span class="s2">&#34;ps -ef | grep elasticsearch|grep -v grep|grep -v controller |awk &#39;{print </span><span class="nv">$2</span><span class="s2">}&#39; | xargs kill -9&#34;</span> &gt; /dev/null 2&gt;<span class="p">&amp;</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">      <span class="k">done</span>
+</span></span><span class="line"><span class="cl">      <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">    *<span class="o">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> -e <span class="s2">&#34;---------- 请输入正确的参数 ----------\n&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> -e <span class="s2">&#34;start  启动elasticsearch集群;\n stop  停止elasticsearch集群;\n&#34;</span> <span class="o">&amp;&amp;</span> <span class="nb">exit</span>
+</span></span><span class="line"><span class="cl">      <span class="p">;;</span>
+</span></span><span class="line"><span class="cl"><span class="k">esac</span></span></span></code></pre></div><p><strong>启动集群：</strong></p>
+<p>等待脚本执行结束</p>
+<div class="highlight" id="id-29"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ bash my_es.sh start</span></span></code></pre></div><p><strong>停止集群：</strong></p>
+<div class="highlight" id="id-30"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ bash my_es.sh stop</span></span></code></pre></div></div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">
-        <span title="更新于 0001-01-01 00:00:00">更新于 0001-01-01&nbsp;</span>
+        <span title="更新于 2023-10-23 00:00:00">更新于 2023-10-23&nbsp;</span>
       </div><div class="post-info-license">
           <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
         </div></div>
     <div class="post-info-line">
       <div class="post-info-md"><span><a href="/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
       <div class="post-info-share">
-        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title=""><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title=""><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title=""><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title=""><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch8.10.4搭建部署" data-hashtags="日志收集"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-hashtag="日志收集"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch8.10.4搭建部署" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch8.10.4搭建部署"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch8.10.4搭建部署"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch8.10.4搭建部署" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch8.10.4搭建部署" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch8.10.4搭建部署"><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
   </span>
       </div>
     </div>
   </div>
 
   <div class="post-info-more">
-    <section class="post-tags"></section>
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href='/tags/%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86/' class="post-tag">日志收集</a></section>
     <section>
       <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
     </section>
   </div>
 
-  <div class="post-nav"><a href="/posts/kubernetes/primary/cert-manager-&#43;-zerossl-%E7%9A%84%E4%B8%80%E4%BA%9B%E9%85%8D%E7%BD%AE%E7%9A%84%E7%A0%94%E7%A9%B6/" class="post-nav-item" rel="prev" title=""><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i></a>
-      <a href="/posts/linux-basic/nfs/" class="post-nav-item" rel="next" title="NFS-网络共享存储服务">NFS-网络共享存储服务<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+  <div class="post-nav"><a href="/posts/elk/ansible%E6%89%B9%E9%87%8F%E9%85%8D%E7%BD%AErsyslog%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E9%80%81%E6%97%A5%E5%BF%97/" class="post-nav-item" rel="prev" title="Ansible批量配置rsyslog客户端"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>Ansible批量配置rsyslog客户端</a></div>
 </div>
 </article></main><footer class="footer">
     <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
