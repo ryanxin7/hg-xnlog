@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
     <meta name="robots" content="noodp" />
-    <title>Elasticsearch8.10.4搭建部署 - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
+    <title>Elasticsearch 8.10.4搭建部署 - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
 <meta name="author-link" content="https://github.com/ryanxin7">
-<meta name="description" content="1.环境准备 1.1 集群规划 服务器 角色 192.168.10.107,eslg01 master/data节点 192.168.10.108,eslg02 master/data节点 192.168.10.109,eslg03 master/data节点 es各节点均为maste" /><meta name="keywords" content='日志收集' /><meta itemprop="name" content="Elasticsearch8.10.4搭建部署">
+<meta name="description" content="1.环境准备 1.1 集群规划 服务器 角色 192.168.10.107,eslg01 master/data节点 192.168.10.108,eslg02 master/data节点 192.168.10.109,eslg03 master/data节点 es各节点均为maste" /><meta name="keywords" content='日志收集' /><meta itemprop="name" content="Elasticsearch 8.10.4搭建部署">
 <meta itemprop="description" content="1.环境准备 1.1 集群规划 服务器 角色 192.168.10.107,eslg01 master/data节点 192.168.10.108,eslg02 master/data节点 192.168.10.109,eslg03 master/data节点 es各节点均为maste"><meta itemprop="datePublished" content="2023-10-23T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-10-23T00:00:00+00:00" />
-<meta itemprop="wordCount" content="5055"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
-<meta itemprop="keywords" content="日志收集," /><meta property="og:title" content="Elasticsearch8.10.4搭建部署" />
+<meta itemprop="wordCount" content="6111"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="keywords" content="日志收集," /><meta property="og:title" content="Elasticsearch 8.10.4搭建部署" />
 <meta property="og:description" content="1.环境准备 1.1 集群规划 服务器 角色 192.168.10.107,eslg01 master/data节点 192.168.10.108,eslg02 master/data节点 192.168.10.109,eslg03 master/data节点 es各节点均为maste" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
@@ -20,19 +20,19 @@
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
 
-<meta name="twitter:title" content="Elasticsearch8.10.4搭建部署"/>
+<meta name="twitter:title" content="Elasticsearch 8.10.4搭建部署"/>
 <meta name="twitter:description" content="1.环境准备 1.1 集群规划 服务器 角色 192.168.10.107,eslg01 master/data节点 192.168.10.108,eslg02 master/data节点 192.168.10.109,eslg03 master/data节点 es各节点均为maste"/>
 <meta name="application-name" content="Ryan’s Notebook">
 <meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/elk/ansible%E6%89%B9%E9%87%8F%E9%85%8D%E7%BD%AErsyslog%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E9%80%81%E6%97%A5%E5%BF%97/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
-    "headline": "Elasticsearch8.10.4搭建部署",
+    "headline": "Elasticsearch 8.10.4搭建部署",
     "inLanguage": "zh-CN",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/elk\/elasticsearch-8.10.4%E5%AE%89%E8%A3%85\/"
-    },"genre": "posts","keywords": "日志收集","wordcount":  5055 ,
+    },"genre": "posts","keywords": "日志收集","wordcount":  6111 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/elk\/elasticsearch-8.10.4%E5%AE%89%E8%A3%85\/","datePublished": "2023-10-23T00:00:00+00:00","dateModified": "2023-10-23T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -177,11 +177,11 @@
     </aside>
 
   <article class="page single">
-    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>Elasticsearch8.10.4搭建部署</span>
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>Elasticsearch 8.10.4搭建部署</span>
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/elasticstack/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> ElasticStack</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-10-23 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-23">2023-10-23</time></span>&nbsp;<span title="更新于 2023-10-23 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-23">2023-10-23</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 5055 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 11 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Elasticsearch8.10.4搭建部署">
+      <div class="post-meta-line"><span title="发布于 2023-10-23 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-23">2023-10-23</time></span>&nbsp;<span title="更新于 2023-10-23 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-23">2023-10-23</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 6111 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 13 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Elasticsearch 8.10.4搭建部署">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -247,18 +247,24 @@
 <blockquote>
 <p>es各节点均为master，Elasticsearch-8版本部署的集群无主模式,这里使用了三台全新的机器，考虑到es版本8对java的要求相对较高，如机器部署的应用较多，避免java环境混乱以及应用之间相互影响，所以es8不建议使用在已经部署较多java环境的应用机器。</p>
 </blockquote>
-<p><strong>ES各版本对java版本的需求：</strong></p>
-<pre><code>ES 7.x 及之前版本：选择 Java 8
-
-ES 8.x，支持 Java 17 和 Java 18，推荐版本：
-    其中对于ES 8.0：Java版本仅支持 Java 17
-    ES 8.1及以上版本：支持Java 17 以及 Java 18，建议使用Java 17,因为对应版本的 Logstash 不支持 Java 18
+<p><strong>ES各版本和JVM版本的需求：</strong></p>
+<p>根据 <strong>Elasticsearch 和 JVM 支持一览表</strong> :https://www.elastic.co/cn/support/matrix#matrix_jvm</p>
+<pre><code>ES 7.x 及之前版本：选择 OpenJDK 8
+ES 8.4.x 至 8.6.x 支持 OpenJDK17 和 OpenJDK18
+ES 8.10.x 支持 OpenJDK 17 、OpenJDK 20、OpenJDK 21 （建议使用OpenJDK 17,因为对应版本的 Logstash 不支持 Java 20或21）
 </code></pre>
+<p><strong>Logstash 各版本和 JVM版本的需求:</strong></p>
+<ul>
+<li>Logstash 8.10.x 仅支持OpenJDK 11 和 OpenJDK17</li>
+<li>Logstash 8.4.x 至 8.6.x  支持OpenJDK 11 和 OpenJDK17 、OpenJDK18</li>
+</ul>
 <p>【注意】</p>
-<div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Java 9、Java 10、Java <span class="m">12</span> 和 Java <span class="m">13</span> 均为官方公布的短期版本，ES各版本均不推荐使用这几个
-</span></span><span class="line"><span class="cl">elasticsearch项目的jdk目录下现在已经内置了openjdk18，也可以直接使用</span></span></code></pre></div><p>由于es和jdk是一个强依赖的关系，所以当我们在新版本的ElasticSearch压缩包中包含有自带的jdk，但是当我们的Linux中已经安装了jdk之后，就会发现启动es的时候优先去找的是Linux中已经装好的jdk，此时如果jdk的版本不一致，就会造成jdk不能正常运行，报错如下：</p>
+<div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Java 9、Java 10、Java 12、Java 13、Java 14、Java <span class="m">15</span> 和 Java <span class="m">16</span> 均为官方公布的短期版本，ES各版本均不推荐使用这几个
+</span></span><span class="line"><span class="cl">Elasticsearch项目的jdk目录下现在已经内置了openjdk18，也可以直接使用,8.10.4版本默认使用openjdk21</span></span></code></pre></div><p>由于es和jdk是一个强依赖的关系，所以当我们在新版本的ElasticSearch压缩包中包含有自带的jdk，但是当我们的Linux中已经安装了jdk之后，就会发现启动es的时候优先去找的是Linux中已经装好的jdk，此时如果jdk的版本不一致，就会造成jdk不能正常运行，报错如下：</p>
 <div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">warning: usage of JAVA_HOME is deprecated, use ES_JAVA_HOME
 </span></span><span class="line"><span class="cl">Future versions of Elasticsearch will require Java 11<span class="p">;</span> your Java version from <span class="o">[</span>/usr/local/jdk1.8.0_291/jre<span class="o">]</span> does not meet this requirement. Consider switching to a distribution of Elasticsearch with a bundled JDK. If you are already using a distribution with a bundled JDK, ensure the JAVA_HOME environment variable is not set.</span></span></code></pre></div><p>注：如果Linux服务本来没有配置jdk，则会直接使用es目录下默认的jdk，反而不会报错</p>
+<p>OpenJDK下载地址：https://jdk.java.net/archive/</p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20231024144224335.png" srcset="https://cdn1.ryanxin.live/image-20231024144224335.png, https://cdn1.ryanxin.live/image-20231024144224335.png 1.5x, https://cdn1.ryanxin.live/image-20231024144224335.png 2x" sizes="auto" data-title="image-20231024144224335" data-alt="image-20231024144224335" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <p><strong>添加配置解决jdk版本问题</strong></p>
 <div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#进入bin目录</span>
 </span></span><span class="line"><span class="cl"><span class="nb">cd</span> /usr/local/elasticsearch-7.15.2/bin
@@ -275,16 +281,18 @@ ES 8.x，支持 Java 17 和 Java 18，推荐版本：
 </span></span><span class="line"><span class="cl">hostnamectl set-hostname eslg01
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">#192.168.10.107 </span>
-</span></span><span class="line"><span class="cl">hostnamectl set-hostname eslg01
+</span></span><span class="line"><span class="cl">hostnamectl set-hostname eslg02
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">#192.168.10.107 </span>
-</span></span><span class="line"><span class="cl">hostnamectl set-hostname eslg01</span></span></code></pre></div><h3 id="13-各节点创建普通用户">1.3 各节点创建普通用户</h3>
+</span></span><span class="line"><span class="cl">hostnamectl set-hostname eslg03</span></span></code></pre></div><h3 id="13-各节点创建普通用户">1.3 各节点创建普通用户</h3>
 <blockquote>
 <p>ES不能使用root用户来启动，否则会报错，使用普通用户来安装启动。创建一个普通用户以及定义一些常规目录用于存放我们的数据文件以及安装包等</p>
 </blockquote>
 <div class="highlight" id="id-6"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 3台机器都需要执行</span>
-</span></span><span class="line"><span class="cl">useradd essl <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;essl:Ceamg.com&#34;</span> <span class="p">|</span> chpasswd</span></span></code></pre></div><h3 id="14-各节点将普通用户权限提高">1.4 各节点将普通用户权限提高</h3>
-<div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># visudo</span>
+</span></span><span class="line"><span class="cl">useradd essl <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">&#34;essl:Ceamg.com&#34;</span> <span class="p">|</span> chpasswd
+</span></span><span class="line"><span class="cl">sudo usermod -s /bin/bash essl</span></span></code></pre></div><h3 id="14-各节点将普通用户权限提高">1.4 各节点将普通用户权限提高</h3>
+<div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># visudo</span>
+</span></span><span class="line"><span class="cl">vim /etc/sudoers
 </span></span><span class="line"><span class="cl"><span class="c1"># 增加一行普通用户权限内容</span>
 </span></span><span class="line"><span class="cl">essl <span class="nv">ALL</span><span class="o">=(</span>ALL<span class="o">)</span> NOPASSWD:ALL</span></span></code></pre></div><blockquote>
 <p>NOPASSWD 允许用户在执行被授权的命令时，不需要输入密码验证。这通常用于简化特定任务的自动化，但需要特别小心，确保仅分配给受信任的用户。</p>
@@ -331,84 +339,86 @@ ES 8.x，支持 Java 17 和 Java 18，推荐版本：
 </span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># vim /etc/sysctl.conf </span>
 </span></span><span class="line"><span class="cl">vm.max_map_count<span class="o">=</span><span class="m">262144</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># 重载配置</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># sysctl -p</span></span></span></code></pre></div><blockquote>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># sysctl -p</span>
+</span></span><span class="line"><span class="cl">net.core.rmem_default <span class="o">=</span> <span class="m">33554432</span>
+</span></span><span class="line"><span class="cl">net.core.rmem_max <span class="o">=</span> <span class="m">33554432</span>
+</span></span><span class="line"><span class="cl">vm.max_map_count <span class="o">=</span> <span class="m">262144</span></span></span></code></pre></div><blockquote>
 <p>这个配置不优化启动服务会出现：
 [error]max virtual memory areas vm.max_map_count [65530] likely too low, increase to at least [262144]</p>
 </blockquote>
 <h2 id="2安装elasticsearch">2.安装Elasticsearch</h2>
 <h3 id="21-解压安装">2.1 解压安装</h3>
-<div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># mkdir -p /opt/module/</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># chown -R wangting.wangting /opt/module/</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># tar -xf elasticsearch-8.3.2-linux-x86_64.tar.gz -C /opt/module/</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># chown -R wangting.wangting /opt/module/elasticsearch-8.3.2</span>
+<div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">mkdir /opt/es/ -p
+</span></span><span class="line"><span class="cl">chown -R essl.essl /opt/es/
+</span></span><span class="line"><span class="cl">tar -xf /tmp/elasticsearch-8.10.4-linux-x86_64.tar.gz -C /opt/es/
+</span></span><span class="line"><span class="cl">chown -R essl.essl /opt/es/elasticsearch-8.10.4
 </span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># cd /opt/module/elasticsearch-8.3.2/</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 elasticsearch-8.3.2<span class="o">]</span><span class="c1"># ls -l</span>
-</span></span><span class="line"><span class="cl">total <span class="m">892</span>
-</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">2</span> wangting wangting   <span class="m">4096</span> Jul  <span class="m">6</span>  <span class="m">2022</span> bin
-</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">3</span> wangting wangting   <span class="m">4096</span> Feb <span class="m">10</span> 15:05 config
-</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">8</span> wangting wangting   <span class="m">4096</span> Jul  <span class="m">6</span>  <span class="m">2022</span> jdk
-</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">5</span> wangting wangting   <span class="m">4096</span> Jul  <span class="m">6</span>  <span class="m">2022</span> lib
-</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> wangting wangting   <span class="m">3860</span> Jul  <span class="m">6</span>  <span class="m">2022</span> LICENSE.txt
-</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">2</span> wangting wangting   <span class="m">4096</span> Jul  <span class="m">6</span>  <span class="m">2022</span> logs
-</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">66</span> wangting wangting   <span class="m">4096</span> Jul  <span class="m">6</span>  <span class="m">2022</span> modules
-</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> wangting wangting <span class="m">874704</span> Jul  <span class="m">6</span>  <span class="m">2022</span> NOTICE.txt
-</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">2</span> wangting wangting   <span class="m">4096</span> Jul  <span class="m">6</span>  <span class="m">2022</span> plugins
-</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> wangting wangting   <span class="m">2710</span> Jul  <span class="m">6</span>  <span class="m">2022</span> README.asciidoc</span></span></code></pre></div><h3 id="22-配置环境变量">2.2 配置环境变量</h3>
-<div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="o">[</span>root@es01 elasticsearch-8.3.2<span class="o">]</span><span class="c1"># vim /etc/profile</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># ES</span>
+</span></span><span class="line"><span class="cl">root@eslg01:/opt/es/elasticsearch-8.10.4# ls -l
+</span></span><span class="line"><span class="cl">total <span class="m">2220</span>
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">2</span> essl essl    <span class="m">4096</span> Oct <span class="m">11</span> 22:10 bin
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">3</span> essl essl    <span class="m">4096</span> Oct <span class="m">24</span> 07:53 config
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">8</span> essl essl    <span class="m">4096</span> Oct <span class="m">11</span> 22:10 jdk
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">5</span> essl essl    <span class="m">4096</span> Oct <span class="m">11</span> 22:10 lib
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> essl essl    <span class="m">3860</span> Oct <span class="m">11</span> 22:03 LICENSE.txt
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">2</span> essl essl    <span class="m">4096</span> Oct <span class="m">11</span> 22:05 logs
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">76</span> essl essl    <span class="m">4096</span> Oct <span class="m">11</span> 22:10 modules
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> essl essl <span class="m">2231504</span> Oct <span class="m">11</span> 22:05 NOTICE.txt
+</span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">2</span> essl essl    <span class="m">4096</span> Oct <span class="m">11</span> 22:05 plugins
+</span></span><span class="line"><span class="cl">-rw-r--r--  <span class="m">1</span> essl essl    <span class="m">8157</span> Oct <span class="m">11</span> 22:03 README.asciidoc</span></span></code></pre></div><h3 id="22-配置环境变量">2.2 配置环境变量</h3>
+<div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"> vim /etc/profile
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">JAVA_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2/jdk
 </span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">ES_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2
 </span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$ES_HOME</span>/bin
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">vim /etc/profile.d/elasticsearch.sh
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">JAVA_HOME</span><span class="o">=</span>/softws/jdk-17.0.2
+</span></span><span class="line"><span class="cl"><span class="c1"># ES</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">ES_HOME</span><span class="o">=</span>/softws/elasticsearch-8.10.4
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$JAVA_HOME</span>/bin:<span class="nv">$PATH</span>
+</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$ES_HOME</span>/bin:<span class="nv">$PATH</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 引用</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 elasticsearch-8.3.2<span class="o">]</span><span class="c1"># source /etc/profile</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># /opt/module/elasticsearch-8.3.2/jdk/bin/java -version</span>
-</span></span><span class="line"><span class="cl">openjdk version <span class="s2">&#34;18.0.1.1&#34;</span> 2022-04-22
-</span></span><span class="line"><span class="cl">OpenJDK Runtime Environment <span class="o">(</span>build 18.0.1.1+2-6<span class="o">)</span>
-</span></span><span class="line"><span class="cl">OpenJDK 64-Bit Server VM <span class="o">(</span>build 18.0.1.1+2-6, mixed mode, sharing<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nb">source</span> /etc/profile.d/elasticsearch.sh
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># ###节点es02上操作###</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es02 ~<span class="o">]</span><span class="c1"># vim /etc/profile</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># ES</span>
-</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">JAVA_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2/jdk
-</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">ES_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2
-</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$ES_HOME</span>/bin
+</span></span><span class="line"><span class="cl">root@eslg01:/opt/es/elasticsearch-8.10.4# /softws/jdk-17.0.2/bin/java -version
+</span></span><span class="line"><span class="cl">openjdk version <span class="s2">&#34;17.0.2&#34;</span> 2022-01-18
+</span></span><span class="line"><span class="cl">OpenJDK Runtime Environment <span class="o">(</span>build 17.0.2+8-86<span class="o">)</span>
+</span></span><span class="line"><span class="cl">OpenJDK 64-Bit Server VM <span class="o">(</span>build 17.0.2+8-86, mixed mode, sharing<span class="o">)</span></span></span></code></pre></div><h3 id="23-创建es相关目录">2.3 创建es相关目录</h3>
+<div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es02 ~<span class="o">]</span><span class="c1"># source /etc/profile</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># ###节点es03上操作###</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es03 ~<span class="o">]</span><span class="c1"># vim /etc/profile</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># ES</span>
-</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">JAVA_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2/jdk
-</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">ES_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2
-</span></span><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$ES_HOME</span>/bin
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es03 ~<span class="o">]</span><span class="c1"># source /etc/profile</span></span></span></code></pre></div><h3 id="23-创建es相关目录">2.3 创建es相关目录</h3>
-<div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 创建数据文件目录</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># mkdir -p /opt/module/elasticsearch-8.3.2/data</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 创建数据文件目录</span>
+</span></span><span class="line"><span class="cl">root@eslg01:~# mkdir -p /opt/es/elasticsearch-8.10.4/data
 </span></span><span class="line"><span class="cl"><span class="c1"># 创建证书生成目录</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># mkdir -p /opt/module/elasticsearch-8.3.2/config/certs</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 目录有改动，重新刷一下权限</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 module<span class="o">]</span><span class="c1"># chown -R wangting:wangting /opt/module/elasticsearch-8.3.2</span>
+</span></span><span class="line"><span class="cl">root@eslg01:~# mkdir -p /opt/es/elasticsearch-8.10.4/config/certs
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 分发至es02、es03</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 目录有改动，重新刷一下权限</span>
+</span></span><span class="line"><span class="cl">root@eslg01:~# chown -R essl:essl /opt/es/elasticsearch-8.10.4/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 分发至eslg02、eslg03</span>
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 新建目录</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es02 ~<span class="o">]</span><span class="c1"># mkdir -p /opt/module</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es03 ~<span class="o">]</span><span class="c1"># mkdir -p /opt/module</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@eslg02 ~<span class="o">]</span><span class="c1"># mkdir -p /opt/es</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@eslg03 ~<span class="o">]</span><span class="c1"># mkdir -p /opt/es</span>
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 分发到其他节点,并在02 03上查看操作文件权限</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># scp -r /opt/module/elasticsearch-8.3.2 es02:/opt/module/elasticsearch-8.3.2</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 ~<span class="o">]</span><span class="c1"># scp -r /opt/module/elasticsearch-8.3.2 es03:/opt/module/elasticsearch-8.3.2</span>
+</span></span><span class="line"><span class="cl">root@eslg01:~# scp -r /opt/es/elasticsearch-8.10.4/ eslg02:/opt/es/elasticsearch-8.10.4
+</span></span><span class="line"><span class="cl">root@eslg01:~# scp -r /opt/es/elasticsearch-8.10.4/ eslg03:/opt/es/elasticsearch-8.10.4
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 目录文件权限刷用户所属</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es02 module<span class="o">]</span><span class="c1"># chown -R wangting:wangting /opt/module/elasticsearch-8.3.2</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es03 module<span class="o">]</span><span class="c1"># chown -R wangting:wangting /opt/module/elasticsearch-8.3.2</span></span></span></code></pre></div><h3 id="24-证书签发">2.4 证书签发</h3>
+</span></span><span class="line"><span class="cl">root@eslg02:~# chown -R essl:essl /opt/es/elasticsearch-8.10.4/
+</span></span><span class="line"><span class="cl">root@eslg03:~# chown -R essl:essl /opt/es/elasticsearch-8.10.4/</span></span></code></pre></div><h3 id="24-证书签发">2.4 证书签发</h3>
 <div class="highlight" id="id-15"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 在第一台服务器节点es01 设置集群多节点通信密钥</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># 切换普通用户实施</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 module<span class="o">]</span><span class="c1"># su - wangting</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ <span class="nb">cd</span> /opt/module/elasticsearch-8.3.2/bin
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 bin<span class="o">]</span>$ ./elasticsearch-certutil ca
-</span></span><span class="line"><span class="cl">warning: ignoring <span class="nv">JAVA_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2/jdk<span class="p">;</span> using bundled JDK
+</span></span><span class="line"><span class="cl"><span class="o">[</span>root@es01 module<span class="o">]</span><span class="c1"># su - essl</span>
+</span></span><span class="line"><span class="cl">essl@eslg02:~$ <span class="nb">cd</span> /opt/es/elasticsearch-8.10.4/bin/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">essl@eslg02:/opt/es/elasticsearch-8.10.4/bin$ ./elasticsearch-certutil ca
+</span></span><span class="line"><span class="cl">warning: ignoring <span class="nv">JAVA_HOME</span><span class="o">=</span>/softws/jdk-17.0.2<span class="p">;</span> using bundled JDK
 </span></span><span class="line"><span class="cl">This tool assists you in the generation of X.509 certificates and certificate
 </span></span><span class="line"><span class="cl">signing requests <span class="k">for</span> use with SSL/TLS in the Elastic stack.
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">The <span class="s1">&#39;ca&#39;</span> mode generates a new <span class="s1">&#39;certificate authority&#39;</span>
 </span></span><span class="line"><span class="cl">This will create a new X.509 certificate and private key that can be used
 </span></span><span class="line"><span class="cl">to sign certificate when running in <span class="s1">&#39;cert&#39;</span> mode.
@@ -418,47 +428,59 @@ ES 8.x，支持 Java 17 和 Java 18，推荐版本：
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">By default the <span class="s1">&#39;ca&#39;</span> mode produces a single PKCS#12 output file which holds:
 </span></span><span class="line"><span class="cl">    * The CA certificate
-</span></span><span class="line"><span class="cl">    * The CAs private key
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">If you elect to generate PEM format certificates <span class="o">(</span>the -pem option<span class="o">)</span>, <span class="k">then</span> the output will
-</span></span><span class="line"><span class="cl">be a zip file containing individual files <span class="k">for</span> the CA certificate and private key
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Please enter the desired output file <span class="o">[</span>elastic-stack-ca.p12<span class="o">]</span>: <span class="c1"># 回车即可</span>
-</span></span><span class="line"><span class="cl">Enter password <span class="k">for</span> elastic-stack-ca.p12 :  <span class="c1"># 回车即可</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 用 ca 证书签发节点证书，过程中需按三次回车键,生成目录：es的home:/opt/elasticsearch-8.3.2/</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 bin<span class="o">]</span>$ ./elasticsearch-certutil cert --ca elastic-stack-ca.p12
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">If you specify any of the following options:
-</span></span><span class="line"><span class="cl">    * -pem <span class="o">(</span>PEM formatted output<span class="o">)</span>
-</span></span><span class="line"><span class="cl">    * -multiple <span class="o">(</span>generate multiple certificates<span class="o">)</span>
-</span></span><span class="line"><span class="cl">    * -in <span class="o">(</span>generate certificates from an input file<span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="k">then</span> the output will be be a zip file containing individual certificate/key files
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Enter password <span class="k">for</span> CA <span class="o">(</span>elastic-stack-ca.p12<span class="o">)</span> :  <span class="c1"># 回车即可</span>
-</span></span><span class="line"><span class="cl">Please enter the desired output file <span class="o">[</span>elastic-certificates.p12<span class="o">]</span>:  <span class="c1"># 回车即可</span>
-</span></span><span class="line"><span class="cl">Enter password <span class="k">for</span> elastic-certificates.p12 :  <span class="c1"># 回车即可</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Certificates written to /opt/module/elasticsearch-8.3.2/elastic-certificates.p12
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">This file should be properly secured as it contains the private key <span class="k">for</span> 
-</span></span><span class="line"><span class="cl">your instance.
-</span></span><span class="line"><span class="cl">This file is a self contained file and can be copied and used <span class="s1">&#39;as is&#39;</span>
-</span></span><span class="line"><span class="cl">For each Elastic product that you wish to configure, you should copy
-</span></span><span class="line"><span class="cl">this <span class="s1">&#39;.p12&#39;</span> file to the relevant configuration directory
+</span></span><span class="line"><span class="cl">    * The CA<span class="s1">&#39;s private key
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">If you elect to generate PEM format certificates (the -pem option), then the output will
+</span></span></span><span class="line"><span class="cl"><span class="s1">be a zip file containing individual files for the CA certificate and private key
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">Please enter the desired output file [elastic-stack-ca.p12]: # 回车即可
+</span></span></span><span class="line"><span class="cl"><span class="s1">Enter password for elastic-stack-ca.p12 :  # 回车即可
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1"># 用 ca 证书签发节点证书，过程中需按三次回车键,生成目录：es的home:/opt/elasticsearch-8.3.2/
+</span></span></span><span class="line"><span class="cl"><span class="s1">essl@eslg02:/opt/es/elasticsearch-8.10.4/bin$ ./elasticsearch-certutil cert --ca elastic-stack-ca.p12
+</span></span></span><span class="line"><span class="cl"><span class="s1">warning: ignoring JAVA_HOME=/softws/jdk-17.0.2; using bundled JDK
+</span></span></span><span class="line"><span class="cl"><span class="s1">This tool assists you in the generation of X.509 certificates and certificate
+</span></span></span><span class="line"><span class="cl"><span class="s1">signing requests for use with SSL/TLS in the Elastic stack.
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">By default the &#39;</span>cert<span class="s1">&#39; mode produces a single PKCS#12 output file which holds:
+</span></span></span><span class="line"><span class="cl"><span class="s1">    * The instance certificate
+</span></span></span><span class="line"><span class="cl"><span class="s1">    * The private key for the instance certificate
+</span></span></span><span class="line"><span class="cl"><span class="s1">    * The CA certificate
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">If you specify any of the following options:
+</span></span></span><span class="line"><span class="cl"><span class="s1">    * -pem (PEM formatted output)
+</span></span></span><span class="line"><span class="cl"><span class="s1">    * -multiple (generate multiple certificates)
+</span></span></span><span class="line"><span class="cl"><span class="s1">    * -in (generate certificates from an input file)
+</span></span></span><span class="line"><span class="cl"><span class="s1">then the output will be be a zip file containing individual certificate/key files
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">Enter password for CA (elastic-stack-ca.p12) :  # 回车即可
+</span></span></span><span class="line"><span class="cl"><span class="s1">Please enter the desired output file [elastic-certificates.p12]:  # 回车即可
+</span></span></span><span class="line"><span class="cl"><span class="s1">Enter password for elastic-certificates.p12 :  # 回车即可
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">Certificates written to /opt/es/elasticsearch-8.10.4/elastic-certificates.p12
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">This file should be properly secured as it contains the private key for
+</span></span></span><span class="line"><span class="cl"><span class="s1">your instance.
+</span></span></span><span class="line"><span class="cl"><span class="s1">This file is a self contained file and can be copied and used &#39;</span>as is<span class="s1">&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s1">For each Elastic product that you wish to configure, you should copy
+</span></span></span><span class="line"><span class="cl"><span class="s1">this &#39;</span>.p12<span class="err">&#39;</span> file to the relevant configuration directory
 </span></span><span class="line"><span class="cl">and <span class="k">then</span> follow the SSL configuration instructions in the product guide.
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">For client applications, you may only need to copy the CA certificate and
 </span></span><span class="line"><span class="cl">configure the client to trust this certificate.
 </span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 将生成的证书文件移动到 config/certs 目录中</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 bin<span class="o">]</span>$ <span class="nb">cd</span> /opt/module/elasticsearch-8.3.2/
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ ls -l <span class="p">|</span> grep <span class="s2">&#34;elastic-&#34;</span>
-</span></span><span class="line"><span class="cl">-rw-------  <span class="m">1</span> wangting wangting   <span class="m">3596</span> Feb <span class="m">10</span> 16:05 elastic-certificates.p12
-</span></span><span class="line"><span class="cl">-rw-------  <span class="m">1</span> wangting wangting   <span class="m">2672</span> Feb <span class="m">10</span> 16:03 elastic-stack-ca.p12
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ 
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ mv elastic-certificates.p12 config/certs/
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ mv elastic-stack-ca.p12 config/certs/</span></span></code></pre></div><h3 id="25-设置集群多节点-http-证书">2.5 设置集群多节点 HTTP 证书</h3>
+</span></span><span class="line"><span class="cl">essl@eslg02:/opt/es/elasticsearch-8.10.4$ ls -l <span class="p">|</span> grep <span class="s2">&#34;elastic-&#34;</span>
+</span></span><span class="line"><span class="cl">-rw-------  <span class="m">1</span> essl essl    <span class="m">3596</span> Oct <span class="m">24</span> 08:40 elastic-certificates.p12
+</span></span><span class="line"><span class="cl">-rw-------  <span class="m">1</span> essl essl    <span class="m">2672</span> Oct <span class="m">24</span> 08:39 elastic-stack-ca.p12
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">essl@eslg02:/opt/es/elasticsearch-8.10.4$ mv elastic-certificates.p12 config/certs/
+</span></span><span class="line"><span class="cl">essl@eslg02:/opt/es/elasticsearch-8.10.4$ mv elastic-stack-ca.p12 config/certs/</span></span></code></pre></div><h3 id="25-设置集群多节点-http-证书">2.5 设置集群多节点 HTTP 证书</h3>
 <div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 签发 Https 证书</span>
 </span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ <span class="nb">cd</span> /opt/module/elasticsearch-8.3.2/bin/
 </span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 bin<span class="o">]</span>$ ./elasticsearch-certutil http
@@ -507,7 +529,7 @@ ES 8.x，支持 Java 17 和 Java 18，推荐版本：
 </span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># 指定CA证书的路径地址，CA Path:后写绝对路径               #</span>
 </span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
-</span></span><span class="line"><span class="cl">CA Path: /opt/module/elasticsearch-8.3.2/config/certs/elastic-stack-ca.p12
+</span></span><span class="line"><span class="cl">CA Path: /opt/es/elasticsearch-8.10.4/config/certs/elastic-stack-ca.p12
 </span></span><span class="line"><span class="cl">Reading a PKCS12 keystore requires a password.
 </span></span><span class="line"><span class="cl">It is possible <span class="k">for</span> the keystore<span class="err">&#39;</span>s password to be blank,
 </span></span><span class="line"><span class="cl">in which <span class="k">case</span> you can simply press &lt;ENTER&gt; at the prompt
@@ -573,15 +595,15 @@ ES 8.x，支持 Java 17 和 Java 18，推荐版本：
 </span></span><span class="line"><span class="cl"><span class="c1">######################################################</span>
 </span></span><span class="line"><span class="cl">When you are <span class="k">done</span>, press &lt;ENTER&gt; once more to move on to the next step.
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">es01
-</span></span><span class="line"><span class="cl">es02
-</span></span><span class="line"><span class="cl">es03
+</span></span><span class="line"><span class="cl">eslg01
+</span></span><span class="line"><span class="cl">eslg02
+</span></span><span class="line"><span class="cl">eslg03
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">You entered the following hostnames.
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> - es01
-</span></span><span class="line"><span class="cl"> - es02
-</span></span><span class="line"><span class="cl"> - es03
+</span></span><span class="line"><span class="cl"> - eslg01
+</span></span><span class="line"><span class="cl"> - eslg02
+</span></span><span class="line"><span class="cl"> - eslg03
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">####################################################</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># 确认以上是否为正确的配置，输入 Y 表示信息正确            #</span>
@@ -602,15 +624,15 @@ ES 8.x，支持 Java 17 和 Java 18，推荐版本：
 </span></span><span class="line"><span class="cl"><span class="c1">####################################################</span>
 </span></span><span class="line"><span class="cl">When you are <span class="k">done</span>, press &lt;ENTER&gt; once more to move on to the next step.
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">172.28.54.213
-</span></span><span class="line"><span class="cl">172.28.54.214
-</span></span><span class="line"><span class="cl">172.28.54.215
+</span></span><span class="line"><span class="cl">192.168.10.107
+</span></span><span class="line"><span class="cl">192.168.10.108
+</span></span><span class="line"><span class="cl">192.168.10.109
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">You entered the following IP addresses.
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"> - 172.28.54.213
-</span></span><span class="line"><span class="cl"> - 172.28.54.214
-</span></span><span class="line"><span class="cl"> - 172.28.54.215
+</span></span><span class="line"><span class="cl"> - 192.168.10.107
+</span></span><span class="line"><span class="cl"> - 192.168.10.108
+</span></span><span class="line"><span class="cl"> - 192.168.10.109
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">####################################################</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># 确认以上是否为正确的配置，输入 Y 表示信息正确            #</span>
@@ -623,8 +645,8 @@ ES 8.x，支持 Java 17 和 Java 18，推荐版本：
 </span></span><span class="line"><span class="cl">information you have provided above and secure defaults. You should not need to
 </span></span><span class="line"><span class="cl">change these values unless you have specific requirements.
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Key Name: es01
-</span></span><span class="line"><span class="cl">Subject DN: <span class="nv">CN</span><span class="o">=</span>es01
+</span></span><span class="line"><span class="cl">Key Name: eslg01
+</span></span><span class="line"><span class="cl">Subject DN: <span class="nv">CN</span><span class="o">=</span>eslg01
 </span></span><span class="line"><span class="cl">Key Size: <span class="m">2048</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">####################################################</span>
@@ -648,50 +670,62 @@ ES 8.x，支持 Java 17 和 Java 18，推荐版本：
 </span></span><span class="line"><span class="cl">A number of files will be generated including your private key<span class="o">(</span>s<span class="o">)</span>,
 </span></span><span class="line"><span class="cl">public certificate<span class="o">(</span>s<span class="o">)</span>, and sample configuration options <span class="k">for</span> Elastic Stack products.
 </span></span><span class="line"><span class="cl">These files will be included in a single zip archive.
-</span></span><span class="line"><span class="cl">What filename should be used <span class="k">for</span> the output zip file? <span class="o">[</span>/opt/module/elasticsearch-8.3.2/elasticsearch-ssl-http.zip<span class="o">]</span> 
-</span></span><span class="line"><span class="cl">Zip file written to /opt/module/elasticsearch-8.3.2/elasticsearch-ssl-http.zip</span></span></code></pre></div><h3 id="26-解压证书并分发">2.6 解压证书并分发</h3>
+</span></span><span class="line"><span class="cl">What filename should be used <span class="k">for</span> the output zip file? <span class="o">[</span>/opt/es/elasticsearch-8.10.4/elasticsearch-ssl-http.zip<span class="o">]</span>
+</span></span><span class="line"><span class="cl">Zip file written to /opt/es/elasticsearch-8.10.4/elasticsearch-ssl-http.zip</span></span></code></pre></div><h3 id="26-解压证书并分发">2.6 解压证书并分发</h3>
 <div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 解压</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 bin<span class="o">]</span>$ <span class="nb">cd</span> /opt/module/elasticsearch-8.3.2/
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ unzip elasticsearch-ssl-http.zip 
+</span></span><span class="line"><span class="cl">essl@eslg02:/ <span class="nb">cd</span> /opt/es/elasticsearch-8.10.4/
+</span></span><span class="line"><span class="cl">essl@eslg02:/opt/es/elasticsearch-8.10.4$ unzip elasticsearch-ssl-http.zip
+</span></span><span class="line"><span class="cl">Archive:  elasticsearch-ssl-http.zip
+</span></span><span class="line"><span class="cl">   creating: elasticsearch/
+</span></span><span class="line"><span class="cl">  inflating: elasticsearch/README.txt
+</span></span><span class="line"><span class="cl">  inflating: elasticsearch/http.p12
+</span></span><span class="line"><span class="cl">  inflating: elasticsearch/sample-elasticsearch.yml
+</span></span><span class="line"><span class="cl">   creating: kibana/
+</span></span><span class="line"><span class="cl">  inflating: kibana/README.txt
+</span></span><span class="line"><span class="cl">  inflating: kibana/elasticsearch-ca.pem
+</span></span><span class="line"><span class="cl">  inflating: kibana/sample-kibana.yml
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 移动证书</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ mv ./elasticsearch/http.p12 config/certs/
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ mv ./kibana/elasticsearch-ca.pem config/certs/
+</span></span><span class="line"><span class="cl">essl@eslg02:/opt/es/elasticsearch-8.10.4$ mv ./elasticsearch/http.p12 config/certs/
+</span></span><span class="line"><span class="cl">essl@eslg02:/opt/es/elasticsearch-8.10.4$ mv ./kibana/elasticsearch-ca.pem config/certs/
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 将证书分发到其他节点02 03</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ <span class="nb">cd</span> /opt/module/elasticsearch-8.3.2/config/certs
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 certs<span class="o">]</span>$ ll
+</span></span><span class="line"><span class="cl">essl@eslg02:/opt/es/elasticsearch-8.10.4$ <span class="nb">cd</span> config/certs/
+</span></span><span class="line"><span class="cl">essl@eslg02:/opt/es/elasticsearch-8.10.4/config/certs$ ls -l
 </span></span><span class="line"><span class="cl">total <span class="m">16</span>
-</span></span><span class="line"><span class="cl">-rw------- <span class="m">1</span> wangting wangting <span class="m">3596</span> Feb <span class="m">10</span> 16:05 elastic-certificates.p12
-</span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> wangting wangting <span class="m">1200</span> Feb <span class="m">10</span> 16:13 elasticsearch-ca.pem
-</span></span><span class="line"><span class="cl">-rw------- <span class="m">1</span> wangting wangting <span class="m">2672</span> Feb <span class="m">10</span> 16:03 elastic-stack-ca.p12
-</span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> wangting wangting <span class="m">3652</span> Feb <span class="m">10</span> 16:13 http.p12
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 certs<span class="o">]</span>$ scp * es02:/opt/module/elasticsearch-8.3.2/config/certs/
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 certs<span class="o">]</span>$ scp * es03:/opt/module/elasticsearch-8.3.2/config/certs/</span></span></code></pre></div><blockquote>
+</span></span><span class="line"><span class="cl">-rw------- <span class="m">1</span> essl essl <span class="m">3596</span> Oct <span class="m">24</span> 08:40 elastic-certificates.p12
+</span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> essl essl <span class="m">1200</span> Oct <span class="m">24</span> 08:53 elasticsearch-ca.pem
+</span></span><span class="line"><span class="cl">-rw------- <span class="m">1</span> essl essl <span class="m">2672</span> Oct <span class="m">24</span> 08:39 elastic-stack-ca.p12
+</span></span><span class="line"><span class="cl">-rw-rw-r-- <span class="m">1</span> essl essl <span class="m">3652</span> Oct <span class="m">24</span> 08:53 http.p12
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">essl@eslg02:/opt/es/elasticsearch-8.10.4/config/certs$ scp -r * eslg02:/opt/es/elasticsearch-8.10.4/config/certs
+</span></span><span class="line"><span class="cl">essl@eslg02:/opt/es/elasticsearch-8.10.4/config/certs$ scp -r * eslg03:/opt/es/elasticsearch-8.10.4/config/certs</span></span></code></pre></div><blockquote>
 <p>如果提示：-bash: unzip: command not found，使用yum安装即可</p>
 <p>[wangting@es01 elasticsearch-8.3.2]$ sudo yum install -y unzip</p>
 </blockquote>
 <h3 id="27-配置文件修改配置">2.7 配置文件修改配置</h3>
-<div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 certs<span class="o">]</span>$ <span class="nb">cd</span> /opt/module/elasticsearch-8.3.2/config/
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 config<span class="o">]</span>$ vim elasticsearch.yml 
-</span></span><span class="line"><span class="cl">cluster.name: bigdata-es
-</span></span><span class="line"><span class="cl">node.name: es-es01
-</span></span><span class="line"><span class="cl">path.data: /opt/module/elasticsearch-8.3.2/data
-</span></span><span class="line"><span class="cl">path.logs: /opt/module/elasticsearch-8.3.2/logs
+<div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">essl@eslg02:/opt/es/elasticsearch-8.10.4/config/certs$ <span class="nb">cd</span> ..
+</span></span><span class="line"><span class="cl">essl@eslg02:/opt/es/elasticsearch-8.10.4/config$ egrep -v <span class="s2">&#34;^</span>$<span class="s2">|^#&#34;</span> elasticsearch.yml
+</span></span><span class="line"><span class="cl">cluster.name: logs-es
+</span></span><span class="line"><span class="cl">node.name: es-lg01
+</span></span><span class="line"><span class="cl">path.data: /opt/es/elasticsearch-8.10.4/data
+</span></span><span class="line"><span class="cl">path.logs: /opt/es/elasticsearch-8.10.4/logs
 </span></span><span class="line"><span class="cl">network.host: 0.0.0.0
 </span></span><span class="line"><span class="cl">http.port: <span class="m">9200</span>
-</span></span><span class="line"><span class="cl">discovery.seed_hosts: <span class="o">[</span><span class="s2">&#34;es01&#34;</span><span class="o">]</span>
-</span></span><span class="line"><span class="cl">cluster.initial_master_nodes: <span class="o">[</span><span class="s2">&#34;es-es01&#34;</span>, <span class="s2">&#34;es-es02&#34;</span>,<span class="s2">&#34;es-es03&#34;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">discovery.seed_hosts: <span class="o">[</span><span class="s2">&#34;eslg01&#34;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">cluster.initial_master_nodes: <span class="o">[</span><span class="s2">&#34;es-lg01&#34;</span>, <span class="s2">&#34;es-lg02&#34;</span>, <span class="s2">&#34;es-lg03&#34;</span><span class="o">]</span>
 </span></span><span class="line"><span class="cl">xpack.security.enabled: <span class="nb">true</span>
 </span></span><span class="line"><span class="cl">xpack.security.enrollment.enabled: <span class="nb">true</span>
 </span></span><span class="line"><span class="cl">xpack.security.http.ssl:
 </span></span><span class="line"><span class="cl"> enabled: <span class="nb">true</span>
-</span></span><span class="line"><span class="cl"> keystore.path: /opt/module/elasticsearch-8.3.2/config/certs/http.p12
-</span></span><span class="line"><span class="cl"> truststore.path: /opt/module/elasticsearch-8.3.2/config/certs/http.p12
+</span></span><span class="line"><span class="cl"> keystore.path: /opt/es/elasticsearch-8.10.4/config/certs/http.p12
+</span></span><span class="line"><span class="cl"> truststore.path: /opt/es/elasticsearch-8.10.4/config/certs/http.p12
 </span></span><span class="line"><span class="cl">xpack.security.transport.ssl:
 </span></span><span class="line"><span class="cl"> enabled: <span class="nb">true</span>
 </span></span><span class="line"><span class="cl"> verification_mode: certificate
-</span></span><span class="line"><span class="cl"> keystore.path: /opt/module/elasticsearch-8.3.2/config/certs/elastic-certificates.p12
-</span></span><span class="line"><span class="cl"> truststore.path: /opt/module/elasticsearch-8.3.2/config/certs/elastic-certificates.p12
+</span></span><span class="line"><span class="cl"> keystore.path: /opt/es/elasticsearch-8.10.4/config/certs/elastic-certificates.p12
+</span></span><span class="line"><span class="cl"> truststore.path: /opt/es/elasticsearch-8.10.4/config/certs/elastic-certificates.p12
 </span></span><span class="line"><span class="cl">http.host: <span class="o">[</span>_local_, _site_<span class="o">]</span>
 </span></span><span class="line"><span class="cl">ingest.geoip.downloader.enabled: <span class="nb">false</span>
 </span></span><span class="line"><span class="cl">xpack.security.http.ssl.client_authentication: none</span></span></code></pre></div><p>【注意】：</p>
@@ -703,45 +737,152 @@ ES 8.x，支持 Java 17 和 Java 18，推荐版本：
 </span></span><span class="line"><span class="cl"> enabled: false</span></span></code></pre></div><p>有些业务使用场景中，可能会遇到跨域问题，当elasticsearch需要涉及到跨域问题时，可以在配置文件中最后增加配置：</p>
 <div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">http.cors.enabled: <span class="nb">true</span>
 </span></span><span class="line"><span class="cl">http.cors.allow-origin: <span class="s2">&#34;*&#34;</span></span></span></code></pre></div><h3 id="28-修改其余节点的配置文件">2.8 修改其余节点的配置文件</h3>
-<div class="highlight" id="id-21"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ scp config/elasticsearch.yml es02:/opt/module/elasticsearch-8.3.2/config/
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ scp config/elasticsearch.yml es03:/opt/module/elasticsearch-8.3.2/config/
+<div class="highlight" id="id-21"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">essl@eslg02:/opt/es/elasticsearch-8.10.4$ scp config/elasticsearch.yml eslg02:/opt/es/elasticsearch-8.10.4/config/
+</span></span><span class="line"><span class="cl">essl@eslg02:/opt/es/elasticsearch-8.10.4$ scp config/elasticsearch.yml eslg03:/opt/es/elasticsearch-8.10.4/config/
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># es02修改 config/elasticsearch.yml</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es02 ~<span class="o">]</span><span class="c1"># vim /opt/module/elasticsearch-8.3.2/config/elasticsearch.yml </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># eslg02修改 config/elasticsearch.yml</span>
+</span></span><span class="line"><span class="cl">root@eslg02:~# vim /opt/es/elasticsearch-8.10.4/config/elasticsearch.yml
 </span></span><span class="line"><span class="cl"><span class="c1"># 设置节点名称</span>
-</span></span><span class="line"><span class="cl">node.name: es-es02
+</span></span><span class="line"><span class="cl">node.name: es-lg02
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># es03修改 config/elasticsearch.yml</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es03 ~<span class="o">]</span><span class="c1"># vim /opt/module/elasticsearch-8.3.2/config/elasticsearch.yml </span>
+</span></span><span class="line"><span class="cl"><span class="c1"># eslg03修改 config/elasticsearch.yml</span>
+</span></span><span class="line"><span class="cl">root@eslg03:~# vim /opt/es/elasticsearch-8.10.4/config/elasticsearch.yml
 </span></span><span class="line"><span class="cl"><span class="c1"># 设置节点名称</span>
-</span></span><span class="line"><span class="cl">node.name: es-es03</span></span></code></pre></div><h3 id="29-启动集群">2.9 启动集群</h3>
+</span></span><span class="line"><span class="cl">node.name: es-lg03</span></span></code></pre></div><h3 id="29-启动集群">2.9 启动集群</h3>
 <p>每台节点依次启动（无顺序要求，只要多于2台，就可以启动集群，这就是es的无主模式，自动识别集群，选举master）：</p>
-<div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 elasticsearch-8.3.2<span class="o">]</span>$ /opt/module/elasticsearch-8.3.2/bin/elasticsearch  -d
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es02 elasticsearch-8.3.2<span class="o">]</span>$ /opt/module/elasticsearch-8.3.2/bin/elasticsearch  -d
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es03 elasticsearch-8.3.2<span class="o">]</span>$ /opt/module/elasticsearch-8.3.2/bin/elasticsearch  -d</span></span></code></pre></div><blockquote>
+<div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">essl@eslg01:/$ /opt/es/elasticsearch-8.10.4/bin/elasticsearch -d
+</span></span><span class="line"><span class="cl">essl@eslg02:/$ /opt/es/elasticsearch-8.10.4/bin/elasticsearch -d
+</span></span><span class="line"><span class="cl">essl@eslg03:/$ /opt/es/elasticsearch-8.10.4/bin/elasticsearch -d</span></span></code></pre></div><div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">warning: ignoring <span class="nv">JAVA_HOME</span><span class="o">=</span>/softws/jdk-17.0.2<span class="p">;</span> using bundled JDK
+</span></span><span class="line"><span class="cl">Oct 24, <span class="m">2023</span> 9:22:58 AM sun.util.locale.provider.LocaleProviderAdapter &lt;clinit&gt;
+</span></span><span class="line"><span class="cl">WARNING: COMPAT locale provider will be removed in a future release
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:22:58,999<span class="o">][</span>INFO <span class="o">][</span>o.a.l.u.VectorUtilPanamaProvider<span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> Java vector incubator API enabled<span class="p">;</span> uses <span class="nv">preferredBitSize</span><span class="o">=</span><span class="m">128</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:22:59,768<span class="o">][</span>INFO <span class="o">][</span>o.e.n.Node               <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> version<span class="o">[</span>8.10.4<span class="o">]</span>, pid<span class="o">[</span>1260815<span class="o">]</span>, build<span class="o">[</span>tar/b4a62ac808e886ff032700c391f45f1408b2538c/2023-10-11T22:04:35.506990650Z<span class="o">]</span>, OS<span class="o">[</span>Linux/5.4.0-81-generic/amd64<span class="o">]</span>, JVM<span class="o">[</span>Oracle Corporation/OpenJDK 64-Bit Server VM/21/21+35-2513<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:22:59,770<span class="o">][</span>INFO <span class="o">][</span>o.e.n.Node               <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> JVM home <span class="o">[</span>/opt/es/elasticsearch-8.10.4/jdk<span class="o">]</span>, using bundled JDK <span class="o">[</span>true<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:22:59,770<span class="o">][</span>INFO <span class="o">][</span>o.e.n.Node               <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> JVM arguments <span class="o">[</span>-Des.networkaddress.cache.ttl<span class="o">=</span>60, -Des.networkaddress.cache.negative.ttl<span class="o">=</span>10, -Djava.security.manager<span class="o">=</span>allow, -XX:+AlwaysPreTouch, -Xss1m, -Djava.awt.headless<span class="o">=</span>true, -Dfile.encoding<span class="o">=</span>UTF-8, -Djna.nosys<span class="o">=</span>true, -XX:-OmitStackTraceInFastThrow, -Dio.netty.noUnsafe<span class="o">=</span>true, -Dio.netty.noKeySetOptimization<span class="o">=</span>true, -Dio.netty.recycler.maxCapacityPerThread<span class="o">=</span>0, -Dlog4j.shutdownHookEnabled<span class="o">=</span>false, -Dlog4j2.disable.jmx<span class="o">=</span>true, -Dlog4j2.formatMsgNoLookups<span class="o">=</span>true, -Djava.locale.providers<span class="o">=</span>SPI,COMPAT, --add-opens<span class="o">=</span>java.base/java.io<span class="o">=</span>org.elasticsearch.preallocate, -XX:+UseG1GC, -Djava.io.tmpdir<span class="o">=</span>/tmp/elasticsearch-7146833578560053763, --add-modules<span class="o">=</span>jdk.incubator.vector, -XX:+HeapDumpOnOutOfMemoryError, -XX:+ExitOnOutOfMemoryError, -XX:HeapDumpPath<span class="o">=</span>data, -XX:ErrorFile<span class="o">=</span>logs/hs_err_pid%p.log, -Xlog:gc*,gc+age<span class="o">=</span>trace,safepoint:file<span class="o">=</span>logs/gc.log:utctime,level,pid,tags:filecount<span class="o">=</span>32,filesize<span class="o">=</span>64m, -Xms3980m, -Xmx3980m, -XX:MaxDirectMemorySize<span class="o">=</span>2086666240, -XX:G1HeapRegionSize<span class="o">=</span>4m, -XX:InitiatingHeapOccupancyPercent<span class="o">=</span>30, -XX:G1ReservePercent<span class="o">=</span>15, -Des.distribution.type<span class="o">=</span>tar, --module-path<span class="o">=</span>/opt/es/elasticsearch-8.10.4/lib, --add-modules<span class="o">=</span>jdk.net, --add-modules<span class="o">=</span>org.elasticsearch.preallocate, -Djdk.module.main<span class="o">=</span>org.elasticsearch.server<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,887<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>repository-url<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,888<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>rest-root<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,888<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-core<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,889<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-redact<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,889<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>ingest-user-agent<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,889<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-async-search<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,889<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-monitoring<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,890<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>repository-s3<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,890<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-analytics<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,890<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-ent-search<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,891<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-autoscaling<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,891<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>lang-painless<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,891<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-ml<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,891<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>lang-mustache<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,892<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>legacy-geo<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,892<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-ql<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,892<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>rank-rrf<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,893<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>analysis-common<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,893<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>transport-netty4<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,893<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>aggregations<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,893<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>ingest-common<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,894<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>frozen-indices<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,894<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-identity-provider<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,894<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-text-structure<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,895<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-shutdown<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,895<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>snapshot-repo-test-kit<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,895<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>ml-package-loader<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,896<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>kibana<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,896<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>constant-keyword<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,896<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-logstash<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,897<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-graph<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,897<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-ccr<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,897<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>parent-join<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,898<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-enrich<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,898<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>repositories-metering-api<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,898<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>transform<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,898<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>repository-azure<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,898<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>repository-gcs<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,899<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>spatial<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,899<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>mapper-extras<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,899<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>mapper-version<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,899<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>apm<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,900<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-rollup<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,900<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>percolator<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,900<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-stack<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,900<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>data-streams<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,900<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>rank-eval<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,901<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>reindex<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,901<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-security<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,901<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>blob-cache<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,901<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>searchable-snapshots<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,901<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-slm<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,901<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>snapshot-based-recoveries<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,902<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-watcher<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,902<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>old-lucene-versions<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,902<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-ilm<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,902<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-voting-only-node<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,902<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-deprecation<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,903<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-fleet<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,903<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-profiling<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,903<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-aggregate-metric<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,903<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-downsample<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,904<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>ingest-geoip<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,904<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-write-load-forecaster<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,904<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>search-business-rules<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,904<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>ingest-attachment<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,905<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>wildcard<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,905<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-sql<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,905<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>unsigned-long<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,905<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-async<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,905<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>runtime-fields-common<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,906<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>vector-tile<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,906<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>lang-expression<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:03,906<span class="o">][</span>INFO <span class="o">][</span>o.e.p.PluginsService     <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> loaded module <span class="o">[</span>x-pack-eql<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:07,827<span class="o">][</span>INFO <span class="o">][</span>o.e.e.NodeEnvironment    <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> using <span class="o">[</span>1<span class="o">]</span> data paths, mounts <span class="o">[[</span>/ <span class="o">(</span>/dev/vda2<span class="o">)]]</span>, net usable_space <span class="o">[</span>943.2gb<span class="o">]</span>, net total_space <span class="o">[</span>1006.9gb<span class="o">]</span>, types <span class="o">[</span>ext4<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:07,827<span class="o">][</span>INFO <span class="o">][</span>o.e.e.NodeEnvironment    <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> heap size <span class="o">[</span>3.8gb<span class="o">]</span>, compressed ordinary object pointers <span class="o">[</span>true<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:07,835<span class="o">][</span>INFO <span class="o">][</span>o.e.n.Node               <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> node name <span class="o">[</span>es-lg01<span class="o">]</span>, node ID <span class="o">[</span>e3aozGV5QiSySo-ZJRVf7w<span class="o">]</span>, cluster name <span class="o">[</span>logs-es<span class="o">]</span>, roles <span class="o">[</span>data_hot, ml, data_frozen, ingest, data_cold, data, remote_cluster_client, master, data_warm, data_content, transform<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:12,502<span class="o">][</span>INFO <span class="o">][</span>o.e.x.m.p.l.CppLogMessageHandler<span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> <span class="o">[</span>controller/1260874<span class="o">]</span> <span class="o">[</span>Main.cc@123<span class="o">]</span> controller <span class="o">(</span><span class="m">64</span> bit<span class="o">)</span>: Version 8.10.4 <span class="o">(</span>Build 92832804c6da01<span class="o">)</span> Copyright <span class="o">(</span>c<span class="o">)</span> <span class="m">2023</span> Elasticsearch BV
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:12,731<span class="o">][</span>INFO <span class="o">][</span>o.e.x.s.Security         <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> Security is enabled
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:13,599<span class="o">][</span>INFO <span class="o">][</span>o.e.x.s.a.s.FileRolesStore<span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> parsed <span class="o">[</span>0<span class="o">]</span> roles from file <span class="o">[</span>/opt/es/elasticsearch-8.10.4/config/roles.yml<span class="o">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:14,462<span class="o">][</span>INFO <span class="o">][</span>o.e.x.p.ProfilingPlugin  <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> Profiling is enabled
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:14,484<span class="o">][</span>INFO <span class="o">][</span>o.e.x.p.ProfilingPlugin  <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> profiling index templates will not be installed or reinstalled
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:15,477<span class="o">][</span>INFO <span class="o">][</span>o.e.t.n.NettyAllocator   <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> creating NettyAllocator with the following configs: <span class="o">[</span><span class="nv">name</span><span class="o">=</span>elasticsearch_configured, <span class="nv">chunk_size</span><span class="o">=</span>1mb, <span class="nv">suggested_max_allocation_size</span><span class="o">=</span>1mb, <span class="nv">factors</span><span class="o">={</span>es.unsafe.use_netty_default_chunk_and_page_size<span class="o">=</span>false, <span class="nv">g1gc_enabled</span><span class="o">=</span>true, <span class="nv">g1gc_region_size</span><span class="o">=</span>4mb<span class="o">}]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:15,529<span class="o">][</span>INFO <span class="o">][</span>o.e.i.r.RecoverySettings <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> using rate limit <span class="o">[</span>40mb<span class="o">]</span> with <span class="o">[</span><span class="nv">default</span><span class="o">=</span>40mb, <span class="nv">read</span><span class="o">=</span>0b, <span class="nv">write</span><span class="o">=</span>0b, <span class="nv">max</span><span class="o">=</span>0b<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:15,592<span class="o">][</span>INFO <span class="o">][</span>o.e.d.DiscoveryModule    <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> using discovery <span class="nb">type</span> <span class="o">[</span>multi-node<span class="o">]</span> and seed hosts providers <span class="o">[</span>settings<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:17,572<span class="o">][</span>INFO <span class="o">][</span>o.e.n.Node               <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> initialized
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:17,573<span class="o">][</span>INFO <span class="o">][</span>o.e.n.Node               <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> starting ...
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:17,601<span class="o">][</span>INFO <span class="o">][</span>o.e.x.s.c.f.PersistentCache<span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> persistent cache index loaded
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:17,603<span class="o">][</span>INFO <span class="o">][</span>o.e.x.d.l.DeprecationIndexingComponent<span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> deprecation component started
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:17,775<span class="o">][</span>INFO <span class="o">][</span>o.e.t.TransportService   <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> publish_address <span class="o">{</span>192.168.10.107:9300<span class="o">}</span>, bound_addresses <span class="o">{[</span>::<span class="o">]</span>:9300<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:17,952<span class="o">][</span>INFO <span class="o">][</span>o.e.b.BootstrapChecks    <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> bound or publishing to a non-loopback address, enforcing bootstrap checks
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:17,958<span class="o">][</span>INFO <span class="o">][</span>o.e.c.c.ClusterBootstrapService<span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> this node has not joined a bootstrapped cluster yet<span class="p">;</span> <span class="o">[</span>cluster.initial_master_nodes<span class="o">]</span> is <span class="nb">set</span> to <span class="o">[</span>es-lg01, es-lg02, es-lg03<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:19,268<span class="o">][</span>INFO <span class="o">][</span>o.e.c.c.Coordinator      <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> setting initial configuration to VotingConfiguration<span class="o">{</span>5IFPa2grR_ee-WjMtwoR-g,KFPhT7e3TMi7qQqjYZ-Jkw,e3aozGV5QiSySo-ZJRVf7w<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:19,385<span class="o">][</span>INFO <span class="o">][</span>o.e.c.c.CoordinationState<span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> cluster UUID <span class="nb">set</span> to <span class="o">[</span>CywmfOGGTHazzuVafX4Ztw<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:19,415<span class="o">][</span>WARN <span class="o">][</span>o.e.c.c.Coordinator      <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> received cluster state from <span class="o">{</span>es-lg03<span class="o">}{</span>5IFPa2grR_ee-WjMtwoR-g<span class="o">}{</span>DxqhRisLQ6-nOcLCchoGuA<span class="o">}{</span>es-lg03<span class="o">}{</span>192.168.10.109<span class="o">}{</span>192.168.10.109:9300<span class="o">}{</span>cdfhilmrstw<span class="o">}{</span>8.10.4<span class="o">}{</span>7000099-8100499<span class="o">}{</span>ml.max_jvm_size<span class="o">=</span>4173332480, ml.allocated_processors_double<span class="o">=</span>8.0, ml.allocated_processors<span class="o">=</span>8, ml.machine_memory<span class="o">=</span>8347463680, transform.config_version<span class="o">=</span>10.0.0, xpack.installed<span class="o">=</span>true, ml.config_version<span class="o">=</span>10.0.0<span class="o">}</span> with a different cluster uuid NuMqztvZR9SrDHcMbTkpWQ than <span class="nb">local</span> cluster uuid CywmfOGGTHazzuVafX4Ztw, rejecting
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:19,415<span class="o">][</span>INFO <span class="o">][</span>o.e.c.s.ClusterApplierService<span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> master node changed <span class="o">{</span>previous <span class="o">[]</span>, current <span class="o">[{</span>es-lg02<span class="o">}{</span>KFPhT7e3TMi7qQqjYZ-Jkw<span class="o">}{</span>gesjLOfGQCqjvFe4DOGVgA<span class="o">}{</span>es-lg02<span class="o">}{</span>192.168.10.108<span class="o">}{</span>192.168.10.108:9300<span class="o">}{</span>cdfhilmrstw<span class="o">}{</span>8.10.4<span class="o">}{</span>7000099-8100499<span class="o">}]}</span>, added <span class="o">{{</span>es-lg02<span class="o">}{</span>KFPhT7e3TMi7qQqjYZ-Jkw<span class="o">}{</span>gesjLOfGQCqjvFe4DOGVgA<span class="o">}{</span>es-lg02<span class="o">}{</span>192.168.10.108<span class="o">}{</span>192.168.10.108:9300<span class="o">}{</span>cdfhilmrstw<span class="o">}{</span>8.10.4<span class="o">}{</span>7000099-8100499<span class="o">}}</span>, term: 2, version: 1, reason: ApplyCommitRequest<span class="o">{</span><span class="nv">term</span><span class="o">=</span>2, <span class="nv">version</span><span class="o">=</span>1, <span class="nv">sourceNode</span><span class="o">={</span>es-lg02<span class="o">}{</span>KFPhT7e3TMi7qQqjYZ-Jkw<span class="o">}{</span>gesjLOfGQCqjvFe4DOGVgA<span class="o">}{</span>es-lg02<span class="o">}{</span>192.168.10.108<span class="o">}{</span>192.168.10.108:9300<span class="o">}{</span>cdfhilmrstw<span class="o">}{</span>8.10.4<span class="o">}{</span>7000099-8100499<span class="o">}{</span>ml.max_jvm_size<span class="o">=</span>4173332480, ml.allocated_processors_double<span class="o">=</span>8.0, ml.allocated_processors<span class="o">=</span>8, ml.machine_memory<span class="o">=</span>8347463680, xpack.installed<span class="o">=</span>true, transform.config_version<span class="o">=</span>10.0.0, ml.config_version<span class="o">=</span>10.0.0<span class="o">}}</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:19,441<span class="o">][</span>INFO <span class="o">][</span>o.e.c.c.JoinHelper       <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> failed to join <span class="o">{</span>es-lg03<span class="o">}{</span>5IFPa2grR_ee-WjMtwoR-g<span class="o">}{</span>DxqhRisLQ6-nOcLCchoGuA<span class="o">}{</span>es-lg03<span class="o">}{</span>192.168.10.109<span class="o">}{</span>192.168.10.109:9300<span class="o">}{</span>cdfhilmrstw<span class="o">}{</span>8.10.4<span class="o">}{</span>7000099-8100499<span class="o">}{</span>ml.max_jvm_size<span class="o">=</span>4173332480, ml.allocated_processors_double<span class="o">=</span>8.0, ml.allocated_processors<span class="o">=</span>8, ml.machine_memory<span class="o">=</span>8347463680, transform.config_version<span class="o">=</span>10.0.0, xpack.installed<span class="o">=</span>true, ml.config_version<span class="o">=</span>10.0.0<span class="o">}</span> with JoinRequest<span class="o">{</span><span class="nv">sourceNode</span><span class="o">={</span>es-lg01<span class="o">}{</span>e3aozGV5QiSySo-ZJRVf7w<span class="o">}{</span>pmQqW-IlSRysgJpeBz2zQg<span class="o">}{</span>es-lg01<span class="o">}{</span>192.168.10.107<span class="o">}{</span>192.168.10.107:9300<span class="o">}{</span>cdfhilmrstw<span class="o">}{</span>8.10.4<span class="o">}{</span>7000099-8100499<span class="o">}{</span>ml.max_jvm_size<span class="o">=</span>4173332480, ml.allocated_processors_double<span class="o">=</span>8.0, ml.allocated_processors<span class="o">=</span>8, ml.machine_memory<span class="o">=</span>8347463680, transform.config_version<span class="o">=</span>10.0.0, xpack.installed<span class="o">=</span>true, ml.config_version<span class="o">=</span>10.0.0<span class="o">}</span>, <span class="nv">transportVersion</span><span class="o">=</span>8500061, <span class="nv">minimumTerm</span><span class="o">=</span>0, <span class="nv">optionalJoin</span><span class="o">=</span>Optional<span class="o">[</span>Join<span class="o">{</span><span class="nv">term</span><span class="o">=</span>1, <span class="nv">lastAcceptedTerm</span><span class="o">=</span>0, <span class="nv">lastAcceptedVersion</span><span class="o">=</span>0, <span class="nv">sourceNode</span><span class="o">={</span>es-lg01<span class="o">}{</span>e3aozGV5QiSySo-ZJRVf7w<span class="o">}{</span>pmQqW-IlSRysgJpeBz2zQg<span class="o">}{</span>es-lg01<span class="o">}{</span>192.168.10.107<span class="o">}{</span>192.168.10.107:9300<span class="o">}{</span>cdfhilmrstw<span class="o">}{</span>8.10.4<span class="o">}{</span>7000099-8100499<span class="o">}{</span>ml.max_jvm_size<span class="o">=</span>4173332480, ml.allocated_processors_double<span class="o">=</span>8.0, ml.allocated_processors<span class="o">=</span>8, ml.machine_memory<span class="o">=</span>8347463680, transform.config_version<span class="o">=</span>10.0.0, xpack.installed<span class="o">=</span>true, ml.config_version<span class="o">=</span>10.0.0<span class="o">}</span>, <span class="nv">targetNode</span><span class="o">={</span>es-lg03<span class="o">}{</span>5IFPa2grR_ee-WjMtwoR-g<span class="o">}{</span>DxqhRisLQ6-nOcLCchoGuA<span class="o">}{</span>es-lg03<span class="o">}{</span>192.168.10.109<span class="o">}{</span>192.168.10.109:9300<span class="o">}{</span>cdfhilmrstw<span class="o">}{</span>8.10.4<span class="o">}{</span>7000099-8100499<span class="o">}{</span>ml.max_jvm_size<span class="o">=</span>4173332480, ml.allocated_processors_double<span class="o">=</span>8.0, ml.allocated_processors<span class="o">=</span>8, ml.machine_memory<span class="o">=</span>8347463680, transform.config_version<span class="o">=</span>10.0.0, xpack.installed<span class="o">=</span>true, ml.config_version<span class="o">=</span>10.0.0<span class="o">}}]}</span>org.elasticsearch.transport.NodeDisconnectedException: <span class="o">[</span>es-lg03<span class="o">][</span>192.168.10.109:9300<span class="o">][</span>internal:cluster/coordination/join<span class="o">]</span> disconnected
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">See logs <span class="k">for</span> more details.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:19,444<span class="o">][</span>INFO <span class="o">][</span>o.e.h.AbstractHttpServerTransport<span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> publish_address <span class="o">{</span>192.168.10.107:9200<span class="o">}</span>, bound_addresses <span class="o">{[</span>::1<span class="o">]</span>:9200<span class="o">}</span>, <span class="o">{</span>127.0.0.1:9200<span class="o">}</span>, <span class="o">{</span>192.168.10.107:9200<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>2023-10-24T09:23:19,445<span class="o">][</span>INFO <span class="o">][</span>o.e.n.Node               <span class="o">]</span> <span class="o">[</span>es-lg01<span class="o">]</span> started <span class="o">{</span>es-lg01<span class="o">}{</span>e3aozGV5QiSySo-ZJRVf7w<span class="o">}{</span>pmQqW-IlSRysgJpeBz2zQg<span class="o">}{</span>es-lg01<span class="o">}{</span>192.168.10.107<span class="o">}{</span>192.168.10.107:9300<span class="o">}{</span>cdfhilmrstw<span class="o">}{</span>8.10.4<span class="o">}{</span>7000099-8100499<span class="o">}{</span>ml.max_jvm_size<span class="o">=</span>4173332480, ml.allocated_processors_double<span class="o">=</span>8.0, ml.allocated_processors<span class="o">=</span>8, ml.machine_memory<span class="o">=</span>8347463680, transform.config_version<span class="o">=</span>10.0.0, xpack.installed<span class="o">=</span>true, ml.config_version<span class="o">=</span>10.0.0<span class="o">}</span></span></span></code></pre></div><blockquote>
 <p>登录网页，都与之前的密码一致：elastic/bigdata</p>
 <p>https://es01:9200/_cat/nodes?v</p>
 </blockquote>
 <p>【注意】</p>
 <p>如果不留神使用root修改过目录下文件，则文件权限会变成root所属主，所以需要修改回普通用户</p>
-<div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chown -R wangting.wangting /opt/module/</span></span></code></pre></div><p>ES服务启动后有2个端口</p>
+<div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chown -R wangting.wangting /opt/module/</span></span></code></pre></div><p>ES服务启动后有2个端口</p>
 <ul>
 <li>9200为客户端访问es的http协议RESTFUL端口</li>
 <li>9300为ES集群之间组件的通信端口</li>
 </ul>
 <h3 id="2-10-修改http登录密码">2-10 修改HTTP登录密码</h3>
-<div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 手工指定elastic的新密码 (-i参数)</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ /opt/module/elasticsearch-8.3.2/bin/elasticsearch-reset-password -u elastic -i
-</span></span><span class="line"><span class="cl">warning: ignoring <span class="nv">JAVA_HOME</span><span class="o">=</span>/opt/module/elasticsearch-8.3.2/jdk<span class="p">;</span> using bundled JDK
-</span></span><span class="line"><span class="cl">bThis tool will reset the password of the <span class="o">[</span>elastic<span class="o">]</span> user.
+<div class="highlight" id="id-25"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 手工指定elastic的新密码 (-i参数)</span>
+</span></span><span class="line"><span class="cl">essl@eslg01:/opt/es/elasticsearch-8.10.4/config/certs$ /opt/es/elasticsearch-8.10.4/bin/elasticsearch-reset-password -u elastic -i
+</span></span><span class="line"><span class="cl">warning: ignoring <span class="nv">JAVA_HOME</span><span class="o">=</span>/softws/jdk-17.0.2<span class="p">;</span> using bundled JDK
+</span></span><span class="line"><span class="cl">This tool will reset the password of the <span class="o">[</span>elastic<span class="o">]</span> user.
 </span></span><span class="line"><span class="cl">You will be prompted to enter the password.
-</span></span><span class="line"><span class="cl">Please confirm that you would like to <span class="k">continue</span> <span class="o">[</span>y/N<span class="o">]</span>y 
-</span></span><span class="line"><span class="cl">Did not understand answer <span class="s1">&#39;by&#39;</span>
 </span></span><span class="line"><span class="cl">Please confirm that you would like to <span class="k">continue</span> <span class="o">[</span>y/N<span class="o">]</span>y
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Enter password <span class="k">for</span> <span class="o">[</span>elastic<span class="o">]</span>: <span class="c1"># 输入用户elastic的密码</span>
-</span></span><span class="line"><span class="cl">Re-enter password <span class="k">for</span> <span class="o">[</span>elastic<span class="o">]</span>: <span class="c1"># 输入用户elastic的密码</span>
+</span></span><span class="line"><span class="cl">Enter password <span class="k">for</span> <span class="o">[</span>elastic<span class="o">]</span>:
+</span></span><span class="line"><span class="cl">Re-enter password <span class="k">for</span> <span class="o">[</span>elastic<span class="o">]</span>:
 </span></span><span class="line"><span class="cl">Password <span class="k">for</span> the <span class="o">[</span>elastic<span class="o">]</span> user successfully reset.</span></span></code></pre></div><pre tabindex="0"><code># 也可以不加-i参数让系统随机给个字符串密码，但是很难记住，很少使用
 # 为elastic账号自动生成新的随机密码，输出至控制台；不加参数
 [wangting@es01 ~]$ /opt/module/elasticsearch-8.3.2/bin/elasticsearch-reset-password -u elastic</code></pre><h3 id="211-页面访问验证">2.11 页面访问验证</h3>
@@ -749,11 +890,12 @@ ES 8.x，支持 Java 17 和 Java 18，推荐版本：
 <p>https://ip:9200 (注意是https)</p>
 <p>账号密码为上面创建的：elastic / elastic的密码</p>
 </blockquote>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20231024173138345.png" srcset="https://cdn1.ryanxin.live/image-20231024173138345.png, https://cdn1.ryanxin.live/image-20231024173138345.png 1.5x, https://cdn1.ryanxin.live/image-20231024173138345.png 2x" sizes="auto" data-title="image-20231024173138345" data-alt="image-20231024173138345" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <h3 id="212-集群启动停止">2.12 集群启动|停止</h3>
 <ul>
 <li>启动服务方式</li>
 </ul>
-<div class="highlight" id="id-26"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ /opt/module/elasticsearch-8.3.2/bin/elasticsearch -d</span></span></code></pre></div><blockquote>
+<div class="highlight" id="id-27"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ /opt/module/elasticsearch-8.3.2/bin/elasticsearch -d</span></span></code></pre></div><blockquote>
 <p>【注意】：</p>
 <ol>
 <li>-d 为后台运行，不加-d只能前台运行，关了会话窗口服务也会同时终止</li>
@@ -764,8 +906,8 @@ ES 8.x，支持 Java 17 和 Java 18，推荐版本：
 <ul>
 <li>停止服务方式</li>
 </ul>
-<div class="highlight" id="id-27"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ ps -ef <span class="p">|</span> grep elasticsearch<span class="p">|</span>grep -vE <span class="s2">&#34;grep|controller&#34;</span> <span class="p">|</span>awk -F<span class="s2">&#34; &#34;</span> <span class="s1">&#39;{print $2}&#39;</span> <span class="p">|</span> xargs <span class="nb">kill</span> -9</span></span></code></pre></div><p>脚本</p>
-<div class="highlight" id="id-28"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 需先配置免密登录</span>
+<div class="highlight" id="id-28"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ ps -ef <span class="p">|</span> grep elasticsearch<span class="p">|</span>grep -vE <span class="s2">&#34;grep|controller&#34;</span> <span class="p">|</span>awk -F<span class="s2">&#34; &#34;</span> <span class="s1">&#39;{print $2}&#39;</span> <span class="p">|</span> xargs <span class="nb">kill</span> -9</span></span></code></pre></div><p>脚本</p>
+<div class="highlight" id="id-29"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 需先配置免密登录</span>
 </span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ ssh-keygen -t rsa
 </span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ ssh-copy-id es01
 </span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ ssh-copy-id es02
@@ -800,8 +942,8 @@ ES 8.x，支持 Java 17 和 Java 18，推荐版本：
 </span></span><span class="line"><span class="cl">      <span class="p">;;</span>
 </span></span><span class="line"><span class="cl"><span class="k">esac</span></span></span></code></pre></div><p><strong>启动集群：</strong></p>
 <p>等待脚本执行结束</p>
-<div class="highlight" id="id-29"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ bash my_es.sh start</span></span></code></pre></div><p><strong>停止集群：</strong></p>
-<div class="highlight" id="id-30"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ bash my_es.sh stop</span></span></code></pre></div></div><div class="post-footer" id="post-footer">
+<div class="highlight" id="id-30"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ bash my_es.sh start</span></span></code></pre></div><p><strong>停止集群：</strong></p>
+<div class="highlight" id="id-31"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ bash my_es.sh stop</span></span></code></pre></div></div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">
@@ -812,14 +954,14 @@ ES 8.x，支持 Java 17 和 Java 18，推荐版本：
     <div class="post-info-line">
       <div class="post-info-md"><span><a href="/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
       <div class="post-info-share">
-        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch8.10.4搭建部署" data-hashtags="日志收集"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch 8.10.4搭建部署" data-hashtags="日志收集"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
   <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-hashtag="日志收集"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch8.10.4搭建部署" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch8.10.4搭建部署"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch8.10.4搭建部署"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch8.10.4搭建部署" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch8.10.4搭建部署" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch8.10.4搭建部署"><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch 8.10.4搭建部署" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch 8.10.4搭建部署"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch 8.10.4搭建部署"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch 8.10.4搭建部署" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch 8.10.4搭建部署" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/" data-title="Elasticsearch 8.10.4搭建部署"><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
   </span>
       </div>
     </div>
