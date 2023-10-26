@@ -10,7 +10,7 @@
 <meta name="description" content="1.环境准备 1.1 集群规划 服务器 角色 192.168.10.107,eslg01 master/data节点 192.168.10.108,eslg02 master/data节点 192.168.10.109,eslg03 master/data节点 es各节点均为maste" /><meta name="keywords" content='日志收集' /><meta itemprop="name" content="Elasticsearch 8.10.4搭建部署">
 <meta itemprop="description" content="1.环境准备 1.1 集群规划 服务器 角色 192.168.10.107,eslg01 master/data节点 192.168.10.108,eslg02 master/data节点 192.168.10.109,eslg03 master/data节点 es各节点均为maste"><meta itemprop="datePublished" content="2023-10-23T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-10-23T00:00:00+00:00" />
-<meta itemprop="wordCount" content="6111"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="6504"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="日志收集," /><meta property="og:title" content="Elasticsearch 8.10.4搭建部署" />
 <meta property="og:description" content="1.环境准备 1.1 集群规划 服务器 角色 192.168.10.107,eslg01 master/data节点 192.168.10.108,eslg02 master/data节点 192.168.10.109,eslg03 master/data节点 es各节点均为maste" />
 <meta property="og:type" content="article" />
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/elk\/elasticsearch-8.10.4%E5%AE%89%E8%A3%85\/"
-    },"genre": "posts","keywords": "日志收集","wordcount":  6111 ,
+    },"genre": "posts","keywords": "日志收集","wordcount":  6504 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/elk\/elasticsearch-8.10.4%E5%AE%89%E8%A3%85\/","datePublished": "2023-10-23T00:00:00+00:00","dateModified": "2023-10-23T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -181,7 +181,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/elasticstack/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> ElasticStack</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-10-23 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-23">2023-10-23</time></span>&nbsp;<span title="更新于 2023-10-23 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-23">2023-10-23</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 6111 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 13 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Elasticsearch 8.10.4搭建部署">
+      <div class="post-meta-line"><span title="发布于 2023-10-23 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-23">2023-10-23</time></span>&nbsp;<span title="更新于 2023-10-23 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-10-23">2023-10-23</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 6504 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 13 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Elasticsearch 8.10.4搭建部署">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -867,7 +867,7 @@ ES 8.10.x 支持 OpenJDK 17 、OpenJDK 20、OpenJDK 21 （建议使用OpenJDK 17
 </blockquote>
 <p>【注意】</p>
 <p>如果不留神使用root修改过目录下文件，则文件权限会变成root所属主，所以需要修改回普通用户</p>
-<div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chown -R wangting.wangting /opt/module/</span></span></code></pre></div><p>ES服务启动后有2个端口</p>
+<div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chown -R essl.essl /opt/es/</span></span></code></pre></div><p>ES服务启动后有2个端口</p>
 <ul>
 <li>9200为客户端访问es的http协议RESTFUL端口</li>
 <li>9300为ES集群之间组件的通信端口</li>
@@ -895,7 +895,7 @@ ES 8.10.x 支持 OpenJDK 17 、OpenJDK 20、OpenJDK 21 （建议使用OpenJDK 17
 <ul>
 <li>启动服务方式</li>
 </ul>
-<div class="highlight" id="id-27"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ /opt/module/elasticsearch-8.3.2/bin/elasticsearch -d</span></span></code></pre></div><blockquote>
+<div class="highlight" id="id-27"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">essl@eslg01:/$ /opt/es/elasticsearch-8.10.4/bin/elasticsearch -d</span></span></code></pre></div><blockquote>
 <p>【注意】：</p>
 <ol>
 <li>-d 为后台运行，不加-d只能前台运行，关了会话窗口服务也会同时终止</li>
@@ -906,44 +906,108 @@ ES 8.10.x 支持 OpenJDK 17 、OpenJDK 20、OpenJDK 21 （建议使用OpenJDK 17
 <ul>
 <li>停止服务方式</li>
 </ul>
-<div class="highlight" id="id-28"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ ps -ef <span class="p">|</span> grep elasticsearch<span class="p">|</span>grep -vE <span class="s2">&#34;grep|controller&#34;</span> <span class="p">|</span>awk -F<span class="s2">&#34; &#34;</span> <span class="s1">&#39;{print $2}&#39;</span> <span class="p">|</span> xargs <span class="nb">kill</span> -9</span></span></code></pre></div><p>脚本</p>
+<div class="highlight" id="id-28"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">essl@eslg01:/opt/es/$ ps -ef <span class="p">|</span> grep elasticsearch<span class="p">|</span>grep -vE <span class="s2">&#34;grep|controller&#34;</span> <span class="p">|</span>awk -F<span class="s2">&#34; &#34;</span> <span class="s1">&#39;{print $2}&#39;</span>  <span class="p">|</span> xargs <span class="nb">kill</span> -9</span></span></code></pre></div><p>脚本</p>
 <div class="highlight" id="id-29"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 需先配置免密登录</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ ssh-keygen -t rsa
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ ssh-copy-id es01
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ ssh-copy-id es02
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ ssh-copy-id es03
+</span></span><span class="line"><span class="cl">essl@eslg01:/$ mkdir -p /home/essl/.ssh/
+</span></span><span class="line"><span class="cl">mkdir: cannot create directory ‘/home/essl’: Permission denied
+</span></span><span class="line"><span class="cl">essl@eslg01:/$ sudo mkdir -p /home/essl/.ssh/
+</span></span><span class="line"><span class="cl">essl@eslg01:/$
+</span></span><span class="line"><span class="cl">essl@eslg01:/$ ssh-keygen -t rsa
+</span></span><span class="line"><span class="cl">Generating public/private rsa key pair.
+</span></span><span class="line"><span class="cl">Enter file in which to save the key <span class="o">(</span>/home/essl/.ssh/id_rsa<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">Enter passphrase <span class="o">(</span>empty <span class="k">for</span> no passphrase<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">Enter same passphrase again:
+</span></span><span class="line"><span class="cl">Saving key <span class="s2">&#34;/home/essl/.ssh/id_rsa&#34;</span> failed: Permission denied
+</span></span><span class="line"><span class="cl">essl@eslg01:/$ sudo ssh-keygen -t rsa
+</span></span><span class="line"><span class="cl">Generating public/private rsa key pair.
+</span></span><span class="line"><span class="cl">Enter file in which to save the key <span class="o">(</span>/root/.ssh/id_rsa<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">Enter passphrase <span class="o">(</span>empty <span class="k">for</span> no passphrase<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">Enter same passphrase again:
+</span></span><span class="line"><span class="cl">Your identification has been saved in /root/.ssh/id_rsa
+</span></span><span class="line"><span class="cl">Your public key has been saved in /root/.ssh/id_rsa.pub
+</span></span><span class="line"><span class="cl">The key fingerprint is:
+</span></span><span class="line"><span class="cl">SHA256:im/FsPEYAlJraiFWkT5Igk7UjLf7Vsx7oPmXUiEvFgo root@eslg01
+</span></span><span class="line"><span class="cl">The key<span class="s1">&#39;s randomart image is:
+</span></span></span><span class="line"><span class="cl"><span class="s1">+---[RSA 3072]----+
+</span></span></span><span class="line"><span class="cl"><span class="s1">|oo=oo            |
+</span></span></span><span class="line"><span class="cl"><span class="s1">|++o*             |
+</span></span></span><span class="line"><span class="cl"><span class="s1">|*+*..            |
+</span></span></span><span class="line"><span class="cl"><span class="s1">|o=.E. +o .       |
+</span></span></span><span class="line"><span class="cl"><span class="s1">|..  +.+OS .      |
+</span></span></span><span class="line"><span class="cl"><span class="s1">|.  . ooO+o       |
+</span></span></span><span class="line"><span class="cl"><span class="s1">|    o *.= .      |
+</span></span></span><span class="line"><span class="cl"><span class="s1">|     *.o +       |
+</span></span></span><span class="line"><span class="cl"><span class="s1">|    ..o.+        |
+</span></span></span><span class="line"><span class="cl"><span class="s1">+----[SHA256]-----+
+</span></span></span><span class="line"><span class="cl"><span class="s1">essl@eslg01:/$
+</span></span></span><span class="line"><span class="cl"><span class="s1">essl@eslg01:/$ sudo ssh-copy-id eslg01
+</span></span></span><span class="line"><span class="cl"><span class="s1">/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: &#34;/root/.ssh/id_rsa.pub&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">The authenticity of host &#39;</span>eslg01 <span class="o">(</span>192.168.10.107<span class="o">)</span><span class="s1">&#39; can&#39;</span>t be established.
+</span></span><span class="line"><span class="cl">ECDSA key fingerprint is SHA256:lhRjKQBhgEhjbqcfKBb6oyle8C9EIOzu48QUoaeISIE.
+</span></span><span class="line"><span class="cl">Are you sure you want to <span class="k">continue</span> connecting <span class="o">(</span>yes/no/<span class="o">[</span>fingerprint<span class="o">])</span>? yes
+</span></span><span class="line"><span class="cl">/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key<span class="o">(</span>s<span class="o">)</span>, to filter out any that are already installed
+</span></span><span class="line"><span class="cl">/usr/bin/ssh-copy-id: INFO: <span class="m">1</span> key<span class="o">(</span>s<span class="o">)</span> remain to be installed -- <span class="k">if</span> you are prompted now it is to install the new keys
+</span></span><span class="line"><span class="cl">root@eslg01<span class="s1">&#39;s password:
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">Number of key(s) added: 1
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">Now try logging into the machine, with:   &#34;ssh &#39;</span>eslg01<span class="s1">&#39;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">and check to make sure that only the key(s) you wanted were added.
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">essl@eslg01:/$ sudo ssh-copy-id eslg02
+</span></span></span><span class="line"><span class="cl"><span class="s1">/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: &#34;/root/.ssh/id_rsa.pub&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+</span></span></span><span class="line"><span class="cl"><span class="s1">/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+</span></span></span><span class="line"><span class="cl"><span class="s1">root@eslg02&#39;</span>s password:
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 编写脚本</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ vim my_es.sh
-</span></span><span class="line"><span class="cl"><span class="c1">#! /bin/bash</span>
-</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">((</span><span class="nv">$#</span><span class="o">==</span>0<span class="o">))</span><span class="p">;</span> <span class="k">then</span>
-</span></span><span class="line"><span class="cl">  <span class="nb">echo</span> -e <span class="s2">&#34;请输入参数：\n start  启动elasticsearch集群;\n stop  停止elasticsearch集群;\n&#34;</span> <span class="o">&amp;&amp;</span> <span class="nb">exit</span>
-</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">Number of key<span class="o">(</span>s<span class="o">)</span> added: <span class="m">1</span>
 </span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Now try logging into the machine, with:   <span class="s2">&#34;ssh &#39;eslg02&#39;&#34;</span>
+</span></span><span class="line"><span class="cl">and check to make sure that only the key<span class="o">(</span>s<span class="o">)</span> you wanted were added.
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">case</span> <span class="nv">$1</span> in
-</span></span><span class="line"><span class="cl">  <span class="s2">&#34;start&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> host in es01 es02 es03
-</span></span><span class="line"><span class="cl">      <span class="k">do</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;---------- </span><span class="nv">$1</span><span class="s2"> </span><span class="nv">$host</span><span class="s2"> 的elasticsearch ----------&#34;</span>
-</span></span><span class="line"><span class="cl">        ssh <span class="nv">$host</span> <span class="s2">&#34;/opt/module/elasticsearch-8.3.2/bin/elasticsearch -d &gt;/dev/null 2&gt;&amp;1&#34;</span>
-</span></span><span class="line"><span class="cl">      <span class="k">done</span>
-</span></span><span class="line"><span class="cl">      <span class="p">;;</span>
-</span></span><span class="line"><span class="cl">  <span class="s2">&#34;stop&#34;</span><span class="o">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> host in es01 es02 es03
-</span></span><span class="line"><span class="cl">      <span class="k">do</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;---------- </span><span class="nv">$1</span><span class="s2"> </span><span class="nv">$host</span><span class="s2"> 的elasticsearch ----------&#34;</span>
-</span></span><span class="line"><span class="cl">        ssh <span class="nv">$host</span> <span class="s2">&#34;ps -ef | grep elasticsearch|grep -v grep|grep -v controller |awk &#39;{print </span><span class="nv">$2</span><span class="s2">}&#39; | xargs kill -9&#34;</span> &gt; /dev/null 2&gt;<span class="p">&amp;</span><span class="m">1</span>
-</span></span><span class="line"><span class="cl">      <span class="k">done</span>
-</span></span><span class="line"><span class="cl">      <span class="p">;;</span>
-</span></span><span class="line"><span class="cl">    *<span class="o">)</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> -e <span class="s2">&#34;---------- 请输入正确的参数 ----------\n&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> -e <span class="s2">&#34;start  启动elasticsearch集群;\n stop  停止elasticsearch集群;\n&#34;</span> <span class="o">&amp;&amp;</span> <span class="nb">exit</span>
-</span></span><span class="line"><span class="cl">      <span class="p">;;</span>
-</span></span><span class="line"><span class="cl"><span class="k">esac</span></span></span></code></pre></div><p><strong>启动集群：</strong></p>
+</span></span><span class="line"><span class="cl">essl@eslg01:/$ sudo ssh-copy-id eslg03
+</span></span><span class="line"><span class="cl">/usr/bin/ssh-copy-id: INFO: Source of key<span class="o">(</span>s<span class="o">)</span> to be installed: <span class="s2">&#34;/root/.ssh/id_rsa.pub&#34;</span>
+</span></span><span class="line"><span class="cl">/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key<span class="o">(</span>s<span class="o">)</span>, to filter out any that are already installed
+</span></span><span class="line"><span class="cl">/usr/bin/ssh-copy-id: INFO: <span class="m">1</span> key<span class="o">(</span>s<span class="o">)</span> remain to be installed -- <span class="k">if</span> you are prompted now it is to install the new keys
+</span></span><span class="line"><span class="cl">root@eslg03<span class="s1">&#39;s password:
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">Number of key(s) added: 1
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">Now try logging into the machine, with:   &#34;ssh &#39;</span>eslg03<span class="s1">&#39;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">and check to make sure that only the key(s) you wanted were added.
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1"># 编写脚本
+</span></span></span><span class="line"><span class="cl"><span class="s1">essl@eslg01:/opt/es/elasticsearch-8.10.4$ vim es-service.sh
+</span></span></span><span class="line"><span class="cl"><span class="s1">#! /bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="s1">if (($#==0)); then
+</span></span></span><span class="line"><span class="cl"><span class="s1">  echo -e &#34;请输入参数：\n start  启动elasticsearch集群;\n stop  停止elasticsearch集群;\n&#34; &amp;&amp; exit
+</span></span></span><span class="line"><span class="cl"><span class="s1">fi
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">
+</span></span></span><span class="line"><span class="cl"><span class="s1">case $1 in
+</span></span></span><span class="line"><span class="cl"><span class="s1">  &#34;start&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="s1">    for host in eslg01 eslg02 eslg03
+</span></span></span><span class="line"><span class="cl"><span class="s1">      do
+</span></span></span><span class="line"><span class="cl"><span class="s1">        echo &#34;---------- $1 $host 的elasticsearch ----------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">        ssh $host &#34;/opt/es/elasticsearch-8.10.4/bin/elasticsearch -d &gt;/dev/null 2&gt;&amp;1&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">      done
+</span></span></span><span class="line"><span class="cl"><span class="s1">      ;;
+</span></span></span><span class="line"><span class="cl"><span class="s1">  &#34;stop&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="s1">    for host in eslg01 eslg02 eslg03
+</span></span></span><span class="line"><span class="cl"><span class="s1">      do
+</span></span></span><span class="line"><span class="cl"><span class="s1">        echo &#34;---------- $1 $host 的elasticsearch ----------&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s1">        ssh $host &#34;ps -ef | grep elasticsearch|grep -v grep|grep -v controller |awk &#39;</span><span class="o">{</span>print <span class="nv">$2</span><span class="o">}</span><span class="err">&#39;</span> <span class="p">|</span> xargs <span class="nb">kill</span> -9<span class="s2">&#34; &gt; /dev/null 2&gt;&amp;1
+</span></span></span><span class="line"><span class="cl"><span class="s2">      done
+</span></span></span><span class="line"><span class="cl"><span class="s2">      ;;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    *)
+</span></span></span><span class="line"><span class="cl"><span class="s2">        echo -e &#34;</span>---------- 请输入正确的参数 ----------<span class="se">\n</span><span class="s2">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">        echo -e &#34;</span>start  启动elasticsearch集群<span class="p">;</span><span class="se">\n</span> stop  停止elasticsearch集群<span class="p">;</span><span class="se">\n</span><span class="s2">&#34; &amp;&amp; exit
+</span></span></span><span class="line"><span class="cl"><span class="s2">      ;;
+</span></span></span><span class="line"><span class="cl"><span class="s2">esac</span></span></span></code></pre></div><p><strong>启动集群：</strong></p>
 <p>等待脚本执行结束</p>
-<div class="highlight" id="id-30"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ bash my_es.sh start</span></span></code></pre></div><p><strong>停止集群：</strong></p>
-<div class="highlight" id="id-31"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>wangting@es01 ~<span class="o">]</span>$ bash my_es.sh stop</span></span></code></pre></div></div><div class="post-footer" id="post-footer">
+<div class="highlight" id="id-30"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ bash es-service.sh start</span></span></code></pre></div><p><strong>停止集群：</strong></p>
+<div class="highlight" id="id-31"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ bash es-service.sh stop</span></span></code></pre></div></div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">

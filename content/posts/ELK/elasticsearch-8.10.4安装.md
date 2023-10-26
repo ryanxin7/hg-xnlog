@@ -9,6 +9,7 @@ tags:
 categories:
    - ElasticStack
 expirationReminder:
+
     enable: true
 ---
 
@@ -854,7 +855,7 @@ See logs for more details.
 
 
 ```bash
-sudo chown -R wangting.wangting /opt/module/
+sudo chown -R essl.essl /opt/es/
 ```
 
 
@@ -911,7 +912,7 @@ Password for the [elastic] user successfully reset.
 - 启动服务方式
 
 ```bash
-[wangting@es01 ~]$ /opt/module/elasticsearch-8.3.2/bin/elasticsearch -d
+essl@eslg01:/$ /opt/es/elasticsearch-8.10.4/bin/elasticsearch -d
 ```
 
 
@@ -927,7 +928,7 @@ Password for the [elastic] user successfully reset.
 - 停止服务方式
 
 ```bash
-[wangting@es01 ~]$ ps -ef | grep elasticsearch|grep -vE "grep|controller" |awk -F" " '{print $2}' | xargs kill -9
+essl@eslg01:/opt/es/$ ps -ef | grep elasticsearch|grep -vE "grep|controller" |awk -F" " '{print $2}'  | xargs kill -9
 ```
 
 
@@ -936,13 +937,77 @@ Password for the [elastic] user successfully reset.
 
 ```bash
 # 需先配置免密登录
-[wangting@es01 ~]$ ssh-keygen -t rsa
-[wangting@es01 ~]$ ssh-copy-id es01
-[wangting@es01 ~]$ ssh-copy-id es02
-[wangting@es01 ~]$ ssh-copy-id es03
+essl@eslg01:/$ mkdir -p /home/essl/.ssh/
+mkdir: cannot create directory ‘/home/essl’: Permission denied
+essl@eslg01:/$ sudo mkdir -p /home/essl/.ssh/
+essl@eslg01:/$
+essl@eslg01:/$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/essl/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Saving key "/home/essl/.ssh/id_rsa" failed: Permission denied
+essl@eslg01:/$ sudo ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/id_rsa
+Your public key has been saved in /root/.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:im/FsPEYAlJraiFWkT5Igk7UjLf7Vsx7oPmXUiEvFgo root@eslg01
+The key's randomart image is:
++---[RSA 3072]----+
+|oo=oo            |
+|++o*             |
+|*+*..            |
+|o=.E. +o .       |
+|..  +.+OS .      |
+|.  . ooO+o       |
+|    o *.= .      |
+|     *.o +       |
+|    ..o.+        |
++----[SHA256]-----+
+essl@eslg01:/$
+essl@eslg01:/$ sudo ssh-copy-id eslg01
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/root/.ssh/id_rsa.pub"
+The authenticity of host 'eslg01 (192.168.10.107)' can't be established.
+ECDSA key fingerprint is SHA256:lhRjKQBhgEhjbqcfKBb6oyle8C9EIOzu48QUoaeISIE.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+root@eslg01's password:
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'eslg01'"
+and check to make sure that only the key(s) you wanted were added.
+
+essl@eslg01:/$ sudo ssh-copy-id eslg02
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/root/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+root@eslg02's password:
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'eslg02'"
+and check to make sure that only the key(s) you wanted were added.
+
+essl@eslg01:/$ sudo ssh-copy-id eslg03
+/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: "/root/.ssh/id_rsa.pub"
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+root@eslg03's password:
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'eslg03'"
+and check to make sure that only the key(s) you wanted were added.
+
 
 # 编写脚本
-[wangting@es01 ~]$ vim my_es.sh
+essl@eslg01:/opt/es/elasticsearch-8.10.4$ vim es-service.sh
 #! /bin/bash
 if (($#==0)); then
   echo -e "请输入参数：\n start  启动elasticsearch集群;\n stop  停止elasticsearch集群;\n" && exit
@@ -951,14 +1016,14 @@ fi
 
 case $1 in
   "start")
-    for host in es01 es02 es03
+    for host in eslg01 eslg02 eslg03
       do
         echo "---------- $1 $host 的elasticsearch ----------"
-        ssh $host "/opt/module/elasticsearch-8.3.2/bin/elasticsearch -d >/dev/null 2>&1"
+        ssh $host "/opt/es/elasticsearch-8.10.4/bin/elasticsearch -d >/dev/null 2>&1"
       done
       ;;
   "stop")
-    for host in es01 es02 es03
+    for host in eslg01 eslg02 eslg03
       do
         echo "---------- $1 $host 的elasticsearch ----------"
         ssh $host "ps -ef | grep elasticsearch|grep -v grep|grep -v controller |awk '{print $2}' | xargs kill -9" > /dev/null 2>&1
@@ -979,13 +1044,13 @@ esac
 等待脚本执行结束
 
 ```shell
-[wangting@es01 ~]$ bash my_es.sh start
+$ bash es-service.sh start
 ```
 
 **停止集群：**
 
 ```shell
-[wangting@es01 ~]$ bash my_es.sh stop
+$ bash es-service.sh stop
 ```
 
 
