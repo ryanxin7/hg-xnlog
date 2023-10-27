@@ -529,3 +529,133 @@ output {
 
 ```
 
+
+
+Elasticsearch 启动
+
+```bash
+essl@eslg01:~$ /data/elasticsearch-8.10.4/bin/elasticsearch -d
+```
+
+
+
+logstash 启动
+
+```bash
+/opt/logstash-8.10.4/bin/logstash -f /opt/logstash-8.10.4/config/lgcs.conf  --config.reload.automatic &
+```
+
+kibana启动
+
+```bash
+sudo nohup /data/kibana-8.10.4/bin/kibana &
+essl@eslg02:/data/kibana-8.10.4/bin$ nohup /data/kibana-8.10.4/bin/kibana &
+[1] 1006570
+essl@eslg02:/data/kibana-8.10.4/bin$ nohup: ignoring input and appending output to '/home/essl/nohup.out'
+essl@eslg02:/data/kibana-8.10.4/bin$ cd /home/essl/
+essl@eslg02:~$ ls
+nohup.out
+essl@eslg02:~$ tail  -f nohup.out
+```
+
+
+
+
+
+
+
+
+
+```yaml
+input {
+  file {
+    path => ["/var/log/rsyslog/10.0.0.*/*"]
+    start_position => "beginning"
+    type => "server-syslog"
+  }
+  file {
+    path => ["/var/log/rsyslog/10.1.1.*/*"]
+    start_position => "beginning"
+    type => "server-syslog"
+  }
+  file {
+    path => ["/var/log/rsyslog/10.124.0.18/*"]
+    start_position => "beginning"
+    type => "Sangfor-WAF-log"
+  }
+  file {
+    path => ["/var/log/rsyslog/10.124.0.2/*"]
+    start_position => "beginning"
+    type => "Sangfor-AF-log"
+  }
+  file {
+    path => ["/var/log/rsyslog/192.168.*/*"]
+    start_position => "beginning"
+    type => "server-syslog"
+  }
+}
+
+filter {
+  if [type] == "Sangfor-WAF-log" {
+    grok {
+      match => {
+        "message" => "%{SYSLOGTIMESTAMP:timestamp} %{HOSTNAME:hostname} %{WORD:log_type}: 日志类型:%{DATA:log_type}, 策略名称:%{DATA:strategy}, 规则ID:%{NUMBER:rule_id}, 源IP:%{IP:source_ip}, 源端口:%{NUMBER:source_port}, 目的IP:%{IP:destination_ip}, 目的端口:%{NUMBER:destination_port}, 攻击类型:%{DATA:attack_type}, 严重级别:%{DATA:severity}, 系统动作:%{DATA:system_action}"
+      }
+    }
+    # 其他针对 Sangfor-WAF-log 的过滤操作
+  }
+  if [type] == "Sangfor-AF-log" {
+    grok {
+      match => {
+        "message" => "%{HOSTNAME:hostname} %{WORD:log_type}: 日志类型:%{DATA:log_type}, 策略名称:%{DATA:strategy}, 用户:%{DATA:user}, 源IP:%{IP:source_ip}, 源端口:%{NUMBER:source_port}, 目的IP:%{IP:destination_ip}, 目的端口:%{NUMBER:destination_port}, 应用类型:%{DATA:app_type}, 应用名称:%{DATA:app_name}, 系统动作:%{GREEDYDATA:fw-system_action}"
+      }
+    }
+    # 其他针对 server-syslog 的过滤操作
+  }
+}
+
+output {
+  if "network_device_log" in [tags] {
+    elasticsearch {
+      hosts => ["https://elastic.xinn.cc:9200"]
+      index => "network-device-%{+YYYY.MM.dd}"
+      ssl => true
+      ssl_certificate_verification => true
+      cacert => "/opt/logstash-8.10.4/config/certs/elastic.xinn.cc/ca.crt"
+      user => "elastic"
+      password => "Ceamg.com"
+    }
+  }
+  else {
+    elasticsearch {
+      hosts => ["https://elastic.xinn.cc:9200"]
+      index => "server-syslog-%{+YYYY.MM.dd}"
+      ssl => true
+      ssl_certificate_verification => true
+      cacert => "/opt/logstash-8.10.4/config/certs/elastic.xinn.cc/ca.crt"
+      user => "elastic"
+      password => "Ceamg.com"
+    }
+  }
+
+```
+
+
+
+
+
+
+
+```bash
+Oct 27 04:06:27 localhost fwlog: 日志类型:服务控制或应用控制, 策略名称:-, 用户:(null), 源IP:113.231.38.30, 源端口:58006, 目的IP:10.1.0.11, 目的端口:80, 应用类型:访问网站, 应用名称:HTTP_GET, 系统动作:允许
+```
+
+
+
+```json
+%{HOSTNAME:hostname} %{WORD:log_type}: 日志类型:%{DATA:log_type}, 策略名称:%{DATA:strategy}, 用户:%{DATA:user}, 源IP:%{IP:source_ip}, 源端口:%{NUMBER:source_port}, 目的IP:%{IP:destination_ip}, 目的端口:%{NUMBER:destination_port}, 应用类型:%{DATA:app_type}, 应用名称:%{DATA:app_name}, 系统动作:%{GREEDYDATA:fw-system_action}
+```
+
+
+
+![image-20231027175623276](https://cdn1.ryanxin.live/image-20231027175623276.png)
