@@ -83,5 +83,6 @@ https://hg-xnlog.github.io/posts/linux-basic/linux1/
 https://hg-xnlog.github.io/posts/linux-basic/linux-network/
 https://hg-xnlog.github.io/posts/linux-basic/linux-technology-stack/
 https://hg-xnlog.github.io/posts/linux-basic/nfs/
+https://hg-xnlog.github.io/posts/ceph/ceph-common-%E4%BE%9D%E8%B5%96%E9%97%AE%E9%A2%98/
 https://hg-xnlog.github.io/posts/elk/elasticsearch-kibana-https/
 https://hg-xnlog.github.io/posts/kubernetes/primary/cert-manager-&#43;-zerossl-%E7%9A%84%E4%B8%80%E4%BA%9B%E9%85%8D%E7%BD%AE%E7%9A%84%E7%A0%94%E7%A9%B6/
