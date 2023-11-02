@@ -608,3 +608,173 @@ Unpacking python3-cephfs (16.2.10-1bionic) ...
 Setting up python3-cephfs (16.2.10-1bionic) ...
 ```
 
+
+
+## ceph-common > python3-ceph-argparse_16.2.10-1bionic_all.deb
+
+```bash
+root@k8s-master01:/tmp/223# dpkg -i python3-ceph-argparse_16.2.10-1bionic_all.deb
+(Reading database ... 68290 files and directories currently installed.)
+Preparing to unpack python3-ceph-argparse_16.2.10-1bionic_all.deb ...
+Unpacking python3-ceph-argparse (16.2.10-1bionic) over (16.2.10-1bionic) ...
+Setting up python3-ceph-argparse (16.2.10-1bionic) ...
+```
+
+
+
+## ceph-common >python3-ceph-common_16.2.10-1bionic_all.deb
+
+```bash
+root@k8s-master01:/tmp/223# dpkg -i python3-ceph-common_16.2.10-1bionic_all.deb
+Selecting previously unselected package python3-ceph-common.
+(Reading database ... 68290 files and directories currently installed.)
+Preparing to unpack python3-ceph-common_16.2.10-1bionic_all.deb ...
+Unpacking python3-ceph-common (16.2.10-1bionic) ...
+Setting up python3-ceph-common (16.2.10-1bionic) ...
+```
+
+
+
+
+
+## ceph-common >python3-prettytable
+
+```bash
+root@k8s-master01:/tmp/223# apt-cache madison python3-prettytable
+python3-prettytable |    0.7.2-3 | http://mirrors.aliyun.com/ubuntu bionic/main amd64 Packages
+root@k8s-master01:/tmp/223#
+root@k8s-master01:/tmp/223# apt install python3-prettytable
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following packages were automatically installed and are no longer required:
+  docker-buildx-plugin docker-ce-rootless-extras docker-compose-plugin
+Use 'apt autoremove' to remove them.
+The following NEW packages will be installed:
+  python3-prettytable
+0 upgraded, 1 newly installed, 0 to remove and 54 not upgraded.
+Need to get 19.7 kB of archives.
+After this operation, 111 kB of additional disk space will be used.
+Get:1 http://mirrors.aliyun.com/ubuntu bionic/main amd64 python3-prettytable all 0.7.2-3 [19.7 kB]
+Fetched 19.7 kB in 0s (134 kB/s)
+Selecting previously unselected package python3-prettytable.
+(Reading database ... 68325 files and directories currently installed.)
+Preparing to unpack .../python3-prettytable_0.7.2-3_all.deb ...
+Unpacking python3-prettytable (0.7.2-3) ...
+Setting up python3-prettytable (0.7.2-3) ...
+
+```
+
+
+
+## ceph-common > python3-rados_16.2.10-1bionic_amd64.deb
+
+```bash
+root@k8s-master01:/tmp/223# dpkg -i python3-rados_16.2.10-1bionic_amd64.deb
+(Reading database ... 68336 files and directories currently installed.)
+Preparing to unpack python3-rados_16.2.10-1bionic_amd64.deb ...
+Unpacking python3-rados (16.2.10-1bionic) over (16.2.10-1bionic) ...
+Setting up python3-rados (16.2.10-1bionic) ...
+```
+
+
+
+## ceph-common > python3-rbd_16.2.10-1bionic_amd64.deb
+
+```bash
+root@k8s-master01:/tmp/223# dpkg -i python3-rbd_16.2.10-1bionic_amd64.deb
+Selecting previously unselected package python3-rbd.
+(Reading database ... 68336 files and directories currently installed.)
+Preparing to unpack python3-rbd_16.2.10-1bionic_amd64.deb ...
+Unpacking python3-rbd (16.2.10-1bionic) ...
+Setting up python3-rbd (16.2.10-1bionic) ...
+root@k8s-master01:/tmp/223#
+```
+
+
+
+## ceph-common > python3-rgw_16.2.10-1bionic_amd64.deb> librgw2
+
+```bash
+root@k8s-master01:/tmp/223# dpkg -i python3-rgw_16.2.10-1bionic_amd64.deb
+Selecting previously unselected package python3-rgw.
+(Reading database ... 68343 files and directories currently installed.)
+Preparing to unpack python3-rgw_16.2.10-1bionic_amd64.deb ...
+Unpacking python3-rgw (16.2.10-1bionic) ...
+dpkg: dependency problems prevent configuration of python3-rgw:
+ python3-rgw depends on librgw2 (>= 16.2.10-1bionic); however:
+  Package librgw2 is not installed.
+
+
+root@k8s-master01:/tmp/223# dpkg -i librgw2_16.2.10-1bionic_amd64.deb
+Selecting previously unselected package librgw2.
+(Reading database ... 68343 files and directories currently installed.)
+Preparing to unpack librgw2_16.2.10-1bionic_amd64.deb ...
+Unpacking librgw2 (16.2.10-1bionic) ...
+Setting up librgw2 (16.2.10-1bionic) ...
+Processing triggers for libc-bin (2.27-3ubuntu1.5) ...
+
+root@k8s-master01:/tmp/223# dpkg -i python3-rgw_16.2.10-1bionic_amd64.deb
+(Reading database ... 68347 files and directories currently installed.)
+Preparing to unpack python3-rgw_16.2.10-1bionic_amd64.deb ...
+Unpacking python3-rgw (16.2.10-1bionic) over (16.2.10-1bionic) ...
+Setting up python3-rgw (16.2.10-1bionic) ...
+
+```
+
+
+
+
+
+## ceph-common > python3-rbd_16.2.10-1bionic_amd64.deb
+
+```bash
+root@k8s-master01:/tmp/223# dpkg -i python3-rbd_16.2.10-1bionic_amd64.deb
+Selecting previously unselected package python3-rbd.
+(Reading database ... 68347 files and directories currently installed.)
+Preparing to unpack python3-rbd_16.2.10-1bionic_amd64.deb ...
+Unpacking python3-rbd (16.2.10-1bionic) ...
+Setting up python3-rbd (16.2.10-1bionic) ...
+
+```
+
+
+
+## ceph-common >libradosstriper1_16.2.10-1bionic_amd64.deb
+
+```bash
+root@k8s-master01:/tmp/223# dpkg -i libradosstriper1_16.2.10-1bionic_amd64.deb
+Selecting previously unselected package libradosstriper1.
+(Reading database ... 68354 files and directories currently installed.)
+Preparing to unpack libradosstriper1_16.2.10-1bionic_amd64.deb ...
+Unpacking libradosstriper1 (16.2.10-1bionic) ...
+Setting up libradosstriper1 (16.2.10-1bionic) ...
+Processing triggers for libc-bin (2.27-3ubuntu1.5) ...
+
+```
+
+
+
+# ceph-common
+
+```bash
+root@k8s-master01:/tmp/223# dpkg -i ceph-common_16.2.10-1bionic_amd64.deb
+Selecting previously unselected package ceph-common.
+(Reading database ... 68358 files and directories currently installed.)
+Preparing to unpack ceph-common_16.2.10-1bionic_amd64.deb ...
+Unpacking ceph-common (16.2.10-1bionic) ...
+Setting up ceph-common (16.2.10-1bionic) ...
+Adding group ceph....done
+Adding system user ceph....done
+Setting system user ceph properties....done
+chown: cannot access '/var/log/ceph/*.log*': No such file or directory
+Created symlink /etc/systemd/system/multi-user.target.wants/ceph.target → /lib/systemd/system/ceph.target.
+Created symlink /etc/systemd/system/multi-user.target.wants/rbdmap.service → /lib/systemd/system/rbdmap.service.
+Processing triggers for libc-bin (2.27-3ubuntu1.5) ...
+Processing triggers for man-db (2.8.3-2ubuntu0.1) ...
+
+
+root@k8s-master01:/tmp/223# ceph -v
+ceph version 16.2.10 (45fa1a083152e41a408d15505f594ec5f1b4fe17) pacific (stable)
+```
+

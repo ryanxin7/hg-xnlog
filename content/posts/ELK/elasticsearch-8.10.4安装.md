@@ -625,8 +625,8 @@ total 16
 -rw------- 1 essl essl 2672 Oct 24 08:39 elastic-stack-ca.p12
 -rw-rw-r-- 1 essl essl 3652 Oct 24 08:53 http.p12
 
-essl@eslg02:/opt/es/elasticsearch-8.10.4/config/certs$ scp -r * eslg02:/opt/es/elasticsearch-8.10.4/config/certs
-essl@eslg02:/opt/es/elasticsearch-8.10.4/config/certs$ scp -r * eslg03:/opt/es/elasticsearch-8.10.4/config/certs
+scp -r * eslg02:/opt/es/elasticsearch-8.10.4/config/certs
+scp -r * eslg03:/opt/es/elasticsearch-8.10.4/config/certs
 ```
 
 
