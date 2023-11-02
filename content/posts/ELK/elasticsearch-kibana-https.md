@@ -2,19 +2,22 @@
 
 
 
+
+
+## 一、安装Elasticsearch
+
+下载地址：https://www.elastic.co/cn/downloads/elasticsearch
+
+### 1.1 解压软件包
+
 ```bash
 root@eslg01:/data# tar xf /tmp/elasticsearch-8.10.4-linux-x86_64.tar.gz  -C /data/
-
 root@eslg01:/data# chown  -R essl.essl /data/elasticsearch-8.10.4/
 ```
 
 
 
-
-
-
-
-
+### 1.2 启动服务
 
 ```bash
 #启动
@@ -51,6 +54,10 @@ essl@eslg01:/usr/local/es/elasticsearch-8.10.4/bin$ ./elasticsearch
 
 
 
+### 1.3 自动生成CA证书
+
+这一步的目的是生成Https配置
+
 ```bash
 #已经生成CA了
 essl@eslg01:/data/elasticsearch-8.10.4/config/certs$ ls -l
@@ -62,6 +69,8 @@ total 24
 
 
 
+### 1.4 创建Elasticsearch数据目录
+
 ```bash
 essl@eslg01:/data/elasticsearch-8.10.4/config$ sudo mkdir -p /data/es/data     
 essl@eslg01:/data/elasticsearch-8.10.4/config$ sudo mkdir -p /data/es/logs
@@ -69,9 +78,7 @@ essl@eslg01:/data/elasticsearch-8.10.4/config$ sudo mkdir -p /data/es/logs
 
 
 
-
-
-
+### 1.5 创建私有CA证书
 
 ```bash
 #CA
@@ -108,6 +115,12 @@ Archive:  ca.zip
   inflating: ca/ca.crt
   inflating: ca/ca.key
 ```
+
+
+
+
+
+### 1.6 签发Elasticserch节点证书
 
 ```bash
 #证书
@@ -204,7 +217,10 @@ drwxrwxrwx 2 essl essl  4096 Oct 26 02:28 ca
 
 
 
+
+
 ```bash
+## 解压证书
 root@eslg01:/data/elasticsearch-8.10.4/config/certs# unzip elastic.zip
 Archive:  elastic.zip
    creating: elastic/
@@ -215,13 +231,16 @@ root@eslg01:/data/elasticsearch-8.10.4/config/certs#
 
 
 
+
+
 ```bash
+# 更改Elasticsearch目录所有者权限
 chown -R essl.essl /data/
 ```
 
 
 
-
+### 1.7 设置Elasticsearch 账号密码
 
 ```bash
 essl@eslg01:/data/elasticsearch-8.10.4/bin$ ./elasticsearch-reset-password -i -u elastic --url https://elastic.xinn.cc:9200
@@ -237,6 +256,8 @@ Password for the [elastic] user successfully reset.
 ```
 
 
+
+### 1.8  测试连接Elasticsearch
 
 ```bash
 #测试连接
@@ -264,7 +285,7 @@ essl@eslg01:/data/elasticsearch-8.10.4/bin$ curl -X GET -u elastic:Ceamg.com htt
 
 
 
-Kibana 
+## 二、安装Kibana 
 
 ```bash
 root@eslg02:/data# tar -xf /tmp/kibana-8.10.4-linux-x86_64.tar.gz -C /data/
@@ -289,6 +310,8 @@ drwxr-xr-x   4 essl essl    4096 Oct 11 20:18 x-pack
 ```
 
 
+
+### 2.1 签发Kibana 证书
 
 ```bash
 ./elasticsearch-certutil cert \
@@ -381,6 +404,8 @@ Archive:  kibana.zip
 
 
 
+## 2.2 创建证书目录
+
 ```bash
 root@eslg02:/data/kibana-8.10.4/config# mkdir certs/kibana.xinn.cc -p
 root@eslg02:/data/kibana-8.10.4/config# mkdir certs/elastic.xinn.cc -p
@@ -388,7 +413,10 @@ root@eslg02:/data/kibana-8.10.4/config# mkdir certs/elastic.xinn.cc -p
 
 
 
+
+
 ```bash
+# 拷贝证书
 essl@eslg01:/data/elasticsearch-8.10.4/config/certs$ sudo scp kibana/kibana.crt 192.168.10.108:/data/kibana-8.10.4/config/certs/kibana.xinn.cc
 essl@eslg01:/data/elasticsearch-8.10.4/config/certs$ sudo scp kibana/kibana.key 192.168.10.108:/data/kibana-8.10.4/config/certs/kibana.xinn.cc
 essl@eslg01:/data/elasticsearch-8.10.4/config/certs$ sudo scp ca/ca.crt 192.168.10.108:/data/kibana-8.10.4/config/certs/elastic.xinn.cc
@@ -398,7 +426,11 @@ essl@eslg01:/data/elasticsearch-8.10.4/config/certs$ sudo scp ca/ca.crt 192.168.
 
 
 
+### 2.3 创建 Kibana Token
 
+
+
+用于连接Elasticsearch账号认证
 
 ```bash
 #kibana Token
@@ -412,17 +444,16 @@ essl@eslg01:/data/elasticsearch-8.10.4/bin$ ./elasticsearch
 
 
 
-
+方式一：将token写入kibana配置文件
 
 ```bash
-#将token写入kibana
-elasticsearch.serviceAccountToken: "AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYV90b2tlbjoxNnF3NmtGQ1FyZUNhTVlWWDM2ZS1B"
 
+elasticsearch.serviceAccountToken: "AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYV90b2tlbjoxNnF3NmtGQ1FyZUNhTVlWWDM2ZS1B"
 ```
 
 
 
-方式二
+方式二：将token写入 kibana-keystore
 
 ```bash
 essl@eslg02:/data/kibana-8.10.4/bin$ ./kibana-keystore create
@@ -457,16 +488,6 @@ sudo chown -R essl.essl /data/
 
 
 
-
-
-
-
-
-
-
-
-
-lo
 
 ```bash
 root@eslg01:/data/elasticsearch-8.10.4/config/certs/ca# scp ca.crt 192.168.10.109:/opt/logstash-8.10.4/config/certs/elastic.xinn.cc
@@ -581,12 +602,12 @@ input {
   file {
     path => ["/var/log/rsyslog/10.124.0.18/*"]
     start_position => "beginning"
-    type => "sangfor-waf-log"
+    type => "Sangfor-WAF-log"
   }
   file {
-    path => ["/var/log/rsyslog/10.123.0.2/*"]
+    path => ["/var/log/rsyslog/10.124.0.2/*"]
     start_position => "beginning"
-    type => "sangfor-af-log"
+    type => "Sangfor-AF-log"
   }
   file {
     path => ["/var/log/rsyslog/192.168.*/*"]
@@ -596,46 +617,29 @@ input {
 }
 
 filter {
-  if [type] == "sangfor-waf-log" {
+  if [type] == "Sangfor-WAF-log" {
     grok {
       match => {
-        "message" => "%{SYSLOGTIMESTAMP:timestamp} %{HOSTNAME:hostname} %{WORD:log_type}: 日志类型:%{DATA:log_type}, 策略名称:%{DATA:strategy}, 规则ID:%{NUMBER:rule_id}, 源IP:%{IP:source_ip}, 源端口:%{NUMBER:source_port}, 目的IP:%{IP:destination_ip}, 目的端口:%{NUMBER:destination_port}, 攻击类型:%{DATA:attack_type}, 严重级别:%{DATA:severity}, 系统动作:%{DATA:waf-system_action}"
+        "message" => "%{SYSLOGTIMESTAMP:timestamp} %{HOSTNAME:hostname} %{WORD:log_type}: 日志类型:%{DATA:log_type}, 策略名称:%{DATA:strategy}, 规则ID:%{NUMBER:rule_id}, 源IP:%{IP:source_ip}, 源端口:%{NUMBER:source_port}, 目的IP:%{IP:destination_ip}, 目的端口:%{NUMBER:destination_port}, 攻击类型:%{DATA:attack_type}, 严重级别:%{DATA:severity}, 系统动作:%{DATA:system_action}"
       }
-    }
-    mutate {
-      add_tag => ["sangfor-waf-log-tg"]
     }
     # 其他针对 Sangfor-WAF-log 的过滤操作
   }
-  else if [type] == "sangfor-af-log" {
+  if [type] == "Sangfor-AF-log" {
     grok {
       match => {
-        "message" => "%{HOSTNAME:hostname} %{WORD:log_type}: 日志类型:%{DATA:log_type}, 策畲名称:%{DATA:strategy}, 用户:%{DATA:user}, 源IP:%{IP:source_ip}, 源端口:%{NUMBER:source_port}, 目的IP:%{IP:destination_ip}, 目的端口:%{NUMBER:destination_port}, 应用类型:%{DATA:app_type}, 应用名称:%{DATA:app_name}, 系统动作:%{GREEDYDATA:fw-system_action}"
+        "message" => "%{HOSTNAME:hostname} %{WORD:log_type}: 日志类型:%{DATA:log_type}, 策略名称:%{DATA:strategy}, 用户:%{DATA:user}, 源IP:%{IP:source_ip}, 源端口:%{NUMBER:source_port}, 目的IP:%{IP:destination_ip}, 目的端口:%{NUMBER:destination_port}, 应用类型:%{DATA:app_type}, 应用名称:%{DATA:app_name}, 系统动作:%{GREEDYDATA:fw-system_action}"
       }
     }
-    mutate {
-      add_tag => ["sangfor-af-log-tg"]
-    }
-    # 其他针对 Sangfor-AF-log 的过滤操作
+    # 其他针对 server-syslog 的过滤操作
   }
 }
 
 output {
-  if "sangfor-af-log-tg" in [tags] {
+  if "network_device_log" in [tags] {
     elasticsearch {
       hosts => ["https://elastic.xinn.cc:9200"]
-      index => "sangfor-af-log-%{+YYYY.MM.dd}"
-      ssl => true
-      ssl_certificate_verification => true
-      cacert => "/opt/logstash-8.10.4/config/certs/elastic.xinn.cc/ca.crt"
-      user => "elastic"
-      password => "Ceamg.com"
-    }
-  }
-  else if "sangfor-waf-log-tg" in [tags] {
-    elasticsearch {
-      hosts => ["https://elastic.xinn.cc:9200"]
-      index => "sangfor-waf-log-%{+YYYY.MM.dd}"
+      index => "network-device-%{+YYYY.MM.dd}"
       ssl => true
       ssl_certificate_verification => true
       cacert => "/opt/logstash-8.10.4/config/certs/elastic.xinn.cc/ca.crt"
@@ -654,7 +658,6 @@ output {
       password => "Ceamg.com"
     }
   }
-}
 
 ```
 

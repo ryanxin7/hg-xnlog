@@ -7,12 +7,12 @@
     <meta name="robots" content="noodp" />
     <title> - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
 <meta name="author-link" content="https://github.com/ryanxin7">
-<meta name="description" content="root@eslg01:/data# tar xf /tmp/elasticsearch-8.10.4-linux-x86_64.tar.gz -C /data/ root@eslg01:/data# chown -R essl.essl /data/elasticsearch-8.10.4/#启动 essl@eslg01:/usr/local/es/elasticsearch-8.10.4/bin$ ./elasticsearch━━━━━━━━━━━━━━" /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="">
-<meta itemprop="description" content="root@eslg01:/data# tar xf /tmp/elasticsearch-8.10.4-linux-x86_64.tar.gz -C /data/ root@eslg01:/data# chown -R essl.essl /data/elasticsearch-8.10.4/#启动 essl@eslg01:/usr/local/es/elasticsearch-8.10.4/bin$ ./elasticsearch━━━━━━━━━━━━━━">
+<meta name="description" content="一、安装Elasticsearch 下载地址：https://www.elastic.co/cn/downloads/elasticsearc" /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="">
+<meta itemprop="description" content="一、安装Elasticsearch 下载地址：https://www.elastic.co/cn/downloads/elasticsearc">
 
-<meta itemprop="wordCount" content="3486"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="3681"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="" /><meta property="og:title" content="" />
-<meta property="og:description" content="root@eslg01:/data# tar xf /tmp/elasticsearch-8.10.4-linux-x86_64.tar.gz -C /data/ root@eslg01:/data# chown -R essl.essl /data/elasticsearch-8.10.4/#启动 essl@eslg01:/usr/local/es/elasticsearch-8.10.4/bin$ ./elasticsearch━━━━━━━━━━━━━━" />
+<meta property="og:description" content="一、安装Elasticsearch 下载地址：https://www.elastic.co/cn/downloads/elasticsearc" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hg-xnlog.github.io/posts/elk/elasticsearch-kibana-https/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
 
@@ -21,7 +21,7 @@
 <meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
 
 <meta name="twitter:title" content=""/>
-<meta name="twitter:description" content="root@eslg01:/data# tar xf /tmp/elasticsearch-8.10.4-linux-x86_64.tar.gz -C /data/ root@eslg01:/data# chown -R essl.essl /data/elasticsearch-8.10.4/#启动 essl@eslg01:/usr/local/es/elasticsearch-8.10.4/bin$ ./elasticsearch━━━━━━━━━━━━━━"/>
+<meta name="twitter:description" content="一、安装Elasticsearch 下载地址：https://www.elastic.co/cn/downloads/elasticsearc"/>
 <meta name="application-name" content="Ryan’s Notebook">
 <meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/elk/elasticsearch-kibana-https/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/primary/cert-manager-&#43;-zerossl-%E7%9A%84%E4%B8%80%E4%BA%9B%E9%85%8D%E7%BD%AE%E7%9A%84%E7%A0%94%E7%A9%B6/" /><link rel="next" href="https://hg-xnlog.github.io/posts/ceph/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/elk\/elasticsearch-kibana-https\/"
-    },"genre": "posts","wordcount":  3486 ,
+    },"genre": "posts","wordcount":  3681 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/elk\/elasticsearch-kibana-https\/","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -170,7 +170,8 @@
   </div>
   <div class="search-dropdown mobile">
     <div id="search-dropdown-mobile"></div>
-  </div><main class="container"><aside class="toc" id="toc-auto"></aside>
+  </div><main class="container"><aside class="toc" id="toc-auto"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside>
 
   <aside class="aside-custom">
     </aside>
@@ -179,19 +180,53 @@
     <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span></span>
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span></div>
-      <div class="post-meta-line"><span title="发布于 0001-01-01 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="0001-01-01">0001-01-01</time></span>&nbsp;<span title="更新于 0001-01-01 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="0001-01-01">0001-01-01</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 3486 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 7 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="">
+      <div class="post-meta-line"><span title="发布于 0001-01-01 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="0001-01-01">0001-01-01</time></span>&nbsp;<span title="更新于 0001-01-01 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="0001-01-01">0001-01-01</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 3681 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 8 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
-    </div><div class="content" id="content"><div class="details admonition warning open">
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#一安装elasticsearch">一、安装Elasticsearch</a>
+      <ul>
+        <li><a href="#11-解压软件包">1.1 解压软件包</a></li>
+        <li><a href="#12-启动服务">1.2 启动服务</a></li>
+        <li><a href="#13-自动生成ca证书">1.3 自动生成CA证书</a></li>
+        <li><a href="#14-创建elasticsearch数据目录">1.4 创建Elasticsearch数据目录</a></li>
+        <li><a href="#15-创建私有ca证书">1.5 创建私有CA证书</a></li>
+        <li><a href="#16-签发elasticserch节点证书">1.6 签发Elasticserch节点证书</a></li>
+        <li><a href="#17-设置elasticsearch-账号密码">1.7 设置Elasticsearch 账号密码</a></li>
+        <li><a href="#18--测试连接elasticsearch">1.8  测试连接Elasticsearch</a></li>
+      </ul>
+    </li>
+    <li><a href="#二安装kibana">二、安装Kibana</a>
+      <ul>
+        <li><a href="#21-签发kibana-证书">2.1 签发Kibana 证书</a></li>
+      </ul>
+    </li>
+    <li><a href="#22-创建证书目录">2.2 创建证书目录</a>
+      <ul>
+        <li><a href="#23-创建-kibana-token">2.3 创建 Kibana Token</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content"><div class="details admonition warning open">
       <div class="details-summary admonition-title">
         <i class="icon fa-solid fa-exclamation-triangle fa-fw" aria-hidden="true"></i>警告<i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i>
       </div>
       <div class="details-content">
         <div class="admonition-content">本文最后更新于 0001-01-01，文中内容可能已过时。</div>
       </div>
-    </div><div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@eslg01:/data# tar xf /tmp/elasticsearch-8.10.4-linux-x86_64.tar.gz  -C /data/
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">root@eslg01:/data# chown  -R essl.essl /data/elasticsearch-8.10.4/</span></span></code></pre></div><div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#启动</span>
+    </div><h2 id="一安装elasticsearch">一、安装Elasticsearch</h2>
+<p>下载地址：https://www.elastic.co/cn/downloads/elasticsearch</p>
+<h3 id="11-解压软件包">1.1 解压软件包</h3>
+<div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@eslg01:/data# tar xf /tmp/elasticsearch-8.10.4-linux-x86_64.tar.gz  -C /data/
+</span></span><span class="line"><span class="cl">root@eslg01:/data# chown  -R essl.essl /data/elasticsearch-8.10.4/</span></span></code></pre></div><h3 id="12-启动服务">1.2 启动服务</h3>
+<div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#启动</span>
 </span></span><span class="line"><span class="cl">essl@eslg01:/usr/local/es/elasticsearch-8.10.4/bin$ ./elasticsearch</span></span></code></pre></div><div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 </span></span><span class="line"><span class="cl">✅ Elasticsearch security features have been automatically configured!
 </span></span><span class="line"><span class="cl">✅ Authentication is enabled and cluster connections are encrypted.
@@ -213,13 +248,17 @@
 </span></span><span class="line"><span class="cl">  ⁃ Uncomment the transport.host setting at the end of config/elasticsearch.yml.
 </span></span><span class="line"><span class="cl">  ⁃ Restart Elasticsearch.
 </span></span><span class="line"><span class="cl">• On other nodes:
-</span></span><span class="line"><span class="cl">  ⁃ Start Elasticsearch with <span class="sb">`</span>bin/elasticsearch --enrollment-token &lt;token&gt;<span class="sb">`</span>, using the enrollment token that you generated.</span></span></code></pre></div><div class="highlight" id="id-4"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#已经生成CA了</span>
+</span></span><span class="line"><span class="cl">  ⁃ Start Elasticsearch with <span class="sb">`</span>bin/elasticsearch --enrollment-token &lt;token&gt;<span class="sb">`</span>, using the enrollment token that you generated.</span></span></code></pre></div><h3 id="13-自动生成ca证书">1.3 自动生成CA证书</h3>
+<p>这一步的目的是生成Https配置</p>
+<div class="highlight" id="id-4"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#已经生成CA了</span>
 </span></span><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/config/certs$ ls -l
 </span></span><span class="line"><span class="cl">total <span class="m">24</span>
 </span></span><span class="line"><span class="cl">-rw-rw---- <span class="m">1</span> essl essl  <span class="m">1915</span> Oct <span class="m">26</span> 02:15 http_ca.crt
 </span></span><span class="line"><span class="cl">-rw-rw---- <span class="m">1</span> essl essl <span class="m">10029</span> Oct <span class="m">26</span> 02:15 http.p12
-</span></span><span class="line"><span class="cl">-rw-rw---- <span class="m">1</span> essl essl  <span class="m">5822</span> Oct <span class="m">26</span> 02:15 transport.p12</span></span></code></pre></div><div class="highlight" id="id-5"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/config$ sudo mkdir -p /data/es/data     
-</span></span><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/config$ sudo mkdir -p /data/es/logs</span></span></code></pre></div><div class="highlight" id="id-6"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#CA</span>
+</span></span><span class="line"><span class="cl">-rw-rw---- <span class="m">1</span> essl essl  <span class="m">5822</span> Oct <span class="m">26</span> 02:15 transport.p12</span></span></code></pre></div><h3 id="14-创建elasticsearch数据目录">1.4 创建Elasticsearch数据目录</h3>
+<div class="highlight" id="id-5"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/config$ sudo mkdir -p /data/es/data     
+</span></span><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/config$ sudo mkdir -p /data/es/logs</span></span></code></pre></div><h3 id="15-创建私有ca证书">1.5 创建私有CA证书</h3>
+<div class="highlight" id="id-6"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#CA</span>
 </span></span><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/bin$ ./elasticsearch-certutil ca --pem --out /data/elasticsearch-8.10.4/config/certs/ca.zip
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">warning: ignoring <span class="nv">JAVA_HOME</span><span class="o">=</span>/softws/jdk-17.0.2<span class="p">;</span> using bundled JDK
@@ -246,7 +285,8 @@
 </span></span><span class="line"><span class="cl">Archive:  ca.zip
 </span></span><span class="line"><span class="cl">   creating: ca/
 </span></span><span class="line"><span class="cl">  inflating: ca/ca.crt
-</span></span><span class="line"><span class="cl">  inflating: ca/ca.key</span></span></code></pre></div><div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#证书</span>
+</span></span><span class="line"><span class="cl">  inflating: ca/ca.key</span></span></code></pre></div><h3 id="16-签发elasticserch节点证书">1.6 签发Elasticserch节点证书</h3>
+<div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#证书</span>
 </span></span><span class="line"><span class="cl">./elasticsearch-certutil cert <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>--out /data/elasticsearch-8.10.4/config/certs/elastic.zip <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>--name elastic <span class="se">\
@@ -327,12 +367,15 @@
 </span></span><span class="line"><span class="cl">-rw------- <span class="m">1</span> root root  <span class="m">2577</span> Oct <span class="m">26</span> 02:35 elastic.zip
 </span></span><span class="line"><span class="cl">-rw-rw---- <span class="m">1</span> essl essl  <span class="m">1915</span> Oct <span class="m">26</span> 02:15 http_ca.crt
 </span></span><span class="line"><span class="cl">-rw-rw---- <span class="m">1</span> essl essl <span class="m">10029</span> Oct <span class="m">26</span> 02:15 http.p12
-</span></span><span class="line"><span class="cl">-rw-rw---- <span class="m">1</span> essl essl  <span class="m">5822</span> Oct <span class="m">26</span> 02:15 transport.p12</span></span></code></pre></div><div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@eslg01:/data/elasticsearch-8.10.4/config/certs# unzip elastic.zip
+</span></span><span class="line"><span class="cl">-rw-rw---- <span class="m">1</span> essl essl  <span class="m">5822</span> Oct <span class="m">26</span> 02:15 transport.p12</span></span></code></pre></div><div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 解压证书</span>
+</span></span><span class="line"><span class="cl">root@eslg01:/data/elasticsearch-8.10.4/config/certs# unzip elastic.zip
 </span></span><span class="line"><span class="cl">Archive:  elastic.zip
 </span></span><span class="line"><span class="cl">   creating: elastic/
 </span></span><span class="line"><span class="cl">  inflating: elastic/elastic.crt
 </span></span><span class="line"><span class="cl">  inflating: elastic/elastic.key
-</span></span><span class="line"><span class="cl">root@eslg01:/data/elasticsearch-8.10.4/config/certs#</span></span></code></pre></div><div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">chown -R essl.essl /data/</span></span></code></pre></div><div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/bin$ ./elasticsearch-reset-password -i -u elastic --url https://elastic.xinn.cc:9200
+</span></span><span class="line"><span class="cl">root@eslg01:/data/elasticsearch-8.10.4/config/certs#</span></span></code></pre></div><div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 更改Elasticsearch目录所有者权限</span>
+</span></span><span class="line"><span class="cl">chown -R essl.essl /data/</span></span></code></pre></div><h3 id="17-设置elasticsearch-账号密码">1.7 设置Elasticsearch 账号密码</h3>
+<div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/bin$ ./elasticsearch-reset-password -i -u elastic --url https://elastic.xinn.cc:9200
 </span></span><span class="line"><span class="cl">warning: ignoring <span class="nv">JAVA_HOME</span><span class="o">=</span>/softws/jdk-17.0.2<span class="p">;</span> using bundled JDK
 </span></span><span class="line"><span class="cl">This tool will reset the password of the <span class="o">[</span>elastic<span class="o">]</span> user.
 </span></span><span class="line"><span class="cl">You will be prompted to enter the password.
@@ -341,7 +384,8 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">Enter password <span class="k">for</span> <span class="o">[</span>elastic<span class="o">]</span>:
 </span></span><span class="line"><span class="cl">Re-enter password <span class="k">for</span> <span class="o">[</span>elastic<span class="o">]</span>:
-</span></span><span class="line"><span class="cl">Password <span class="k">for</span> the <span class="o">[</span>elastic<span class="o">]</span> user successfully reset.</span></span></code></pre></div><div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#测试连接</span>
+</span></span><span class="line"><span class="cl">Password <span class="k">for</span> the <span class="o">[</span>elastic<span class="o">]</span> user successfully reset.</span></span></code></pre></div><h3 id="18--测试连接elasticsearch">1.8  测试连接Elasticsearch</h3>
+<div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#测试连接</span>
 </span></span><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/bin$ curl -X GET -u elastic:Ceamg.com https://elastic.xinn.cc:9200/ --cacert /data/elasticsearch-8.10.4/config/certs/ca/ca.crt
 </span></span><span class="line"><span class="cl"><span class="o">{</span>
 </span></span><span class="line"><span class="cl">  <span class="s2">&#34;name&#34;</span> : <span class="s2">&#34;eslg01&#34;</span>,
@@ -359,7 +403,7 @@
 </span></span><span class="line"><span class="cl">    <span class="s2">&#34;minimum_index_compatibility_version&#34;</span> : <span class="s2">&#34;7.0.0&#34;</span>
 </span></span><span class="line"><span class="cl">  <span class="o">}</span>,
 </span></span><span class="line"><span class="cl">  <span class="s2">&#34;tagline&#34;</span> : <span class="s2">&#34;You Know, for Search&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></div><p>Kibana</p>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></div><h2 id="二安装kibana">二、安装Kibana</h2>
 <div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@eslg02:/data# tar -xf /tmp/kibana-8.10.4-linux-x86_64.tar.gz -C /data/
 </span></span><span class="line"><span class="cl">root@eslg02:/data# chown -R essl.essl /data
 </span></span><span class="line"><span class="cl">root@eslg02:/data/kibana-8.10.4# ls -l
@@ -377,7 +421,8 @@
 </span></span><span class="line"><span class="cl">drwxr-xr-x   <span class="m">2</span> essl essl    <span class="m">4096</span> Oct <span class="m">11</span> 20:18 plugins
 </span></span><span class="line"><span class="cl">-rw-r--r--   <span class="m">1</span> essl essl    <span class="m">3966</span> Oct <span class="m">11</span> 20:18 README.txt
 </span></span><span class="line"><span class="cl">drwxr-xr-x  <span class="m">11</span> essl essl    <span class="m">4096</span> Oct <span class="m">11</span> 20:18 src
-</span></span><span class="line"><span class="cl">drwxr-xr-x   <span class="m">4</span> essl essl    <span class="m">4096</span> Oct <span class="m">11</span> 20:18 x-pack</span></span></code></pre></div><div class="highlight" id="id-15"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./elasticsearch-certutil cert <span class="se">\
+</span></span><span class="line"><span class="cl">drwxr-xr-x   <span class="m">4</span> essl essl    <span class="m">4096</span> Oct <span class="m">11</span> 20:18 x-pack</span></span></code></pre></div><h3 id="21-签发kibana-证书">2.1 签发Kibana 证书</h3>
+<div class="highlight" id="id-15"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./elasticsearch-certutil cert <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>--out /data/elasticsearch-8.10.4/config/certs/kibana.zip <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>--name kibana <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>--ca-cert /data/elasticsearch-8.10.4/config/certs/ca/ca.crt <span class="se">\
@@ -455,17 +500,22 @@
 </span></span><span class="line"><span class="cl">Archive:  kibana.zip
 </span></span><span class="line"><span class="cl">   creating: kibana/
 </span></span><span class="line"><span class="cl">  inflating: kibana/kibana.crt
-</span></span><span class="line"><span class="cl">  inflating: kibana/kibana.key</span></span></code></pre></div><div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@eslg02:/data/kibana-8.10.4/config# mkdir certs/kibana.xinn.cc -p
-</span></span><span class="line"><span class="cl">root@eslg02:/data/kibana-8.10.4/config# mkdir certs/elastic.xinn.cc -p</span></span></code></pre></div><div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/config/certs$ sudo scp kibana/kibana.crt 192.168.10.108:/data/kibana-8.10.4/config/certs/kibana.xinn.cc
+</span></span><span class="line"><span class="cl">  inflating: kibana/kibana.key</span></span></code></pre></div><h2 id="22-创建证书目录">2.2 创建证书目录</h2>
+<div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@eslg02:/data/kibana-8.10.4/config# mkdir certs/kibana.xinn.cc -p
+</span></span><span class="line"><span class="cl">root@eslg02:/data/kibana-8.10.4/config# mkdir certs/elastic.xinn.cc -p</span></span></code></pre></div><div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 拷贝证书</span>
+</span></span><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/config/certs$ sudo scp kibana/kibana.crt 192.168.10.108:/data/kibana-8.10.4/config/certs/kibana.xinn.cc
 </span></span><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/config/certs$ sudo scp kibana/kibana.key 192.168.10.108:/data/kibana-8.10.4/config/certs/kibana.xinn.cc
-</span></span><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/config/certs$ sudo scp ca/ca.crt 192.168.10.108:/data/kibana-8.10.4/config/certs/elastic.xinn.cc</span></span></code></pre></div><div class="highlight" id="id-19"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#kibana Token</span>
+</span></span><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/config/certs$ sudo scp ca/ca.crt 192.168.10.108:/data/kibana-8.10.4/config/certs/elastic.xinn.cc</span></span></code></pre></div><h3 id="23-创建-kibana-token">2.3 创建 Kibana Token</h3>
+<p>用于连接Elasticsearch账号认证</p>
+<div class="highlight" id="id-19"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#kibana Token</span>
 </span></span><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/bin$ ./elasticsearch-service-tokens create elastic/kibana kibana_token
 </span></span><span class="line"><span class="cl">warning: ignoring <span class="nv">JAVA_HOME</span><span class="o">=</span>/softws/jdk-17.0.2<span class="p">;</span> using bundled JDK
 </span></span><span class="line"><span class="cl">SERVICE_TOKEN elastic/kibana/kibana_token <span class="o">=</span> AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYV90b2tlbjoxNnF3NmtGQ1FyZUNhTVlWWDM2ZS1B
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">#重启elasticsearch</span>
-</span></span><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/bin$ ./elasticsearch</span></span></code></pre></div><div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#将token写入kibana</span>
-</span></span><span class="line"><span class="cl">elasticsearch.serviceAccountToken: <span class="s2">&#34;AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYV90b2tlbjoxNnF3NmtGQ1FyZUNhTVlWWDM2ZS1B&#34;</span></span></span></code></pre></div><p>方式二</p>
+</span></span><span class="line"><span class="cl">essl@eslg01:/data/elasticsearch-8.10.4/bin$ ./elasticsearch</span></span></code></pre></div><p>方式一：将token写入kibana配置文件</p>
+<div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">elasticsearch.serviceAccountToken: <span class="s2">&#34;AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYV90b2tlbjoxNnF3NmtGQ1FyZUNhTVlWWDM2ZS1B&#34;</span></span></span></code></pre></div><p>方式二：将token写入 kibana-keystore</p>
 <div class="highlight" id="id-21"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">essl@eslg02:/data/kibana-8.10.4/bin$ ./kibana-keystore create
 </span></span><span class="line"><span class="cl">Kibana is currently running with legacy OpenSSL providers enabled! For details and instructions on how to disable see https://www.elastic.co/guide/en/kibana/8.10/production.html#openssl-legacy-provider
 </span></span><span class="line"><span class="cl">Created Kibana keystore in /data/kibana-8.10.4/config/kibana.keystore
@@ -486,8 +536,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">essl@eslg02:/data/kibana-8.10.4/config$ cat kibana.keystore
-</span></span><span class="line"><span class="cl">1:zmzEt7YorjSemMNLNvcvqBlqWYUQVRHQqC0EPGcmSivLig/2B/vAmleedl8HD4EO4mKj1s05E6Nlmlq+25F3SmKhepQttj3ARyBa68soysXCssoKe1rFF1mRQ0XBhvVCvfR+BmYuXORnPWnZ3QvyBrrWhOkalsmnVlipJZh7JVp1YiXFtC+rTbyunPJmmWaO/M4HuVBtPB3O8NEUhzZYwmKSNl5EzpJaus3pvnViZsvETczMSypONRhnNleViVzF3U3ADc35k7</span></span></code></pre></div><div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chown -R essl.essl /data/</span></span></code></pre></div><p>lo</p>
-<div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@eslg01:/data/elasticsearch-8.10.4/config/certs/ca# scp ca.crt 192.168.10.109:/opt/logstash-8.10.4/config/certs/elastic.xinn.cc
+</span></span><span class="line"><span class="cl">1:zmzEt7YorjSemMNLNvcvqBlqWYUQVRHQqC0EPGcmSivLig/2B/vAmleedl8HD4EO4mKj1s05E6Nlmlq+25F3SmKhepQttj3ARyBa68soysXCssoKe1rFF1mRQ0XBhvVCvfR+BmYuXORnPWnZ3QvyBrrWhOkalsmnVlipJZh7JVp1YiXFtC+rTbyunPJmmWaO/M4HuVBtPB3O8NEUhzZYwmKSNl5EzpJaus3pvnViZsvETczMSypONRhnNleViVzF3U3ADc35k7</span></span></code></pre></div><div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chown -R essl.essl /data/</span></span></code></pre></div><div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@eslg01:/data/elasticsearch-8.10.4/config/certs/ca# scp ca.crt 192.168.10.109:/opt/logstash-8.10.4/config/certs/elastic.xinn.cc
 </span></span><span class="line"><span class="cl">ca.crt
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">/opt/logstash-8.10.4/config/certs/elastic.xinn.cc/ca.crt</span></span></code></pre></div><div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">input {</span><span class="w">
@@ -559,12 +608,12 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">file {</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">path =&gt; [&#34;/var/log/rsyslog/10.124.0.18/*&#34;]</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">start_position =&gt; &#34;beginning&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">type =&gt; &#34;sangfor-waf-log&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">type =&gt; &#34;Sangfor-WAF-log&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>}<span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">file {</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">path =&gt; [&#34;/var/log/rsyslog/10.123.0.2/*&#34;]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">path =&gt; [&#34;/var/log/rsyslog/10.124.0.2/*&#34;]</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">start_position =&gt; &#34;beginning&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">type =&gt; &#34;sangfor-af-log&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">type =&gt; &#34;Sangfor-AF-log&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>}<span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">file {</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">path =&gt; [&#34;/var/log/rsyslog/192.168.*/*&#34;]</span><span class="w">
@@ -574,46 +623,29 @@
 </span></span></span><span class="line"><span class="cl"><span class="w"></span>}<span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">filter {</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">if [type] == &#34;sangfor-waf-log&#34; {</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">if [type] == &#34;Sangfor-WAF-log&#34; {</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">grok {</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">match =&gt; {</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="s2">&#34;message&#34;</span><span class="w"> </span><span class="l">=&gt; &#34;%{SYSLOGTIMESTAMP:timestamp} %{HOSTNAME:hostname} %{WORD:log_type}: 日志类型:%{DATA:log_type}, 策略名称:%{DATA:strategy}, 规则ID:%{NUMBER:rule_id}, 源IP:%{IP:source_ip}, 源端口:%{NUMBER:source_port}, 目的IP:%{IP:destination_ip}, 目的端口:%{NUMBER:destination_port}, 攻击类型:%{DATA:attack_type}, 严重级别:%{DATA:severity}, 系统动作:%{DATA:waf-system_action}&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="s2">&#34;message&#34;</span><span class="w"> </span><span class="l">=&gt; &#34;%{SYSLOGTIMESTAMP:timestamp} %{HOSTNAME:hostname} %{WORD:log_type}: 日志类型:%{DATA:log_type}, 策略名称:%{DATA:strategy}, 规则ID:%{NUMBER:rule_id}, 源IP:%{IP:source_ip}, 源端口:%{NUMBER:source_port}, 目的IP:%{IP:destination_ip}, 目的端口:%{NUMBER:destination_port}, 攻击类型:%{DATA:attack_type}, 严重级别:%{DATA:severity}, 系统动作:%{DATA:system_action}&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>}<span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>}<span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">mutate {</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">add_tag =&gt; [&#34;sangfor-waf-log-tg&#34;]</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>}<span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># 其他针对 Sangfor-WAF-log 的过滤操作</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>}<span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">else if [type] == &#34;sangfor-af-log&#34; {</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">if [type] == &#34;Sangfor-AF-log&#34; {</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">grok {</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">match =&gt; {</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="s2">&#34;message&#34;</span><span class="w"> </span><span class="l">=&gt; &#34;%{HOSTNAME:hostname} %{WORD:log_type}: 日志类型:%{DATA:log_type}, 策畲名称:%{DATA:strategy}, 用户:%{DATA:user}, 源IP:%{IP:source_ip}, 源端口:%{NUMBER:source_port}, 目的IP:%{IP:destination_ip}, 目的端口:%{NUMBER:destination_port}, 应用类型:%{DATA:app_type}, 应用名称:%{DATA:app_name}, 系统动作:%{GREEDYDATA:fw-system_action}&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="s2">&#34;message&#34;</span><span class="w"> </span><span class="l">=&gt; &#34;%{HOSTNAME:hostname} %{WORD:log_type}: 日志类型:%{DATA:log_type}, 策略名称:%{DATA:strategy}, 用户:%{DATA:user}, 源IP:%{IP:source_ip}, 源端口:%{NUMBER:source_port}, 目的IP:%{IP:destination_ip}, 目的端口:%{NUMBER:destination_port}, 应用类型:%{DATA:app_type}, 应用名称:%{DATA:app_name}, 系统动作:%{GREEDYDATA:fw-system_action}&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>}<span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>}<span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">mutate {</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">add_tag =&gt; [&#34;sangfor-af-log-tg&#34;]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>}<span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># 其他针对 Sangfor-AF-log 的过滤操作</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># 其他针对 server-syslog 的过滤操作</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>}<span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span>}<span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">output {</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">if &#34;sangfor-af-log-tg&#34; in [tags] {</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">if &#34;network_device_log&#34; in [tags] {</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">elasticsearch {</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">hosts =&gt; [&#34;https://elastic.xinn.cc:9200&#34;]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">index =&gt; &#34;sangfor-af-log-%{+YYYY.MM.dd}&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">ssl =&gt; true</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">ssl_certificate_verification =&gt; true</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">cacert =&gt; &#34;/opt/logstash-8.10.4/config/certs/elastic.xinn.cc/ca.crt&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">user =&gt; &#34;elastic&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">password =&gt; &#34;Ceamg.com&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>}<span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>}<span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">else if &#34;sangfor-waf-log-tg&#34; in [tags] {</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="l">elasticsearch {</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">hosts =&gt; [&#34;https://elastic.xinn.cc:9200&#34;]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">index =&gt; &#34;sangfor-waf-log-%{+YYYY.MM.dd}&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">index =&gt; &#34;network-device-%{+YYYY.MM.dd}&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">ssl =&gt; true</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">ssl_certificate_verification =&gt; true</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">cacert =&gt; &#34;/opt/logstash-8.10.4/config/certs/elastic.xinn.cc/ca.crt&#34;</span><span class="w">
@@ -631,8 +663,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">user =&gt; &#34;elastic&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="l">password =&gt; &#34;Ceamg.com&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>}<span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>}<span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span>}</span></span></code></pre></div><div class="highlight" id="id-29"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Oct <span class="m">27</span> 04:06:27 localhost fwlog: 日志类型:服务控制或应用控制, 策略名称:-, 用户:<span class="o">(</span>null<span class="o">)</span>, 源IP:113.231.38.30, 源端口:58006, 目的IP:10.1.0.11, 目的端口:80, 应用类型:访问网站, 应用名称:HTTP_GET, 系统动作:允许</span></span></code></pre></div><div class="highlight" id="id-30"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">%</span><span class="p">{</span><span class="err">HOSTNAME:hostname</span><span class="p">}</span> <span class="err">%</span><span class="p">{</span><span class="err">WORD:log_type</span><span class="p">}</span><span class="err">:</span> <span class="err">日志类型:%</span><span class="p">{</span><span class="err">DATA:log_type</span><span class="p">}</span><span class="err">,</span> <span class="err">策略名称:%</span><span class="p">{</span><span class="err">DATA:strategy</span><span class="p">}</span><span class="err">,</span> <span class="err">用户:%</span><span class="p">{</span><span class="err">DATA:user</span><span class="p">}</span><span class="err">,</span> <span class="err">源IP:%</span><span class="p">{</span><span class="err">IP:source_ip</span><span class="p">}</span><span class="err">,</span> <span class="err">源端口:%</span><span class="p">{</span><span class="err">NUMBER:source_port</span><span class="p">}</span><span class="err">,</span> <span class="err">目的IP:%</span><span class="p">{</span><span class="err">IP:destination_ip</span><span class="p">}</span><span class="err">,</span> <span class="err">目的端口:%</span><span class="p">{</span><span class="err">NUMBER:destination_port</span><span class="p">}</span><span class="err">,</span> <span class="err">应用类型:%</span><span class="p">{</span><span class="err">DATA:app_type</span><span class="p">}</span><span class="err">,</span> <span class="err">应用名称:%</span><span class="p">{</span><span class="err">DATA:app_name</span><span class="p">}</span><span class="err">,</span> <span class="err">系统动作:%</span><span class="p">{</span><span class="err">GREEDYDATA:fw-system_action</span><span class="p">}</span></span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20231027175623276.png" srcset="https://cdn1.ryanxin.live/image-20231027175623276.png, https://cdn1.ryanxin.live/image-20231027175623276.png 1.5x, https://cdn1.ryanxin.live/image-20231027175623276.png 2x" sizes="auto" data-title="image-20231027175623276" data-alt="image-20231027175623276" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>}</span></span></code></pre></div><div class="highlight" id="id-29"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Oct <span class="m">27</span> 04:06:27 localhost fwlog: 日志类型:服务控制或应用控制, 策略名称:-, 用户:<span class="o">(</span>null<span class="o">)</span>, 源IP:113.231.38.30, 源端口:58006, 目的IP:10.1.0.11, 目的端口:80, 应用类型:访问网站, 应用名称:HTTP_GET, 系统动作:允许</span></span></code></pre></div><div class="highlight" id="id-30"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="err">%</span><span class="p">{</span><span class="err">HOSTNAME:hostname</span><span class="p">}</span> <span class="err">%</span><span class="p">{</span><span class="err">WORD:log_type</span><span class="p">}</span><span class="err">:</span> <span class="err">日志类型:%</span><span class="p">{</span><span class="err">DATA:log_type</span><span class="p">}</span><span class="err">,</span> <span class="err">策略名称:%</span><span class="p">{</span><span class="err">DATA:strategy</span><span class="p">}</span><span class="err">,</span> <span class="err">用户:%</span><span class="p">{</span><span class="err">DATA:user</span><span class="p">}</span><span class="err">,</span> <span class="err">源IP:%</span><span class="p">{</span><span class="err">IP:source_ip</span><span class="p">}</span><span class="err">,</span> <span class="err">源端口:%</span><span class="p">{</span><span class="err">NUMBER:source_port</span><span class="p">}</span><span class="err">,</span> <span class="err">目的IP:%</span><span class="p">{</span><span class="err">IP:destination_ip</span><span class="p">}</span><span class="err">,</span> <span class="err">目的端口:%</span><span class="p">{</span><span class="err">NUMBER:destination_port</span><span class="p">}</span><span class="err">,</span> <span class="err">应用类型:%</span><span class="p">{</span><span class="err">DATA:app_type</span><span class="p">}</span><span class="err">,</span> <span class="err">应用名称:%</span><span class="p">{</span><span class="err">DATA:app_name</span><span class="p">}</span><span class="err">,</span> <span class="err">系统动作:%</span><span class="p">{</span><span class="err">GREEDYDATA:fw-system_action</span><span class="p">}</span></span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20231027175623276.png" srcset="https://cdn1.ryanxin.live/image-20231027175623276.png, https://cdn1.ryanxin.live/image-20231027175623276.png 1.5x, https://cdn1.ryanxin.live/image-20231027175623276.png 2x" sizes="auto" data-title="image-20231027175623276" data-alt="image-20231027175623276" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 </div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
