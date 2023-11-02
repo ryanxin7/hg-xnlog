@@ -1,4 +1,16 @@
+---
+author: Ryan
+title: 2023-10月最新8.10.4版本ELK集群服务搭建 HTTPS
+date: 2023-10-23
+lastmod: 2023-10-23
+tags: 
+    - 日志收集
+categories:
+   - ElasticStack
+expirationReminder:
 
+    enable: true
+---
 
 
 
@@ -489,6 +501,29 @@ sudo chown -R essl.essl /data/
 
 
 
+
+
+
+## 三、 logstash
+
+下载地址:https://www.elastic.co/cn/downloads/logstash
+
+
+
+
+### 3.1 安装Logstash
+
+```bash
+tar -xf logstash-8.10.4-linux-x86_64.tar.gz -C /opt/
+
+chrown -R essl.essl /opt/logstash-8.10.4/
+```
+
+
+
+### 3.2  复制证书
+
+
 ```bash
 root@eslg01:/data/elasticsearch-8.10.4/config/certs/ca# scp ca.crt 192.168.10.109:/opt/logstash-8.10.4/config/certs/elastic.xinn.cc
 ca.crt
@@ -496,98 +531,9 @@ ca.crt
 /opt/logstash-8.10.4/config/certs/elastic.xinn.cc/ca.crt
 ```
 
-
-
-
-
-```yaml
-input {
-  file {
-    path => ["/var/log/rsyslog/1*/*"]
-    start_position => "beginning"
-    type => "server-syslog"
-  }
-}
-
-filter {
-  if [type] == "server-syslog" {
-    grok {
-      match => { "message" => "%{SYSLOGLINE}" }
-    }
-
-    if "10.124." in [source] or "10.123." in [source] or "10.126." in [source] {
-      mutate {
-        add_tag => ["network_device_log"]
-      }
-    }
-  }
-}
-
-output {
-  if "network_device_log" in [tags] {
-    elasticsearch {
-      hosts => ["https://elastic.xinn.cc:9200"]
-      index => "network-device-%{+YYYY.MM.dd}"
-      ssl => true
-      ssl_certificate_verification => true
-      cacert => "/opt/logstash-8.10.4/config/certs/elastic.xinn.cc/ca.crt"
-      user => "${ELASTICSEARCH_USER}"
-      password => "${ELASTICSEARCH_PASSWORD}"
-    }
-  }
-  else {
-    elasticsearch {
-      hosts => ["https://elastic.xinn.cc:9200"]
-      index => "server-syslog-%{+YYYY.MM.dd}"
-      ssl => true
-      ssl_certificate_verification => true
-      cacert => "/opt/logstash-8.10.4/config/certs/elastic.xinn.cc/ca.crt"
-      user => "${ELASTICSEARCH_USER}"
-      password => "${ELASTICSEARCH_PASSWORD}"
-    }
-  }
-}
-
-```
-
-
-
-Elasticsearch 启动
+### 3.2 对接 Elasticsearch 
 
 ```bash
-essl@eslg01:~$ /data/elasticsearch-8.10.4/bin/elasticsearch -d
-```
-
-
-
-logstash 启动
-
-```bash
-/opt/logstash-8.10.4/bin/logstash -f /opt/logstash-8.10.4/config/lgcs.conf  --config.reload.automatic &
-```
-
-kibana启动
-
-```bash
-sudo nohup /data/kibana-8.10.4/bin/kibana &
-essl@eslg02:/data/kibana-8.10.4/bin$ nohup /data/kibana-8.10.4/bin/kibana &
-[1] 1006570
-essl@eslg02:/data/kibana-8.10.4/bin$ nohup: ignoring input and appending output to '/home/essl/nohup.out'
-essl@eslg02:/data/kibana-8.10.4/bin$ cd /home/essl/
-essl@eslg02:~$ ls
-nohup.out
-essl@eslg02:~$ tail  -f nohup.out
-```
-
-
-
-
-
-
-
-
-
-```yaml
 input {
   file {
     path => ["/var/log/rsyslog/10.0.0.*/*"]
@@ -602,12 +548,12 @@ input {
   file {
     path => ["/var/log/rsyslog/10.124.0.18/*"]
     start_position => "beginning"
-    type => "Sangfor-WAF-log"
+    type => "sangfor-waf-log"
   }
   file {
-    path => ["/var/log/rsyslog/10.124.0.2/*"]
+    path => ["/var/log/rsyslog/10.123.0.2/*"]
     start_position => "beginning"
-    type => "Sangfor-AF-log"
+    type => "sangfor-af-log"
   }
   file {
     path => ["/var/log/rsyslog/192.168.*/*"]
@@ -617,29 +563,46 @@ input {
 }
 
 filter {
-  if [type] == "Sangfor-WAF-log" {
+  if [type] == "sangfor-waf-log" {
     grok {
       match => {
-        "message" => "%{SYSLOGTIMESTAMP:timestamp} %{HOSTNAME:hostname} %{WORD:log_type}: 日志类型:%{DATA:log_type}, 策略名称:%{DATA:strategy}, 规则ID:%{NUMBER:rule_id}, 源IP:%{IP:source_ip}, 源端口:%{NUMBER:source_port}, 目的IP:%{IP:destination_ip}, 目的端口:%{NUMBER:destination_port}, 攻击类型:%{DATA:attack_type}, 严重级别:%{DATA:severity}, 系统动作:%{DATA:system_action}"
+        "message" => "%{SYSLOGTIMESTAMP:timestamp} %{HOSTNAME:hostname} %{WORD:log_type}: 日志类型:%{DATA:log_type}, 策略名称:%{DATA:strategy}, 规则ID:%{NUMBER:rule_id}, 源IP:%{IP:source_ip}, 源端口:%{NUMBER:source_port}, 目的IP:%{IP:destination_ip}, 目的端口:%{NUMBER:destination_port}, 攻击类型:%{DATA:attack_type}, 严重级别:%{DATA:severity}, 系统动作:%{DATA:waf-system_action}"
       }
+    }
+    mutate {
+      add_tag => ["sangfor-waf-log-tg"]
     }
     # 其他针对 Sangfor-WAF-log 的过滤操作
   }
-  if [type] == "Sangfor-AF-log" {
+  else if [type] == "sangfor-af-log" {
     grok {
       match => {
-        "message" => "%{HOSTNAME:hostname} %{WORD:log_type}: 日志类型:%{DATA:log_type}, 策略名称:%{DATA:strategy}, 用户:%{DATA:user}, 源IP:%{IP:source_ip}, 源端口:%{NUMBER:source_port}, 目的IP:%{IP:destination_ip}, 目的端口:%{NUMBER:destination_port}, 应用类型:%{DATA:app_type}, 应用名称:%{DATA:app_name}, 系统动作:%{GREEDYDATA:fw-system_action}"
+        "message" => "%{HOSTNAME:hostname} %{WORD:log_type}: 日志类型:%{DATA:log_type}, 策畲名称:%{DATA:strategy}, 用户:%{DATA:user}, 源IP:%{IP:source_ip}, 源端口:%{NUMBER:source_port}, 目的IP:%{IP:destination_ip}, 目的端口:%{NUMBER:destination_port}, 应用类型:%{DATA:app_type}, 应用名称:%{DATA:app_name}, 系统动作:%{GREEDYDATA:fw-system_action}"
       }
     }
-    # 其他针对 server-syslog 的过滤操作
+    mutate {
+      add_tag => ["sangfor-af-log-tg"]
+    }
+    # 其他针对 Sangfor-AF-log 的过滤操作
   }
 }
 
 output {
-  if "network_device_log" in [tags] {
+  if "sangfor-af-log-tg" in [tags] {
     elasticsearch {
       hosts => ["https://elastic.xinn.cc:9200"]
-      index => "network-device-%{+YYYY.MM.dd}"
+      index => "sangfor-af-log-%{+YYYY.MM.dd}"
+      ssl => true
+      ssl_certificate_verification => true
+      cacert => "/opt/logstash-8.10.4/config/certs/elastic.xinn.cc/ca.crt"
+      user => "elastic"
+      password => "Ceamg.com"
+    }
+  }
+  else if "sangfor-waf-log-tg" in [tags] {
+    elasticsearch {
+      hosts => ["https://elastic.xinn.cc:9200"]
+      index => "sangfor-waf-log-%{+YYYY.MM.dd}"
       ssl => true
       ssl_certificate_verification => true
       cacert => "/opt/logstash-8.10.4/config/certs/elastic.xinn.cc/ca.crt"
@@ -658,15 +621,16 @@ output {
       password => "Ceamg.com"
     }
   }
+}
+
 
 ```
 
 
 
+### 3.3 Grok 
 
-
-
-
+kibana中有可以调试的工具检测正则是否匹配
 ```bash
 Oct 27 04:06:27 localhost fwlog: 日志类型:服务控制或应用控制, 策略名称:-, 用户:(null), 源IP:113.231.38.30, 源端口:58006, 目的IP:10.1.0.11, 目的端口:80, 应用类型:访问网站, 应用名称:HTTP_GET, 系统动作:允许
 ```
@@ -680,3 +644,39 @@ Oct 27 04:06:27 localhost fwlog: 日志类型:服务控制或应用控制, 策�
 
 
 ![image-20231027175623276](https://cdn1.ryanxin.live/image-20231027175623276.png)
+
+
+
+
+## 四、服务常规启动方法
+
+
+### Elasticsearch 启动
+
+```bash
+essl@eslg01:~$ /data/elasticsearch-8.10.4/bin/elasticsearch -d
+```
+
+
+
+### logstash 启动
+
+```bash
+/opt/logstash-8.10.4/bin/logstash -f /opt/logstash-8.10.4/config/lgcs.conf  --config.reload.automatic &
+```
+
+### kibana启动
+
+```bash
+sudo nohup /data/kibana-8.10.4/bin/kibana &
+essl@eslg02:/data/kibana-8.10.4/bin$ nohup /data/kibana-8.10.4/bin/kibana &
+[1] 1006570
+essl@eslg02:/data/kibana-8.10.4/bin$ nohup: ignoring input and appending output to '/home/essl/nohup.out'
+essl@eslg02:/data/kibana-8.10.4/bin$ cd /home/essl/
+essl@eslg02:~$ ls
+nohup.out
+essl@eslg02:~$ tail  -f nohup.out
+```
+
+
+

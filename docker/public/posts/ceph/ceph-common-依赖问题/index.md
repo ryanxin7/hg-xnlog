@@ -1,8 +1,4 @@
-# 
-
-
-
-# ceph-common 依赖问题
+# ceph-common 指定版本安装依赖问题
 
 
 

@@ -4,7 +4,23 @@
     <link>https://hg-xnlog.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/</link>
     <description>分布式存储 - 标签 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Wed, 18 Jan 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Thu, 02 Nov 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/" rel="self" type="application/rss+xml" /><item>
+  <title>Kubernetes结合ceph实现数据持久化</title>
+  <link>https://hg-xnlog.github.io/posts/ceph/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/</link>
+  <pubDate>Thu, 02 Nov 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/ceph/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/</guid>
+  <description><![CDATA[rbd结合K8s提供存储卷及动态卷使用案例 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在cep]]></description>
+</item>
+<item>
+  <title>ceph-common 指定版本安装依赖问题</title>
+  <link>https://hg-xnlog.github.io/posts/ceph/ceph-common-%E4%BE%9D%E8%B5%96%E9%97%AE%E9%A2%98/</link>
+  <pubDate>Wed, 01 Nov 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/ceph/ceph-common-%E4%BE%9D%E8%B5%96%E9%97%AE%E9%A2%98/</guid>
+  <description><![CDATA[缺少依赖： $ dpkg -i ceph-common_16.2.10-1bionic_amd64.deb ceph-common depends on librbd1 (= 16.2.10-1bionic); however: Package librbd1 is not installed. ceph-common depends on python3-cephfs (= 16.2.10-1bionic); however: Package python3-cephfs is not installed. ceph-common depends on python3-ceph-argparse (= 16.2.10-1bionic); however: Package python3-ceph-argparse is not installed. ceph-common depends on python3-ceph-common (= 16.2.10-1bionic); however: Package python3-ceph-common is not installed. ceph-common depends on python3-prettytable; however: Package python3-prettytable is not installed. ceph-common depends on]]></description>
+</item>
+<item>
   <title>Ceph Dashboard及监控 （十）</title>
   <link>https://hg-xnlog.github.io/posts/ceph/10.-ceph-dashboard%E5%8F%8A%E7%9B%91%E6%8E%A7/</link>
   <pubDate>Wed, 18 Jan 2023 00:00:00 &#43;0000</pubDate>
@@ -67,22 +83,6 @@
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/ceph/3.ceph-fs%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8/</guid>
   <description><![CDATA[https://docs.ceph.com/en/latest/cephfs/链接 Ceph FS即Ceph Filesy Stem,可以实现文件系统共享功能,客户]]></description>
-</item>
-<item>
-  <title>Ceph 集群部署 （二）</title>
-  <link>https://hg-xnlog.github.io/posts/ceph/2.ceph%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/</link>
-  <pubDate>Tue, 10 Jan 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/ceph/2.ceph%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/</guid>
-  <description><![CDATA[推荐配置 CPU 16C 或 32C 双路内存 64G以上磁盘 NVME 企业级SSD 推荐 intel D7 P5520 数据中心企业级固态硬盘U.2 nvme协议服务器工作站SSD P5520 3.84TB intel 英特尔 S4510/S4520 数据中]]></description>
-</item>
-<item>
-  <title>Ceph 理论详解 (一)</title>
-  <link>https://hg-xnlog.github.io/posts/ceph/1.ceph%E7%90%86%E8%AE%BA%E8%AF%A6%E8%A7%A3/</link>
-  <pubDate>Mon, 02 Jan 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/ceph/1.ceph%E7%90%86%E8%AE%BA%E8%AF%A6%E8%A7%A3/</guid>
-  <description><![CDATA[分布式存储简介 分布式存储的数据分为数据和元数据，元数据即是文件的属性信息(文件名、权限(属主、属组)、大小、时间戳等)，在分布式存储中当客户]]></description>
 </item>
 </channel>
 </rss>

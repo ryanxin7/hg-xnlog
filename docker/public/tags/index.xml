@@ -4,7 +4,15 @@
     <link>https://hg-xnlog.github.io/tags/</link>
     <description>Tags - 标签 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 23 Oct 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Thu, 02 Nov 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+  <title>分布式存储</title>
+  <link>https://hg-xnlog.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/</link>
+  <pubDate>Thu, 02 Nov 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
   <title>日志收集</title>
   <link>https://hg-xnlog.github.io/tags/%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86/</link>
   <pubDate>Mon, 23 Oct 2023 00:00:00 &#43;0000</pubDate>
@@ -74,14 +82,6 @@
   <pubDate>Tue, 15 Aug 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</guid>
-  <description><![CDATA[]]></description>
-</item>
-<item>
-  <title>NFS</title>
-  <link>https://hg-xnlog.github.io/tags/nfs/</link>
-  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/tags/nfs/</guid>
   <description><![CDATA[]]></description>
 </item>
 </channel>

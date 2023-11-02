@@ -1,7 +1,15 @@
-
-
-# ceph-common 依赖问题
-
+---
+author: Ryan
+title: ceph-common 指定版本安装依赖问题
+date: 2023-11-01
+lastmod: 2023-11-01
+tags: 
+    - 分布式存储
+categories:
+   - Ceph
+expirationReminder:
+  enable: true
+---
 
 
 缺少依赖：

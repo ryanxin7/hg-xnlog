@@ -1,7 +1,6 @@
-
 ---
 author: Ryan
-title: Elasticsearch 8.10.4搭建部署
+title: Elasticsearch 8.10.4搭建部署 
 date: 2023-10-23
 lastmod: 2023-10-23
 tags: 
@@ -9,8 +8,7 @@ tags:
 categories:
    - ElasticStack
 expirationReminder:
-
-    enable: true
+  enable: true
 ---
 
 ## 1.环境准备

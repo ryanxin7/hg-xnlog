@@ -4,9 +4,33 @@
     <link>https://hg-xnlog.github.io/</link>
     <description>Ryan’s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 23 Oct 2023 00:00:00 &#43;0000</lastBuildDate>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Thu, 02 Nov 2023 00:00:00 &#43;0000</lastBuildDate>
       <atom:link href="https://hg-xnlog.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
+  <title>Kubernetes结合ceph实现数据持久化</title>
+  <link>https://hg-xnlog.github.io/posts/ceph/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/</link>
+  <pubDate>Thu, 02 Nov 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/ceph/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/</guid>
+  <description><![CDATA[rbd结合K8s提供存储卷及动态卷使用案例 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在cep]]></description>
+</item>
+<item>
+  <title>ceph-common 指定版本安装依赖问题</title>
+  <link>https://hg-xnlog.github.io/posts/ceph/ceph-common-%E4%BE%9D%E8%B5%96%E9%97%AE%E9%A2%98/</link>
+  <pubDate>Wed, 01 Nov 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/ceph/ceph-common-%E4%BE%9D%E8%B5%96%E9%97%AE%E9%A2%98/</guid>
+  <description><![CDATA[缺少依赖： $ dpkg -i ceph-common_16.2.10-1bionic_amd64.deb ceph-common depends on librbd1 (= 16.2.10-1bionic); however: Package librbd1 is not installed. ceph-common depends on python3-cephfs (= 16.2.10-1bionic); however: Package python3-cephfs is not installed. ceph-common depends on python3-ceph-argparse (= 16.2.10-1bionic); however: Package python3-ceph-argparse is not installed. ceph-common depends on python3-ceph-common (= 16.2.10-1bionic); however: Package python3-ceph-common is not installed. ceph-common depends on python3-prettytable; however: Package python3-prettytable is not installed. ceph-common depends on]]></description>
+</item>
+<item>
+  <title>2023-10月最新8.10.4版本ELK集群服务搭建 HTTPS</title>
+  <link>https://hg-xnlog.github.io/posts/elk/elasticsearch-kibana-https/</link>
+  <pubDate>Mon, 23 Oct 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/elk/elasticsearch-kibana-https/</guid>
+  <description><![CDATA[一、安装Elasticsearch 下载地址：https://www.elastic.co/cn/downloads/elasticsearc]]></description>
+</item>
+<item>
   <title>Elasticsearch 8.10.4搭建部署</title>
   <link>https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/</link>
   <pubDate>Mon, 23 Oct 2023 00:00:00 &#43;0000</pubDate>
@@ -16,10 +40,10 @@
 </item>
 <item>
   <title>Ansible批量配置rsyslog客户端</title>
-  <link>https://hg-xnlog.github.io/posts/elk/ansible%E6%89%B9%E9%87%8F%E9%85%8D%E7%BD%AErsyslog%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E9%80%81%E6%97%A5%E5%BF%97/</link>
+  <link>https://hg-xnlog.github.io/posts/cicd/ansible%E6%89%B9%E9%87%8F%E9%85%8D%E7%BD%AErsyslog%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E9%80%81%E6%97%A5%E5%BF%97/</link>
   <pubDate>Fri, 20 Oct 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/elk/ansible%E6%89%B9%E9%87%8F%E9%85%8D%E7%BD%AErsyslog%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E9%80%81%E6%97%A5%E5%BF%97/</guid>
+  <guid>https://hg-xnlog.github.io/posts/cicd/ansible%E6%89%B9%E9%87%8F%E9%85%8D%E7%BD%AErsyslog%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E9%80%81%E6%97%A5%E5%BF%97/</guid>
   <description><![CDATA[由于等保要求，需要收集所有服务器的日志，但是服务器这么多每个都配置工作量太大了，所以使用ansible 批量管理工具，配置并启用各个节点服务器]]></description>
 </item>
 <item>
@@ -61,30 +85,6 @@
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/blog/push-docker-images-github-registry/</guid>
   <description><![CDATA[使用 GitHub Actions 来自动构建 Docker 镜像并将其上传到 Docker Registry 时，需要以下步骤进行设置： 工作流会在每次将代码推送到 main 分支时执行。它首先检出代码，然后设置 Docker Buildx 环境，]]></description>
-</item>
-<item>
-  <title>使用Algolia实现Hugo本地智能搜索</title>
-  <link>https://hg-xnlog.github.io/posts/blog/%E4%BD%BF%E7%94%A8algolia%E5%AE%9E%E7%8E%B0hugo%E6%9C%AC%E5%9C%B0%E6%99%BA%E8%83%BD%E6%90%9C%E7%B4%A2/</link>
-  <pubDate>Tue, 15 Aug 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/blog/%E4%BD%BF%E7%94%A8algolia%E5%AE%9E%E7%8E%B0hugo%E6%9C%AC%E5%9C%B0%E6%99%BA%E8%83%BD%E6%90%9C%E7%B4%A2/</guid>
-  <description><![CDATA[1.简介 Algolia是一家提供搜索即服务的技术公司，帮助开发者为他们的应用程序或网站构建高速、精准的搜索功能。 免费的计划每个月可以查询10]]></description>
-</item>
-<item>
-  <title>k8s强制删除pod&amp;pv&amp;pvc和ns&amp;namespace方法</title>
-  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E5%BC%BA%E5%88%B6%E5%88%A0%E9%99%A4podpvpvc%E5%92%8Cnsnamespace%E6%96%B9%E6%B3%95/</link>
-  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E5%BC%BA%E5%88%B6%E5%88%A0%E9%99%A4podpvpvc%E5%92%8Cnsnamespace%E6%96%B9%E6%B3%95/</guid>
-  <description><![CDATA[k8s强制删除pod&amp;pv&amp;pvc和ns&amp;namespace方法 注意：以下操作方法十分危险，三思而行！！！ 如果名称空]]></description>
-</item>
-<item>
-  <title>k8s中部署单节点redis</title>
-  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/redis-on-k8scluster/</link>
-  <pubDate>Mon, 14 Aug 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/redis-on-k8scluster/</guid>
-  <description><![CDATA[k8s中部署单节点redis https://gitee.com/zdevops/k8s-yaml/blob/main/redis/single/ redis-cm.yaml --- apiVersion: v1 kind: ConfigMap metadata: name: redis-config namespace: zdevops data: redis-config: | appendonly yes protected-mode no dir /data port 6379 requirepass redis@abc.com redis-sts.yaml --- apiVersion: apps/v1 kind: StatefulSet metadata: name: redis namespace: zdevops labels: app: redis spec: serviceName: redis-headless replicas: 1 selector: matchLabels: app: redis template: metadata: labels: app: redis spec: containers: -]]></description>
 </item>
 </channel>
 </rss>

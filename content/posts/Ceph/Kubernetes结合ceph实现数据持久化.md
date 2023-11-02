@@ -1,4 +1,15 @@
-
+---
+author: Ryan
+title: Kubernetes结合ceph实现数据持久化
+date: 2023-11-02
+lastmod: 2023-11-02
+tags: 
+    - 分布式存储
+categories:
+   - Ceph
+expirationReminder:
+  enable: true
+---
 
 
 
