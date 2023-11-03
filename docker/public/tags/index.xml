@@ -13,6 +13,14 @@
   <description><![CDATA[]]></description>
 </item>
 <item>
+  <title>服务器安全策略</title>
+  <link>https://hg-xnlog.github.io/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5/</link>
+  <pubDate>Mon, 23 Oct 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/tags/%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
   <title>日志收集</title>
   <link>https://hg-xnlog.github.io/tags/%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86/</link>
   <pubDate>Mon, 23 Oct 2023 00:00:00 &#43;0000</pubDate>
@@ -74,14 +82,6 @@
   <pubDate>Fri, 25 Aug 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/tags/hugo/</guid>
-  <description><![CDATA[]]></description>
-</item>
-<item>
-  <title>个人网站</title>
-  <link>https://hg-xnlog.github.io/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</link>
-  <pubDate>Tue, 15 Aug 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/tags/%E4%B8%AA%E4%BA%BA%E7%BD%91%E7%AB%99/</guid>
   <description><![CDATA[]]></description>
 </item>
 </channel>
