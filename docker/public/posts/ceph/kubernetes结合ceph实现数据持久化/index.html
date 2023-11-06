@@ -7,12 +7,12 @@
     <meta name="robots" content="noodp" />
     <title>Kubernetes结合ceph实现数据持久化 - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
 <meta name="author-link" content="https://github.com/ryanxin7">
-<meta name="description" content="rbd结合K8s提供存储卷及动态卷使用案例 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在cep" /><meta name="keywords" content='分布式存储' /><meta itemprop="name" content="Kubernetes结合ceph实现数据持久化">
-<meta itemprop="description" content="rbd结合K8s提供存储卷及动态卷使用案例 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在cep"><meta itemprop="datePublished" content="2023-11-02T00:00:00+00:00" />
+<meta name="description" content="Ceph K8s环境rdb,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创" /><meta name="keywords" content='分布式存储' /><meta itemprop="name" content="Kubernetes结合ceph实现数据持久化">
+<meta itemprop="description" content="Ceph K8s环境rdb,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创"><meta itemprop="datePublished" content="2023-11-02T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-11-02T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1515"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="2577"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="分布式存储," /><meta property="og:title" content="Kubernetes结合ceph实现数据持久化" />
-<meta property="og:description" content="rbd结合K8s提供存储卷及动态卷使用案例 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在cep" />
+<meta property="og:description" content="Ceph K8s环境rdb,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hg-xnlog.github.io/posts/ceph/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2023-11-02T00:00:00+00:00" />
@@ -21,7 +21,7 @@
 <meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
 
 <meta name="twitter:title" content="Kubernetes结合ceph实现数据持久化"/>
-<meta name="twitter:description" content="rbd结合K8s提供存储卷及动态卷使用案例 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在cep"/>
+<meta name="twitter:description" content="Ceph K8s环境rdb,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创"/>
 <meta name="application-name" content="Ryan’s Notebook">
 <meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/ceph/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/ceph/ceph-common-%E4%BE%9D%E8%B5%96%E9%97%AE%E9%A2%98/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96\/"
-    },"genre": "posts","keywords": "分布式存储","wordcount":  1515 ,
+    },"genre": "posts","keywords": "分布式存储","wordcount":  2577 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96\/","datePublished": "2023-11-02T00:00:00+00:00","dateModified": "2023-11-02T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -181,7 +181,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/ceph/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Ceph</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-11-02 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span title="更新于 2023-11-02 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 1515 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 4 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Kubernetes结合ceph实现数据持久化">
+      <div class="post-meta-line"><span title="发布于 2023-11-02 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span title="更新于 2023-11-02 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2577 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 6 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Kubernetes结合ceph实现数据持久化">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -191,15 +191,23 @@
         </div>
         <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
-    <li><a href="#kubernetes-通过keyring文件挂载ceph-rbd-镜像">Kubernetes 通过keyring文件挂载ceph rbd 镜像</a>
+    <li><a href="#11-基于rbd结合k8s提供存储卷及动态存储">1.1 基于rbd结合k8s提供存储卷及动态存储</a>
       <ul>
-        <li><a href="#客户端安装ceph-common">客户端安装ceph-common</a></li>
+        <li><a href="#111-创建存储池">1.1.1 创建存储池</a></li>
+        <li><a href="#112-创建image">1.1.2 创建Image</a></li>
+        <li><a href="#113-客户端安装ceph-common">1.1.3 客户端安装ceph-common</a></li>
+        <li><a href="#114-创建ceph普通用户权限keyring">1.1.4 创建Ceph普通用户权限keyring</a></li>
+      </ul>
+    </li>
+    <li><a href="#12--通过keyring-文件挂载rbd">1.2  通过Keyring 文件挂载RBD</a>
+      <ul>
+        <li><a href="#121-通过kering文件直接挂载-busybox">1.2.1 通过Kering文件直接挂载-busybox</a></li>
       </ul>
     </li>
     <li><a href="#kubernetes-通secret-挂载rbd及cephfs-使用案例">Kubernetes 通secret 挂载rbd及cephfs 使用案例</a></li>
   </ul>
 </nav></div>
-      </div><div class="content" id="content"><p>rbd结合K8s提供存储卷及动态卷使用案例</p>
+      </div><div class="content" id="content"><h1 id="ceph-k8s环境rdbcephfs的使用">Ceph K8s环境rdb,CephFS的使用</h1>
 <p>让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创建rbd并且让k8s node 节点能够通过ceph认证。</p>
 <blockquote>
 <p>在使用Ceph作为动态存储卷的时候，确实需要确保Kubernetes集群中的各个组件，包括kube-controller-manager，能够访问Ceph存储集群。为了实现这一点，通常需要在每个Kubernetes节点上同步Ceph的认证文件。</p>
@@ -207,8 +215,8 @@
 <p>可以根据需求在Kubernetes中选择使用RBD存储或CephFS存储。</p>
 <p>RBD（Rados Block Device）通常用于有状态服务，因为它提供了块设备级别的存储，适用于需要持久性和存储卷的应用程序，如数据库或其他有状态服务。RBD卷可以附加到Pod，并且可以在Pod重新调度时保留数据。这使其非常适用于需要持久性数据的应用程序。</p>
 <p>CephFS（Ceph文件系统）通常用于无状态服务，因为它提供了一个分布式文件系统，允许多个Pod在同一文件系统上共享数据。这对于需要跨多个Pod之间共享数据的应用程序非常有用，如Web服务器或应用程序日志。</p>
-<h2 id="kubernetes-通过keyring文件挂载ceph-rbd-镜像">Kubernetes 通过keyring文件挂载ceph rbd 镜像</h2>
-<p>ceph集群状态</p>
+<h2 id="11-基于rbd结合k8s提供存储卷及动态存储">1.1 基于rbd结合k8s提供存储卷及动态存储</h2>
+<p><strong>查看ceph集群状态</strong></p>
 <div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ceph health detail <span class="p">|</span> awk <span class="s1">&#39;{print $2}&#39;</span> <span class="p">|</span> sed -n <span class="s1">&#39;/^2\.*/p&#39;</span> <span class="p">|</span> sed -n <span class="s1">&#39;1,50p&#39;</span>
 </span></span><span class="line"><span class="cl">2.3e 2.3f 2.3c 2.3d 2.3a 2.3b 2.38 2.39 2.36 2.37 2.34 2.35 2.32 2.33 2.30 2.31 2.2e 2.2f 2.2c 2.2d 2.2a 2.2b 2.28 2.29 2.26 2.27 2.24
 </span></span><span class="line"><span class="cl">2.25 2.22 2.23 2.20 2.21 2.1b 2.1a 2.19 2.18 2.17 2.16 2.15 2.14 2.13 2.12 2.11 2.10 2.f 2.e 2.d 2.c 2.5 2.6</span></span></code></pre></div><div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
@@ -294,7 +302,7 @@
 </span></span><span class="line"><span class="cl">.rgw.root               <span class="m">7</span>   <span class="m">32</span>  1.3 KiB        <span class="m">4</span>   <span class="m">48</span> KiB      <span class="m">0</span>    <span class="m">322</span> GiB
 </span></span><span class="line"><span class="cl">default.rgw.log         <span class="m">8</span>   <span class="m">32</span>  3.6 KiB      <span class="m">209</span>  <span class="m">408</span> KiB      <span class="m">0</span>    <span class="m">322</span> GiB
 </span></span><span class="line"><span class="cl">default.rgw.control     <span class="m">9</span>   <span class="m">32</span>      <span class="m">0</span> B        <span class="m">8</span>      <span class="m">0</span> B      <span class="m">0</span>    <span class="m">322</span> GiB
-</span></span><span class="line"><span class="cl">default.rgw.meta       <span class="m">10</span>   <span class="m">32</span>      <span class="m">0</span> B        <span class="m">0</span>      <span class="m">0</span> B      <span class="m">0</span>    <span class="m">322</span> GiB</span></span></code></pre></div><p>创建存储池</p>
+</span></span><span class="line"><span class="cl">default.rgw.meta       <span class="m">10</span>   <span class="m">32</span>      <span class="m">0</span> B        <span class="m">0</span>      <span class="m">0</span> B      <span class="m">0</span>    <span class="m">322</span> GiB</span></span></code></pre></div><h3 id="111-创建存储池">1.1.1 创建存储池</h3>
 <div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 创建存储池 k8s-xrbd-pool1</span>
 </span></span><span class="line"><span class="cl">xceo@ceph-mon1:~$ ceph osd pool create k8s-xrbd-pool1 <span class="m">32</span> <span class="m">32</span>
 </span></span><span class="line"><span class="cl">pool <span class="s1">&#39;k8s-xrbd-pool1&#39;</span> created
@@ -308,7 +316,7 @@
 </span></span><span class="line"><span class="cl">enabled application <span class="s1">&#39;rbd&#39;</span> on pool <span class="s1">&#39;k8s-xrbd-pool1&#39;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## 初始化rbd</span>
-</span></span><span class="line"><span class="cl">xceo@ceph-mon1:~$ rbd pool init -p k8s-xrbd-pool1</span></span></code></pre></div><p>创建Image</p>
+</span></span><span class="line"><span class="cl">xceo@ceph-mon1:~$ rbd pool init -p k8s-xrbd-pool1</span></span></code></pre></div><h3 id="112-创建image">1.1.2 创建Image</h3>
 <p>创建好的rbd不能直接挂载需要创建镜像</p>
 <div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 创建镜像</span>
 </span></span><span class="line"><span class="cl">xceo@ceph-mon1:~$ rbd create k8s-xrbd-img1 --size 4G --pool k8s-xrbd-pool1 --image-feature layering
@@ -331,7 +339,7 @@
 </span></span><span class="line"><span class="cl">        flags:
 </span></span><span class="line"><span class="cl">        create_timestamp: Tue Oct <span class="m">31</span> 10:44:52 <span class="m">2023</span>
 </span></span><span class="line"><span class="cl">        access_timestamp: Tue Oct <span class="m">31</span> 10:44:52 <span class="m">2023</span>
-</span></span><span class="line"><span class="cl">        modify_timestamp: Tue Oct <span class="m">31</span> 10:44:52 <span class="m">2023</span></span></span></code></pre></div><h3 id="客户端安装ceph-common">客户端安装ceph-common</h3>
+</span></span><span class="line"><span class="cl">        modify_timestamp: Tue Oct <span class="m">31</span> 10:44:52 <span class="m">2023</span></span></span></code></pre></div><h3 id="113-客户端安装ceph-common">1.1.3 客户端安装ceph-common</h3>
 <p>分别在K8S Master与各node 节点安装 ceph-common 组件包。</p>
 <div class="highlight" id="id-9"><pre tabindex="0" class="chroma"><code class="language-BASH" data-lang="BASH"><span class="line"><span class="cl"><span class="c1">## 查看当前主机系统版本</span>
 </span></span><span class="line"><span class="cl">root@k8s-master01:~# lsb_release -a
@@ -340,13 +348,187 @@
 </span></span><span class="line"><span class="cl">Description:    Ubuntu 18.04.6 LTS
 </span></span><span class="line"><span class="cl">Release:        18.04
 </span></span><span class="line"><span class="cl">Codename:       bionic</span></span></code></pre></div><div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 安装key</span>
-</span></span><span class="line"><span class="cl">$ wget -q -O- <span class="s1">&#39;https://mirrors.aliyun.com/ceph/keys/release.asc&#39;</span> <span class="p">|</span> sudo apt-key add -
+</span></span><span class="line"><span class="cl">wget -q -O- <span class="s1">&#39;https://mirrors.aliyun.com/ceph/keys/release.asc&#39;</span> <span class="p">|</span> sudo apt-key add -
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## Ceph pacific 版本</span>
-</span></span><span class="line"><span class="cl">$ sudo apt-add-repository <span class="s1">&#39;deb https://mirrors.aliyun.com/ceph/debian-pacific/ bionic main&#39;</span>
-</span></span><span class="line"><span class="cl">$ sudo apt update
+</span></span><span class="line"><span class="cl">sudo apt-add-repository <span class="s1">&#39;deb https://mirrors.aliyun.com/ceph/debian-pacific/ bionic main&#39;</span>
+</span></span><span class="line"><span class="cl">sudo apt update
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">## 查看版</span></span></span></code></pre></div><h2 id="kubernetes-通secret-挂载rbd及cephfs-使用案例">Kubernetes 通secret 挂载rbd及cephfs 使用案例</h2>
+</span></span><span class="line"><span class="cl"><span class="c1">## 查看软件包版本</span>
+</span></span><span class="line"><span class="cl">apt-cache madison ceph-common
+</span></span><span class="line"><span class="cl">ceph-common <span class="p">|</span> 16.2.14-1bionic <span class="p">|</span> https://mirrors.aliyun.com/ceph/debian-pacific bionic/main amd64 Packages
+</span></span><span class="line"><span class="cl">ceph-common <span class="p">|</span> 15.2.17-1bionic <span class="p">|</span> https://mirrors.aliyun.com/ceph/debian-octopus bionic/main amd64 Packages
+</span></span><span class="line"><span class="cl">ceph-common <span class="p">|</span> 12.2.13-0ubuntu0.18.04.11 <span class="p">|</span> http://mirrors.aliyun.com/ubuntu bionic-updates/main amd64 Packages
+</span></span><span class="line"><span class="cl">ceph-common <span class="p">|</span> 12.2.13-0ubuntu0.18.04.11 <span class="p">|</span> http://mirrors.aliyun.com/ubuntu bionic-security/main amd64 Packages
+</span></span><span class="line"><span class="cl">ceph-common <span class="p">|</span> 12.2.4-0ubuntu1 <span class="p">|</span> http://mirrors.aliyun.com/ubuntu bionic/main amd64 Packages</span></span></code></pre></div><p>因为Ceph集群的版本为16.2.10，Common 的版本尽量和Ceph集群的版本一致，软件包一般只提供最新的版本指定版本的话需要手动下载deb文件进行安装。</p>
+<p>16.2.10 版本DEB软件包下载：https://mirrors.aliyun.com/ceph/debian-16.2.10/pool/main/c/ceph/?spm=a2c6h.25603864.0.0.27912add02vFGg</p>
+<p><strong>遇到依赖问题</strong></p>
+<p>解决方法：<a href="ceph-common-%e4%be%9d%e8%b5%96%e9%97%ae%e9%a2%98">依赖问题解决</a></p>
+<div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"> $ dpkg -i ceph-common_16.2.10-1bionic_amd64.deb
+</span></span><span class="line"><span class="cl"> ceph-common depends on librbd1 <span class="o">(=</span> 16.2.10-1bionic<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package librbd1 is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on python3-cephfs <span class="o">(=</span> 16.2.10-1bionic<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package python3-cephfs is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on python3-ceph-argparse <span class="o">(=</span> 16.2.10-1bionic<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package python3-ceph-argparse is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on python3-ceph-common <span class="o">(=</span> 16.2.10-1bionic<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package python3-ceph-common is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on python3-prettytable<span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package python3-prettytable is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on python3-rados <span class="o">(=</span> 16.2.10-1bionic<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package python3-rados is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on python3-rbd <span class="o">(=</span> 16.2.10-1bionic<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package python3-rbd is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on python3-rgw <span class="o">(=</span> 16.2.10-1bionic<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package python3-rgw is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on libaio1 <span class="o">(</span>&gt;<span class="o">=</span> 0.3.93<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package libaio1 is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on libbabeltrace1 <span class="o">(</span>&gt;<span class="o">=</span> 1.2.1<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package libbabeltrace1 is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on libcephfs2<span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package libcephfs2 is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on libgoogle-perftools4<span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package libgoogle-perftools4 is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on libleveldb1v5<span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package libleveldb1v5 is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on liblua5.3-0<span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package liblua5.3-0 is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on liboath0 <span class="o">(</span>&gt;<span class="o">=</span> 1.10.0<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package liboath0 is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on librabbitmq4 <span class="o">(</span>&gt;<span class="o">=</span> 0.8.0<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package librabbitmq4 is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on librados2<span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package librados2 is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on libradosstriper1<span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package libradosstriper1 is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on librdkafka1 <span class="o">(</span>&gt;<span class="o">=</span> 0.9.2<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Package librdkafka1 is not installed.
+</span></span><span class="line"><span class="cl"> ceph-common depends on libsnappy1v5<span class="p">;</span> however:</span></span></code></pre></div><div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 安装依赖</span>
+</span></span><span class="line"><span class="cl">apt install -y libaio1 libbabeltrace1 libgoogle-perftools4 libleveldb1v5 liblua5.3-0 liboath0 librabbitmq4 liblttng-ust0 librdmacm1 libibverbs1 librdkafka1 python3-prettytable </span></span></code></pre></div><div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 解压安装包</span>
+</span></span><span class="line"><span class="cl">tar -xf /tmp/Ceph-Common-16.2.10.tar -C /opt/ceph</span></span></code></pre></div><div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 执行安装脚本</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /opt/ceph/Ceph-Common-16.2.10
+</span></span><span class="line"><span class="cl">bash ./install-ceph-common-16.2.10.sh 
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">Successfully installed ceph-common_16.2.10-1bionic_amd64.deb
+</span></span><span class="line"><span class="cl">Ceph packages installation completed.</span></span></code></pre></div><div class="highlight" id="id-15"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 验证版本</span>
+</span></span><span class="line"><span class="cl">root@k8s-node01:~# ceph -v
+</span></span><span class="line"><span class="cl">ceph version 16.2.10 <span class="o">(</span>45fa1a083152e41a408d15505f594ec5f1b4fe17<span class="o">)</span> pacific <span class="o">(</span>stable<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@k8s-node02:~# ceph -v
+</span></span><span class="line"><span class="cl">ceph version 16.2.10 <span class="o">(</span>45fa1a083152e41a408d15505f594ec5f1b4fe17<span class="o">)</span> pacific <span class="o">(</span>stable<span class="o">)</span></span></span></code></pre></div><h3 id="114-创建ceph普通用户权限keyring">1.1.4 创建Ceph普通用户权限keyring</h3>
+<div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xceo@ceph-mon1:~/ceph-cluster$ ceph auth get-or-create client.admk8s-ceamg mon <span class="s1">&#39;allow r&#39;</span> osd <span class="s1">&#39;allow * pool=k8s-xrbd-pool1&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>client.admk8s-ceamg<span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">key</span> <span class="o">=</span> AQAhr0hlhZTGCxAAajU0BbOfxO2+oUJ8OkmnXA<span class="o">==</span></span></span></code></pre></div><div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 验证用户</span>
+</span></span><span class="line"><span class="cl">xceo@ceph-mon1:~/ceph-cluster$ ceph auth get client.admk8s-ceamg
+</span></span><span class="line"><span class="cl"><span class="o">[</span>client.admk8s-ceamg<span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">key</span> <span class="o">=</span> AQAhr0hlhZTGCxAAajU0BbOfxO2+oUJ8OkmnXA<span class="o">==</span>
+</span></span><span class="line"><span class="cl">        caps <span class="nv">mon</span> <span class="o">=</span> <span class="s2">&#34;allow r&#34;</span>
+</span></span><span class="line"><span class="cl">        caps <span class="nv">osd</span> <span class="o">=</span> <span class="s2">&#34;allow * pool=k8s-xrbd-pool1&#34;</span>
+</span></span><span class="line"><span class="cl">exported keyring <span class="k">for</span> client.admk8s-ceamg</span></span></code></pre></div><div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 导出用户信息到Keying文件</span>
+</span></span><span class="line"><span class="cl">xceo@ceph-mon1:~/ceph-cluster$ ceph auth get client.admk8s-ceamg -o ceph.client.admk8s-ceamg.keyring
+</span></span><span class="line"><span class="cl">exported keyring <span class="k">for</span> client.admk8s-ceamg
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">xceo@ceph-mon1:~/ceph-cluster$ cat ceph.client.admk8s-ceamg.keyring
+</span></span><span class="line"><span class="cl"><span class="o">[</span>client.admk8s-ceamg<span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">key</span> <span class="o">=</span> AQAhr0hlhZTGCxAAajU0BbOfxO2+oUJ8OkmnXA<span class="o">==</span>
+</span></span><span class="line"><span class="cl">        caps <span class="nv">mon</span> <span class="o">=</span> <span class="s2">&#34;allow r&#34;</span>
+</span></span><span class="line"><span class="cl">        caps <span class="nv">osd</span> <span class="o">=</span> <span class="s2">&#34;allow * pool=k8s-xrbd-pool1&#34;</span></span></span></code></pre></div><div class="highlight" id="id-19"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 同步认证文件到K8s 各master和node节点</span>
+</span></span><span class="line"><span class="cl">xceo@ceph-mon1:~/ceph-cluster$ scp ceph.client.admk8s-ceamg.keyring ceph.conf root@10.1.0.110:/etc/ceph
+</span></span><span class="line"><span class="cl">xceo@ceph-mon1:~/ceph-cluster$ scp ceph.client.admk8s-ceamg.keyring ceph.conf root@10.1.0.111:/etc/ceph
+</span></span><span class="line"><span class="cl">xceo@ceph-mon1:~/ceph-cluster$ scp ceph.client.admk8s-ceamg.keyring ceph.conf root@10.1.0.112:/etc/ceph</span></span></code></pre></div><div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## hosts</span>
+</span></span><span class="line"><span class="cl">10.1.0.39 ceph-node1.xx.local ceph-node1
+</span></span><span class="line"><span class="cl">10.1.0.40 ceph-node2.xx.local ceph-node2
+</span></span><span class="line"><span class="cl">10.1.0.41 ceph-node3.xx.local ceph-node3
+</span></span><span class="line"><span class="cl">10.1.0.39 ceph-mon1.xx.local ceph-mon1
+</span></span><span class="line"><span class="cl">10.1.0.40 ceph-mon2.xx.local ceph-mon2
+</span></span><span class="line"><span class="cl">10.1.0.41 ceph-mon3.xx.local ceph-mon3
+</span></span><span class="line"><span class="cl">10.1.0.40 ceph-mgr1.xx.local ceph-mgr1
+</span></span><span class="line"><span class="cl">10.1.0.41 ceph-mgr2.xx.local ceph-mgr2
+</span></span><span class="line"><span class="cl">10.1.0.39 ceph-deploy.xx.local ceph-deploy</span></span></code></pre></div><div class="highlight" id="id-21"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 在k8s node 节点验证用户权限</span>
+</span></span><span class="line"><span class="cl">root@k8s-node01:/etc/ceph# ceph --user admk8s-ceamg.xx -s
+</span></span><span class="line"><span class="cl">  cluster:
+</span></span><span class="line"><span class="cl">    id:     62be32df-9cb4-474f-8727-d5c4bbceaf97
+</span></span><span class="line"><span class="cl">    health: HEALTH_OK
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  services:
+</span></span><span class="line"><span class="cl">    mon: <span class="m">3</span> daemons, quorum ceph-mon1,ceph-mon2,ceph-mon3 <span class="o">(</span>age 11h<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    mgr: ceph-mgr1<span class="o">(</span>active, since 5M<span class="o">)</span>, standbys: ceph-mgr2
+</span></span><span class="line"><span class="cl">    mds: 1/1 daemons up
+</span></span><span class="line"><span class="cl">    osd: <span class="m">15</span> osds: <span class="m">15</span> up <span class="o">(</span>since 5M<span class="o">)</span>, <span class="m">15</span> in <span class="o">(</span>since 5M<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    rgw: <span class="m">1</span> daemon active <span class="o">(</span><span class="m">1</span> hosts, <span class="m">1</span> zones<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  data:
+</span></span><span class="line"><span class="cl">    volumes: 1/1 healthy
+</span></span><span class="line"><span class="cl">    pools:   <span class="m">10</span> pools, <span class="m">385</span> pgs
+</span></span><span class="line"><span class="cl">    objects: 47.71k objects, <span class="m">184</span> GiB
+</span></span><span class="line"><span class="cl">    usage:   <span class="m">562</span> GiB used, 1.2 TiB / 1.8 TiB avail
+</span></span><span class="line"><span class="cl">    pgs:     <span class="m">385</span> active+clean</span></span></code></pre></div><div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 验证镜像访问权限</span>
+</span></span><span class="line"><span class="cl">root@k8s-node02:/etc/ceph# rbd --id admk8s-ceamg.xx ls --pool<span class="o">=</span>k8s-xrbd-pool1
+</span></span><span class="line"><span class="cl">k8s-xrbd-img1</span></span></code></pre></div><h2 id="12--通过keyring-文件挂载rbd">1.2  通过Keyring 文件挂载RBD</h2>
+<p>k8s环境可以有2种方式挂载rbd.</p>
+<ol>
+<li>基于keyring</li>
+<li>基于k8s secret</li>
+</ol>
+<h3 id="121-通过kering文件直接挂载-busybox">1.2.1 通过Kering文件直接挂载-busybox</h3>
+<div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># cat case1-busybox-keyring.yaml </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">busybox</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">busybox </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">sleep</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;3600&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Always </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">busybox</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">#restartPolicy: Always</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rbd-data1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rbd-data1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">rbd</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">monitors</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="s1">&#39;10.1.0.39:6789&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="s1">&#39;10.1.0.40:6789&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="s1">&#39;10.1.0.41:6789&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">pool</span><span class="p">:</span><span class="w"> </span><span class="l">k8s-xrbd-pool1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">k8s-xrbd-img1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">fsType</span><span class="p">:</span><span class="w"> </span><span class="l">ext4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">readOnly</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l">admk8s-ceamg</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">keyring</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/ceph/ceph.client.admk8s-ceamg.keyring</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">## 部署busybox</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># kubectl apply -f case1-busybox-keyring.yaml</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Events</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">Type    Reason                  Age   From                     Message</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>---- <span class="w">   </span>------ <span class="w">                 </span>---- <span class="w"> </span>---- <span class="w">                    </span>-------<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">Normal  Scheduled               14s   default-scheduler        Successfully assigned default/busybox to k8s-node03</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">Normal  SuccessfulAttachVolume  15s   attachdetach-controller  AttachVolume.Attach succeeded for volume &#34;rbd-data1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">Normal  Pulling                 4s    kubelet                  Pulling image &#34;busybox:1.34&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">Normal  Pulled                  3s    kubelet                  Successfully pulled image &#34;busybox:1.34&#34; in 1.841793996s</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">Normal  Created                 3s    kubelet                  Created container busybox</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="l">Normal  Started                 2s    kubelet                  Started container busybox</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">root@k8s-master01:/etc/ceph# kubectl get pod</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">NAME      READY   STATUS    RESTARTS   AGE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">busybox   1/1     Running   0          16s</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">## 此时busybox已经启动</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">root@k8s-master01:/etc/ceph# kubectl get pod -o wide</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">NAME      READY   STATUS    RESTARTS   AGE   IP           NODE         NOMINATED NODE   READINESS GATES</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">busybox   1/1     Running   0          52s   10.244.1.4   k8s-node03   &lt;none&gt;           &lt;none&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">root@k8s-master01:/etc/ceph#</span></span></span></code></pre></div><h2 id="kubernetes-通secret-挂载rbd及cephfs-使用案例">Kubernetes 通secret 挂载rbd及cephfs 使用案例</h2>
 </div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">

@@ -11,9 +11,7 @@ expirationReminder:
   enable: true
 ---
 
-
-
-rbd结合K8s提供存储卷及动态卷使用案例
+# Ceph K8s环境rdb,CephFS的使用
 
 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创建rbd并且让k8s node 节点能够通过ceph认证。
 
@@ -27,17 +25,11 @@ CephFS（Ceph文件系统）通常用于无状态服务，因为它提供了一�
 
 
 
-## Kubernetes 通过keyring文件挂载ceph rbd 镜像
+## 1.1 基于rbd结合k8s提供存储卷及动态存储
 
 
 
-ceph集群状态
-
-
-
-
-
-
+**查看ceph集群状态**
 
 ```bash
 ceph health detail | awk '{print $2}' | sed -n '/^2\.*/p' | sed -n '1,50p'
@@ -166,7 +158,7 @@ default.rgw.meta       10   32      0 B        0      0 B      0    322 GiB
 
 
 
-创建存储池
+### 1.1.1 创建存储池
 
 ```bash
 ## 创建存储池 k8s-xrbd-pool1
@@ -187,7 +179,7 @@ xceo@ceph-mon1:~$ rbd pool init -p k8s-xrbd-pool1
 
 
 
-创建Image
+### 1.1.2 创建Image
 
 创建好的rbd不能直接挂载需要创建镜像
 
@@ -218,7 +210,7 @@ rbd image 'k8s-xrbd-img1':
 
 
 
-### 客户端安装ceph-common
+### 1.1.3 客户端安装ceph-common
 
 分别在K8S Master与各node 节点安装 ceph-common 组件包。
 
@@ -236,15 +228,284 @@ Codename:       bionic
 
 ```bash
 ## 安装key
-$ wget -q -O- 'https://mirrors.aliyun.com/ceph/keys/release.asc' | sudo apt-key add -
+wget -q -O- 'https://mirrors.aliyun.com/ceph/keys/release.asc' | sudo apt-key add -
 
 ## Ceph pacific 版本
-$ sudo apt-add-repository 'deb https://mirrors.aliyun.com/ceph/debian-pacific/ bionic main'
-$ sudo apt update
+sudo apt-add-repository 'deb https://mirrors.aliyun.com/ceph/debian-pacific/ bionic main'
+sudo apt update
 
-## 查看版
+## 查看软件包版本
+apt-cache madison ceph-common
+ceph-common | 16.2.14-1bionic | https://mirrors.aliyun.com/ceph/debian-pacific bionic/main amd64 Packages
+ceph-common | 15.2.17-1bionic | https://mirrors.aliyun.com/ceph/debian-octopus bionic/main amd64 Packages
+ceph-common | 12.2.13-0ubuntu0.18.04.11 | http://mirrors.aliyun.com/ubuntu bionic-updates/main amd64 Packages
+ceph-common | 12.2.13-0ubuntu0.18.04.11 | http://mirrors.aliyun.com/ubuntu bionic-security/main amd64 Packages
+ceph-common | 12.2.4-0ubuntu1 | http://mirrors.aliyun.com/ubuntu bionic/main amd64 Packages
+```
+
+
+
+因为Ceph集群的版本为16.2.10，Common 的版本尽量和Ceph集群的版本一致，软件包一般只提供最新的版本指定版本的话需要手动下载deb文件进行安装。
+
+16.2.10 版本DEB软件包下载：https://mirrors.aliyun.com/ceph/debian-16.2.10/pool/main/c/ceph/?spm=a2c6h.25603864.0.0.27912add02vFGg
+
+
+
+**遇到依赖问题**
+
+解决方法：[依赖问题解决](ceph-common-依赖问题)
+
+```bash
+ $ dpkg -i ceph-common_16.2.10-1bionic_amd64.deb
+ ceph-common depends on librbd1 (= 16.2.10-1bionic); however:
+  Package librbd1 is not installed.
+ ceph-common depends on python3-cephfs (= 16.2.10-1bionic); however:
+  Package python3-cephfs is not installed.
+ ceph-common depends on python3-ceph-argparse (= 16.2.10-1bionic); however:
+  Package python3-ceph-argparse is not installed.
+ ceph-common depends on python3-ceph-common (= 16.2.10-1bionic); however:
+  Package python3-ceph-common is not installed.
+ ceph-common depends on python3-prettytable; however:
+  Package python3-prettytable is not installed.
+ ceph-common depends on python3-rados (= 16.2.10-1bionic); however:
+  Package python3-rados is not installed.
+ ceph-common depends on python3-rbd (= 16.2.10-1bionic); however:
+  Package python3-rbd is not installed.
+ ceph-common depends on python3-rgw (= 16.2.10-1bionic); however:
+  Package python3-rgw is not installed.
+ ceph-common depends on libaio1 (>= 0.3.93); however:
+  Package libaio1 is not installed.
+ ceph-common depends on libbabeltrace1 (>= 1.2.1); however:
+  Package libbabeltrace1 is not installed.
+ ceph-common depends on libcephfs2; however:
+  Package libcephfs2 is not installed.
+ ceph-common depends on libgoogle-perftools4; however:
+  Package libgoogle-perftools4 is not installed.
+ ceph-common depends on libleveldb1v5; however:
+  Package libleveldb1v5 is not installed.
+ ceph-common depends on liblua5.3-0; however:
+  Package liblua5.3-0 is not installed.
+ ceph-common depends on liboath0 (>= 1.10.0); however:
+  Package liboath0 is not installed.
+ ceph-common depends on librabbitmq4 (>= 0.8.0); however:
+  Package librabbitmq4 is not installed.
+ ceph-common depends on librados2; however:
+  Package librados2 is not installed.
+ ceph-common depends on libradosstriper1; however:
+  Package libradosstriper1 is not installed.
+ ceph-common depends on librdkafka1 (>= 0.9.2); however:
+  Package librdkafka1 is not installed.
+ ceph-common depends on libsnappy1v5; however:
+```
+
+
+
+
+
+```bash
+## 安装依赖
+apt install -y libaio1 libbabeltrace1 libgoogle-perftools4 libleveldb1v5 liblua5.3-0 liboath0 librabbitmq4 liblttng-ust0 librdmacm1 libibverbs1 librdkafka1 python3-prettytable 
+```
+
+
+
+```bash
+## 解压安装包
+tar -xf /tmp/Ceph-Common-16.2.10.tar -C /opt/ceph
+```
+
+
+
+```bash
+## 执行安装脚本
+cd /opt/ceph/Ceph-Common-16.2.10
+bash ./install-ceph-common-16.2.10.sh 
+...
+Successfully installed ceph-common_16.2.10-1bionic_amd64.deb
+Ceph packages installation completed.
+```
+
+
+
+```bash
+## 验证版本
+root@k8s-node01:~# ceph -v
+ceph version 16.2.10 (45fa1a083152e41a408d15505f594ec5f1b4fe17) pacific (stable)
+
+root@k8s-node02:~# ceph -v
+ceph version 16.2.10 (45fa1a083152e41a408d15505f594ec5f1b4fe17) pacific (stable)
+```
+
+
+
+### 1.1.4 创建Ceph普通用户权限keyring
+
+```bash
+xceo@ceph-mon1:~/ceph-cluster$ ceph auth get-or-create client.admk8s-ceamg mon 'allow r' osd 'allow * pool=k8s-xrbd-pool1'
+[client.admk8s-ceamg]
+        key = AQAhr0hlhZTGCxAAajU0BbOfxO2+oUJ8OkmnXA==
+```
+
+
+
+```bash
+## 验证用户
+xceo@ceph-mon1:~/ceph-cluster$ ceph auth get client.admk8s-ceamg
+[client.admk8s-ceamg]
+        key = AQAhr0hlhZTGCxAAajU0BbOfxO2+oUJ8OkmnXA==
+        caps mon = "allow r"
+        caps osd = "allow * pool=k8s-xrbd-pool1"
+exported keyring for client.admk8s-ceamg
+```
+
+
+
+```bash 
+## 导出用户信息到Keying文件
+xceo@ceph-mon1:~/ceph-cluster$ ceph auth get client.admk8s-ceamg -o ceph.client.admk8s-ceamg.keyring
+exported keyring for client.admk8s-ceamg
+
+xceo@ceph-mon1:~/ceph-cluster$ cat ceph.client.admk8s-ceamg.keyring
+[client.admk8s-ceamg]
+        key = AQAhr0hlhZTGCxAAajU0BbOfxO2+oUJ8OkmnXA==
+        caps mon = "allow r"
+        caps osd = "allow * pool=k8s-xrbd-pool1"
 
 ```
+
+```bash
+## 同步认证文件到K8s 各master和node节点
+xceo@ceph-mon1:~/ceph-cluster$ scp ceph.client.admk8s-ceamg.keyring ceph.conf root@10.1.0.110:/etc/ceph
+xceo@ceph-mon1:~/ceph-cluster$ scp ceph.client.admk8s-ceamg.keyring ceph.conf root@10.1.0.111:/etc/ceph
+xceo@ceph-mon1:~/ceph-cluster$ scp ceph.client.admk8s-ceamg.keyring ceph.conf root@10.1.0.112:/etc/ceph
+```
+
+
+
+
+
+```bash
+## hosts
+10.1.0.39 ceph-node1.xx.local ceph-node1
+10.1.0.40 ceph-node2.xx.local ceph-node2
+10.1.0.41 ceph-node3.xx.local ceph-node3
+10.1.0.39 ceph-mon1.xx.local ceph-mon1
+10.1.0.40 ceph-mon2.xx.local ceph-mon2
+10.1.0.41 ceph-mon3.xx.local ceph-mon3
+10.1.0.40 ceph-mgr1.xx.local ceph-mgr1
+10.1.0.41 ceph-mgr2.xx.local ceph-mgr2
+10.1.0.39 ceph-deploy.xx.local ceph-deploy
+```
+
+
+
+```bash 
+## 在k8s node 节点验证用户权限
+root@k8s-node01:/etc/ceph# ceph --user admk8s-ceamg.xx -s
+  cluster:
+    id:     62be32df-9cb4-474f-8727-d5c4bbceaf97
+    health: HEALTH_OK
+
+  services:
+    mon: 3 daemons, quorum ceph-mon1,ceph-mon2,ceph-mon3 (age 11h)
+    mgr: ceph-mgr1(active, since 5M), standbys: ceph-mgr2
+    mds: 1/1 daemons up
+    osd: 15 osds: 15 up (since 5M), 15 in (since 5M)
+    rgw: 1 daemon active (1 hosts, 1 zones)
+
+  data:
+    volumes: 1/1 healthy
+    pools:   10 pools, 385 pgs
+    objects: 47.71k objects, 184 GiB
+    usage:   562 GiB used, 1.2 TiB / 1.8 TiB avail
+    pgs:     385 active+clean
+```
+
+
+
+
+
+```bash
+## 验证镜像访问权限
+root@k8s-node02:/etc/ceph# rbd --id admk8s-ceamg.xx ls --pool=k8s-xrbd-pool1
+k8s-xrbd-img1
+```
+
+
+
+## 1.2  通过Keyring 文件挂载RBD
+
+ k8s环境可以有2种方式挂载rbd.
+
+1. 基于keyring
+2. 基于k8s secret
+
+
+
+### 1.2.1 通过Kering文件直接挂载-busybox
+
+```yaml
+# cat case1-busybox-keyring.yaml 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+  namespace: default
+spec:
+  containers:
+  - image: busybox 
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: Always 
+    name: busybox
+    #restartPolicy: Always
+    volumeMounts:
+    - name: rbd-data1
+      mountPath: /data
+  volumes:
+    - name: rbd-data1
+      rbd:
+        monitors:
+        - '10.1.0.39:6789'
+        - '10.1.0.40:6789'
+        - '10.1.0.41:6789'
+        pool: k8s-xrbd-pool1
+        image: k8s-xrbd-img1
+        fsType: ext4
+        readOnly: false
+        user: admk8s-ceamg
+        keyring: /etc/ceph/ceph.client.admk8s-ceamg.keyring
+
+
+## 部署busybox
+# kubectl apply -f case1-busybox-keyring.yaml
+
+Events:
+  Type    Reason                  Age   From                     Message
+  ----    ------                  ----  ----                     -------
+  Normal  Scheduled               14s   default-scheduler        Successfully assigned default/busybox to k8s-node03
+  Normal  SuccessfulAttachVolume  15s   attachdetach-controller  AttachVolume.Attach succeeded for volume "rbd-data1"
+  Normal  Pulling                 4s    kubelet                  Pulling image "busybox:1.34"
+  Normal  Pulled                  3s    kubelet                  Successfully pulled image "busybox:1.34" in 1.841793996s
+  Normal  Created                 3s    kubelet                  Created container busybox
+  Normal  Started                 2s    kubelet                  Started container busybox
+
+
+root@k8s-master01:/etc/ceph# kubectl get pod
+NAME      READY   STATUS    RESTARTS   AGE
+busybox   1/1     Running   0          16s
+
+
+
+## 此时busybox已经启动
+root@k8s-master01:/etc/ceph# kubectl get pod -o wide
+NAME      READY   STATUS    RESTARTS   AGE   IP           NODE         NOMINATED NODE   READINESS GATES
+busybox   1/1     Running   0          52s   10.244.1.4   k8s-node03   <none>           <none>
+root@k8s-master01:/etc/ceph#
+```
+
+
 
 
 

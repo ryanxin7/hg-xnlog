@@ -10,7 +10,7 @@
   <pubDate>Thu, 02 Nov 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/ceph/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/</guid>
-  <description><![CDATA[rbd结合K8s提供存储卷及动态卷使用案例 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在cep]]></description>
+  <description><![CDATA[Ceph K8s环境rdb,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创]]></description>
 </item>
 <item>
   <title>ceph-common 指定版本安装依赖问题</title>
