@@ -497,7 +497,713 @@ root@k8s-master01:/etc/ceph#
 
 
 
+测试卷的数据写入
 
+```bash
+root@k8s-master01:~# kubectl exec -it busybox -- cp -r /etc /data
+root@k8s-master01:~# kubectl exec -it busybox -- ls -l /data
+total 20
+drwxr-xr-x    3 root     root          4096 Nov  7 02:54 etc
+drwx------    2 root     root         16384 Nov  6 09:42 lost+found
+```
+
+
+
+### 1.2.2  通过Kering文件直接挂载-Nginx  
+
+```yaml
+root@k8s-master01:/yaml/ceph# vim case2-nginx-keyring.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      app: nginx-rbd
+  template:
+    metadata:
+      labels:
+        app: nginx-rbd
+    spec:
+      containers:
+      - name: nginx-rbd
+        image: nginx
+        ports:
+        - containerPort: 80
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: rbd-data1
+          mountPath: /data
+      volumes:
+        - name: rbd-data1
+          rbd:
+            monitors:
+            - '10.1.0.39:6789'
+            - '10.1.0.40:6789'
+            - '10.1.0.41:6789'
+            pool: k8s-xrbd-pool1
+            image: k8s-xrbd-img1
+            fsType: ext4
+            readOnly: false
+            user: admk8s-ceamg
+            keyring: /etc/ceph/ceph.client.admk8s-ceamg.keyring
+```
+
+
+
+```bash
+root@k8s-master01:/yaml/ceph# kubectl apply -f case2-nginx-keyring.yaml
+```
+
+
+
+```bash
+Events:
+  Type    Reason                  Age   From                     Message
+  ----    ------                  ----  ----                     -------
+  Normal  Scheduled               84s   default-scheduler        Successfully assigned default/nginx-deployment-7c89bddb49-x2z5z to k8s-node03
+  Normal  SuccessfulAttachVolume  85s   attachdetach-controller  AttachVolume.Attach succeeded for volume "rbd-data1"
+  Normal  Pulling                 68s   kubelet                  Pulling image "nginx"
+  Normal  Pulled                  3s    kubelet                  Successfully pulled image "nginx" in 1m4.788104901s
+  Normal  Created                 2s    kubelet                  Created container nginx-rbd
+  Normal  Started                 2s    kubelet                  Started container nginx-rbd
+```
+
+
+
+### 1.2.3 验证RBD挂载
+
+
+
+
+
+![image-20231107103955428](https://cdn1.ryanxin.live/image-20231107103955428.png)
+
+
+
+查看节点对rbd卷的挂载
+
+```bash
+root@k8s-node03:~# mount |grep rbd
+/dev/rbd0 on /var/lib/kubelet/plugins/kubernetes.io/rbd/mounts/k8s-xrbd-pool1-image-k8s-xrbd-img1 type ext4 (rw,relatime,stripe=1024,data=ordered)
+/dev/rbd0 on /var/lib/kubelet/pods/3138919d-d725-4739-a478-7bab02d44c5d/volumes/kubernetes.io~rbd/rbd-data1 type ext4 (rw,relatime,stripe=1024,data=ordered)
+
+
+
+root@k8s-node03:~# lsblk
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sr0     11:0    1  969M  0 rom
+rbd0   251:0    0    4G  0 disk /var/lib/kubelet/pods/3138919d-d725-4739-a478-7bab02d44c5d/volumes/kubernetes.io~rbd/rbd-data1
+vda    252:0    0  120G  0 disk
+├─vda1 252:1    0    1M  0 part
+└─vda2 252:2    0  120G  0 part /
+
+root@k8s-node03:~# rbd showmapped
+id  pool            namespace  image          snap  device
+0   k8s-xrbd-pool1             k8s-xrbd-img1  -     /dev/rbd0
+```
+
+
+
+
+
+此时在ceph下数据也已经可以看到
+
+![image-20231107104237009](https://cdn1.ryanxin.live/image-20231107104237009.png)
+
+
+
+查看 pod 具体挂载使用rbd
+
+```bash
+root@k8s-master01:/yaml/ceph# kubectl exec -it nginx-deployment-7c89bddb49-x2z5z  -- df -h /data
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/rbd0       3.9G   76K  3.9G   1% /data
+
+root@k8s-master01:/yaml/ceph# kubectl exec -it nginx-deployment-7c89bddb49-x2z5z -- mount|grep rbd
+/dev/rbd0 on /data type ext4 (rw,relatime,stripe=1024,data=ordered)
+
+
+root@k8s-master01:/yaml/ceph# kubectl exec -it nginx-deployment-7c89bddb49-x2z5z -- ls -l /data
+total 20
+drwxr-xr-x 3 root root  4096 Nov  7 02:54 etc
+drwx------ 2 root root 16384 Nov  6 09:42 lost+found
+
+```
+
+
+
+## 1.3 通过secret挂载rbd
+
+### 1.3.1 创建Secret
+
+先获取base64加密后的auth key
+
+```bash
+xceo@ceph-mon1:~$ ceph auth print-key client.admk8s-ceamg | base64
+QVFBaHIwaGxoWlRHQ3hBQWFqVTBCYk9meE8yK29VSjhPa21uWEE9PQ==
+
+
+## 可以用base64解密
+xceo@ceph-mon1:~$ echo QVFBaHIwaGxoWlRHQ3hBQWFqVTBCYk9meE8yK29VSjhPa21uWEE9PQ== |base64 -d
+AQAhr0hlhZTGCxAAajU0BbOfxO2+oUJ8OkmnXA==xceo@ceph-mon1:~$
+```
+
+
+
+将这个key写入`secret.yaml`
+
+```bash
+vim case3-secret-client-k8s-rbd.yaml 
+```
+
+
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ceph-secret-admk8s-ceamg
+type: "kubernetes.io/rbd"
+data:
+  key: QVFBaHIwaGxoWlRHQ3hBQWFqVTBCYk9meE8yK29VSjhPa21uWEE9PQ==
+```
+
+```bash
+root@k8s-master01:/yaml/ceph# kubectl apply -f case3-secret-client-admk8s-ceamg.yaml
+secret/ceph-secret-admk8s-ceamg created
+```
+
+
+
+验证secret
+
+```bash
+root@k8s-master01:/yaml/ceph# kubectl get secrets
+NAME                       TYPE                                  DATA   AGE
+ceph-secret-admk8s-ceamg   kubernetes.io/rbd                     1      51s
+```
+
+### 1.3.2 创建pod
+
+```yaml
+#vim case4-nginx-secret.yaml 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ng-deploy-80
+  template:
+    metadata:
+      labels:
+        app: ng-deploy-80
+    spec:
+      containers:
+      - name: ng-deploy-80
+        image: nginx
+        ports:
+        - containerPort: 80
+
+        volumeMounts:
+        - name: rbd-data1
+          mountPath: /usr/share/nginx/html/rbd
+      volumes:
+        - name: rbd-data1
+          rbd:
+            monitors:
+            - '10.1.0.39:6789'
+            - '10.1.0.40:6789'
+            - '10.1.0.41:6789'
+            pool: k8s-xrbd-pool1
+            image: k8s-xrbd-img1
+            fsType: ext4
+            readOnly: false
+            user: admk8s-ceamg
+            secretRef:
+              name: ceph-secret-admk8s-ceamg
+```
+
+
+
+查看pod状态
+
+```bash
+root@k8s-master01:/yaml/ceph# kubectl apply -f case4-nginx-secret.yaml
+root@k8s-master01:/yaml/ceph# kubectl get pod -o wide
+NAME                                READY   STATUS    RESTARTS   AGE   IP           NODE         NOMINATED NODE   READINESS GATES
+nginx-deployment-5d6854448d-mdxxh   1/1     Running   0          64s   10.244.1.6   k8s-node03   <none>           <none>
+```
+
+
+
+### 1.3.3 pod验证挂载
+
+验证pod内挂载
+
+```bash
+kubectl exec -it nginx-deployment-5d6854448d-mdxxh bash
+
+root@nginx-deployment-5d6854448d-mdxxh:/# df -h
+Filesystem      Size  Used Avail Use% Mounted on
+overlay         118G   12G  100G  11% /
+tmpfs            64M     0   64M   0% /dev
+tmpfs           7.9G     0  7.9G   0% /sys/fs/cgroup
+/dev/vda2       118G   12G  100G  11% /etc/hosts
+shm              64M     0   64M   0% /dev/shm
+/dev/rbd0       3.9G   76K  3.9G   1% /usr/share/nginx/html/rbd
+tmpfs           7.9G   12K  7.9G   1% /run/secrets/kubernetes.io/serviceaccount
+tmpfs           7.9G     0  7.9G   0% /proc/acpi
+tmpfs           7.9G     0  7.9G   0% /proc/scsi
+tmpfs           7.9G     0  7.9G   0% /sys/firmware
+
+## 之前的文件还在
+root@nginx-deployment-5d6854448d-mdxxh:/# ls /usr/share/nginx/html/rbd -l
+total 20
+drwxr-xr-x 3 root root  4096 Nov  7 02:54 etc
+drwx------ 2 root root 16384 Nov  6 09:42 lost+found
+```
+
+
+
+### 1.3.4 宿主机验证挂载
+
+```bash
+root@k8s-node03:~# df -Th
+Filesystem     Type      Size  Used Avail Use% Mounted on
+udev           devtmpfs  7.8G     0  7.8G   0% /dev
+tmpfs          tmpfs     1.6G  1.4M  1.6G   1% /run
+/dev/vda2      ext4      118G   12G  100G  11% /
+tmpfs          tmpfs     7.9G     0  7.9G   0% /dev/shm
+tmpfs          tmpfs     5.0M     0  5.0M   0% /run/lock
+tmpfs          tmpfs     7.9G     0  7.9G   0% /sys/fs/cgroup
+tmpfs          tmpfs     1.6G     0  1.6G   0% /run/user/1000
+tmpfs          tmpfs     7.9G   12K  7.9G   1% /var/lib/kubelet/pods/7cab4c31-8887-4540-a4c4-67a7831b4f55/volumes/kubernetes.io~secret/kube-proxy-token-wsx4q
+overlay        overlay   118G   12G  100G  11% /var/lib/docker/overlay2/a7ab576226cd8a23813ae769b28a718f7b7038f6bf13e0edd1cd50d5795317d4/merged
+shm            tmpfs      64M     0   64M   0% /var/lib/docker/containers/e03108b70f8916d269ec1c59394463f3015bf99baad17e453fa7392a7b6cacdb/mounts/shm
+overlay        overlay   118G   12G  100G  11% /var/lib/docker/overlay2/4124657eda569b6417ad130a6f3a2322a0410927e63ab5c68236a3c5a82fa01a/merged
+tmpfs          tmpfs     7.9G   12K  7.9G   1% /var/lib/kubelet/pods/a2a7e7aa-860a-43d7-98bc-7f6aa87eddaa/volumes/kubernetes.io~secret/flannel-token-fr9bd
+overlay        overlay   118G   12G  100G  11% /var/lib/docker/overlay2/e5d3ce13ed5aa735e4b6af8c1b73fe9dfae21142e571d888cf3d57156cf410e4/merged
+shm            tmpfs      64M     0   64M   0% /var/lib/docker/containers/4b537f79c2fc51ed5c7ae19e902707d43649d55bd003e87813d0ddaeae081381/mounts/shm
+overlay        overlay   118G   12G  100G  11% /var/lib/docker/overlay2/2d608b763583275b88341a50cd92a65bdf4594297e3aa321a9d1b93ab5087bd5/merged
+tmpfs          tmpfs     7.9G   12K  7.9G   1% /var/lib/kubelet/pods/083e57e6-f18c-4fb1-8a40-b9bbdaf06d77/volumes/kubernetes.io~secret/default-token-ldtxc
+/dev/rbd0      ext4      3.9G   76K  3.9G   1% /var/lib/kubelet/plugins/kubernetes.io/rbd/mounts/k8s-xrbd-pool1-image-k8s-xrbd-img1
+```
+
+
+
+## 1.4 动态存储卷供给
+
+### 1.4.1 创建普通用户和admin用户的secret
+
+**admin用户用作创建镜像**
+
+**普通用户用于挂载镜像,就还用刚才创建的k8s-rbd,之前已经创建就不再创建了**
+
+
+
+```bash
+## 拿到admin的key
+# ceph auth print-key client.admin| base64
+QVFEZ0ozUmtCS1JVSFJBQVlWbTRZemJqRVF2UnBwOE9SQjFhenc9PQ==
+```
+
+
+
+配置`case5-secret-admin.yaml`
+
+```yaml
+vim case5-secret-admin.yaml
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ceph-secret-admin
+type: "kubernetes.io/rbd"
+data:
+  key: QVFEZ0ozUmtCS1JVSFJBQVlWbTRZemJqRVF2UnBwOE9SQjFhenc9PQ==
+```
+
+
+
+创建admin-secret
+
+```bash
+kubectl apply -f case5-secret-admin.yaml 
+secret/ceph-secret-admin created
+```
+
+
+
+验证admin-secret
+
+```bash
+root@k8s-master01:/yaml/ceph# kubectl get secret
+NAME                       TYPE                                  DATA   AGE
+ceph-secret-admin          kubernetes.io/rbd                     1      4s
+ceph-secret-admk8s-ceamg   kubernetes.io/rbd                     1      4h18m
+```
+
+
+
+### 1.4.2 创建存储类
+
+镜像自动创建
+
+```yaml
+#vim case6-ceph-storage-class.yaml 
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ceph-storage-class-k8s-rbd
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false" #设置为默认存储类
+provisioner: kubernetes.io/rbd
+parameters:
+  monitors: 10.1.0.39:6789,10.1.0.40:6789,10.1.0.41:6789
+  adminId: admin
+  adminSecretName: ceph-secret-admin
+  adminSecretNamespace: default 
+  pool: k8s-xrbd-pool1
+  userId: admk8s-ceamg
+  userSecretName: ceph-secret-admk8s-ceamg
+```
+
+
+
+```yaml
+## 创建存储类
+kubectl apply -f case6-ceph-storage-class.yaml
+storageclass.storage.k8s.io/ceph-storage-class-k8s-rbd created
+
+## 查看存储类
+root@k8s-master01:/yaml/ceph# kubectl get storageclasses.storage.k8s.io
+NAME                         PROVISIONER         RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
+ceph-storage-class-k8s-rbd   kubernetes.io/rbd   Delete          Immediate           false                  20s
+
+kubectl describe storageclasses.storage.k8s.io ceph-storage-class-k8s-rbd
+Name:            ceph-storage-class-k8s-rbd
+IsDefaultClass:  No
+Annotations:     kubectl.kubernetes.io/last-applied-configuration={"apiVersion":"storage.k8s.io/v1","kind":"StorageClass","metadata":{"annotations":{"storageclass.kubernetes.io/is-default-class":"false"},"name":"ceph-storage-class-k8s-rbd"},"parameters":{"adminId":"admin","adminSecretName":"ceph-secret-admin","adminSecretNamespace":"default","monitors":"10.1.0.39:6789,10.1.0.40:6789,10.1.0.41:6789","pool":"k8s-xrbd-pool1","userId":"admk8s-ceamg","userSecretName":"ceph-secret-admk8s-ceamg"},"provisioner":"kubernetes.io/rbd"}
+,storageclass.kubernetes.io/is-default-class=false
+Provisioner:           kubernetes.io/rbd
+Parameters:            adminId=admin,adminSecretName=ceph-secret-admin,adminSecretNamespace=default,monitors=10.1.0.39:6789,10.1.0.40:6789,10.1.0.41:6789,pool=k8s-xrbd-pool1,userId=admk8s-ceamg,userSecretName=ceph-secret-admk8s-ceamg
+AllowVolumeExpansion:  <unset>
+MountOptions:          <none>
+ReclaimPolicy:         Delete
+VolumeBindingMode:     Immediate
+Events:                <none>
+```
+
+
+
+
+
+### 1.4.3 创建pvc
+
+创建pvc时先找存储类(ceph-storage-class-k8s-rbd),到monitors以ceph-secret-admin权限创建,使用的时候用普通用户权限进行挂载
+
+
+
+```yaml
+cat case7-mysql-pvc.yaml 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ceph-storage-class-k8s-rbd
+  resources:
+    requests:
+      storage: '5Gi'
+```
+
+
+
+```bash
+kubectl apply -f case7-mysql-pvc.yaml 
+persistentvolumeclaim/mysql-data-pvc created
+```
+
+
+
+查看pvc 
+
+```yaml
+root@k8s-master01:/etc/ceph# kubectl get pvc
+NAME             STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS                 AGE
+mysql-data-pvc   Pending                                      ceph-storage-class-k8s-rbd   6m18s
+```
+
+
+
+**这里发现为Pending 状态**
+
+```bash
+Events:
+  Type     Reason              Age                From                         Message
+  ----     ------              ----               ----                         -------
+  Warning  ProvisioningFailed  11s (x4 over 56s)  persistentvolume-controller  Failed to provision volume with StorageClass "ceph-storage-class-k8s-rbd": failed to create rbd image: executable file not found in $PATH, command output:
+```
+
+因为k8s上的kube-controller-manager资源是运行在容器里，它要调用物理机上的ceph操作需要另外在容器上部署一个rbd-provisioner才能操作成功,而如果K8S是二进制部署的则不需要该操作。
+
+
+
+问题来自gcr.io提供的kube-controller-manager容器镜像未打包ceph-common组件，缺少了rbd命令，因此无法通过rbd命令为pod创建rbd image，查了github的相关文章，目前kubernetes官方在kubernetes-incubator/external-storage项目通过External Provisioners的方式来解决此类问题。
+
+
+
+解决方法见下一小节
+
+
+
+
+
+### 1.4.4 **部署rbd-provisioner**
+
+首先得在kubernetes集群中安装rbd-provisioner，
+
+github仓库：https://github.com/kubernetes-incubator/external-storage
+
+
+
+```bash
+## 解压
+tar -xf /tmp/rbd-provisioner.tar -C ./
+
+cd /ceph/rbd/deploy
+ls 
+non-rbac  rbac  README.md
+
+## 根据需要，修改rbd-provisioner的namespace
+sed -r -i "s/namespace: [^ ]+/namespace: $NAMESPACE/g" ./rbac/clusterrolebinding.yaml ./rbac/rolebinding.yaml
+kubectl -n $NAMESPACE apply -f ./rbac
+```
+
+
+
+```bash
+root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# cd ./rbac/
+root@k8s-master01:/yaml/ceph/ceph/rbd/deploy/rbac# ls
+clusterrolebinding.yaml  clusterrole.yaml  deployment.yaml  rolebinding.yaml  role.yaml  serviceaccount.yaml
+
+## 安装rbd-provisioner yaml文件
+root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl -n $NAMESPACE apply -f ./rbac
+clusterrole.rbac.authorization.k8s.io/rbd-provisioner created
+clusterrolebinding.rbac.authorization.k8s.io/rbd-provisioner created
+deployment.apps/rbd-provisioner created
+role.rbac.authorization.k8s.io/rbd-provisioner created
+rolebinding.rbac.authorization.k8s.io/rbd-provisioner created
+serviceaccount/rbd-provisioner created
+```
+
+
+
+```bash
+## 查看rbd-provisioner状态
+root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl get pod -n kube-system
+NAME                                   READY   STATUS    RESTARTS   AGE
+coredns-6d56c8448f-2twxm               1/1     Running   0          25d
+coredns-6d56c8448f-n6wk9               1/1     Running   0          25d
+etcd-k8s-master01                      1/1     Running   0          25d
+kube-apiserver-k8s-master01            1/1     Running   0          25d
+kube-controller-manager-k8s-master01   1/1     Running   2          25d
+kube-proxy-5t6xk                       1/1     Running   0          25d
+kube-proxy-bbrrv                       1/1     Running   0          25d
+kube-proxy-sskm2                       1/1     Running   0          25d
+kube-proxy-zzm95                       1/1     Running   0          25d
+kube-scheduler-k8s-master01            1/1     Running   3          25d
+rbd-provisioner-76f6bc6669-d4sj9       1/1     Running   0          101s
+```
+
+
+
+rbd-provisioner已经正常部署
+
+
+
+**接上面1.4.2 小结重新创建存储类** 
+
+
+
+注意：因为rbd-provisioner创建在命名空间kube-system 中，它无法访问其他命名空间的secret，所以需要把ceph管理员和普通用户的secret创建与rbd-provisioner相同的命名空间。 否则会出现如下错误：
+
+```bash
+Events:
+  Type     Reason                Age               From                                                                                Message
+  ----     ------                ----              ----                                                   -----
+  Normal   Provisioning          14s               ceph.com/rbd_rbd-provisioner-76f6bc6669-d4sj9_da9e34c3-7d46-11ee-bdb5-5a5c3fb06299  External provisioner is provisioning volume for claim "default/mysql-data-pvc"
+  Warning  ProvisioningFailed    14s               ceph.com/rbd_rbd-provisioner-76f6bc6669-d4sj9_da9e34c3-7d46-11ee-bdb5-5a5c3fb06299  failed to provision volume with StorageClass "ceph-storage-class-k8s-rbd": failed to get admin secret from ["default"/"ceph-secret-admin"]: secrets "ceph-secret-admin" is forbidden: User "system:serviceaccount:kube-system:rbd-provisioner" cannot get resource "secrets" in API group "" in the namespace "default"
+  Normal   ExternalProvisioning  9s (x2 over 14s)  persistentvolume-controller                                                         waiting for a volume to be created, either by external provisioner "ceph.com/rbd" or manually created by system administrator
+```
+
+
+
+```bash
+root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl apply -n kube-system -f /yaml/ceph/case3-secret-client-admk8s-ceamg.yaml
+secret/ceph-secret-admk8s-ceamg created
+
+root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl apply -n kube-system -f /yaml/ceph/case5-secret-admin.yaml
+secret/ceph-secret-admin created
+```
+
+
+
+
+
+其他设置和普通的ceph rbd StorageClass一致，但provisioner需要设置为`ceph.com/rbd`，不是默认的`kubernetes.io/rbd`，这样rbd的请求将由rbd-provisioner来处理
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ceph-storage-class-k8s-rbd
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+provisioner: ceph.com/rbd
+parameters:
+  monitors: 10.1.0.39:6789,10.1.0.40:6789,10.1.0.41:6789
+  adminId: admin
+  adminSecretName: ceph-secret-admin
+  adminSecretNamespace: default
+  pool: k8s-xrbd-pool1
+  userId: admk8s-ceamg
+  userSecretName: ceph-secret-admk8s-ceamg
+  fsType: ext4
+  imageFormat: "2"
+  imageFeatures: "layering"
+```
+
+
+
+```bash
+## 创建SC
+root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl apply -f /yaml/ceph/case6-ceph-storage-class.yaml
+storageclass.storage.k8s.io/ceph-storage-class-k8s-rbd created
+
+## PROVISIONER 改为  ceph.com/rbd 
+root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl get sc
+NAME                         PROVISIONER    RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
+ceph-storage-class-k8s-rbd   ceph.com/rbd   Delete          Immediate           false                  3s
+```
+
+
+
+**接1.4.3 小记重新创建PVC**
+
+```bash
+```
+
+这个报错是说rbd-provisioner需要ceph.conf等配置信息，在网上找到临时解决办法是通过docker拷贝将本地/etc/ceph/里的文件拷贝到镜像里去。
+
+```bash
+Events:
+  Type     Reason              Age   From                                                                                Message
+  ----     ------              ----  ----                                                                                -------
+  Normal   Provisioning        13s   ceph.com/rbd_rbd-provisioner-76f6bc6669-d4sj9_da9e34c3-7d46-11ee-bdb5-5a5c3fb06299  External provisioner is provisioning volume for claim "default/mysql-data-pvc"
+  Warning  ProvisioningFailed  10s   ceph.com/rbd_rbd-provisioner-76f6bc6669-d4sj9_da9e34c3-7d46-11ee-bdb5-5a5c3fb06299  failed to provision volume with StorageClass "ceph-storage-class-k8s-rbd": failed to create rbd image: exit status 13, command output: did not load config file, using default settings.
+2023-11-07 08:50:13.812 7fbdd2279900 -1 Errors while parsing config file!
+2023-11-07 08:50:13.812 7fbdd2279900 -1 parse_file: cannot open /etc/ceph/ceph.conf: (2) No such file or directory
+2023-11-07 08:50:13.812 7fbdd2279900 -1 parse_file: cannot open /root/.ceph/ceph.conf: (2) No such file or directory
+2023-11-07 08:50:13.812 7fbdd2279900 -1 parse_file: cannot open ceph.conf: (2) No such file or directory
+2023-11-07 08:50:13.812 7fbdd2279900 -1 Errors while parsing config file!
+2023-11-07 08:50:13.812 7fbdd2279900 -1 parse_file: cannot open /etc/ceph/ceph.conf: (2) No such file or directory
+2023-11-07 08:50:13.812 7fbdd2279900 -1 parse_file: cannot open /root/.ceph/ceph.conf: (2) No such file or directory
+2023-11-07 08:50:13.812 7fbdd2279900 -1 parse_file: cannot open ceph.conf: (2) No such file or directory
+2023-11-07 08:50:13.844 7fbdd2279900 -1 auth: unable to find a keyring on /etc/ceph/ceph.client.admin.keyring,/etc/ceph/ceph.keyring,/etc/ceph/keyring,/etc/ceph/keyring.bin,: (2) No such file or directory
+2023-11-07 08:50:16.848 7fbdd2279900 -1 monclient: get_monmap_and_config failed to get config
+2023-11-07 08:50:16.848 7fbdd2279900 -1 auth: unable to find a keyring on /etc/ceph/ceph.client.admin.keyring,/etc/ceph/ceph.keyring,/etc/ceph/keyring,/etc/ceph/keyring.bin,: (2) No such file or directory
+rbd: couldn't connect to the cluster!
+  Normal  ExternalProvisioning  9s (x3 over 13s)  persistentvolume-controller  waiting for a volume to be created, either by external provisioner "ceph.com/rbd" or manually created by system administrator
+```
+
+
+
+在rbd-provisioner.yaml文件了加载了hostpath将本地目录挂载到容器里，如下：
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rbd-provisioner
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rbd-provisioner
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: rbd-provisioner
+    spec:
+      containers:
+      - name: rbd-provisioner
+        image: "quay.io/external_storage/rbd-provisioner:latest"
+        volumeMounts:
+        - name: ceph-conf
+          mountPath: /etc/ceph
+        env:
+        - name: PROVISIONER_NAME
+          value: ceph.com/rbd
+      serviceAccount: rbd-provisioner
+      volumes:
+      - name: ceph-conf
+        hostPath:
+          path: /etc/ceph
+```
+
+
+
+```bash
+root@k8s-master01:/etc/ceph# kubectl delete -n kube-system -f /yaml/ceph/ceph/rbd/deploy/rbac/deployment.yaml
+deployment.apps "rbd-provisioner" deleted
+root@k8s-master01:/etc/ceph# kubectl apply -n kube-system -f /yaml/ceph/ceph/rbd/deploy/rbac/deployment.yaml
+deployment.apps/rbd-provisioner created
+```
+
+```bash
+root@k8s-master01:/etc/ceph# kubectl get pod -n kube-system
+NAME                                   READY   STATUS    RESTARTS   AGE
+coredns-6d56c8448f-2twxm               1/1     Running   0          25d
+coredns-6d56c8448f-n6wk9               1/1     Running   0          25d
+etcd-k8s-master01                      1/1     Running   0          25d
+kube-apiserver-k8s-master01            1/1     Running   0          25d
+kube-controller-manager-k8s-master01   1/1     Running   2          25d
+kube-proxy-5t6xk                       1/1     Running   0          25d
+kube-proxy-bbrrv                       1/1     Running   0          25d
+kube-proxy-sskm2                       1/1     Running   0          25d
+kube-proxy-zzm95                       1/1     Running   0          25d
+kube-scheduler-k8s-master01            1/1     Running   3          25d
+rbd-provisioner-54ccfd7f5c-kmpvw       1/1     Running   0          27s
+```
+
+
+
+这时发现不保存了但是还是处于pending状态
+
+```bash
+Events:
+  Type    Reason                Age               From                                                                                Message
+  ----    ------                ----              ----                                                                                -------
+  Normal  Provisioning          53s               ceph.com/rbd_rbd-provisioner-54ccfd7f5c-kmpvw_13600cb8-7d4c-11ee-b1ca-a2b2060515f6  External provisioner is provisioning volume for claim "default/mysql-data-pvc"
+  Normal  ExternalProvisioning  8s (x4 over 53s)  persistentvolume-controller                                                         waiting for a volume to be created, either by external provisioner "ceph.com/rbd" or manually created by system administrator
+```
+
+
+
+
+
+https://blog.csdn.net/shell811127/article/details/119330926
 
 
 
