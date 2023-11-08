@@ -10,7 +10,7 @@
 <meta name="description" content="Ceph K8s环境rdb,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创" /><meta name="keywords" content='分布式存储' /><meta itemprop="name" content="Kubernetes结合ceph实现数据持久化">
 <meta itemprop="description" content="Ceph K8s环境rdb,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创"><meta itemprop="datePublished" content="2023-11-02T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-11-02T00:00:00+00:00" />
-<meta itemprop="wordCount" content="5867"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="7032"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="分布式存储," /><meta property="og:title" content="Kubernetes结合ceph实现数据持久化" />
 <meta property="og:description" content="Ceph K8s环境rdb,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创" />
 <meta property="og:type" content="article" />
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96\/"
-    },"genre": "posts","keywords": "分布式存储","wordcount":  5867 ,
+    },"genre": "posts","keywords": "分布式存储","wordcount":  7032 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96\/","datePublished": "2023-11-02T00:00:00+00:00","dateModified": "2023-11-02T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -181,7 +181,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/ceph/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Ceph</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-11-02 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span title="更新于 2023-11-02 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 5867 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 12 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Kubernetes结合ceph实现数据持久化">
+      <div class="post-meta-line"><span title="发布于 2023-11-02 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span title="更新于 2023-11-02 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 7032 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 15 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Kubernetes结合ceph实现数据持久化">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -368,8 +368,14 @@
 </span></span><span class="line"><span class="cl">Codename:       bionic</span></span></code></pre></div><div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 安装key</span>
 </span></span><span class="line"><span class="cl">wget -q -O- <span class="s1">&#39;https://mirrors.aliyun.com/ceph/keys/release.asc&#39;</span> <span class="p">|</span> sudo apt-key add -
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">## Ceph pacific 版本</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## Ceph pacific Ubuntu 18.04.6 LTS bionic 版本</span>
 </span></span><span class="line"><span class="cl">sudo apt-add-repository <span class="s1">&#39;deb https://mirrors.aliyun.com/ceph/debian-pacific/ bionic main&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## Ceph pacific Ubuntu 20.04.4 LTS focal 版本</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sudo apt-add-repository <span class="s1">&#39;deb https://mirrors.aliyun.com/ceph/debian-pacific/ focal main&#39;</span>
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">sudo apt update
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## 查看软件包版本</span>
@@ -421,8 +427,10 @@
 </span></span><span class="line"><span class="cl">  Package libradosstriper1 is not installed.
 </span></span><span class="line"><span class="cl"> ceph-common depends on librdkafka1 <span class="o">(</span>&gt;<span class="o">=</span> 0.9.2<span class="o">)</span><span class="p">;</span> however:
 </span></span><span class="line"><span class="cl">  Package librdkafka1 is not installed.
-</span></span><span class="line"><span class="cl"> ceph-common depends on libsnappy1v5<span class="p">;</span> however:</span></span></code></pre></div><div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 安装依赖</span>
-</span></span><span class="line"><span class="cl">apt install -y libaio1 libbabeltrace1 libgoogle-perftools4 libleveldb1v5 liblua5.3-0 liboath0 librabbitmq4 liblttng-ust0 librdmacm1 libibverbs1 librdkafka1 python3-prettytable </span></span></code></pre></div><div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 解压安装包</span>
+</span></span><span class="line"><span class="cl"> ceph-common depends on libsnappy1v5<span class="p">;</span> however:</span></span></code></pre></div><div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## bionic版本的依赖</span>
+</span></span><span class="line"><span class="cl">apt install -y libaio1 libbabeltrace1 libgoogle-perftools4 libleveldb1v5 liblua5.3-0 liboath0 librabbitmq4 liblttng-ust0 librdmacm1 libibverbs1 librdkafka1 python3-prettytable </span></span></code></pre></div><p><code>ceph-common-16.2.10.tar.gz</code> 链接：https://pan.baidu.com/s/1SGCnuB_5YQvLQm8fbnoltQ?pwd=xupq
+提取码：xupq</p>
+<div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 解压安装包</span>
 </span></span><span class="line"><span class="cl">tar -xf /tmp/Ceph-Common-16.2.10.tar -C /opt/ceph</span></span></code></pre></div><div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 执行安装脚本</span>
 </span></span><span class="line"><span class="cl"><span class="nb">cd</span> /opt/ceph/Ceph-Common-16.2.10
 </span></span><span class="line"><span class="cl">bash ./install-ceph-common-16.2.10.sh 
@@ -433,16 +441,173 @@
 </span></span><span class="line"><span class="cl">ceph version 16.2.10 <span class="o">(</span>45fa1a083152e41a408d15505f594ec5f1b4fe17<span class="o">)</span> pacific <span class="o">(</span>stable<span class="o">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">root@k8s-node02:~# ceph -v
-</span></span><span class="line"><span class="cl">ceph version 16.2.10 <span class="o">(</span>45fa1a083152e41a408d15505f594ec5f1b4fe17<span class="o">)</span> pacific <span class="o">(</span>stable<span class="o">)</span></span></span></code></pre></div><h3 id="114-创建ceph普通用户权限keyring">1.1.4 创建Ceph普通用户权限keyring</h3>
-<div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xceo@ceph-mon1:~/ceph-cluster$ ceph auth get-or-create client.admk8s-ceamg mon <span class="s1">&#39;allow r&#39;</span> osd <span class="s1">&#39;allow * pool=k8s-xrbd-pool1&#39;</span>
+</span></span><span class="line"><span class="cl">ceph version 16.2.10 <span class="o">(</span>45fa1a083152e41a408d15505f594ec5f1b4fe17<span class="o">)</span> pacific <span class="o">(</span>stable<span class="o">)</span></span></span></code></pre></div><p><strong>focal 版本的依赖</strong></p>
+<div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/tmp# dpkg -i ceph-common_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">dpkg: warning: downgrading ceph-common from 16.2.13-1focal to 16.2.10-1focal
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">115415</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack ceph-common_16.2.10-1focal_amd64.deb ...
+</span></span><span class="line"><span class="cl">Unpacking ceph-common <span class="o">(</span>16.2.10-1focal<span class="o">)</span> over <span class="o">(</span>16.2.13-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">dpkg: dependency problems prevent configuration of ceph-common:
+</span></span><span class="line"><span class="cl"> ceph-common depends on libjaeger <span class="o">(=</span> 16.2.10-1focal<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Version of libjaeger on system is 16.2.13-1focal.
+</span></span><span class="line"><span class="cl"> ceph-common depends on librbd1 <span class="o">(=</span> 16.2.10-1focal<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Version of librbd1 on system is 16.2.13-1focal.
+</span></span><span class="line"><span class="cl"> ceph-common depends on python3-cephfs <span class="o">(=</span> 16.2.10-1focal<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Version of python3-cephfs on system is 16.2.13-1focal.
+</span></span><span class="line"><span class="cl"> ceph-common depends on python3-ceph-argparse <span class="o">(=</span> 16.2.10-1focal<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Version of python3-ceph-argparse on system is 16.2.13-1focal.
+</span></span><span class="line"><span class="cl"> ceph-common depends on python3-ceph-common <span class="o">(=</span> 16.2.10-1focal<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Version of python3-ceph-common on system is 16.2.13-1focal.
+</span></span><span class="line"><span class="cl"> ceph-common depends on python3-rados <span class="o">(=</span> 16.2.10-1focal<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Version of python3-rados on system is 16.2.13-1focal.
+</span></span><span class="line"><span class="cl"> ceph-common depends on python3-rbd <span class="o">(=</span> 16.2.10-1focal<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Version of python3-rbd on system is 16.2.13-1focal.
+</span></span><span class="line"><span class="cl"> ceph-common depends on python3-rgw <span class="o">(=</span> 16.2.10-1focal<span class="o">)</span><span class="p">;</span> however:
+</span></span><span class="line"><span class="cl">  Version of python3-rgw on system is 16.2.13-1focal.</span></span></code></pre></div><div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt install  liboath0 libleveldb1d libgoogle-perftools4  libbabeltrace1  liblua5.3-0 librabbitmq4 librdkafka1 libsnappy1v5 python3-prettytable -y
+</span></span><span class="line"><span class="cl">apt remove librados2 </span></span></code></pre></div><div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-w-05-37:/tmp# tar xvf ceph-common-16.2.10-focal.tar.gz
+</span></span><span class="line"><span class="cl">./ceph-common-16.2.10-focal/
+</span></span><span class="line"><span class="cl">./ceph-common-16.2.10-focal/ceph-common_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">./ceph-common-16.2.10-focal/librados2_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">./ceph-common-16.2.10-focal/python3-rados_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">./ceph-common-16.2.10-focal/libradosstriper1_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">./ceph-common-16.2.10-focal/python3-ceph-argparse_16.2.10-1focal_all.deb
+</span></span><span class="line"><span class="cl">./ceph-common-16.2.10-focal/librgw2_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">./ceph-common-16.2.10-focal/python3-rbd_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">./ceph-common-16.2.10-focal/librbd1_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">./ceph-common-16.2.10-focal/libcephfs2_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">./ceph-common-16.2.10-focal/python3-rgw_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">./ceph-common-16.2.10-focal/python3-cephfs_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">./ceph-common-16.2.10-focal/libjaeger_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">./ceph-common-16.2.10-focal/install-ceph-common-focal-16.2.10.sh
+</span></span><span class="line"><span class="cl">./ceph-common-16.2.10-focal/python3-ceph-common_16.2.10-1focal_all.deb
+</span></span><span class="line"><span class="cl">root@k8s-w-05-37:/tmp#
+</span></span><span class="line"><span class="cl">root@k8s-w-05-37:/tmp# <span class="nb">cd</span> ceph-common-16.2.10-focal/
+</span></span><span class="line"><span class="cl">root@k8s-w-05-37:/tmp/ceph-common-16.2.10-focal# ls
+</span></span><span class="line"><span class="cl">ceph-common_16.2.10-1focal_amd64.deb  libradosstriper1_16.2.10-1focal_amd64.deb     python3-cephfs_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">install-ceph-common-focal-16.2.10.sh  librbd1_16.2.10-1focal_amd64.deb              python3-rados_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">libcephfs2_16.2.10-1focal_amd64.deb   librgw2_16.2.10-1focal_amd64.deb              python3-rbd_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">libjaeger_16.2.10-1focal_amd64.deb    python3-ceph-argparse_16.2.10-1focal_all.deb  python3-rgw_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">librados2_16.2.10-1focal_amd64.deb    python3-ceph-common_16.2.10-1focal_all.deb
+</span></span><span class="line"><span class="cl">root@k8s-w-05-37:/tmp/ceph-common-16.2.10-focal#
+</span></span><span class="line"><span class="cl">root@k8s-w-05-37:/tmp/ceph-common-16.2.10-focal# bash install-ceph-common-focal-16.2.10.sh
+</span></span><span class="line"><span class="cl">Selecting previously unselected package librados2.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">108997</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack .../librados2_16.2.10-1focal_amd64.deb ...
+</span></span><span class="line"><span class="cl">Unpacking librados2 <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Setting up librados2 <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Processing triggers <span class="k">for</span> libc-bin <span class="o">(</span>2.31-0ubuntu9.9<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Successfully installed librados2_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">Selecting previously unselected package libradosstriper1.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">109005</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack .../libradosstriper1_16.2.10-1focal_amd64.deb ...
+</span></span><span class="line"><span class="cl">Unpacking libradosstriper1 <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Setting up libradosstriper1 <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Processing triggers <span class="k">for</span> libc-bin <span class="o">(</span>2.31-0ubuntu9.9<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Successfully installed libradosstriper1_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">Selecting previously unselected package libjaeger.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">109009</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack .../libjaeger_16.2.10-1focal_amd64.deb ...
+</span></span><span class="line"><span class="cl">Unpacking libjaeger <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Setting up libjaeger <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Successfully installed libjaeger_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">Selecting previously unselected package librbd1.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">109011</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack .../librbd1_16.2.10-1focal_amd64.deb ...
+</span></span><span class="line"><span class="cl">Unpacking librbd1 <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Setting up librbd1 <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Processing triggers <span class="k">for</span> libc-bin <span class="o">(</span>2.31-0ubuntu9.9<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Successfully installed librbd1_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">Selecting previously unselected package libcephfs2.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">109024</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack .../libcephfs2_16.2.10-1focal_amd64.deb ...
+</span></span><span class="line"><span class="cl">Unpacking libcephfs2 <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Setting up libcephfs2 <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Processing triggers <span class="k">for</span> libc-bin <span class="o">(</span>2.31-0ubuntu9.9<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Successfully installed libcephfs2_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">Selecting previously unselected package librgw2.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">109028</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack .../librgw2_16.2.10-1focal_amd64.deb ...
+</span></span><span class="line"><span class="cl">Unpacking librgw2 <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Setting up librgw2 <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Processing triggers <span class="k">for</span> libc-bin <span class="o">(</span>2.31-0ubuntu9.9<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Successfully installed librgw2_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">Selecting previously unselected package python3-rados.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">109032</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack .../python3-rados_16.2.10-1focal_amd64.deb ...
+</span></span><span class="line"><span class="cl">Unpacking python3-rados <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Setting up python3-rados <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Successfully installed python3-rados_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">Selecting previously unselected package python3-ceph-argparse.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">109039</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack .../python3-ceph-argparse_16.2.10-1focal_all.deb ...
+</span></span><span class="line"><span class="cl">Unpacking python3-ceph-argparse <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Setting up python3-ceph-argparse <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Successfully installed python3-ceph-argparse_16.2.10-1focal_all.deb
+</span></span><span class="line"><span class="cl">Selecting previously unselected package python3-cephfs.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">109043</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack .../python3-cephfs_16.2.10-1focal_amd64.deb ...
+</span></span><span class="line"><span class="cl">Unpacking python3-cephfs <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Setting up python3-cephfs <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Successfully installed python3-cephfs_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">Selecting previously unselected package python3-ceph-common.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">109051</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack .../python3-ceph-common_16.2.10-1focal_all.deb ...
+</span></span><span class="line"><span class="cl">Unpacking python3-ceph-common <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Setting up python3-ceph-common <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Successfully installed python3-ceph-common_16.2.10-1focal_all.deb
+</span></span><span class="line"><span class="cl">Selecting previously unselected package python3-rbd.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">109086</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack .../python3-rbd_16.2.10-1focal_amd64.deb ...
+</span></span><span class="line"><span class="cl">Unpacking python3-rbd <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Setting up python3-rbd <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Successfully installed python3-rbd_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">Selecting previously unselected package python3-rgw.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">109093</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack .../python3-rgw_16.2.10-1focal_amd64.deb ...
+</span></span><span class="line"><span class="cl">Unpacking python3-rgw <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Setting up python3-rgw <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Successfully installed python3-rgw_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">Selecting previously unselected package ceph-common.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">109100</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack .../ceph-common_16.2.10-1focal_amd64.deb ...
+</span></span><span class="line"><span class="cl">Unpacking ceph-common <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Setting up ceph-common <span class="o">(</span>16.2.10-1focal<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Adding group ceph....done
+</span></span><span class="line"><span class="cl">Adding system user ceph....done
+</span></span><span class="line"><span class="cl">Setting system user ceph properties....done
+</span></span><span class="line"><span class="cl">chown: cannot access <span class="s1">&#39;/var/log/ceph/*.log*&#39;</span>: No such file or directory
+</span></span><span class="line"><span class="cl">Created symlink /etc/systemd/system/multi-user.target.wants/ceph.target → /lib/systemd/system/ceph.target.
+</span></span><span class="line"><span class="cl">Created symlink /etc/systemd/system/multi-user.target.wants/rbdmap.service → /lib/systemd/system/rbdmap.service.
+</span></span><span class="line"><span class="cl">Processing triggers <span class="k">for</span> libc-bin <span class="o">(</span>2.31-0ubuntu9.9<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Processing triggers <span class="k">for</span> man-db <span class="o">(</span>2.9.1-1<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Successfully installed ceph-common_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">Ceph packages installation completed.</span></span></code></pre></div><div class="highlight" id="id-19"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tar -xvf ceph-common-16.2.10-focal.tar.gz
+</span></span><span class="line"><span class="cl">dpkg -i librados2_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">dpkg -i libradosstriper1_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">dpkg -i libjaeger_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">dpkg -i librbd1_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">dpkg -i libcephfs2_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">dpkg -i librgw2_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">dpkg -i python3-rados_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">dpkg -i python3-ceph-argparse_16.2.10-1focal_all.deb
+</span></span><span class="line"><span class="cl">dpkg -i python3-cephfs_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">dpkg -i python3-ceph-common_16.2.10-1focal_all.deb
+</span></span><span class="line"><span class="cl">dpkg -i python3-rbd_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">dpkg -i python3-rgw_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">dpkg -i ceph-common_16.2.10-1focal_amd64.deb
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="m">12</span></span></span></code></pre></div><p><code>ceph-common-16.2.10-focal.tar.gz</code> 链接：https://pan.baidu.com/s/19lnYalGOcTJyLdMt3AWuxg?pwd=bbk8
+提取码：bbk8</p>
+<h3 id="114-创建ceph普通用户权限keyring">1.1.4 创建Ceph普通用户权限keyring</h3>
+<div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xceo@ceph-mon1:~/ceph-cluster$ ceph auth get-or-create client.admk8s-ceamg mon <span class="s1">&#39;allow r&#39;</span> osd <span class="s1">&#39;allow * pool=k8s-xrbd-pool1&#39;</span>
 </span></span><span class="line"><span class="cl"><span class="o">[</span>client.admk8s-ceamg<span class="o">]</span>
-</span></span><span class="line"><span class="cl">        <span class="nv">key</span> <span class="o">=</span> AQAhr0hlhZTGCxAAajU0BbOfxO2+oUJ8OkmnXA<span class="o">==</span></span></span></code></pre></div><div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 验证用户</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">key</span> <span class="o">=</span> AQAhr0hlhZTGCxAAajU0BbOfxO2+oUJ8OkmnXA<span class="o">==</span></span></span></code></pre></div><div class="highlight" id="id-21"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 验证用户</span>
 </span></span><span class="line"><span class="cl">xceo@ceph-mon1:~/ceph-cluster$ ceph auth get client.admk8s-ceamg
 </span></span><span class="line"><span class="cl"><span class="o">[</span>client.admk8s-ceamg<span class="o">]</span>
 </span></span><span class="line"><span class="cl">        <span class="nv">key</span> <span class="o">=</span> AQAhr0hlhZTGCxAAajU0BbOfxO2+oUJ8OkmnXA<span class="o">==</span>
 </span></span><span class="line"><span class="cl">        caps <span class="nv">mon</span> <span class="o">=</span> <span class="s2">&#34;allow r&#34;</span>
 </span></span><span class="line"><span class="cl">        caps <span class="nv">osd</span> <span class="o">=</span> <span class="s2">&#34;allow * pool=k8s-xrbd-pool1&#34;</span>
-</span></span><span class="line"><span class="cl">exported keyring <span class="k">for</span> client.admk8s-ceamg</span></span></code></pre></div><div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 导出用户信息到Keying文件</span>
+</span></span><span class="line"><span class="cl">exported keyring <span class="k">for</span> client.admk8s-ceamg</span></span></code></pre></div><div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 导出用户信息到Keying文件</span>
 </span></span><span class="line"><span class="cl">xceo@ceph-mon1:~/ceph-cluster$ ceph auth get client.admk8s-ceamg -o ceph.client.admk8s-ceamg.keyring
 </span></span><span class="line"><span class="cl">exported keyring <span class="k">for</span> client.admk8s-ceamg
 </span></span><span class="line"><span class="cl">
@@ -450,10 +615,10 @@
 </span></span><span class="line"><span class="cl"><span class="o">[</span>client.admk8s-ceamg<span class="o">]</span>
 </span></span><span class="line"><span class="cl">        <span class="nv">key</span> <span class="o">=</span> AQAhr0hlhZTGCxAAajU0BbOfxO2+oUJ8OkmnXA<span class="o">==</span>
 </span></span><span class="line"><span class="cl">        caps <span class="nv">mon</span> <span class="o">=</span> <span class="s2">&#34;allow r&#34;</span>
-</span></span><span class="line"><span class="cl">        caps <span class="nv">osd</span> <span class="o">=</span> <span class="s2">&#34;allow * pool=k8s-xrbd-pool1&#34;</span></span></span></code></pre></div><div class="highlight" id="id-19"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 同步认证文件到K8s 各master和node节点</span>
+</span></span><span class="line"><span class="cl">        caps <span class="nv">osd</span> <span class="o">=</span> <span class="s2">&#34;allow * pool=k8s-xrbd-pool1&#34;</span></span></span></code></pre></div><div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 同步认证文件到K8s 各master和node节点</span>
 </span></span><span class="line"><span class="cl">xceo@ceph-mon1:~/ceph-cluster$ scp ceph.client.admk8s-ceamg.keyring ceph.conf root@10.1.0.110:/etc/ceph
 </span></span><span class="line"><span class="cl">xceo@ceph-mon1:~/ceph-cluster$ scp ceph.client.admk8s-ceamg.keyring ceph.conf root@10.1.0.111:/etc/ceph
-</span></span><span class="line"><span class="cl">xceo@ceph-mon1:~/ceph-cluster$ scp ceph.client.admk8s-ceamg.keyring ceph.conf root@10.1.0.112:/etc/ceph</span></span></code></pre></div><div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## hosts</span>
+</span></span><span class="line"><span class="cl">xceo@ceph-mon1:~/ceph-cluster$ scp ceph.client.admk8s-ceamg.keyring ceph.conf root@10.1.0.112:/etc/ceph</span></span></code></pre></div><div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## hosts</span>
 </span></span><span class="line"><span class="cl">10.1.0.39 ceph-node1.xx.local ceph-node1
 </span></span><span class="line"><span class="cl">10.1.0.40 ceph-node2.xx.local ceph-node2
 </span></span><span class="line"><span class="cl">10.1.0.41 ceph-node3.xx.local ceph-node3
@@ -462,7 +627,7 @@
 </span></span><span class="line"><span class="cl">10.1.0.41 ceph-mon3.xx.local ceph-mon3
 </span></span><span class="line"><span class="cl">10.1.0.40 ceph-mgr1.xx.local ceph-mgr1
 </span></span><span class="line"><span class="cl">10.1.0.41 ceph-mgr2.xx.local ceph-mgr2
-</span></span><span class="line"><span class="cl">10.1.0.39 ceph-deploy.xx.local ceph-deploy</span></span></code></pre></div><div class="highlight" id="id-21"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 在k8s node 节点验证用户权限</span>
+</span></span><span class="line"><span class="cl">10.1.0.39 ceph-deploy.xx.local ceph-deploy</span></span></code></pre></div><div class="highlight" id="id-25"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 在k8s node 节点验证用户权限</span>
 </span></span><span class="line"><span class="cl">root@k8s-node01:/etc/ceph# ceph --user admk8s-ceamg.xx -s
 </span></span><span class="line"><span class="cl">  cluster:
 </span></span><span class="line"><span class="cl">    id:     62be32df-9cb4-474f-8727-d5c4bbceaf97
@@ -480,7 +645,7 @@
 </span></span><span class="line"><span class="cl">    pools:   <span class="m">10</span> pools, <span class="m">385</span> pgs
 </span></span><span class="line"><span class="cl">    objects: 47.71k objects, <span class="m">184</span> GiB
 </span></span><span class="line"><span class="cl">    usage:   <span class="m">562</span> GiB used, 1.2 TiB / 1.8 TiB avail
-</span></span><span class="line"><span class="cl">    pgs:     <span class="m">385</span> active+clean</span></span></code></pre></div><div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 验证镜像访问权限</span>
+</span></span><span class="line"><span class="cl">    pgs:     <span class="m">385</span> active+clean</span></span></code></pre></div><div class="highlight" id="id-26"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 验证镜像访问权限</span>
 </span></span><span class="line"><span class="cl">root@k8s-node02:/etc/ceph# rbd --id admk8s-ceamg.xx ls --pool<span class="o">=</span>k8s-xrbd-pool1
 </span></span><span class="line"><span class="cl">k8s-xrbd-img1</span></span></code></pre></div><h2 id="12--通过keyring-文件挂载rbd">1.2  通过Keyring 文件挂载RBD</h2>
 <p>k8s环境可以有2种方式挂载rbd.</p>
@@ -489,7 +654,7 @@
 <li>基于k8s secret</li>
 </ol>
 <h3 id="121-通过kering文件直接挂载-busybox">1.2.1 通过Kering文件直接挂载-busybox</h3>
-<div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># cat case1-busybox-keyring.yaml </span><span class="w">
+<div class="highlight" id="id-27"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># cat case1-busybox-keyring.yaml </span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Pod</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -547,12 +712,12 @@
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">NAME      READY   STATUS    RESTARTS   AGE   IP           NODE         NOMINATED NODE   READINESS GATES</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">busybox   1/1     Running   0          52s   10.244.1.4   k8s-node03   &lt;none&gt;           &lt;none&gt;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">root@k8s-master01:/etc/ceph#</span></span></span></code></pre></div><p>测试卷的数据写入</p>
-<div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:~# kubectl <span class="nb">exec</span> -it busybox -- cp -r /etc /data
+<div class="highlight" id="id-28"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:~# kubectl <span class="nb">exec</span> -it busybox -- cp -r /etc /data
 </span></span><span class="line"><span class="cl">root@k8s-master01:~# kubectl <span class="nb">exec</span> -it busybox -- ls -l /data
 </span></span><span class="line"><span class="cl">total <span class="m">20</span>
 </span></span><span class="line"><span class="cl">drwxr-xr-x    <span class="m">3</span> root     root          <span class="m">4096</span> Nov  <span class="m">7</span> 02:54 etc
 </span></span><span class="line"><span class="cl">drwx------    <span class="m">2</span> root     root         <span class="m">16384</span> Nov  <span class="m">6</span> 09:42 lost+found</span></span></code></pre></div><h3 id="122--通过kering文件直接挂载-nginx">1.2.2  通过Kering文件直接挂载-Nginx</h3>
-<div class="highlight" id="id-25"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">root@k8s-master01:/yaml/ceph# vim case2-nginx-keyring.yaml</span><span class="w">
+<div class="highlight" id="id-29"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">root@k8s-master01:/yaml/ceph# vim case2-nginx-keyring.yaml</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -588,7 +753,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">fsType</span><span class="p">:</span><span class="w"> </span><span class="l">ext4</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">readOnly</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l">admk8s-ceamg</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">keyring</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/ceph/ceph.client.admk8s-ceamg.keyring</span></span></span></code></pre></div><div class="highlight" id="id-26"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph# kubectl apply -f case2-nginx-keyring.yaml</span></span></code></pre></div><div class="highlight" id="id-27"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">keyring</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/ceph/ceph.client.admk8s-ceamg.keyring</span></span></span></code></pre></div><div class="highlight" id="id-30"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph# kubectl apply -f case2-nginx-keyring.yaml</span></span></code></pre></div><div class="highlight" id="id-31"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
 </span></span><span class="line"><span class="cl">  Type    Reason                  Age   From                     Message
 </span></span><span class="line"><span class="cl">  ----    ------                  ----  ----                     -------
 </span></span><span class="line"><span class="cl">  Normal  Scheduled               84s   default-scheduler        Successfully assigned default/nginx-deployment-7c89bddb49-x2z5z to k8s-node03
@@ -599,7 +764,7 @@
 </span></span><span class="line"><span class="cl">  Normal  Started                 2s    kubelet                  Started container nginx-rbd</span></span></code></pre></div><h3 id="123-验证rbd挂载">1.2.3 验证RBD挂载</h3>
 <p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20231107103955428.png" srcset="https://cdn1.ryanxin.live/image-20231107103955428.png, https://cdn1.ryanxin.live/image-20231107103955428.png 1.5x, https://cdn1.ryanxin.live/image-20231107103955428.png 2x" sizes="auto" data-title="image-20231107103955428" data-alt="image-20231107103955428" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <p>查看节点对rbd卷的挂载</p>
-<div class="highlight" id="id-28"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-node03:~# mount <span class="p">|</span>grep rbd
+<div class="highlight" id="id-32"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-node03:~# mount <span class="p">|</span>grep rbd
 </span></span><span class="line"><span class="cl">/dev/rbd0 on /var/lib/kubelet/plugins/kubernetes.io/rbd/mounts/k8s-xrbd-pool1-image-k8s-xrbd-img1 <span class="nb">type</span> ext4 <span class="o">(</span>rw,relatime,stripe<span class="o">=</span>1024,data<span class="o">=</span>ordered<span class="o">)</span>
 </span></span><span class="line"><span class="cl">/dev/rbd0 on /var/lib/kubelet/pods/3138919d-d725-4739-a478-7bab02d44c5d/volumes/kubernetes.io~rbd/rbd-data1 <span class="nb">type</span> ext4 <span class="o">(</span>rw,relatime,stripe<span class="o">=</span>1024,data<span class="o">=</span>ordered<span class="o">)</span>
 </span></span><span class="line"><span class="cl">
@@ -618,7 +783,7 @@
 </span></span><span class="line"><span class="cl"><span class="m">0</span>   k8s-xrbd-pool1             k8s-xrbd-img1  -     /dev/rbd0</span></span></code></pre></div><p>此时在ceph下数据也已经可以看到</p>
 <p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20231107104237009.png" srcset="https://cdn1.ryanxin.live/image-20231107104237009.png, https://cdn1.ryanxin.live/image-20231107104237009.png 1.5x, https://cdn1.ryanxin.live/image-20231107104237009.png 2x" sizes="auto" data-title="image-20231107104237009" data-alt="image-20231107104237009" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <p>查看 pod 具体挂载使用rbd</p>
-<div class="highlight" id="id-29"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph# kubectl <span class="nb">exec</span> -it nginx-deployment-7c89bddb49-x2z5z  -- df -h /data
+<div class="highlight" id="id-33"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph# kubectl <span class="nb">exec</span> -it nginx-deployment-7c89bddb49-x2z5z  -- df -h /data
 </span></span><span class="line"><span class="cl">Filesystem      Size  Used Avail Use% Mounted on
 </span></span><span class="line"><span class="cl">/dev/rbd0       3.9G   76K  3.9G   1% /data
 </span></span><span class="line"><span class="cl">
@@ -632,25 +797,25 @@
 </span></span><span class="line"><span class="cl">drwx------ <span class="m">2</span> root root <span class="m">16384</span> Nov  <span class="m">6</span> 09:42 lost+found</span></span></code></pre></div><h2 id="13-通过secret挂载rbd">1.3 通过secret挂载rbd</h2>
 <h3 id="131-创建secret">1.3.1 创建Secret</h3>
 <p>先获取base64加密后的auth key</p>
-<div class="highlight" id="id-30"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xceo@ceph-mon1:~$ ceph auth print-key client.admk8s-ceamg <span class="p">|</span> base64
+<div class="highlight" id="id-34"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">xceo@ceph-mon1:~$ ceph auth print-key client.admk8s-ceamg <span class="p">|</span> base64
 </span></span><span class="line"><span class="cl"><span class="nv">QVFBaHIwaGxoWlRHQ3hBQWFqVTBCYk9meE8yK29VSjhPa21uWEE9PQ</span><span class="o">==</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## 可以用base64解密</span>
 </span></span><span class="line"><span class="cl">xceo@ceph-mon1:~$ <span class="nb">echo</span> <span class="nv">QVFBaHIwaGxoWlRHQ3hBQWFqVTBCYk9meE8yK29VSjhPa21uWEE9PQ</span><span class="o">==</span> <span class="p">|</span>base64 -d
 </span></span><span class="line"><span class="cl">AQAhr0hlhZTGCxAAajU0BbOfxO2+oUJ8OkmnXA<span class="o">==</span>xceo@ceph-mon1:~$</span></span></code></pre></div><p>将这个key写入<code>secret.yaml</code></p>
-<div class="highlight" id="id-31"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim case3-secret-client-k8s-rbd.yaml </span></span></code></pre></div><div class="highlight" id="id-32"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+<div class="highlight" id="id-35"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim case3-secret-client-k8s-rbd.yaml </span></span></code></pre></div><div class="highlight" id="id-36"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Secret</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ceph-secret-admk8s-ceamg</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;kubernetes.io/rbd&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">QVFBaHIwaGxoWlRHQ3hBQWFqVTBCYk9meE8yK29VSjhPa21uWEE9PQ==</span></span></span></code></pre></div><div class="highlight" id="id-33"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph# kubectl apply -f case3-secret-client-admk8s-ceamg.yaml
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">QVFBaHIwaGxoWlRHQ3hBQWFqVTBCYk9meE8yK29VSjhPa21uWEE9PQ==</span></span></span></code></pre></div><div class="highlight" id="id-37"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph# kubectl apply -f case3-secret-client-admk8s-ceamg.yaml
 </span></span><span class="line"><span class="cl">secret/ceph-secret-admk8s-ceamg created</span></span></code></pre></div><p>验证secret</p>
-<div class="highlight" id="id-34"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph# kubectl get secrets
+<div class="highlight" id="id-38"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph# kubectl get secrets
 </span></span><span class="line"><span class="cl">NAME                       TYPE                                  DATA   AGE
 </span></span><span class="line"><span class="cl">ceph-secret-admk8s-ceamg   kubernetes.io/rbd                     <span class="m">1</span>      51s</span></span></code></pre></div><h3 id="132-创建pod">1.3.2 创建pod</h3>
-<div class="highlight" id="id-35"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">#vim case4-nginx-secret.yaml </span><span class="w">
+<div class="highlight" id="id-39"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">#vim case4-nginx-secret.yaml </span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -688,12 +853,12 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l">admk8s-ceamg</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">secretRef</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ceph-secret-admk8s-ceamg</span></span></span></code></pre></div><p>查看pod状态</p>
-<div class="highlight" id="id-36"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph# kubectl apply -f case4-nginx-secret.yaml
+<div class="highlight" id="id-40"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph# kubectl apply -f case4-nginx-secret.yaml
 </span></span><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph# kubectl get pod -o wide
 </span></span><span class="line"><span class="cl">NAME                                READY   STATUS    RESTARTS   AGE   IP           NODE         NOMINATED NODE   READINESS GATES
 </span></span><span class="line"><span class="cl">nginx-deployment-5d6854448d-mdxxh   1/1     Running   <span class="m">0</span>          64s   10.244.1.6   k8s-node03   &lt;none&gt;           &lt;none&gt;</span></span></code></pre></div><h3 id="133-pod验证挂载">1.3.3 pod验证挂载</h3>
 <p>验证pod内挂载</p>
-<div class="highlight" id="id-37"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl <span class="nb">exec</span> -it nginx-deployment-5d6854448d-mdxxh bash
+<div class="highlight" id="id-41"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl <span class="nb">exec</span> -it nginx-deployment-5d6854448d-mdxxh bash
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">root@nginx-deployment-5d6854448d-mdxxh:/# df -h
 </span></span><span class="line"><span class="cl">Filesystem      Size  Used Avail Use% Mounted on
@@ -713,7 +878,7 @@
 </span></span><span class="line"><span class="cl">total <span class="m">20</span>
 </span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">3</span> root root  <span class="m">4096</span> Nov  <span class="m">7</span> 02:54 etc
 </span></span><span class="line"><span class="cl">drwx------ <span class="m">2</span> root root <span class="m">16384</span> Nov  <span class="m">6</span> 09:42 lost+found</span></span></code></pre></div><h3 id="134-宿主机验证挂载">1.3.4 宿主机验证挂载</h3>
-<div class="highlight" id="id-38"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-node03:~# df -Th
+<div class="highlight" id="id-42"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-node03:~# df -Th
 </span></span><span class="line"><span class="cl">Filesystem     Type      Size  Used Avail Use% Mounted on
 </span></span><span class="line"><span class="cl">udev           devtmpfs  7.8G     <span class="m">0</span>  7.8G   0% /dev
 </span></span><span class="line"><span class="cl">tmpfs          tmpfs     1.6G  1.4M  1.6G   1% /run
@@ -735,10 +900,10 @@
 <h3 id="141-创建普通用户和admin用户的secret">1.4.1 创建普通用户和admin用户的secret</h3>
 <p><strong>admin用户用作创建镜像</strong></p>
 <p><strong>普通用户用于挂载镜像,就还用刚才创建的k8s-rbd,之前已经创建就不再创建了</strong></p>
-<div class="highlight" id="id-39"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 拿到admin的key</span>
+<div class="highlight" id="id-43"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 拿到admin的key</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># ceph auth print-key client.admin| base64</span>
 </span></span><span class="line"><span class="cl"><span class="nv">QVFEZ0ozUmtCS1JVSFJBQVlWbTRZemJqRVF2UnBwOE9SQjFhenc9PQ</span><span class="o">==</span></span></span></code></pre></div><p>配置<code>case5-secret-admin.yaml</code></p>
-<div class="highlight" id="id-40"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">vim case5-secret-admin.yaml</span><span class="w">
+<div class="highlight" id="id-44"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">vim case5-secret-admin.yaml</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Secret</span><span class="w">
@@ -747,14 +912,14 @@
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;kubernetes.io/rbd&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">QVFEZ0ozUmtCS1JVSFJBQVlWbTRZemJqRVF2UnBwOE9SQjFhenc9PQ==</span></span></span></code></pre></div><p>创建admin-secret</p>
-<div class="highlight" id="id-41"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl apply -f case5-secret-admin.yaml 
+<div class="highlight" id="id-45"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl apply -f case5-secret-admin.yaml 
 </span></span><span class="line"><span class="cl">secret/ceph-secret-admin created</span></span></code></pre></div><p>验证admin-secret</p>
-<div class="highlight" id="id-42"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph# kubectl get secret
+<div class="highlight" id="id-46"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph# kubectl get secret
 </span></span><span class="line"><span class="cl">NAME                       TYPE                                  DATA   AGE
 </span></span><span class="line"><span class="cl">ceph-secret-admin          kubernetes.io/rbd                     <span class="m">1</span>      4s
 </span></span><span class="line"><span class="cl">ceph-secret-admk8s-ceamg   kubernetes.io/rbd                     <span class="m">1</span>      4h18m</span></span></code></pre></div><h3 id="142-创建存储类">1.4.2 创建存储类</h3>
 <p>镜像自动创建</p>
-<div class="highlight" id="id-43"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">#vim case6-ceph-storage-class.yaml </span><span class="w">
+<div class="highlight" id="id-47"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">#vim case6-ceph-storage-class.yaml </span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">storage.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StorageClass</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -769,7 +934,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">adminSecretNamespace</span><span class="p">:</span><span class="w"> </span><span class="l">default </span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">pool</span><span class="p">:</span><span class="w"> </span><span class="l">k8s-xrbd-pool1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">userId</span><span class="p">:</span><span class="w"> </span><span class="l">admk8s-ceamg</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">userSecretName</span><span class="p">:</span><span class="w"> </span><span class="l">ceph-secret-admk8s-ceamg</span></span></span></code></pre></div><div class="highlight" id="id-44"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">## 创建存储类</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">userSecretName</span><span class="p">:</span><span class="w"> </span><span class="l">ceph-secret-admk8s-ceamg</span></span></span></code></pre></div><div class="highlight" id="id-48"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">## 创建存储类</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">kubectl apply -f case6-ceph-storage-class.yaml</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">storageclass.storage.k8s.io/ceph-storage-class-k8s-rbd created</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
@@ -791,7 +956,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">VolumeBindingMode</span><span class="p">:</span><span class="w">     </span><span class="l">Immediate</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Events</span><span class="p">:</span><span class="w">                </span><span class="l">&lt;none&gt;</span></span></span></code></pre></div><h3 id="143-创建pvc">1.4.3 创建pvc</h3>
 <p>创建pvc时先找存储类(ceph-storage-class-k8s-rbd),到monitors以ceph-secret-admin权限创建,使用的时候用普通用户权限进行挂载</p>
-<div class="highlight" id="id-45"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">cat case7-mysql-pvc.yaml </span><span class="w">
+<div class="highlight" id="id-49"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">cat case7-mysql-pvc.yaml </span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolumeClaim</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -802,12 +967,12 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">ceph-storage-class-k8s-rbd</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;5Gi&#39;</span></span></span></code></pre></div><div class="highlight" id="id-46"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl apply -f case7-mysql-pvc.yaml 
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;5Gi&#39;</span></span></span></code></pre></div><div class="highlight" id="id-50"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl apply -f case7-mysql-pvc.yaml 
 </span></span><span class="line"><span class="cl">persistentvolumeclaim/mysql-data-pvc created</span></span></code></pre></div><p>查看pvc</p>
-<div class="highlight" id="id-47"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">root@k8s-master01:/etc/ceph# kubectl get pvc</span><span class="w">
+<div class="highlight" id="id-51"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">root@k8s-master01:/etc/ceph# kubectl get pvc</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">NAME             STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS                 AGE</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">mysql-data-pvc   Pending                                      ceph-storage-class-k8s-rbd   6m18s</span></span></span></code></pre></div><p><strong>这里发现为Pending 状态</strong></p>
-<div class="highlight" id="id-48"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
+<div class="highlight" id="id-52"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
 </span></span><span class="line"><span class="cl">  Type     Reason              Age                From                         Message
 </span></span><span class="line"><span class="cl">  ----     ------              ----               ----                         -------
 </span></span><span class="line"><span class="cl">  Warning  ProvisioningFailed  11s <span class="o">(</span>x4 over 56s<span class="o">)</span>  persistentvolume-controller  Failed to provision volume with StorageClass <span class="s2">&#34;ceph-storage-class-k8s-rbd&#34;</span>: failed to create rbd image: executable file not found in <span class="nv">$PATH</span>, <span class="nb">command</span> output:</span></span></code></pre></div><p>因为k8s上的kube-controller-manager资源是运行在容器里，它要调用物理机上的ceph操作需要另外在容器上部署一个rbd-provisioner才能操作成功,而如果K8S是二进制部署的则不需要该操作。</p>
@@ -816,7 +981,7 @@
 <h3 id="144-部署rbd-provisioner">1.4.4 <strong>部署rbd-provisioner</strong></h3>
 <p>首先得在kubernetes集群中安装rbd-provisioner，</p>
 <p>github仓库：https://github.com/kubernetes-incubator/external-storage</p>
-<div class="highlight" id="id-49"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 解压</span>
+<div class="highlight" id="id-53"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 解压</span>
 </span></span><span class="line"><span class="cl">tar -xf /tmp/rbd-provisioner.tar -C ./
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nb">cd</span> /ceph/rbd/deploy
@@ -825,7 +990,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## 根据需要，修改rbd-provisioner的namespace</span>
 </span></span><span class="line"><span class="cl">sed -r -i <span class="s2">&#34;s/namespace: [^ ]+/namespace: </span><span class="nv">$NAMESPACE</span><span class="s2">/g&#34;</span> ./rbac/clusterrolebinding.yaml ./rbac/rolebinding.yaml
-</span></span><span class="line"><span class="cl">kubectl -n <span class="nv">$NAMESPACE</span> apply -f ./rbac</span></span></code></pre></div><div class="highlight" id="id-50"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# <span class="nb">cd</span> ./rbac/
+</span></span><span class="line"><span class="cl">kubectl -n <span class="nv">$NAMESPACE</span> apply -f ./rbac</span></span></code></pre></div><div class="highlight" id="id-54"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# <span class="nb">cd</span> ./rbac/
 </span></span><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy/rbac# ls
 </span></span><span class="line"><span class="cl">clusterrolebinding.yaml  clusterrole.yaml  deployment.yaml  rolebinding.yaml  role.yaml  serviceaccount.yaml
 </span></span><span class="line"><span class="cl">
@@ -836,7 +1001,7 @@
 </span></span><span class="line"><span class="cl">deployment.apps/rbd-provisioner created
 </span></span><span class="line"><span class="cl">role.rbac.authorization.k8s.io/rbd-provisioner created
 </span></span><span class="line"><span class="cl">rolebinding.rbac.authorization.k8s.io/rbd-provisioner created
-</span></span><span class="line"><span class="cl">serviceaccount/rbd-provisioner created</span></span></code></pre></div><div class="highlight" id="id-51"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 查看rbd-provisioner状态</span>
+</span></span><span class="line"><span class="cl">serviceaccount/rbd-provisioner created</span></span></code></pre></div><div class="highlight" id="id-55"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 查看rbd-provisioner状态</span>
 </span></span><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl get pod -n kube-system
 </span></span><span class="line"><span class="cl">NAME                                   READY   STATUS    RESTARTS   AGE
 </span></span><span class="line"><span class="cl">coredns-6d56c8448f-2twxm               1/1     Running   <span class="m">0</span>          25d
@@ -852,17 +1017,17 @@
 </span></span><span class="line"><span class="cl">rbd-provisioner-76f6bc6669-d4sj9       1/1     Running   <span class="m">0</span>          101s</span></span></code></pre></div><p>rbd-provisioner已经正常部署</p>
 <p><strong>接上面1.4.2 小结重新创建存储类</strong></p>
 <p>注意：因为rbd-provisioner创建在命名空间kube-system 中，它无法访问其他命名空间的secret，所以需要把ceph管理员和普通用户的secret创建与rbd-provisioner相同的命名空间。 否则会出现如下错误：</p>
-<div class="highlight" id="id-52"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
+<div class="highlight" id="id-56"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
 </span></span><span class="line"><span class="cl">  Type     Reason                Age               From                                                                                Message
 </span></span><span class="line"><span class="cl">  ----     ------                ----              ----                                                   -----
 </span></span><span class="line"><span class="cl">  Normal   Provisioning          14s               ceph.com/rbd_rbd-provisioner-76f6bc6669-d4sj9_da9e34c3-7d46-11ee-bdb5-5a5c3fb06299  External provisioner is provisioning volume <span class="k">for</span> claim <span class="s2">&#34;default/mysql-data-pvc&#34;</span>
 </span></span><span class="line"><span class="cl">  Warning  ProvisioningFailed    14s               ceph.com/rbd_rbd-provisioner-76f6bc6669-d4sj9_da9e34c3-7d46-11ee-bdb5-5a5c3fb06299  failed to provision volume with StorageClass <span class="s2">&#34;ceph-storage-class-k8s-rbd&#34;</span>: failed to get admin secret from <span class="o">[</span><span class="s2">&#34;default&#34;</span>/<span class="s2">&#34;ceph-secret-admin&#34;</span><span class="o">]</span>: secrets <span class="s2">&#34;ceph-secret-admin&#34;</span> is forbidden: User <span class="s2">&#34;system:serviceaccount:kube-system:rbd-provisioner&#34;</span> cannot get resource <span class="s2">&#34;secrets&#34;</span> in API group <span class="s2">&#34;&#34;</span> in the namespace <span class="s2">&#34;default&#34;</span>
-</span></span><span class="line"><span class="cl">  Normal   ExternalProvisioning  9s <span class="o">(</span>x2 over 14s<span class="o">)</span>  persistentvolume-controller                                                         waiting <span class="k">for</span> a volume to be created, either by external provisioner <span class="s2">&#34;ceph.com/rbd&#34;</span> or manually created by system administrator</span></span></code></pre></div><div class="highlight" id="id-53"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl apply -n kube-system -f /yaml/ceph/case3-secret-client-admk8s-ceamg.yaml
+</span></span><span class="line"><span class="cl">  Normal   ExternalProvisioning  9s <span class="o">(</span>x2 over 14s<span class="o">)</span>  persistentvolume-controller                                                         waiting <span class="k">for</span> a volume to be created, either by external provisioner <span class="s2">&#34;ceph.com/rbd&#34;</span> or manually created by system administrator</span></span></code></pre></div><div class="highlight" id="id-57"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl apply -n kube-system -f /yaml/ceph/case3-secret-client-admk8s-ceamg.yaml
 </span></span><span class="line"><span class="cl">secret/ceph-secret-admk8s-ceamg created
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl apply -n kube-system -f /yaml/ceph/case5-secret-admin.yaml
 </span></span><span class="line"><span class="cl">secret/ceph-secret-admin created</span></span></code></pre></div><p>其他设置和普通的ceph rbd StorageClass一致，但provisioner需要设置为<code>ceph.com/rbd</code>，不是默认的<code>kubernetes.io/rbd</code>，这样rbd的请求将由rbd-provisioner来处理</p>
-<div class="highlight" id="id-54"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">storage.k8s.io/v1</span><span class="w">
+<div class="highlight" id="id-58"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">storage.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StorageClass</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ceph-storage-class-k8s-rbd</span><span class="w">
@@ -879,7 +1044,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">userSecretName</span><span class="p">:</span><span class="w"> </span><span class="l">ceph-secret-admk8s-ceamg</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">fsType</span><span class="p">:</span><span class="w"> </span><span class="l">ext4</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">imageFormat</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">imageFeatures</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;layering&#34;</span></span></span></code></pre></div><div class="highlight" id="id-55"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 创建SC</span>
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">imageFeatures</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;layering&#34;</span></span></span></code></pre></div><div class="highlight" id="id-59"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 创建SC</span>
 </span></span><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl apply -f /yaml/ceph/case6-ceph-storage-class.yaml
 </span></span><span class="line"><span class="cl">storageclass.storage.k8s.io/ceph-storage-class-k8s-rbd created
 </span></span><span class="line"><span class="cl">
@@ -887,8 +1052,8 @@
 </span></span><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl get sc
 </span></span><span class="line"><span class="cl">NAME                         PROVISIONER    RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
 </span></span><span class="line"><span class="cl">ceph-storage-class-k8s-rbd   ceph.com/rbd   Delete          Immediate           <span class="nb">false</span>                  3s</span></span></code></pre></div><p><strong>接1.4.3 小记重新创建PVC</strong></p>
-<div class="highlight" id="id-56"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"></code></pre></div><p>这个报错是说rbd-provisioner需要ceph.conf等配置信息，在网上找到临时解决办法是通过docker拷贝将本地/etc/ceph/里的文件拷贝到镜像里去。</p>
-<div class="highlight" id="id-57"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
+<div class="highlight" id="id-60"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"></code></pre></div><p>这个报错是说rbd-provisioner需要ceph.conf等配置信息，在网上找到临时解决办法是通过docker拷贝将本地/etc/ceph/里的文件拷贝到镜像里去。</p>
+<div class="highlight" id="id-61"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
 </span></span><span class="line"><span class="cl">  Type     Reason              Age   From                                                                                Message
 </span></span><span class="line"><span class="cl">  ----     ------              ----  ----                                                                                -------
 </span></span><span class="line"><span class="cl">  Normal   Provisioning        13s   ceph.com/rbd_rbd-provisioner-76f6bc6669-d4sj9_da9e34c3-7d46-11ee-bdb5-5a5c3fb06299  External provisioner is provisioning volume <span class="k">for</span> claim <span class="s2">&#34;default/mysql-data-pvc&#34;</span>
@@ -906,7 +1071,7 @@
 </span></span><span class="line"><span class="cl">2023-11-07 08:50:16.848 7fbdd2279900 -1 auth: unable to find a keyring on /etc/ceph/ceph.client.admin.keyring,/etc/ceph/ceph.keyring,/etc/ceph/keyring,/etc/ceph/keyring.bin,: <span class="o">(</span>2<span class="o">)</span> No such file or directory
 </span></span><span class="line"><span class="cl">rbd: couldn<span class="err">&#39;</span>t connect to the cluster!
 </span></span><span class="line"><span class="cl">  Normal  ExternalProvisioning  9s <span class="o">(</span>x3 over 13s<span class="o">)</span>  persistentvolume-controller  waiting <span class="k">for</span> a volume to be created, either by external provisioner <span class="s2">&#34;ceph.com/rbd&#34;</span> or manually created by system administrator</span></span></code></pre></div><p>在rbd-provisioner.yaml文件了加载了hostpath将本地目录挂载到容器里，如下：</p>
-<div class="highlight" id="id-58"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+<div class="highlight" id="id-62"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rbd-provisioner</span><span class="w">
@@ -935,10 +1100,10 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ceph-conf</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">hostPath</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/ceph</span></span></span></code></pre></div><div class="highlight" id="id-59"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/etc/ceph# kubectl delete -n kube-system -f /yaml/ceph/ceph/rbd/deploy/rbac/deployment.yaml
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/ceph</span></span></span></code></pre></div><div class="highlight" id="id-63"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/etc/ceph# kubectl delete -n kube-system -f /yaml/ceph/ceph/rbd/deploy/rbac/deployment.yaml
 </span></span><span class="line"><span class="cl">deployment.apps <span class="s2">&#34;rbd-provisioner&#34;</span> deleted
 </span></span><span class="line"><span class="cl">root@k8s-master01:/etc/ceph# kubectl apply -n kube-system -f /yaml/ceph/ceph/rbd/deploy/rbac/deployment.yaml
-</span></span><span class="line"><span class="cl">deployment.apps/rbd-provisioner created</span></span></code></pre></div><div class="highlight" id="id-60"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/etc/ceph# kubectl get pod -n kube-system
+</span></span><span class="line"><span class="cl">deployment.apps/rbd-provisioner created</span></span></code></pre></div><div class="highlight" id="id-64"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/etc/ceph# kubectl get pod -n kube-system
 </span></span><span class="line"><span class="cl">NAME                                   READY   STATUS    RESTARTS   AGE
 </span></span><span class="line"><span class="cl">coredns-6d56c8448f-2twxm               1/1     Running   <span class="m">0</span>          25d
 </span></span><span class="line"><span class="cl">coredns-6d56c8448f-n6wk9               1/1     Running   <span class="m">0</span>          25d
@@ -951,11 +1116,16 @@
 </span></span><span class="line"><span class="cl">kube-proxy-zzm95                       1/1     Running   <span class="m">0</span>          25d
 </span></span><span class="line"><span class="cl">kube-scheduler-k8s-master01            1/1     Running   <span class="m">3</span>          25d
 </span></span><span class="line"><span class="cl">rbd-provisioner-54ccfd7f5c-kmpvw       1/1     Running   <span class="m">0</span>          27s</span></span></code></pre></div><p>这时发现不保存了但是还是处于pending状态</p>
-<div class="highlight" id="id-61"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
+<div class="highlight" id="id-65"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
 </span></span><span class="line"><span class="cl">  Type    Reason                Age               From                                                                                Message
 </span></span><span class="line"><span class="cl">  ----    ------                ----              ----                                                                                -------
 </span></span><span class="line"><span class="cl">  Normal  Provisioning          53s               ceph.com/rbd_rbd-provisioner-54ccfd7f5c-kmpvw_13600cb8-7d4c-11ee-b1ca-a2b2060515f6  External provisioner is provisioning volume <span class="k">for</span> claim <span class="s2">&#34;default/mysql-data-pvc&#34;</span>
-</span></span><span class="line"><span class="cl">  Normal  ExternalProvisioning  8s <span class="o">(</span>x4 over 53s<span class="o">)</span>  persistentvolume-controller                                                         waiting <span class="k">for</span> a volume to be created, either by external provisioner <span class="s2">&#34;ceph.com/rbd&#34;</span> or manually created by system administrator</span></span></code></pre></div><p><a href="https://blog.csdn.net/shell811127/article/details/119330926"target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/shell811127/article/details/119330926</a></p>
+</span></span><span class="line"><span class="cl">  Normal  ExternalProvisioning  8s <span class="o">(</span>x4 over 53s<span class="o">)</span>  persistentvolume-controller                                                         waiting <span class="k">for</span> a volume to be created, either by external provisioner <span class="s2">&#34;ceph.com/rbd&#34;</span> or manually created by system administrator</span></span></code></pre></div><p>对接方式
+有两种方式可以使用k8s对接ceph</p>
+<p>使用第三方的rbd provisioner，但是由于官方已经不再进行维护因此随着版本越来越高，其对应的rbd provisioner内置的ceph-common版本已经跟不上ceph的版本了，现在其内置的ceph-common版本是m版，如果集群是m版可以考虑使用
+使用官方的ceph csi，一直在更新，推荐使用，本文使用的就是该种方法</p>
+<p>原文链接：https://blog.csdn.net/weixin_42340926/article/details/123931137</p>
+<p><a href="https://blog.csdn.net/shell811127/article/details/119330926"target="_blank" rel="external nofollow noopener noreferrer">https://blog.csdn.net/shell811127/article/details/119330926</a></p>
 <h2 id="kubernetes-通secret-挂载rbd及cephfs-使用案例">Kubernetes 通secret 挂载rbd及cephfs 使用案例</h2>
 </div><div class="post-footer" id="post-footer">
   <div class="post-info">

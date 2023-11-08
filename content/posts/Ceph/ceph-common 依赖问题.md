@@ -475,7 +475,7 @@ ceph version 16.2.10 (45fa1a083152e41a408d15505f594ec5f1b4fe17) pacific (stable)
 整理一下apt 安装的软件包
 
 ```bash
-$ apt install -y libaio1 libbabeltrace1 libgoogle-perftools4 libleveldb1v5 liblua5.3-0 liboath0 librabbitmq4 liblttng-ust0 librdmacm1 libibverbs1 python3-prettytable
+$ apt install -y libaio1 libbabeltrace1 libgoogle-perftools4 libleveldb1v5 liblua5.3-0 liboath0 librabbitmq4 liblttng-ust0 librdmacm1 libibverbs1 python3-prettytable librdkafka1
 ```
 
 
@@ -488,7 +488,6 @@ $ apt install -y libaio1 libbabeltrace1 libgoogle-perftools4 libleveldb1v5 liblu
 4. `python3-rados_16.2.10-1bionic_amd64.deb`
 5. `python3-ceph-argparse_16.2.10-1bionic_all.deb`
 6. `python3-cephfs_16.2.10-1bionic_amd64.deb`
-7. `python3-ceph-argparse_16.2.10-1bionic_all.deb`
 8. `python3-ceph-common_16.2.10-1bionic_all.deb`
 9. `python3-rbd_16.2.10-1bionic_amd64.deb`
 10. `librgw2_16.2.10-1bionic_amd64.deb`

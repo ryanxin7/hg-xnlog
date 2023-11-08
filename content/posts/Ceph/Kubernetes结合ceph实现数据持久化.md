@@ -230,8 +230,14 @@ Codename:       bionic
 ## 安装key
 wget -q -O- 'https://mirrors.aliyun.com/ceph/keys/release.asc' | sudo apt-key add -
 
-## Ceph pacific 版本
+## Ceph pacific Ubuntu 18.04.6 LTS bionic 版本
 sudo apt-add-repository 'deb https://mirrors.aliyun.com/ceph/debian-pacific/ bionic main'
+
+
+## Ceph pacific Ubuntu 20.04.4 LTS focal 版本
+
+sudo apt-add-repository 'deb https://mirrors.aliyun.com/ceph/debian-pacific/ focal main'
+
 sudo apt update
 
 ## 查看软件包版本
@@ -303,11 +309,14 @@ ceph-common | 12.2.4-0ubuntu1 | http://mirrors.aliyun.com/ubuntu bionic/main amd
 
 
 ```bash
-## 安装依赖
+## bionic版本的依赖
 apt install -y libaio1 libbabeltrace1 libgoogle-perftools4 libleveldb1v5 liblua5.3-0 liboath0 librabbitmq4 liblttng-ust0 librdmacm1 libibverbs1 librdkafka1 python3-prettytable 
 ```
 
 
+
+`ceph-common-16.2.10.tar.gz` 链接：https://pan.baidu.com/s/1SGCnuB_5YQvLQm8fbnoltQ?pwd=xupq 
+提取码：xupq 
 
 ```bash
 ## 解压安装包
@@ -335,6 +344,192 @@ ceph version 16.2.10 (45fa1a083152e41a408d15505f594ec5f1b4fe17) pacific (stable)
 root@k8s-node02:~# ceph -v
 ceph version 16.2.10 (45fa1a083152e41a408d15505f594ec5f1b4fe17) pacific (stable)
 ```
+
+
+
+**focal 版本的依赖**
+
+```bash
+root@k8s-made-01-32:/tmp# dpkg -i ceph-common_16.2.10-1focal_amd64.deb
+dpkg: warning: downgrading ceph-common from 16.2.13-1focal to 16.2.10-1focal
+(Reading database ... 115415 files and directories currently installed.)
+Preparing to unpack ceph-common_16.2.10-1focal_amd64.deb ...
+Unpacking ceph-common (16.2.10-1focal) over (16.2.13-1focal) ...
+dpkg: dependency problems prevent configuration of ceph-common:
+ ceph-common depends on libjaeger (= 16.2.10-1focal); however:
+  Version of libjaeger on system is 16.2.13-1focal.
+ ceph-common depends on librbd1 (= 16.2.10-1focal); however:
+  Version of librbd1 on system is 16.2.13-1focal.
+ ceph-common depends on python3-cephfs (= 16.2.10-1focal); however:
+  Version of python3-cephfs on system is 16.2.13-1focal.
+ ceph-common depends on python3-ceph-argparse (= 16.2.10-1focal); however:
+  Version of python3-ceph-argparse on system is 16.2.13-1focal.
+ ceph-common depends on python3-ceph-common (= 16.2.10-1focal); however:
+  Version of python3-ceph-common on system is 16.2.13-1focal.
+ ceph-common depends on python3-rados (= 16.2.10-1focal); however:
+  Version of python3-rados on system is 16.2.13-1focal.
+ ceph-common depends on python3-rbd (= 16.2.10-1focal); however:
+  Version of python3-rbd on system is 16.2.13-1focal.
+ ceph-common depends on python3-rgw (= 16.2.10-1focal); however:
+  Version of python3-rgw on system is 16.2.13-1focal.
+```
+
+
+
+```bash
+apt install  liboath0 libleveldb1d libgoogle-perftools4  libbabeltrace1  liblua5.3-0 librabbitmq4 librdkafka1 libsnappy1v5 python3-prettytable -y
+apt remove librados2 
+```
+
+
+
+```bash
+root@k8s-w-05-37:/tmp# tar xvf ceph-common-16.2.10-focal.tar.gz
+./ceph-common-16.2.10-focal/
+./ceph-common-16.2.10-focal/ceph-common_16.2.10-1focal_amd64.deb
+./ceph-common-16.2.10-focal/librados2_16.2.10-1focal_amd64.deb
+./ceph-common-16.2.10-focal/python3-rados_16.2.10-1focal_amd64.deb
+./ceph-common-16.2.10-focal/libradosstriper1_16.2.10-1focal_amd64.deb
+./ceph-common-16.2.10-focal/python3-ceph-argparse_16.2.10-1focal_all.deb
+./ceph-common-16.2.10-focal/librgw2_16.2.10-1focal_amd64.deb
+./ceph-common-16.2.10-focal/python3-rbd_16.2.10-1focal_amd64.deb
+./ceph-common-16.2.10-focal/librbd1_16.2.10-1focal_amd64.deb
+./ceph-common-16.2.10-focal/libcephfs2_16.2.10-1focal_amd64.deb
+./ceph-common-16.2.10-focal/python3-rgw_16.2.10-1focal_amd64.deb
+./ceph-common-16.2.10-focal/python3-cephfs_16.2.10-1focal_amd64.deb
+./ceph-common-16.2.10-focal/libjaeger_16.2.10-1focal_amd64.deb
+./ceph-common-16.2.10-focal/install-ceph-common-focal-16.2.10.sh
+./ceph-common-16.2.10-focal/python3-ceph-common_16.2.10-1focal_all.deb
+root@k8s-w-05-37:/tmp#
+root@k8s-w-05-37:/tmp# cd ceph-common-16.2.10-focal/
+root@k8s-w-05-37:/tmp/ceph-common-16.2.10-focal# ls
+ceph-common_16.2.10-1focal_amd64.deb  libradosstriper1_16.2.10-1focal_amd64.deb     python3-cephfs_16.2.10-1focal_amd64.deb
+install-ceph-common-focal-16.2.10.sh  librbd1_16.2.10-1focal_amd64.deb              python3-rados_16.2.10-1focal_amd64.deb
+libcephfs2_16.2.10-1focal_amd64.deb   librgw2_16.2.10-1focal_amd64.deb              python3-rbd_16.2.10-1focal_amd64.deb
+libjaeger_16.2.10-1focal_amd64.deb    python3-ceph-argparse_16.2.10-1focal_all.deb  python3-rgw_16.2.10-1focal_amd64.deb
+librados2_16.2.10-1focal_amd64.deb    python3-ceph-common_16.2.10-1focal_all.deb
+root@k8s-w-05-37:/tmp/ceph-common-16.2.10-focal#
+root@k8s-w-05-37:/tmp/ceph-common-16.2.10-focal# bash install-ceph-common-focal-16.2.10.sh
+Selecting previously unselected package librados2.
+(Reading database ... 108997 files and directories currently installed.)
+Preparing to unpack .../librados2_16.2.10-1focal_amd64.deb ...
+Unpacking librados2 (16.2.10-1focal) ...
+Setting up librados2 (16.2.10-1focal) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
+Successfully installed librados2_16.2.10-1focal_amd64.deb
+Selecting previously unselected package libradosstriper1.
+(Reading database ... 109005 files and directories currently installed.)
+Preparing to unpack .../libradosstriper1_16.2.10-1focal_amd64.deb ...
+Unpacking libradosstriper1 (16.2.10-1focal) ...
+Setting up libradosstriper1 (16.2.10-1focal) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
+Successfully installed libradosstriper1_16.2.10-1focal_amd64.deb
+Selecting previously unselected package libjaeger.
+(Reading database ... 109009 files and directories currently installed.)
+Preparing to unpack .../libjaeger_16.2.10-1focal_amd64.deb ...
+Unpacking libjaeger (16.2.10-1focal) ...
+Setting up libjaeger (16.2.10-1focal) ...
+Successfully installed libjaeger_16.2.10-1focal_amd64.deb
+Selecting previously unselected package librbd1.
+(Reading database ... 109011 files and directories currently installed.)
+Preparing to unpack .../librbd1_16.2.10-1focal_amd64.deb ...
+Unpacking librbd1 (16.2.10-1focal) ...
+Setting up librbd1 (16.2.10-1focal) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
+Successfully installed librbd1_16.2.10-1focal_amd64.deb
+Selecting previously unselected package libcephfs2.
+(Reading database ... 109024 files and directories currently installed.)
+Preparing to unpack .../libcephfs2_16.2.10-1focal_amd64.deb ...
+Unpacking libcephfs2 (16.2.10-1focal) ...
+Setting up libcephfs2 (16.2.10-1focal) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
+Successfully installed libcephfs2_16.2.10-1focal_amd64.deb
+Selecting previously unselected package librgw2.
+(Reading database ... 109028 files and directories currently installed.)
+Preparing to unpack .../librgw2_16.2.10-1focal_amd64.deb ...
+Unpacking librgw2 (16.2.10-1focal) ...
+Setting up librgw2 (16.2.10-1focal) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
+Successfully installed librgw2_16.2.10-1focal_amd64.deb
+Selecting previously unselected package python3-rados.
+(Reading database ... 109032 files and directories currently installed.)
+Preparing to unpack .../python3-rados_16.2.10-1focal_amd64.deb ...
+Unpacking python3-rados (16.2.10-1focal) ...
+Setting up python3-rados (16.2.10-1focal) ...
+Successfully installed python3-rados_16.2.10-1focal_amd64.deb
+Selecting previously unselected package python3-ceph-argparse.
+(Reading database ... 109039 files and directories currently installed.)
+Preparing to unpack .../python3-ceph-argparse_16.2.10-1focal_all.deb ...
+Unpacking python3-ceph-argparse (16.2.10-1focal) ...
+Setting up python3-ceph-argparse (16.2.10-1focal) ...
+Successfully installed python3-ceph-argparse_16.2.10-1focal_all.deb
+Selecting previously unselected package python3-cephfs.
+(Reading database ... 109043 files and directories currently installed.)
+Preparing to unpack .../python3-cephfs_16.2.10-1focal_amd64.deb ...
+Unpacking python3-cephfs (16.2.10-1focal) ...
+Setting up python3-cephfs (16.2.10-1focal) ...
+Successfully installed python3-cephfs_16.2.10-1focal_amd64.deb
+Selecting previously unselected package python3-ceph-common.
+(Reading database ... 109051 files and directories currently installed.)
+Preparing to unpack .../python3-ceph-common_16.2.10-1focal_all.deb ...
+Unpacking python3-ceph-common (16.2.10-1focal) ...
+Setting up python3-ceph-common (16.2.10-1focal) ...
+Successfully installed python3-ceph-common_16.2.10-1focal_all.deb
+Selecting previously unselected package python3-rbd.
+(Reading database ... 109086 files and directories currently installed.)
+Preparing to unpack .../python3-rbd_16.2.10-1focal_amd64.deb ...
+Unpacking python3-rbd (16.2.10-1focal) ...
+Setting up python3-rbd (16.2.10-1focal) ...
+Successfully installed python3-rbd_16.2.10-1focal_amd64.deb
+Selecting previously unselected package python3-rgw.
+(Reading database ... 109093 files and directories currently installed.)
+Preparing to unpack .../python3-rgw_16.2.10-1focal_amd64.deb ...
+Unpacking python3-rgw (16.2.10-1focal) ...
+Setting up python3-rgw (16.2.10-1focal) ...
+Successfully installed python3-rgw_16.2.10-1focal_amd64.deb
+Selecting previously unselected package ceph-common.
+(Reading database ... 109100 files and directories currently installed.)
+Preparing to unpack .../ceph-common_16.2.10-1focal_amd64.deb ...
+Unpacking ceph-common (16.2.10-1focal) ...
+Setting up ceph-common (16.2.10-1focal) ...
+Adding group ceph....done
+Adding system user ceph....done
+Setting system user ceph properties....done
+chown: cannot access '/var/log/ceph/*.log*': No such file or directory
+Created symlink /etc/systemd/system/multi-user.target.wants/ceph.target → /lib/systemd/system/ceph.target.
+Created symlink /etc/systemd/system/multi-user.target.wants/rbdmap.service → /lib/systemd/system/rbdmap.service.
+Processing triggers for libc-bin (2.31-0ubuntu9.9) ...
+Processing triggers for man-db (2.9.1-1) ...
+Successfully installed ceph-common_16.2.10-1focal_amd64.deb
+Ceph packages installation completed.
+
+```
+
+
+
+```bash
+tar -xvf ceph-common-16.2.10-focal.tar.gz
+dpkg -i librados2_16.2.10-1focal_amd64.deb
+dpkg -i libradosstriper1_16.2.10-1focal_amd64.deb
+dpkg -i libjaeger_16.2.10-1focal_amd64.deb
+dpkg -i librbd1_16.2.10-1focal_amd64.deb
+dpkg -i libcephfs2_16.2.10-1focal_amd64.deb
+dpkg -i librgw2_16.2.10-1focal_amd64.deb
+dpkg -i python3-rados_16.2.10-1focal_amd64.deb
+dpkg -i python3-ceph-argparse_16.2.10-1focal_all.deb
+dpkg -i python3-cephfs_16.2.10-1focal_amd64.deb
+dpkg -i python3-ceph-common_16.2.10-1focal_all.deb
+dpkg -i python3-rbd_16.2.10-1focal_amd64.deb
+dpkg -i python3-rgw_16.2.10-1focal_amd64.deb
+dpkg -i ceph-common_16.2.10-1focal_amd64.deb
+
+12
+```
+
+
+
+`ceph-common-16.2.10-focal.tar.gz` 链接：https://pan.baidu.com/s/19lnYalGOcTJyLdMt3AWuxg?pwd=bbk8 
+提取码：bbk8 
 
 
 
@@ -1211,9 +1406,25 @@ Events:
 
 
 
+对接方式
+有两种方式可以使用k8s对接ceph
 
+使用第三方的rbd provisioner，但是由于官方已经不再进行维护因此随着版本越来越高，其对应的rbd provisioner内置的ceph-common版本已经跟不上ceph的版本了，现在其内置的ceph-common版本是m版，如果集群是m版可以考虑使用
+使用官方的ceph csi，一直在更新，推荐使用，本文使用的就是该种方法
+
+原文链接：https://blog.csdn.net/weixin_42340926/article/details/123931137
 
 https://blog.csdn.net/shell811127/article/details/119330926
+
+
+
+
+
+
+
+
+
+
 
 
 
