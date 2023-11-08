@@ -782,8 +782,6 @@ Events:
 
 
 
-
-
 ![image-20231107103955428](https://cdn1.ryanxin.live/image-20231107103955428.png)
 
 
@@ -1167,6 +1165,111 @@ Events:
 
 
 解决方法见下一小节
+
+
+
+
+
+二进制方式部署的K8s集群使用宿主机内核挂载，可以成功
+
+```bash
+root@k8s-made-01-32:/yaml/ceph# kubectl apply -f case7-mysql-pvc.yaml
+persistentvolumeclaim/mysql-data-pvc created
+root@k8s-made-01-32:/yaml/ceph#
+root@k8s-made-01-32:/yaml/ceph# kubectl get pvc
+NAME             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS                 AGE
+mysql-data-pvc   Bound    pvc-bfd3fc72-417a-4989-9562-6b5268ec1f44   5Gi        RWO            ceph-storage-class-k8s-rbd   3s
+```
+
+
+
+此时在ceph节点可以看到,k8s-rbd-pool1下面有一个名字为kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97的image,这个image对应的就是pvc
+
+```bash
+root@ceph-mon1[23:39:01]~ #:rbd --pool k8s-xrbd-pool1 ls
+k8s-xrbd-img1
+kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97
+```
+
+
+
+```bash
+root@ceph-mon1[23:43:47]~ #:rbd  --pool k8s-xrbd-pool1 --image kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97 info
+rbd image 'kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97':
+        size 5 GiB in 1280 objects
+        order 22 (4 MiB objects)
+        snapshot_count: 0
+        id: 12d86f3c5f13
+        block_name_prefix: rbd_data.12d86f3c5f13
+        format: 2
+        features:
+        op_features:
+        flags:
+        create_timestamp: Wed Nov  8 23:28:50 2023
+        access_timestamp: Wed Nov  8 23:28:50 2023
+        modify_timestamp: Wed Nov  8 23:28:50 2023
+```
+
+
+
+#### 创建depolyment
+
+```yaml
+# cat case8-mysql-single.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:5.6.46
+        name: mysql
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          value: root123
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-data-pvc 
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: mysql-service-label 
+  name: mysql-service
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 3306
+    protocol: TCP
+    targetPort: 3306
+    nodePort: 33306
+  selector:
+    app: mysql
+    
+# kubectl apply -f case8-mysql-single.yaml 
+deployment.apps/mysql created
+service/mysql-service created
+```
 
 
 

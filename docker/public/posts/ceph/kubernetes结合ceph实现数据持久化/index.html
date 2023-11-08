@@ -10,7 +10,7 @@
 <meta name="description" content="Ceph K8s环境rdb,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创" /><meta name="keywords" content='分布式存储' /><meta itemprop="name" content="Kubernetes结合ceph实现数据持久化">
 <meta itemprop="description" content="Ceph K8s环境rdb,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创"><meta itemprop="datePublished" content="2023-11-02T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-11-02T00:00:00+00:00" />
-<meta itemprop="wordCount" content="7032"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="7372"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="分布式存储," /><meta property="og:title" content="Kubernetes结合ceph实现数据持久化" />
 <meta property="og:description" content="Ceph K8s环境rdb,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创" />
 <meta property="og:type" content="article" />
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96\/"
-    },"genre": "posts","keywords": "分布式存储","wordcount":  7032 ,
+    },"genre": "posts","keywords": "分布式存储","wordcount":  7372 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96\/","datePublished": "2023-11-02T00:00:00+00:00","dateModified": "2023-11-02T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -181,7 +181,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/ceph/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Ceph</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-11-02 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span title="更新于 2023-11-02 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 7032 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 15 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Kubernetes结合ceph实现数据持久化">
+      <div class="post-meta-line"><span title="发布于 2023-11-02 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span title="更新于 2023-11-02 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 7372 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 15 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Kubernetes结合ceph实现数据持久化">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -978,10 +978,86 @@
 </span></span><span class="line"><span class="cl">  Warning  ProvisioningFailed  11s <span class="o">(</span>x4 over 56s<span class="o">)</span>  persistentvolume-controller  Failed to provision volume with StorageClass <span class="s2">&#34;ceph-storage-class-k8s-rbd&#34;</span>: failed to create rbd image: executable file not found in <span class="nv">$PATH</span>, <span class="nb">command</span> output:</span></span></code></pre></div><p>因为k8s上的kube-controller-manager资源是运行在容器里，它要调用物理机上的ceph操作需要另外在容器上部署一个rbd-provisioner才能操作成功,而如果K8S是二进制部署的则不需要该操作。</p>
 <p>问题来自gcr.io提供的kube-controller-manager容器镜像未打包ceph-common组件，缺少了rbd命令，因此无法通过rbd命令为pod创建rbd image，查了github的相关文章，目前kubernetes官方在kubernetes-incubator/external-storage项目通过External Provisioners的方式来解决此类问题。</p>
 <p>解决方法见下一小节</p>
-<h3 id="144-部署rbd-provisioner">1.4.4 <strong>部署rbd-provisioner</strong></h3>
+<p>二进制方式部署的K8s集群使用宿主机内核挂载，可以成功</p>
+<div class="highlight" id="id-53"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/ceph# kubectl apply -f case7-mysql-pvc.yaml
+</span></span><span class="line"><span class="cl">persistentvolumeclaim/mysql-data-pvc created
+</span></span><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/ceph#
+</span></span><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/ceph# kubectl get pvc
+</span></span><span class="line"><span class="cl">NAME             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS                 AGE
+</span></span><span class="line"><span class="cl">mysql-data-pvc   Bound    pvc-bfd3fc72-417a-4989-9562-6b5268ec1f44   5Gi        RWO            ceph-storage-class-k8s-rbd   3s</span></span></code></pre></div><p>此时在ceph节点可以看到,k8s-rbd-pool1下面有一个名字为kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97的image,这个image对应的就是pvc</p>
+<div class="highlight" id="id-54"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-mon1<span class="o">[</span>23:39:01<span class="o">]</span>~ <span class="c1">#:rbd --pool k8s-xrbd-pool1 ls</span>
+</span></span><span class="line"><span class="cl">k8s-xrbd-img1
+</span></span><span class="line"><span class="cl">kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97</span></span></code></pre></div><div class="highlight" id="id-55"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-mon1<span class="o">[</span>23:43:47<span class="o">]</span>~ <span class="c1">#:rbd  --pool k8s-xrbd-pool1 --image kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97 info</span>
+</span></span><span class="line"><span class="cl">rbd image <span class="s1">&#39;kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97&#39;</span>:
+</span></span><span class="line"><span class="cl">        size <span class="m">5</span> GiB in <span class="m">1280</span> objects
+</span></span><span class="line"><span class="cl">        order <span class="m">22</span> <span class="o">(</span><span class="m">4</span> MiB objects<span class="o">)</span>
+</span></span><span class="line"><span class="cl">        snapshot_count: <span class="m">0</span>
+</span></span><span class="line"><span class="cl">        id: 12d86f3c5f13
+</span></span><span class="line"><span class="cl">        block_name_prefix: rbd_data.12d86f3c5f13
+</span></span><span class="line"><span class="cl">        format: <span class="m">2</span>
+</span></span><span class="line"><span class="cl">        features:
+</span></span><span class="line"><span class="cl">        op_features:
+</span></span><span class="line"><span class="cl">        flags:
+</span></span><span class="line"><span class="cl">        create_timestamp: Wed Nov  <span class="m">8</span> 23:28:50 <span class="m">2023</span>
+</span></span><span class="line"><span class="cl">        access_timestamp: Wed Nov  <span class="m">8</span> 23:28:50 <span class="m">2023</span>
+</span></span><span class="line"><span class="cl">        modify_timestamp: Wed Nov  <span class="m">8</span> 23:28:50 <span class="m">2023</span></span></span></code></pre></div><h4 id="创建depolyment">创建depolyment</h4>
+<div class="highlight" id="id-56"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># cat case8-mysql-single.yaml</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">strategy</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">Recreate</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">mysql:5.6.46</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">env</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># Use secret in real usage</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">MYSQL_ROOT_PASSWORD</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">root123</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">3306</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql-persistent-storage</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/var/lib/mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql-persistent-storage</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">mysql-data-pvc </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">mysql-service-label </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql-service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">NodePort</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">http</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">3306</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="m">3306</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="m">33306</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># kubectl apply -f case8-mysql-single.yaml </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">deployment.apps/mysql created</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="l">service/mysql-service created</span></span></span></code></pre></div><h3 id="144-部署rbd-provisioner">1.4.4 <strong>部署rbd-provisioner</strong></h3>
 <p>首先得在kubernetes集群中安装rbd-provisioner，</p>
 <p>github仓库：https://github.com/kubernetes-incubator/external-storage</p>
-<div class="highlight" id="id-53"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 解压</span>
+<div class="highlight" id="id-57"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 解压</span>
 </span></span><span class="line"><span class="cl">tar -xf /tmp/rbd-provisioner.tar -C ./
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nb">cd</span> /ceph/rbd/deploy
@@ -990,7 +1066,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## 根据需要，修改rbd-provisioner的namespace</span>
 </span></span><span class="line"><span class="cl">sed -r -i <span class="s2">&#34;s/namespace: [^ ]+/namespace: </span><span class="nv">$NAMESPACE</span><span class="s2">/g&#34;</span> ./rbac/clusterrolebinding.yaml ./rbac/rolebinding.yaml
-</span></span><span class="line"><span class="cl">kubectl -n <span class="nv">$NAMESPACE</span> apply -f ./rbac</span></span></code></pre></div><div class="highlight" id="id-54"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# <span class="nb">cd</span> ./rbac/
+</span></span><span class="line"><span class="cl">kubectl -n <span class="nv">$NAMESPACE</span> apply -f ./rbac</span></span></code></pre></div><div class="highlight" id="id-58"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# <span class="nb">cd</span> ./rbac/
 </span></span><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy/rbac# ls
 </span></span><span class="line"><span class="cl">clusterrolebinding.yaml  clusterrole.yaml  deployment.yaml  rolebinding.yaml  role.yaml  serviceaccount.yaml
 </span></span><span class="line"><span class="cl">
@@ -1001,7 +1077,7 @@
 </span></span><span class="line"><span class="cl">deployment.apps/rbd-provisioner created
 </span></span><span class="line"><span class="cl">role.rbac.authorization.k8s.io/rbd-provisioner created
 </span></span><span class="line"><span class="cl">rolebinding.rbac.authorization.k8s.io/rbd-provisioner created
-</span></span><span class="line"><span class="cl">serviceaccount/rbd-provisioner created</span></span></code></pre></div><div class="highlight" id="id-55"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 查看rbd-provisioner状态</span>
+</span></span><span class="line"><span class="cl">serviceaccount/rbd-provisioner created</span></span></code></pre></div><div class="highlight" id="id-59"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 查看rbd-provisioner状态</span>
 </span></span><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl get pod -n kube-system
 </span></span><span class="line"><span class="cl">NAME                                   READY   STATUS    RESTARTS   AGE
 </span></span><span class="line"><span class="cl">coredns-6d56c8448f-2twxm               1/1     Running   <span class="m">0</span>          25d
@@ -1017,17 +1093,17 @@
 </span></span><span class="line"><span class="cl">rbd-provisioner-76f6bc6669-d4sj9       1/1     Running   <span class="m">0</span>          101s</span></span></code></pre></div><p>rbd-provisioner已经正常部署</p>
 <p><strong>接上面1.4.2 小结重新创建存储类</strong></p>
 <p>注意：因为rbd-provisioner创建在命名空间kube-system 中，它无法访问其他命名空间的secret，所以需要把ceph管理员和普通用户的secret创建与rbd-provisioner相同的命名空间。 否则会出现如下错误：</p>
-<div class="highlight" id="id-56"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
+<div class="highlight" id="id-60"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
 </span></span><span class="line"><span class="cl">  Type     Reason                Age               From                                                                                Message
 </span></span><span class="line"><span class="cl">  ----     ------                ----              ----                                                   -----
 </span></span><span class="line"><span class="cl">  Normal   Provisioning          14s               ceph.com/rbd_rbd-provisioner-76f6bc6669-d4sj9_da9e34c3-7d46-11ee-bdb5-5a5c3fb06299  External provisioner is provisioning volume <span class="k">for</span> claim <span class="s2">&#34;default/mysql-data-pvc&#34;</span>
 </span></span><span class="line"><span class="cl">  Warning  ProvisioningFailed    14s               ceph.com/rbd_rbd-provisioner-76f6bc6669-d4sj9_da9e34c3-7d46-11ee-bdb5-5a5c3fb06299  failed to provision volume with StorageClass <span class="s2">&#34;ceph-storage-class-k8s-rbd&#34;</span>: failed to get admin secret from <span class="o">[</span><span class="s2">&#34;default&#34;</span>/<span class="s2">&#34;ceph-secret-admin&#34;</span><span class="o">]</span>: secrets <span class="s2">&#34;ceph-secret-admin&#34;</span> is forbidden: User <span class="s2">&#34;system:serviceaccount:kube-system:rbd-provisioner&#34;</span> cannot get resource <span class="s2">&#34;secrets&#34;</span> in API group <span class="s2">&#34;&#34;</span> in the namespace <span class="s2">&#34;default&#34;</span>
-</span></span><span class="line"><span class="cl">  Normal   ExternalProvisioning  9s <span class="o">(</span>x2 over 14s<span class="o">)</span>  persistentvolume-controller                                                         waiting <span class="k">for</span> a volume to be created, either by external provisioner <span class="s2">&#34;ceph.com/rbd&#34;</span> or manually created by system administrator</span></span></code></pre></div><div class="highlight" id="id-57"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl apply -n kube-system -f /yaml/ceph/case3-secret-client-admk8s-ceamg.yaml
+</span></span><span class="line"><span class="cl">  Normal   ExternalProvisioning  9s <span class="o">(</span>x2 over 14s<span class="o">)</span>  persistentvolume-controller                                                         waiting <span class="k">for</span> a volume to be created, either by external provisioner <span class="s2">&#34;ceph.com/rbd&#34;</span> or manually created by system administrator</span></span></code></pre></div><div class="highlight" id="id-61"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl apply -n kube-system -f /yaml/ceph/case3-secret-client-admk8s-ceamg.yaml
 </span></span><span class="line"><span class="cl">secret/ceph-secret-admk8s-ceamg created
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl apply -n kube-system -f /yaml/ceph/case5-secret-admin.yaml
 </span></span><span class="line"><span class="cl">secret/ceph-secret-admin created</span></span></code></pre></div><p>其他设置和普通的ceph rbd StorageClass一致，但provisioner需要设置为<code>ceph.com/rbd</code>，不是默认的<code>kubernetes.io/rbd</code>，这样rbd的请求将由rbd-provisioner来处理</p>
-<div class="highlight" id="id-58"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">storage.k8s.io/v1</span><span class="w">
+<div class="highlight" id="id-62"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">storage.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StorageClass</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ceph-storage-class-k8s-rbd</span><span class="w">
@@ -1044,7 +1120,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">userSecretName</span><span class="p">:</span><span class="w"> </span><span class="l">ceph-secret-admk8s-ceamg</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">fsType</span><span class="p">:</span><span class="w"> </span><span class="l">ext4</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">imageFormat</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">imageFeatures</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;layering&#34;</span></span></span></code></pre></div><div class="highlight" id="id-59"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 创建SC</span>
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">imageFeatures</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;layering&#34;</span></span></span></code></pre></div><div class="highlight" id="id-63"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 创建SC</span>
 </span></span><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl apply -f /yaml/ceph/case6-ceph-storage-class.yaml
 </span></span><span class="line"><span class="cl">storageclass.storage.k8s.io/ceph-storage-class-k8s-rbd created
 </span></span><span class="line"><span class="cl">
@@ -1052,8 +1128,8 @@
 </span></span><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl get sc
 </span></span><span class="line"><span class="cl">NAME                         PROVISIONER    RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
 </span></span><span class="line"><span class="cl">ceph-storage-class-k8s-rbd   ceph.com/rbd   Delete          Immediate           <span class="nb">false</span>                  3s</span></span></code></pre></div><p><strong>接1.4.3 小记重新创建PVC</strong></p>
-<div class="highlight" id="id-60"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"></code></pre></div><p>这个报错是说rbd-provisioner需要ceph.conf等配置信息，在网上找到临时解决办法是通过docker拷贝将本地/etc/ceph/里的文件拷贝到镜像里去。</p>
-<div class="highlight" id="id-61"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
+<div class="highlight" id="id-64"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"></code></pre></div><p>这个报错是说rbd-provisioner需要ceph.conf等配置信息，在网上找到临时解决办法是通过docker拷贝将本地/etc/ceph/里的文件拷贝到镜像里去。</p>
+<div class="highlight" id="id-65"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
 </span></span><span class="line"><span class="cl">  Type     Reason              Age   From                                                                                Message
 </span></span><span class="line"><span class="cl">  ----     ------              ----  ----                                                                                -------
 </span></span><span class="line"><span class="cl">  Normal   Provisioning        13s   ceph.com/rbd_rbd-provisioner-76f6bc6669-d4sj9_da9e34c3-7d46-11ee-bdb5-5a5c3fb06299  External provisioner is provisioning volume <span class="k">for</span> claim <span class="s2">&#34;default/mysql-data-pvc&#34;</span>
@@ -1071,7 +1147,7 @@
 </span></span><span class="line"><span class="cl">2023-11-07 08:50:16.848 7fbdd2279900 -1 auth: unable to find a keyring on /etc/ceph/ceph.client.admin.keyring,/etc/ceph/ceph.keyring,/etc/ceph/keyring,/etc/ceph/keyring.bin,: <span class="o">(</span>2<span class="o">)</span> No such file or directory
 </span></span><span class="line"><span class="cl">rbd: couldn<span class="err">&#39;</span>t connect to the cluster!
 </span></span><span class="line"><span class="cl">  Normal  ExternalProvisioning  9s <span class="o">(</span>x3 over 13s<span class="o">)</span>  persistentvolume-controller  waiting <span class="k">for</span> a volume to be created, either by external provisioner <span class="s2">&#34;ceph.com/rbd&#34;</span> or manually created by system administrator</span></span></code></pre></div><p>在rbd-provisioner.yaml文件了加载了hostpath将本地目录挂载到容器里，如下：</p>
-<div class="highlight" id="id-62"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+<div class="highlight" id="id-66"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rbd-provisioner</span><span class="w">
@@ -1100,10 +1176,10 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ceph-conf</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">hostPath</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/ceph</span></span></span></code></pre></div><div class="highlight" id="id-63"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/etc/ceph# kubectl delete -n kube-system -f /yaml/ceph/ceph/rbd/deploy/rbac/deployment.yaml
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/ceph</span></span></span></code></pre></div><div class="highlight" id="id-67"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/etc/ceph# kubectl delete -n kube-system -f /yaml/ceph/ceph/rbd/deploy/rbac/deployment.yaml
 </span></span><span class="line"><span class="cl">deployment.apps <span class="s2">&#34;rbd-provisioner&#34;</span> deleted
 </span></span><span class="line"><span class="cl">root@k8s-master01:/etc/ceph# kubectl apply -n kube-system -f /yaml/ceph/ceph/rbd/deploy/rbac/deployment.yaml
-</span></span><span class="line"><span class="cl">deployment.apps/rbd-provisioner created</span></span></code></pre></div><div class="highlight" id="id-64"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/etc/ceph# kubectl get pod -n kube-system
+</span></span><span class="line"><span class="cl">deployment.apps/rbd-provisioner created</span></span></code></pre></div><div class="highlight" id="id-68"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/etc/ceph# kubectl get pod -n kube-system
 </span></span><span class="line"><span class="cl">NAME                                   READY   STATUS    RESTARTS   AGE
 </span></span><span class="line"><span class="cl">coredns-6d56c8448f-2twxm               1/1     Running   <span class="m">0</span>          25d
 </span></span><span class="line"><span class="cl">coredns-6d56c8448f-n6wk9               1/1     Running   <span class="m">0</span>          25d
@@ -1116,7 +1192,7 @@
 </span></span><span class="line"><span class="cl">kube-proxy-zzm95                       1/1     Running   <span class="m">0</span>          25d
 </span></span><span class="line"><span class="cl">kube-scheduler-k8s-master01            1/1     Running   <span class="m">3</span>          25d
 </span></span><span class="line"><span class="cl">rbd-provisioner-54ccfd7f5c-kmpvw       1/1     Running   <span class="m">0</span>          27s</span></span></code></pre></div><p>这时发现不保存了但是还是处于pending状态</p>
-<div class="highlight" id="id-65"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
+<div class="highlight" id="id-69"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
 </span></span><span class="line"><span class="cl">  Type    Reason                Age               From                                                                                Message
 </span></span><span class="line"><span class="cl">  ----    ------                ----              ----                                                                                -------
 </span></span><span class="line"><span class="cl">  Normal  Provisioning          53s               ceph.com/rbd_rbd-provisioner-54ccfd7f5c-kmpvw_13600cb8-7d4c-11ee-b1ca-a2b2060515f6  External provisioner is provisioning volume <span class="k">for</span> claim <span class="s2">&#34;default/mysql-data-pvc&#34;</span>
