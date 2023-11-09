@@ -1127,53 +1127,21 @@ persistentvolumeclaim/mysql-data-pvc created
 
 
 
-查看pvc 
-
-```yaml
-root@k8s-master01:/etc/ceph# kubectl get pvc
-NAME             STATUS    VOLUME   CAPACITY   ACCESS MODES   STORAGECLASS                 AGE
-mysql-data-pvc   Pending                                      ceph-storage-class-k8s-rbd   6m18s
-```
-
-
-
-**这里发现为Pending 状态**
-
-```bash
-Events:
-  Type     Reason              Age                From                         Message
-  ----     ------              ----               ----                         -------
-  Warning  ProvisioningFailed  11s (x4 over 56s)  persistentvolume-controller  Failed to provision volume with StorageClass "ceph-storage-class-k8s-rbd": failed to create rbd image: executable file not found in $PATH, command output:
-```
-
-因为k8s上的kube-controller-manager资源是运行在容器里，它要调用物理机上的ceph操作需要另外在容器上部署一个rbd-provisioner才能操作成功,而如果K8S是二进制部署的则不需要该操作。
-
-
-
-问题来自gcr.io提供的kube-controller-manager容器镜像未打包ceph-common组件，缺少了rbd命令，因此无法通过rbd命令为pod创建rbd image，查了github的相关文章，目前kubernetes官方在kubernetes-incubator/external-storage项目通过External Provisioners的方式来解决此类问题。
-
-
-
-解决方法见下一小节
-
-
-
-
-
-二进制方式部署的K8s集群使用宿主机内核挂载，可以成功
+**二进制方式部署的K8s集群使用宿主机内核挂载所以可以成功绑定**
 
 ```bash
 root@k8s-made-01-32:/yaml/ceph# kubectl apply -f case7-mysql-pvc.yaml
 persistentvolumeclaim/mysql-data-pvc created
 root@k8s-made-01-32:/yaml/ceph#
-root@k8s-made-01-32:/yaml/ceph# kubectl get pvc
+
+root@k8s-made-01-32:~# kubectl get pvc
 NAME             STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS                 AGE
-mysql-data-pvc   Bound    pvc-bfd3fc72-417a-4989-9562-6b5268ec1f44   5Gi        RWO            ceph-storage-class-k8s-rbd   3s
+mysql-data-pvc   Bound    pvc-bfd3fc72-417a-4989-9562-6b5268ec1f44   5Gi        RWO            ceph-storage-class-k8s-rbd   15s
 ```
 
 
 
-此时在ceph节点可以看到,k8s-rbd-pool1下面有一个名字为kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97的image,这个image对应的就是pvc
+此时在ceph节点可以看到,k8s-rbd-pool1下面有一个名字为`kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97`的image,这个image对应的就是pvc
 
 ```bash
 root@ceph-mon1[23:39:01]~ #:rbd --pool k8s-xrbd-pool1 ls
@@ -1202,70 +1170,53 @@ rbd image 'kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97':
 
 
 
-#### 创建depolyment
 
-```yaml
-# cat case8-mysql-single.yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: mysql
-spec:
-  selector:
-    matchLabels:
-      app: mysql
-  strategy:
-    type: Recreate
-  template:
-    metadata:
-      labels:
-        app: mysql
-    spec:
-      containers:
-      - image: mysql:5.6.46
-        name: mysql
-        env:
-          # Use secret in real usage
-        - name: MYSQL_ROOT_PASSWORD
-          value: root123
-        ports:
-        - containerPort: 3306
-          name: mysql
-        volumeMounts:
-        - name: mysql-persistent-storage
-          mountPath: /var/lib/mysql
-      volumes:
-      - name: mysql-persistent-storage
-        persistentVolumeClaim:
-          claimName: mysql-data-pvc 
----
-kind: Service
-apiVersion: v1
-metadata:
-  labels:
-    app: mysql-service-label 
-  name: mysql-service
-spec:
-  type: NodePort
-  ports:
-  - name: http
-    port: 3306
-    protocol: TCP
-    targetPort: 3306
-    nodePort: 33306
-  selector:
-    app: mysql
-    
-# kubectl apply -f case8-mysql-single.yaml 
-deployment.apps/mysql created
-service/mysql-service created
+
+#### 1.4.3.1  非二进制部署的K8S集群pvc为Pending状态    
+
+**这里发现为Pending 状态**
+
+```bash
+Events:
+  Type     Reason              Age                From                         Message
+  ----     ------              ----               ----                         -------
+  Warning  ProvisioningFailed  11s (x4 over 56s)  persistentvolume-controller  Failed to provision volume with StorageClass "ceph-storage-class-k8s-rbd": failed to create rbd image: executable file not found in $PATH, command output:
 ```
 
+因为k8s上的kube-controller-manager资源是运行在容器里，它要调用物理机上的ceph操作需要另外在容器上部署一个`rbd-provisioner`才能操作成功,而如果K8S是二进制部署的则不需要该操作。
+
+
+
+问题来自gcr.io提供的kube-controller-manager容器镜像未打包ceph-common组件，缺少了rbd命令，因此无法通过rbd命令为pod创建rbd image，查了github的相关文章，目前kubernetes官方在kubernetes-incubator/external-storage项目通过External Provisioners的方式来解决此类问题。
+
+
+
+#### 1.4.3.2  k8s与ceph对接方式
+
+
+
+1.使用第三方的rbd provisioner，但是由于官方已经不再进行维护因此随着版本越来越高，其对应的rbd provisioner内置的ceph-common版本已经跟不上ceph的版本了，现在其内置的ceph-common版本是m版，如果集群是m版可以考虑使用，**rbd provisioner 镜像内置的系统为CentOS 7 ，从Pacific 版本后已经不支持Centos7了。**
+
+2.使用官方的ceph csi，一直在更新，推荐使用，由于我的ceph集群版本为Pacific 16.2.10 目前没有适配，带有匹配版本后继续进行测试。
+
+3.使用二进制方式部署的K8S集群且宿主机各节点安装ceph-common,使用宿主机内核进行RBD挂载。
 
 
 
 
-### 1.4.4 **部署rbd-provisioner**
+
+
+**原文链接**：
+
+[超详细的k8s对接ceph RBD存储](https://blog.csdn.net/weixin_42340926/article/details/123931137)
+
+[k8s学习笔记——ceph pv rbd动态挂载](https://blog.csdn.net/shell811127/article/details/119330926)
+
+
+
+
+
+#### 1.4.3.3 **部署rbd-provisioner**
 
 首先得在kubernetes集群中安装rbd-provisioner，
 
@@ -1395,12 +1346,9 @@ ceph-storage-class-k8s-rbd   ceph.com/rbd   Delete          Immediate           
 
 
 
-**接1.4.3 小记重新创建PVC**
+重新创建PVC
 
-```bash
-```
-
-这个报错是说rbd-provisioner需要ceph.conf等配置信息，在网上找到临时解决办法是通过docker拷贝将本地/etc/ceph/里的文件拷贝到镜像里去。
+这个报错是说rbd-provisioner需要`ceph.conf`等配置信息，在网上找到临时解决办法是通过docker拷贝将本地/etc/ceph/里的文件拷贝到镜像里去。
 
 ```bash
 Events:
@@ -1425,7 +1373,7 @@ rbd: couldn't connect to the cluster!
 
 
 
-在rbd-provisioner.yaml文件了加载了hostpath将本地目录挂载到容器里，如下：
+在`rbd-provisioner.yaml`文件了加载了hostpath将本地目录挂载到容器里，如下：
 
 ```yaml
 apiVersion: apps/v1
@@ -1487,7 +1435,9 @@ rbd-provisioner-54ccfd7f5c-kmpvw       1/1     Running   0          27s
 
 
 
-这时发现不保存了但是还是处于pending状态
+这时发现没有报错了
+
+但是还是处于pending状态
 
 ```bash
 Events:
@@ -1499,15 +1449,94 @@ Events:
 
 
 
-对接方式
-有两种方式可以使用k8s对接ceph
+于是查了一下 Centos 7 最后支持的Ceph 版本是Octopus，我现在的集群版本是Pacific ，所以就算升级rbd-provisioner镜像内的Ceph-Common版本也无法对接我的Ceph集群。于是只能使用宿主机方式挂载，或者等官方更新。
 
-使用第三方的rbd provisioner，但是由于官方已经不再进行维护因此随着版本越来越高，其对应的rbd provisioner内置的ceph-common版本已经跟不上ceph的版本了，现在其内置的ceph-common版本是m版，如果集群是m版可以考虑使用
-使用官方的ceph csi，一直在更新，推荐使用，本文使用的就是该种方法
 
-原文链接：https://blog.csdn.net/weixin_42340926/article/details/123931137
 
-https://blog.csdn.net/shell811127/article/details/119330926
+
+
+
+
+
+
+### 1.4.4 创建 Mysql depolyment
+
+```bash
+root@k8s-made-01-32:~# vim /yaml/ceph/case8-mysql-single.yaml
+```
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - image: mysql:5.6.46
+        name: mysql
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          value: root123
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-data-pvc 
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: mysql-service-label 
+  name: mysql-service
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 3306
+    protocol: TCP
+    targetPort: 3306
+    nodePort: 33306
+  selector:
+    app: mysql
+```
+
+
+
+```bash
+root@k8s-made-01-32:~# kubectl apply -f /yaml/ceph/case8-mysql-single.yaml
+deployment.apps/mysql created
+service/mysql-service created
+```
+
+
+
+```bash
+##查看pod状态
+root@k8s-made-01-32:~# kubectl get pod
+NAME                                 READY   STATUS    RESTARTS   AGE
+mysql-6648cc9c79-48s6r               1/1     Running   0          103s
+```
+
+
+
+
 
 
 
