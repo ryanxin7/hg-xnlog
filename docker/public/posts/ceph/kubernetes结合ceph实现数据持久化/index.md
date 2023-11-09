@@ -1,7 +1,7 @@
 # Kubernetes结合ceph实现数据持久化
 
 
-# Ceph K8s环境rdb,CephFS的使用
+# Ceph K8s环境RBD,CephFS的使用
 
 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创建rbd并且让k8s node 节点能够通过ceph认证。
 
@@ -1097,7 +1097,7 @@ Events:                <none>
 
 
 
-### 1.4.3 创建pvc
+### 1.4.3 创建基于存储类的pvc
 
 创建pvc时先找存储类(ceph-storage-class-k8s-rbd),到monitors以ceph-secret-admin权限创建,使用的时候用普通用户权限进行挂载
 
@@ -1459,7 +1459,7 @@ Events:
 
 
 
-### 1.4.4 创建 Mysql depolyment
+### 1.4.4 基于动态存储卷运行mysql并验证
 
 ```bash
 root@k8s-made-01-32:~# vim /yaml/ceph/case8-mysql-single.yaml
@@ -1536,21 +1536,86 @@ mysql-6648cc9c79-48s6r               1/1     Running   0          103s
 
 
 
+```bash
+## 去容器中查看挂载情况
+root@k8s-made-01-32:~# kubectl exec -it mysql-6648cc9c79-48s6r -- bash
+root@mysql-6648cc9c79-48s6r:/#
+root@mysql-6648cc9c79-48s6r:/#
+root@mysql-6648cc9c79-48s6r:/# df -Th
+Filesystem     Type     Size  Used Avail Use% Mounted on
+overlay        overlay  810G   27G  742G   4% /
+tmpfs          tmpfs     64M     0   64M   0% /dev
+tmpfs          tmpfs    3.9G     0  3.9G   0% /sys/fs/cgroup
+/dev/vda4      ext4     810G   27G  742G   4% /etc/hosts
+shm            tmpfs     64M     0   64M   0% /dev/shm
+/dev/rbd0      ext4     4.9G  116M  4.8G   3% /var/lib/mysql
+tmpfs          tmpfs    7.5G   12K  7.5G   1% /run/secrets/kubernetes.io/serviceaccount
+tmpfs          tmpfs    3.9G     0  3.9G   0% /proc/acpi
+tmpfs          tmpfs    3.9G     0  3.9G   0% /proc/scsi
+tmpfs          tmpfs    3.9G     0  3.9G   0% /sys/firmware
+```
+
+
+
+```bash
+## 查看rbd image 信息
+root@ceph-mon1[16:42:11]~ #:rbd --pool k8s-xrbd-pool1 --image kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97 info
+rbd image 'kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97':
+        size 5 GiB in 1280 objects
+        order 22 (4 MiB objects)
+        snapshot_count: 0
+        id: 12d86f3c5f13
+        block_name_prefix: rbd_data.12d86f3c5f13
+        format: 2
+        features:
+        op_features:
+        flags:
+        create_timestamp: Wed Nov  8 23:28:50 2023
+        access_timestamp: Wed Nov  8 23:28:50 2023
+        modify_timestamp: Wed Nov  8 23:28:50 2023
+```
 
 
 
 
 
+```bash
+## 查看ceph使用情况
+root@ceph-mon1[16:43:40]~ #:ceph df
+--- RAW STORAGE ---
+CLASS     SIZE    AVAIL     USED  RAW USED  %RAW USED
+hdd    1.8 TiB  1.2 TiB  562 GiB   562 GiB      31.23
+TOTAL  1.8 TiB  1.2 TiB  562 GiB   562 GiB      31.23
+
+--- POOLS ---
+POOL                   ID  PGS   STORED  OBJECTS     USED  %USED  MAX AVAIL
+device_health_metrics   1    1      0 B        0      0 B      0    321 GiB
+xxrbd3                  3   64   10 MiB       17   31 MiB      0    321 GiB
+xxrbd2                  4   64   12 MiB       16   37 MiB      0    321 GiB
+cephfs-metadata         5   32  226 MiB      106  679 MiB   0.07    321 GiB
+cephfs-data             6   64  183 GiB   47.35k  550 GiB  36.33    321 GiB
+.rgw.root               7   32  1.3 KiB        4   48 KiB      0    321 GiB
+default.rgw.log         8   32  3.6 KiB      209  408 KiB      0    321 GiB
+default.rgw.control     9   32      0 B        8      0 B      0    321 GiB
+default.rgw.meta       10   32      0 B        0      0 B      0    321 GiB
+k8s-xrbd-pool1         13   32  188 MiB       80  565 MiB   0.06    321 GiB
+```
 
 
 
+## 1.5  Cephfs使用案例
 
 
 
+### 1.5.1 创建secret
 
+### 1.5.2 创建pod
 
+### 1.5.3 验证pod挂载
 
-## Kubernetes 通secret 挂载rbd及cephfs 使用案例
+### 1.5.4 pod多副本挂载验证
+
+### 1.5.5 宿主机验证
 
 
 

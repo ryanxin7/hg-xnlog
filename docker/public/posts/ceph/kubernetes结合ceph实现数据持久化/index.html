@@ -7,12 +7,12 @@
     <meta name="robots" content="noodp" />
     <title>Kubernetes结合ceph实现数据持久化 - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
 <meta name="author-link" content="https://github.com/ryanxin7">
-<meta name="description" content="Ceph K8s环境rdb,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创" /><meta name="keywords" content='分布式存储' /><meta itemprop="name" content="Kubernetes结合ceph实现数据持久化">
-<meta itemprop="description" content="Ceph K8s环境rdb,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创"><meta itemprop="datePublished" content="2023-11-02T00:00:00+00:00" />
+<meta name="description" content="Ceph K8s环境RBD,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创" /><meta name="keywords" content='分布式存储' /><meta itemprop="name" content="Kubernetes结合ceph实现数据持久化">
+<meta itemprop="description" content="Ceph K8s环境RBD,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创"><meta itemprop="datePublished" content="2023-11-02T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-11-02T00:00:00+00:00" />
-<meta itemprop="wordCount" content="7596"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="7967"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="分布式存储," /><meta property="og:title" content="Kubernetes结合ceph实现数据持久化" />
-<meta property="og:description" content="Ceph K8s环境rdb,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创" />
+<meta property="og:description" content="Ceph K8s环境RBD,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hg-xnlog.github.io/posts/ceph/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2023-11-02T00:00:00+00:00" />
@@ -21,7 +21,7 @@
 <meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
 
 <meta name="twitter:title" content="Kubernetes结合ceph实现数据持久化"/>
-<meta name="twitter:description" content="Ceph K8s环境rdb,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创"/>
+<meta name="twitter:description" content="Ceph K8s环境RBD,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创"/>
 <meta name="application-name" content="Ryan’s Notebook">
 <meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/ceph/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/ceph/ceph-common-%E4%BE%9D%E8%B5%96%E9%97%AE%E9%A2%98/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96\/"
-    },"genre": "posts","keywords": "分布式存储","wordcount":  7596 ,
+    },"genre": "posts","keywords": "分布式存储","wordcount":  7967 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96\/","datePublished": "2023-11-02T00:00:00+00:00","dateModified": "2023-11-02T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -181,7 +181,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/ceph/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Ceph</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-11-02 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span title="更新于 2023-11-02 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 7596 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 16 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Kubernetes结合ceph实现数据持久化">
+      <div class="post-meta-line"><span title="发布于 2023-11-02 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span title="更新于 2023-11-02 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 7967 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 16 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Kubernetes结合ceph实现数据持久化">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -218,14 +218,22 @@
       <ul>
         <li><a href="#141-创建普通用户和admin用户的secret">1.4.1 创建普通用户和admin用户的secret</a></li>
         <li><a href="#142-创建存储类">1.4.2 创建存储类</a></li>
-        <li><a href="#143-创建pvc">1.4.3 创建pvc</a></li>
-        <li><a href="#144-创建-mysql-depolyment">1.4.4 创建 Mysql depolyment</a></li>
+        <li><a href="#143-创建基于存储类的pvc">1.4.3 创建基于存储类的pvc</a></li>
+        <li><a href="#144-基于动态存储卷运行mysql并验证">1.4.4 基于动态存储卷运行mysql并验证</a></li>
       </ul>
     </li>
-    <li><a href="#kubernetes-通secret-挂载rbd及cephfs-使用案例">Kubernetes 通secret 挂载rbd及cephfs 使用案例</a></li>
+    <li><a href="#15--cephfs使用案例">1.5  Cephfs使用案例</a>
+      <ul>
+        <li><a href="#151-创建secret">1.5.1 创建secret</a></li>
+        <li><a href="#152-创建pod">1.5.2 创建pod</a></li>
+        <li><a href="#153-验证pod挂载">1.5.3 验证pod挂载</a></li>
+        <li><a href="#154-pod多副本挂载验证">1.5.4 pod多副本挂载验证</a></li>
+        <li><a href="#155-宿主机验证">1.5.5 宿主机验证</a></li>
+      </ul>
+    </li>
   </ul>
 </nav></div>
-      </div><div class="content" id="content"><h1 id="ceph-k8s环境rdbcephfs的使用">Ceph K8s环境rdb,CephFS的使用</h1>
+      </div><div class="content" id="content"><h1 id="ceph-k8s环境rbdcephfs的使用">Ceph K8s环境RBD,CephFS的使用</h1>
 <p>让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创建rbd并且让k8s node 节点能够通过ceph认证。</p>
 <blockquote>
 <p>在使用Ceph作为动态存储卷的时候，确实需要确保Kubernetes集群中的各个组件，包括kube-controller-manager，能够访问Ceph存储集群。为了实现这一点，通常需要在每个Kubernetes节点上同步Ceph的认证文件。</p>
@@ -954,7 +962,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">MountOptions</span><span class="p">:</span><span class="w">          </span><span class="l">&lt;none&gt;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">ReclaimPolicy</span><span class="p">:</span><span class="w">         </span><span class="l">Delete</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">VolumeBindingMode</span><span class="p">:</span><span class="w">     </span><span class="l">Immediate</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Events</span><span class="p">:</span><span class="w">                </span><span class="l">&lt;none&gt;</span></span></span></code></pre></div><h3 id="143-创建pvc">1.4.3 创建pvc</h3>
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">Events</span><span class="p">:</span><span class="w">                </span><span class="l">&lt;none&gt;</span></span></span></code></pre></div><h3 id="143-创建基于存储类的pvc">1.4.3 创建基于存储类的pvc</h3>
 <p>创建pvc时先找存储类(ceph-storage-class-k8s-rbd),到monitors以ceph-secret-admin权限创建,使用的时候用普通用户权限进行挂载</p>
 <div class="highlight" id="id-49"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="l">cat case7-mysql-pvc.yaml </span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
@@ -1149,7 +1157,7 @@
 </span></span><span class="line"><span class="cl">  ----    ------                ----              ----                                                                                -------
 </span></span><span class="line"><span class="cl">  Normal  Provisioning          53s               ceph.com/rbd_rbd-provisioner-54ccfd7f5c-kmpvw_13600cb8-7d4c-11ee-b1ca-a2b2060515f6  External provisioner is provisioning volume <span class="k">for</span> claim <span class="s2">&#34;default/mysql-data-pvc&#34;</span>
 </span></span><span class="line"><span class="cl">  Normal  ExternalProvisioning  8s <span class="o">(</span>x4 over 53s<span class="o">)</span>  persistentvolume-controller                                                         waiting <span class="k">for</span> a volume to be created, either by external provisioner <span class="s2">&#34;ceph.com/rbd&#34;</span> or manually created by system administrator</span></span></code></pre></div><p>于是查了一下 Centos 7 最后支持的Ceph 版本是Octopus，我现在的集群版本是Pacific ，所以就算升级rbd-provisioner镜像内的Ceph-Common版本也无法对接我的Ceph集群。于是只能使用宿主机方式挂载，或者等官方更新。</p>
-<h3 id="144-创建-mysql-depolyment">1.4.4 创建 Mysql depolyment</h3>
+<h3 id="144-基于动态存储卷运行mysql并验证">1.4.4 基于动态存储卷运行mysql并验证</h3>
 <div class="highlight" id="id-67"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:~# vim /yaml/ceph/case8-mysql-single.yaml</span></span></code></pre></div><div class="highlight" id="id-68"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -1203,7 +1211,59 @@
 </span></span><span class="line"><span class="cl">service/mysql-service created</span></span></code></pre></div><div class="highlight" id="id-70"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">##查看pod状态</span>
 </span></span><span class="line"><span class="cl">root@k8s-made-01-32:~# kubectl get pod
 </span></span><span class="line"><span class="cl">NAME                                 READY   STATUS    RESTARTS   AGE
-</span></span><span class="line"><span class="cl">mysql-6648cc9c79-48s6r               1/1     Running   <span class="m">0</span>          103s</span></span></code></pre></div><h2 id="kubernetes-通secret-挂载rbd及cephfs-使用案例">Kubernetes 通secret 挂载rbd及cephfs 使用案例</h2>
+</span></span><span class="line"><span class="cl">mysql-6648cc9c79-48s6r               1/1     Running   <span class="m">0</span>          103s</span></span></code></pre></div><div class="highlight" id="id-71"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 去容器中查看挂载情况</span>
+</span></span><span class="line"><span class="cl">root@k8s-made-01-32:~# kubectl <span class="nb">exec</span> -it mysql-6648cc9c79-48s6r -- bash
+</span></span><span class="line"><span class="cl">root@mysql-6648cc9c79-48s6r:/#
+</span></span><span class="line"><span class="cl">root@mysql-6648cc9c79-48s6r:/#
+</span></span><span class="line"><span class="cl">root@mysql-6648cc9c79-48s6r:/# df -Th
+</span></span><span class="line"><span class="cl">Filesystem     Type     Size  Used Avail Use% Mounted on
+</span></span><span class="line"><span class="cl">overlay        overlay  810G   27G  742G   4% /
+</span></span><span class="line"><span class="cl">tmpfs          tmpfs     64M     <span class="m">0</span>   64M   0% /dev
+</span></span><span class="line"><span class="cl">tmpfs          tmpfs    3.9G     <span class="m">0</span>  3.9G   0% /sys/fs/cgroup
+</span></span><span class="line"><span class="cl">/dev/vda4      ext4     810G   27G  742G   4% /etc/hosts
+</span></span><span class="line"><span class="cl">shm            tmpfs     64M     <span class="m">0</span>   64M   0% /dev/shm
+</span></span><span class="line"><span class="cl">/dev/rbd0      ext4     4.9G  116M  4.8G   3% /var/lib/mysql
+</span></span><span class="line"><span class="cl">tmpfs          tmpfs    7.5G   12K  7.5G   1% /run/secrets/kubernetes.io/serviceaccount
+</span></span><span class="line"><span class="cl">tmpfs          tmpfs    3.9G     <span class="m">0</span>  3.9G   0% /proc/acpi
+</span></span><span class="line"><span class="cl">tmpfs          tmpfs    3.9G     <span class="m">0</span>  3.9G   0% /proc/scsi
+</span></span><span class="line"><span class="cl">tmpfs          tmpfs    3.9G     <span class="m">0</span>  3.9G   0% /sys/firmware</span></span></code></pre></div><div class="highlight" id="id-72"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 查看rbd image 信息</span>
+</span></span><span class="line"><span class="cl">root@ceph-mon1<span class="o">[</span>16:42:11<span class="o">]</span>~ <span class="c1">#:rbd --pool k8s-xrbd-pool1 --image kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97 info</span>
+</span></span><span class="line"><span class="cl">rbd image <span class="s1">&#39;kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97&#39;</span>:
+</span></span><span class="line"><span class="cl">        size <span class="m">5</span> GiB in <span class="m">1280</span> objects
+</span></span><span class="line"><span class="cl">        order <span class="m">22</span> <span class="o">(</span><span class="m">4</span> MiB objects<span class="o">)</span>
+</span></span><span class="line"><span class="cl">        snapshot_count: <span class="m">0</span>
+</span></span><span class="line"><span class="cl">        id: 12d86f3c5f13
+</span></span><span class="line"><span class="cl">        block_name_prefix: rbd_data.12d86f3c5f13
+</span></span><span class="line"><span class="cl">        format: <span class="m">2</span>
+</span></span><span class="line"><span class="cl">        features:
+</span></span><span class="line"><span class="cl">        op_features:
+</span></span><span class="line"><span class="cl">        flags:
+</span></span><span class="line"><span class="cl">        create_timestamp: Wed Nov  <span class="m">8</span> 23:28:50 <span class="m">2023</span>
+</span></span><span class="line"><span class="cl">        access_timestamp: Wed Nov  <span class="m">8</span> 23:28:50 <span class="m">2023</span>
+</span></span><span class="line"><span class="cl">        modify_timestamp: Wed Nov  <span class="m">8</span> 23:28:50 <span class="m">2023</span></span></span></code></pre></div><div class="highlight" id="id-73"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 查看ceph使用情况</span>
+</span></span><span class="line"><span class="cl">root@ceph-mon1<span class="o">[</span>16:43:40<span class="o">]</span>~ <span class="c1">#:ceph df</span>
+</span></span><span class="line"><span class="cl">--- RAW STORAGE ---
+</span></span><span class="line"><span class="cl">CLASS     SIZE    AVAIL     USED  RAW USED  %RAW USED
+</span></span><span class="line"><span class="cl">hdd    1.8 TiB  1.2 TiB  <span class="m">562</span> GiB   <span class="m">562</span> GiB      31.23
+</span></span><span class="line"><span class="cl">TOTAL  1.8 TiB  1.2 TiB  <span class="m">562</span> GiB   <span class="m">562</span> GiB      31.23
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--- POOLS ---
+</span></span><span class="line"><span class="cl">POOL                   ID  PGS   STORED  OBJECTS     USED  %USED  MAX AVAIL
+</span></span><span class="line"><span class="cl">device_health_metrics   <span class="m">1</span>    <span class="m">1</span>      <span class="m">0</span> B        <span class="m">0</span>      <span class="m">0</span> B      <span class="m">0</span>    <span class="m">321</span> GiB
+</span></span><span class="line"><span class="cl">xxrbd3                  <span class="m">3</span>   <span class="m">64</span>   <span class="m">10</span> MiB       <span class="m">17</span>   <span class="m">31</span> MiB      <span class="m">0</span>    <span class="m">321</span> GiB
+</span></span><span class="line"><span class="cl">xxrbd2                  <span class="m">4</span>   <span class="m">64</span>   <span class="m">12</span> MiB       <span class="m">16</span>   <span class="m">37</span> MiB      <span class="m">0</span>    <span class="m">321</span> GiB
+</span></span><span class="line"><span class="cl">cephfs-metadata         <span class="m">5</span>   <span class="m">32</span>  <span class="m">226</span> MiB      <span class="m">106</span>  <span class="m">679</span> MiB   0.07    <span class="m">321</span> GiB
+</span></span><span class="line"><span class="cl">cephfs-data             <span class="m">6</span>   <span class="m">64</span>  <span class="m">183</span> GiB   47.35k  <span class="m">550</span> GiB  36.33    <span class="m">321</span> GiB
+</span></span><span class="line"><span class="cl">.rgw.root               <span class="m">7</span>   <span class="m">32</span>  1.3 KiB        <span class="m">4</span>   <span class="m">48</span> KiB      <span class="m">0</span>    <span class="m">321</span> GiB
+</span></span><span class="line"><span class="cl">default.rgw.log         <span class="m">8</span>   <span class="m">32</span>  3.6 KiB      <span class="m">209</span>  <span class="m">408</span> KiB      <span class="m">0</span>    <span class="m">321</span> GiB
+</span></span><span class="line"><span class="cl">default.rgw.control     <span class="m">9</span>   <span class="m">32</span>      <span class="m">0</span> B        <span class="m">8</span>      <span class="m">0</span> B      <span class="m">0</span>    <span class="m">321</span> GiB
+</span></span><span class="line"><span class="cl">default.rgw.meta       <span class="m">10</span>   <span class="m">32</span>      <span class="m">0</span> B        <span class="m">0</span>      <span class="m">0</span> B      <span class="m">0</span>    <span class="m">321</span> GiB
+</span></span><span class="line"><span class="cl">k8s-xrbd-pool1         <span class="m">13</span>   <span class="m">32</span>  <span class="m">188</span> MiB       <span class="m">80</span>  <span class="m">565</span> MiB   0.06    <span class="m">321</span> GiB</span></span></code></pre></div><h2 id="15--cephfs使用案例">1.5  Cephfs使用案例</h2>
+<h3 id="151-创建secret">1.5.1 创建secret</h3>
+<h3 id="152-创建pod">1.5.2 创建pod</h3>
+<h3 id="153-验证pod挂载">1.5.3 验证pod挂载</h3>
+<h3 id="154-pod多副本挂载验证">1.5.4 pod多副本挂载验证</h3>
+<h3 id="155-宿主机验证">1.5.5 宿主机验证</h3>
 </div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
