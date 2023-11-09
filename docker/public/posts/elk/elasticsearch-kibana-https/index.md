@@ -2,9 +2,6 @@
 
 
 
-
-
-
 ## 一、安装Elasticsearch
 
 下载地址：https://www.elastic.co/cn/downloads/elasticsearch
