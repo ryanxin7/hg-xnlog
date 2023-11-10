@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>NFS Provisioner - 标签 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/tags/nfs-provisioner/</link>
+    <description>NFS Provisioner - 标签 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 24 Jul 2023 21:23:22 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/nfs-provisioner/" rel="self" type="application/rss+xml" /><item>
+  <title>基于NFS Subdir External Provisioner插件提供K8S存储</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/nfs-subdir-external-provisioner/</link>
+  <pubDate>Mon, 24 Jul 2023 21:23:22 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/nfs-subdir-external-provisioner/</guid>
+  <description><![CDATA[一、简介 NFS Subdir External Provisioner 是 Kubernetes 的一个外部存储供应者（External Provisioner），专门用于处理 NFS 存储卷的动态创建。 在 Kubernetes 中，存储供应者是一种]]></description>
+</item>
+</channel>
+</rss>

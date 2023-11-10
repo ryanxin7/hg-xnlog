@@ -45,6 +45,14 @@
   <description><![CDATA[使用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储]]></description>
 </item>
 <item>
+  <title>基于NFS Subdir External Provisioner插件提供K8S存储</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/nfs-subdir-external-provisioner/</link>
+  <pubDate>Mon, 24 Jul 2023 21:23:22 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/nfs-subdir-external-provisioner/</guid>
+  <description><![CDATA[一、简介 NFS Subdir External Provisioner 是 Kubernetes 的一个外部存储供应者（External Provisioner），专门用于处理 NFS 存储卷的动态创建。 在 Kubernetes 中，存储供应者是一种]]></description>
+</item>
+<item>
   <title>Kubernetes 基础</title>
   <link>https://hg-xnlog.github.io/posts/kubernetes/primary/1.kubernetes%E5%9F%BA%E7%A1%80/</link>
   <pubDate>Mon, 24 Apr 2023 21:23:22 &#43;0000</pubDate>
@@ -75,14 +83,6 @@
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-16/</guid>
   <description><![CDATA[前言 说到免费的SSL证书，大家首先想到的肯定是Let’s Encrypt，而使用过Let’s Encrypt的同学应该也知道，其有效期只有三个月]]></description>
-</item>
-<item>
-  <title>K8S 持续集成与部署 (十四)</title>
-  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-14/</link>
-  <pubDate>Fri, 17 Feb 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-14/</guid>
-  <description><![CDATA[1.发布方式解读 1.1 金丝雀发布 金丝雀发布这个术语源自20世纪初期，当时英国的煤矿工人在下井采矿之前，会把笼养的金丝雀携带到矿井中，如果矿井中一]]></description>
 </item>
 </channel>
 </rss>

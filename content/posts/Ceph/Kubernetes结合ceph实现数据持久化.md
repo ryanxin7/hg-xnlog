@@ -1849,11 +1849,11 @@ echo xxxxxxxxxxxfs > index.html
 
 依次访问查看
 
-![image-20231110111453319](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231110111453319.png)
+![image-20231110111453319](https://cdn1.ryanxin.live/image-20231110111453319.png)
 
-![image-20231110111555350](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231110111555350.png)
+![image-20231110111555350](https://cdn1.ryanxin.live/image-20231110111555350.png)
 
-![image-20231110111627656](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231110111627656.png)
+![image-20231110111627656](https://cdn1.ryanxin.live/image-20231110111627656.png)
 
 <br>
 
