@@ -1237,7 +1237,7 @@ sed -r -i "s/namespace: [^ ]+/namespace: $NAMESPACE/g" ./rbac/clusterrolebinding
 kubectl -n $NAMESPACE apply -f ./rbac
 ```
 
-
+<br>
 
 ```bash
 root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# cd ./rbac/
@@ -1254,7 +1254,7 @@ rolebinding.rbac.authorization.k8s.io/rbd-provisioner created
 serviceaccount/rbd-provisioner created
 ```
 
-
+<br>
 
 ```bash
 ## 查看rbd-provisioner状态
@@ -1294,7 +1294,7 @@ Events:
   Normal   ExternalProvisioning  9s (x2 over 14s)  persistentvolume-controller                                                         waiting for a volume to be created, either by external provisioner "ceph.com/rbd" or manually created by system administrator
 ```
 
-
+<br>
 
 ```bash
 root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl apply -n kube-system -f /yaml/ceph/case3-secret-client-admk8s-ceamg.yaml
@@ -1306,7 +1306,7 @@ secret/ceph-secret-admin created
 
 
 
-
+<br>
 
 其他设置和普通的ceph rbd StorageClass一致，但provisioner需要设置为`ceph.com/rbd`，不是默认的`kubernetes.io/rbd`，这样rbd的请求将由rbd-provisioner来处理
 
@@ -1331,7 +1331,7 @@ parameters:
   imageFeatures: "layering"
 ```
 
-
+<br>
 
 ```bash
 ## 创建SC
@@ -1344,7 +1344,7 @@ NAME                         PROVISIONER    RECLAIMPOLICY   VOLUMEBINDINGMODE   
 ceph-storage-class-k8s-rbd   ceph.com/rbd   Delete          Immediate           false                  3s
 ```
 
-
+<br>
 
 重新创建PVC
 
@@ -1408,7 +1408,7 @@ spec:
           path: /etc/ceph
 ```
 
-
+<br>
 
 ```bash
 root@k8s-master01:/etc/ceph# kubectl delete -n kube-system -f /yaml/ceph/ceph/rbd/deploy/rbac/deployment.yaml
@@ -1433,7 +1433,7 @@ kube-scheduler-k8s-master01            1/1     Running   3          25d
 rbd-provisioner-54ccfd7f5c-kmpvw       1/1     Running   0          27s
 ```
 
-
+<br>
 
 这时发现没有报错了
 
@@ -1447,7 +1447,7 @@ Events:
   Normal  ExternalProvisioning  8s (x4 over 53s)  persistentvolume-controller                                                         waiting for a volume to be created, either by external provisioner "ceph.com/rbd" or manually created by system administrator
 ```
 
-
+<br>
 
 于是查了一下 Centos 7 最后支持的Ceph 版本是Octopus，我现在的集群版本是Pacific ，所以就算升级rbd-provisioner镜像内的Ceph-Common版本也无法对接我的Ceph集群。于是只能使用宿主机方式挂载，或者等官方更新。
 
@@ -1517,7 +1517,7 @@ spec:
     app: mysql
 ```
 
-
+<br>
 
 ```bash
 root@k8s-made-01-32:~# kubectl apply -f /yaml/ceph/case8-mysql-single.yaml
@@ -1525,7 +1525,7 @@ deployment.apps/mysql created
 service/mysql-service created
 ```
 
-
+<br>
 
 ```bash
 ##查看pod状态
@@ -1534,7 +1534,7 @@ NAME                                 READY   STATUS    RESTARTS   AGE
 mysql-6648cc9c79-48s6r               1/1     Running   0          103s
 ```
 
-
+<br>
 
 ```bash
 ## 去容器中查看挂载情况
@@ -1555,7 +1555,7 @@ tmpfs          tmpfs    3.9G     0  3.9G   0% /proc/scsi
 tmpfs          tmpfs    3.9G     0  3.9G   0% /sys/firmware
 ```
 
-
+<br>
 
 ```bash
 ## 查看rbd image 信息
@@ -1577,7 +1577,7 @@ rbd image 'kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97':
 
 
 
-
+<br>
 
 ```bash
 ## 查看ceph使用情况
@@ -1605,17 +1605,302 @@ k8s-xrbd-pool1         13   32  188 MiB       80  565 MiB   0.06    321 GiB
 
 ## 1.5  Cephfs使用案例
 
+使用Cephfs实现类似于nginx这样的服务多主机同时挂载。
+
+之前的mysql如果使用主从结构,每个容器都需要自己单独的存储用来持久化数据,那么就比较适合使用rbd的存储.
+这里我们要模拟一个deployment下多个副本共用一个存储,这样rbd就不是很适合了,这里我们使用cephfs方式挂载存储实现多pod间数据共享.
 
 
-### 1.5.1 创建secret
+
+准备好cephfs,安装过程见：[Ceph FS](https://www.xinn.cc/posts/ceph/7.-ceph-fs%E4%BD%BF%E7%94%A8/)
+
+```bash
+root@ceph-mon1[10:03:49]~ #:ceph osd pool ls
+device_health_metrics
+xxrbd3
+xxrbd2
+#cephfs-metadata
+#cephfs-data
+.rgw.root
+default.rgw.log
+default.rgw.control
+default.rgw.meta
+k8s-xrbd-pool1
+```
+
+```bash
+root@ceph-mon1[10:03:59]~ #:ceph fs ls
+name: mycephfs, metadata pool: cephfs-metadata, data pools: [cephfs-data ]
+```
+
+```bash
+root@ceph-mon1[10:07:54]~ #:ceph mds stat
+mycephfs:1 {0=ceph-mon1=up:active}
+```
+
+<br>
+
+创建CephFS客户端账户
+
+```bash
+#创建账户
+$ ceph auth add client.xxfs mon 'allow r' mds 'allow rw' osd 'allow rwx pool=cephfs-data'
+
+root@ceph-mon1[10:32:21]~ #:ceph auth add client.xxfs mon 'allow r' mds 'allow rw' osd 'allow rwx pool=cephfs-data'
+added key for client.xxfs
+
+#验证用户的keyring文件
+root@ceph-mon1[10:32:23]~ #:ceph auth get client.xxfs
+[client.xxfs]
+        key = AQA2lk1lCpnQMhAA2KmjS7uNINgp/xCep/wcSA==
+        caps mds = "allow rw"
+        caps mon = "allow r"
+        caps osd = "allow rwx pool=cephfs-data"
+exported keyring for client.xxfs
+
+
+#创建用keyring文件
+[ceph@ceph-deploy ceph-cluster]$ceph auth get client.yanyan -o ceph.client.yanyan.keyring
+
+#创建key文件:
+$ ceph auth print-key client.xxfs | base64
+QVFBMmxrMWxDcG5RTWhBQTJLbWpTN3VOSU5ncC94Q2VwL3djU0E9PQ==
+```
+
+
+
+
+
+<br>
+
+
+
+### 1.5.1 创建CephFS客户端账户Secret
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cephfs-secret
+type: kubernetes.io/cephfs
+data:
+  key: QVFBMmxrMWxDcG5RTWhBQTJLbWpTN3VOSU5ncC94Q2VwL3djU0E9PQ==
+```
+
+<br>
+
+```bash
+root@k8s-made-01-32:~# kubectl apply -f /yaml/ceph/cephfs-secret.yaml
+secret/cephfs-secret created
+root@k8s-made-01-32:~# kubectl get secrets
+NAME                          TYPE                             DATA   AGE
+ceph-secret-admin             kubernetes.io/rbd                1      37h
+ceph-secret-admk8s-ceamg      kubernetes.io/rbd                1      37h
+cephfs-secret                 kubernetes.io/cephfs             1      8s
+```
+
+
+
+<br>
 
 ### 1.5.2 创建pod
 
+```yaml
+#case9-nginx-cephfs.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-cephfs
+spec:
+  replicas: 3
+  selector:
+    matchLabels: 
+      app: nginx-cs-80
+  template:
+    metadata:
+      labels:
+        app: nginx-cs-80
+    spec:
+      containers:
+      - name: nginx-cs-80
+        image: nginx
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-cephfs 
+          mountPath: /usr/share/nginx/html/cephfs
+      volumes:
+        - name: nginx-cephfs
+          cephfs:
+            monitors:
+            - '10.1.0.39:6789'
+            - '10.1.0.40:6789'
+            - '10.1.0.41:6789'
+            path: /
+            user: xxfs
+            secretRef:
+              name: cephfs-secret
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  labels:
+    app: nginx-cs-80-service-label
+  name: nginx-cs-80-service
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 80
+    nodePort: 33380
+  selector:
+    app: nnginx-cs-80
+```
+
+<br>
+
+```bash
+root@k8s-made-01-32:/yaml/ceph# kubectl apply -f case9-nginx-cephfs.yaml
+deployment.apps/nginx-cephfs created
+service/nginx-cs-80-service created
+```
+
+<br>
+
+```bash
+## 验证pod状态
+root@k8s-made-01-32:/yaml/ceph# kubectl get pod
+NAME                                 READY   STATUS    RESTARTS   AGE
+busybox                              1/1     Running   0          148d
+cert-nginx-deploy-59449496d7-jpztj   1/1     Running   0          147d
+mysql-6648cc9c79-48s6r               1/1     Running   0          19h
+nginx-cephfs-767f7dc6d9-9ssh7        1/1     Running   0          32s
+nginx-cephfs-767f7dc6d9-pmdpz        1/1     Running   0          32s
+nginx-cephfs-767f7dc6d9-s4nl4        1/1     Running   0          32s
+redis-79df5f8996-k2zx9               1/1     Running   0          127d
+```
+
+
+
+<br>
+
 ### 1.5.3 验证pod挂载
+
+进入容器查看cephfs挂载情况
+
+```bash
+root@k8s-made-01-32:/yaml/ceph# kubectl exec -it nginx-cephfs-767f7dc6d9-9ssh7 bash
+kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl exec [POD] -- [COMMAND] instead.
+
+## 这里可以看到cephfs已经被挂载到了/usr/share/nginx/html/cephfs目录
+root@nginx-cephfs-767f7dc6d9-9ssh7:/# df -Th
+Filesystem                                     Type     Size  Used Avail Use% Mounted on
+overlay                                        overlay  810G   28G  741G   4% /
+tmpfs                                          tmpfs     64M     0   64M   0% /dev
+tmpfs                                          tmpfs    3.9G     0  3.9G   0% /sys/fs/cgroup
+/dev/vda4                                      ext4     810G   28G  741G   4% /etc/hosts
+shm                                            tmpfs     64M     0   64M   0% /dev/shm
+10.1.0.39:6789,10.1.0.40:6789,10.1.0.41:6789:/ ceph     505G  184G  322G  37% /usr/share/nginx/html/cephfs
+tmpfs                                          tmpfs    7.5G   12K  7.5G   1% /run/secrets/kubernetes.io/serviceaccount
+tmpfs                                          tmpfs    3.9G     0  3.9G   0% /proc/acpi
+tmpfs                                          tmpfs    3.9G     0  3.9G   0% /proc/scsi
+tmpfs                                          tmpfs    3.9G     0  3.9G   0% /sys/firmware
+```
+
+
+
+可以看到之前CephFS中存储的文件
+
+```bash
+root@nginx-cephfs-767f7dc6d9-pmdpz:/# cd /usr/share/nginx/html/cephfs/
+root@nginx-cephfs-767f7dc6d9-pmdpz:/usr/share/nginx/html/cephfs# ls
+alist  emby  fd  file3  jellyfin  softs
+```
+
+
+
+<br>
+
+
 
 ### 1.5.4 pod多副本挂载验证
 
+```bash
+kubectl exec -it nginx-cephfs-767f7dc6d9-pmdpz bash
+cd /usr/share/nginx/html/cephfs
+echo xxxxxxxxxxxfs > index.html
+```
+
+
+
+依次访问查看
+
+![image-20231110111453319](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231110111453319.png)
+
+![image-20231110111555350](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231110111555350.png)
+
+![image-20231110111627656](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231110111627656.png)
+
+<br>
+
 ### 1.5.5 宿主机验证
+
+```bash
+root@k8s-made-01-32:/yaml/ceph# kubectl get pod -o wide
+NAME                                 READY   STATUS    RESTARTS   AGE    IP              NODE        NOMINATED NODE   READINESS GATES
+busybox                              1/1     Running   0          148d   10.48.35.130    10.1.0.34   <none>           <none>
+cert-nginx-deploy-59449496d7-jpztj   1/1     Running   0          147d   10.48.245.18    10.1.0.35   <none>           <none>
+mysql-6648cc9c79-48s6r               1/1     Running   0          19h    10.48.150.125   10.1.0.37   <none>           <none>
+nginx-cephfs-767f7dc6d9-9ssh7        1/1     Running   0          109s   10.48.35.151    10.1.0.34   <none>           <none>
+nginx-cephfs-767f7dc6d9-pmdpz        1/1     Running   0          109s   10.48.150.126   10.1.0.37   <none>           <none>
+nginx-cephfs-767f7dc6d9-s4nl4        1/1     Running   0          109s   10.48.245.63    10.1.0.35   <none>           <none>
+redis-79df5f8996-k2zx9               1/1     Running   0          127d   10.48.150.82    10.1.0.37   <none>           <none>
+```
+
+
+
+<br>
+
+
+
+```bash
+## 10.1.0.35
+root@k8s-w-04-35:~# df -h
+Filesystem                                                                                            Size  Used Avail Use% Mounted on
+192.168.10.26:/nfs-server/k8s/jtcs-prod-log-pvc-3a655d84-a20e-4f18-8aa9-49006bbf78b3                  492G   48G  419G  11% 
+10.1.0.39:6789,10.1.0.40:6789,10.1.0.41:6789:/                                                        505G  184G  322G  37% 
+```
+
+
+
+<br>
+
+```bash
+## 10.1.0.34
+kuroot@k8s-we-03-34:~# df -Th | grep nginx
+192.168.10.26:/nfs-server/k8s/jtcs-prod-fe-nginx-data-pvc-2c82bbdc-ebee-4838-a7d7-67daa1a9d362       nfs4      492G   48G  419G  11% /var/lib/kubelet/pods/11336c8a-e02f-44b1-9349-e3044dcd3bfa/volumes/kubernetes.io~nfs/pvc-2c82bbdc-ebee-4838-a7d7-67daa1a9d362
+192.168.10.26:/nfs-server/k8s/jtcs-prod-fe-nginx-log-pvc-5453fe13-0f1c-4c07-9fbd-b847d1caea8d        nfs4      492G   48G  419G  11% /var/lib/kubelet/pods/11336c8a-e02f-44b1-9349-e3044dcd3bfa/volumes/kubernetes.io~nfs/pvc-5453fe13-0f1c-4c07-9fbd-b847d1caea8d
+10.1.0.39:6789,10.1.0.40:6789,10.1.0.41:6789:/                                                       ceph      505G  184G  322G  37% /var/lib/kubelet/pods/68562d03-3927-42d6-8cdd-f4e52550921e/volumes/kubernetes.io~cephfs/nginx-cephfs
+```
+
+
+
+<br>
+
+```bash
+## 10.1.0.37
+root@k8s-w-05-37:~#  df -Th | grep nginx
+10.1.0.39:6789,10.1.0.40:6789,10.1.0.41:6789:/                                                            ceph      505G  184G  322G  37% /var/lib/kubelet/pods/4b438f25-c40e-40af-bb6c-75f895319170/volumes/kubernetes.io~cephfs/nginx-cephfs
+```
+
+
+
+
+
+
 
 
 

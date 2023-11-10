@@ -10,7 +10,7 @@
 <meta name="description" content="Ceph K8s环境RBD,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创" /><meta name="keywords" content='分布式存储' /><meta itemprop="name" content="Kubernetes结合ceph实现数据持久化">
 <meta itemprop="description" content="Ceph K8s环境RBD,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创"><meta itemprop="datePublished" content="2023-11-02T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-11-02T00:00:00+00:00" />
-<meta itemprop="wordCount" content="7967"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="8878"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="分布式存储," /><meta property="og:title" content="Kubernetes结合ceph实现数据持久化" />
 <meta property="og:description" content="Ceph K8s环境RBD,CephFS的使用 让Kubernetes中的Pod能够访问Ceph中的RBD（块设备镜像）作为存储设备，需要在ceph创" />
 <meta property="og:type" content="article" />
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96\/"
-    },"genre": "posts","keywords": "分布式存储","wordcount":  7967 ,
+    },"genre": "posts","keywords": "分布式存储","wordcount":  8878 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/ceph\/kubernetes%E7%BB%93%E5%90%88ceph%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96\/","datePublished": "2023-11-02T00:00:00+00:00","dateModified": "2023-11-02T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -181,7 +181,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/ceph/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Ceph</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-11-02 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span title="更新于 2023-11-02 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 7967 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 16 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Kubernetes结合ceph实现数据持久化">
+      <div class="post-meta-line"><span title="发布于 2023-11-02 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span title="更新于 2023-11-02 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-02">2023-11-02</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 8878 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 18 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Kubernetes结合ceph实现数据持久化">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -224,7 +224,7 @@
     </li>
     <li><a href="#15--cephfs使用案例">1.5  Cephfs使用案例</a>
       <ul>
-        <li><a href="#151-创建secret">1.5.1 创建secret</a></li>
+        <li><a href="#151-创建cephfs客户端账户secret">1.5.1 创建CephFS客户端账户Secret</a></li>
         <li><a href="#152-创建pod">1.5.2 创建pod</a></li>
         <li><a href="#153-验证pod挂载">1.5.3 验证pod挂载</a></li>
         <li><a href="#154-pod多副本挂载验证">1.5.4 pod多副本挂载验证</a></li>
@@ -1025,7 +1025,8 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## 根据需要，修改rbd-provisioner的namespace</span>
 </span></span><span class="line"><span class="cl">sed -r -i <span class="s2">&#34;s/namespace: [^ ]+/namespace: </span><span class="nv">$NAMESPACE</span><span class="s2">/g&#34;</span> ./rbac/clusterrolebinding.yaml ./rbac/rolebinding.yaml
-</span></span><span class="line"><span class="cl">kubectl -n <span class="nv">$NAMESPACE</span> apply -f ./rbac</span></span></code></pre></div><div class="highlight" id="id-56"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# <span class="nb">cd</span> ./rbac/
+</span></span><span class="line"><span class="cl">kubectl -n <span class="nv">$NAMESPACE</span> apply -f ./rbac</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-56"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# <span class="nb">cd</span> ./rbac/
 </span></span><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy/rbac# ls
 </span></span><span class="line"><span class="cl">clusterrolebinding.yaml  clusterrole.yaml  deployment.yaml  rolebinding.yaml  role.yaml  serviceaccount.yaml
 </span></span><span class="line"><span class="cl">
@@ -1036,7 +1037,8 @@
 </span></span><span class="line"><span class="cl">deployment.apps/rbd-provisioner created
 </span></span><span class="line"><span class="cl">role.rbac.authorization.k8s.io/rbd-provisioner created
 </span></span><span class="line"><span class="cl">rolebinding.rbac.authorization.k8s.io/rbd-provisioner created
-</span></span><span class="line"><span class="cl">serviceaccount/rbd-provisioner created</span></span></code></pre></div><div class="highlight" id="id-57"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 查看rbd-provisioner状态</span>
+</span></span><span class="line"><span class="cl">serviceaccount/rbd-provisioner created</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-57"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 查看rbd-provisioner状态</span>
 </span></span><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl get pod -n kube-system
 </span></span><span class="line"><span class="cl">NAME                                   READY   STATUS    RESTARTS   AGE
 </span></span><span class="line"><span class="cl">coredns-6d56c8448f-2twxm               1/1     Running   <span class="m">0</span>          25d
@@ -1057,11 +1059,13 @@
 </span></span><span class="line"><span class="cl">  ----     ------                ----              ----                                                   -----
 </span></span><span class="line"><span class="cl">  Normal   Provisioning          14s               ceph.com/rbd_rbd-provisioner-76f6bc6669-d4sj9_da9e34c3-7d46-11ee-bdb5-5a5c3fb06299  External provisioner is provisioning volume <span class="k">for</span> claim <span class="s2">&#34;default/mysql-data-pvc&#34;</span>
 </span></span><span class="line"><span class="cl">  Warning  ProvisioningFailed    14s               ceph.com/rbd_rbd-provisioner-76f6bc6669-d4sj9_da9e34c3-7d46-11ee-bdb5-5a5c3fb06299  failed to provision volume with StorageClass <span class="s2">&#34;ceph-storage-class-k8s-rbd&#34;</span>: failed to get admin secret from <span class="o">[</span><span class="s2">&#34;default&#34;</span>/<span class="s2">&#34;ceph-secret-admin&#34;</span><span class="o">]</span>: secrets <span class="s2">&#34;ceph-secret-admin&#34;</span> is forbidden: User <span class="s2">&#34;system:serviceaccount:kube-system:rbd-provisioner&#34;</span> cannot get resource <span class="s2">&#34;secrets&#34;</span> in API group <span class="s2">&#34;&#34;</span> in the namespace <span class="s2">&#34;default&#34;</span>
-</span></span><span class="line"><span class="cl">  Normal   ExternalProvisioning  9s <span class="o">(</span>x2 over 14s<span class="o">)</span>  persistentvolume-controller                                                         waiting <span class="k">for</span> a volume to be created, either by external provisioner <span class="s2">&#34;ceph.com/rbd&#34;</span> or manually created by system administrator</span></span></code></pre></div><div class="highlight" id="id-59"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl apply -n kube-system -f /yaml/ceph/case3-secret-client-admk8s-ceamg.yaml
+</span></span><span class="line"><span class="cl">  Normal   ExternalProvisioning  9s <span class="o">(</span>x2 over 14s<span class="o">)</span>  persistentvolume-controller                                                         waiting <span class="k">for</span> a volume to be created, either by external provisioner <span class="s2">&#34;ceph.com/rbd&#34;</span> or manually created by system administrator</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-59"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl apply -n kube-system -f /yaml/ceph/case3-secret-client-admk8s-ceamg.yaml
 </span></span><span class="line"><span class="cl">secret/ceph-secret-admk8s-ceamg created
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl apply -n kube-system -f /yaml/ceph/case5-secret-admin.yaml
-</span></span><span class="line"><span class="cl">secret/ceph-secret-admin created</span></span></code></pre></div><p>其他设置和普通的ceph rbd StorageClass一致，但provisioner需要设置为<code>ceph.com/rbd</code>，不是默认的<code>kubernetes.io/rbd</code>，这样rbd的请求将由rbd-provisioner来处理</p>
+</span></span><span class="line"><span class="cl">secret/ceph-secret-admin created</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>其他设置和普通的ceph rbd StorageClass一致，但provisioner需要设置为<code>ceph.com/rbd</code>，不是默认的<code>kubernetes.io/rbd</code>，这样rbd的请求将由rbd-provisioner来处理</p>
 <div class="highlight" id="id-60"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">storage.k8s.io/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">StorageClass</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -1079,14 +1083,16 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">userSecretName</span><span class="p">:</span><span class="w"> </span><span class="l">ceph-secret-admk8s-ceamg</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">fsType</span><span class="p">:</span><span class="w"> </span><span class="l">ext4</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">imageFormat</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">imageFeatures</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;layering&#34;</span></span></span></code></pre></div><div class="highlight" id="id-61"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 创建SC</span>
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">imageFeatures</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;layering&#34;</span></span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-61"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 创建SC</span>
 </span></span><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl apply -f /yaml/ceph/case6-ceph-storage-class.yaml
 </span></span><span class="line"><span class="cl">storageclass.storage.k8s.io/ceph-storage-class-k8s-rbd created
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">## PROVISIONER 改为  ceph.com/rbd </span>
 </span></span><span class="line"><span class="cl">root@k8s-master01:/yaml/ceph/ceph/rbd/deploy# kubectl get sc
 </span></span><span class="line"><span class="cl">NAME                         PROVISIONER    RECLAIMPOLICY   VOLUMEBINDINGMODE   ALLOWVOLUMEEXPANSION   AGE
-</span></span><span class="line"><span class="cl">ceph-storage-class-k8s-rbd   ceph.com/rbd   Delete          Immediate           <span class="nb">false</span>                  3s</span></span></code></pre></div><p>重新创建PVC</p>
+</span></span><span class="line"><span class="cl">ceph-storage-class-k8s-rbd   ceph.com/rbd   Delete          Immediate           <span class="nb">false</span>                  3s</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>重新创建PVC</p>
 <p>这个报错是说rbd-provisioner需要<code>ceph.conf</code>等配置信息，在网上找到临时解决办法是通过docker拷贝将本地/etc/ceph/里的文件拷贝到镜像里去。</p>
 <div class="highlight" id="id-62"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
 </span></span><span class="line"><span class="cl">  Type     Reason              Age   From                                                                                Message
@@ -1135,7 +1141,8 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">ceph-conf</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">hostPath</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/ceph</span></span></span></code></pre></div><div class="highlight" id="id-64"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/etc/ceph# kubectl delete -n kube-system -f /yaml/ceph/ceph/rbd/deploy/rbac/deployment.yaml
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/ceph</span></span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-64"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/etc/ceph# kubectl delete -n kube-system -f /yaml/ceph/ceph/rbd/deploy/rbac/deployment.yaml
 </span></span><span class="line"><span class="cl">deployment.apps <span class="s2">&#34;rbd-provisioner&#34;</span> deleted
 </span></span><span class="line"><span class="cl">root@k8s-master01:/etc/ceph# kubectl apply -n kube-system -f /yaml/ceph/ceph/rbd/deploy/rbac/deployment.yaml
 </span></span><span class="line"><span class="cl">deployment.apps/rbd-provisioner created</span></span></code></pre></div><div class="highlight" id="id-65"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/etc/ceph# kubectl get pod -n kube-system
@@ -1150,13 +1157,15 @@
 </span></span><span class="line"><span class="cl">kube-proxy-sskm2                       1/1     Running   <span class="m">0</span>          25d
 </span></span><span class="line"><span class="cl">kube-proxy-zzm95                       1/1     Running   <span class="m">0</span>          25d
 </span></span><span class="line"><span class="cl">kube-scheduler-k8s-master01            1/1     Running   <span class="m">3</span>          25d
-</span></span><span class="line"><span class="cl">rbd-provisioner-54ccfd7f5c-kmpvw       1/1     Running   <span class="m">0</span>          27s</span></span></code></pre></div><p>这时发现没有报错了</p>
+</span></span><span class="line"><span class="cl">rbd-provisioner-54ccfd7f5c-kmpvw       1/1     Running   <span class="m">0</span>          27s</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>这时发现没有报错了</p>
 <p>但是还是处于pending状态</p>
 <div class="highlight" id="id-66"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Events:
 </span></span><span class="line"><span class="cl">  Type    Reason                Age               From                                                                                Message
 </span></span><span class="line"><span class="cl">  ----    ------                ----              ----                                                                                -------
 </span></span><span class="line"><span class="cl">  Normal  Provisioning          53s               ceph.com/rbd_rbd-provisioner-54ccfd7f5c-kmpvw_13600cb8-7d4c-11ee-b1ca-a2b2060515f6  External provisioner is provisioning volume <span class="k">for</span> claim <span class="s2">&#34;default/mysql-data-pvc&#34;</span>
-</span></span><span class="line"><span class="cl">  Normal  ExternalProvisioning  8s <span class="o">(</span>x4 over 53s<span class="o">)</span>  persistentvolume-controller                                                         waiting <span class="k">for</span> a volume to be created, either by external provisioner <span class="s2">&#34;ceph.com/rbd&#34;</span> or manually created by system administrator</span></span></code></pre></div><p>于是查了一下 Centos 7 最后支持的Ceph 版本是Octopus，我现在的集群版本是Pacific ，所以就算升级rbd-provisioner镜像内的Ceph-Common版本也无法对接我的Ceph集群。于是只能使用宿主机方式挂载，或者等官方更新。</p>
+</span></span><span class="line"><span class="cl">  Normal  ExternalProvisioning  8s <span class="o">(</span>x4 over 53s<span class="o">)</span>  persistentvolume-controller                                                         waiting <span class="k">for</span> a volume to be created, either by external provisioner <span class="s2">&#34;ceph.com/rbd&#34;</span> or manually created by system administrator</span></span></code></pre></div><!-- raw HTML omitted -->
+<p>于是查了一下 Centos 7 最后支持的Ceph 版本是Octopus，我现在的集群版本是Pacific ，所以就算升级rbd-provisioner镜像内的Ceph-Common版本也无法对接我的Ceph集群。于是只能使用宿主机方式挂载，或者等官方更新。</p>
 <h3 id="144-基于动态存储卷运行mysql并验证">1.4.4 基于动态存储卷运行mysql并验证</h3>
 <div class="highlight" id="id-67"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:~# vim /yaml/ceph/case8-mysql-single.yaml</span></span></code></pre></div><div class="highlight" id="id-68"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
@@ -1206,12 +1215,15 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="m">3306</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="m">33306</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span></span></span></code></pre></div><div class="highlight" id="id-69"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:~# kubectl apply -f /yaml/ceph/case8-mysql-single.yaml
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span></span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-69"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:~# kubectl apply -f /yaml/ceph/case8-mysql-single.yaml
 </span></span><span class="line"><span class="cl">deployment.apps/mysql created
-</span></span><span class="line"><span class="cl">service/mysql-service created</span></span></code></pre></div><div class="highlight" id="id-70"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">##查看pod状态</span>
+</span></span><span class="line"><span class="cl">service/mysql-service created</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-70"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">##查看pod状态</span>
 </span></span><span class="line"><span class="cl">root@k8s-made-01-32:~# kubectl get pod
 </span></span><span class="line"><span class="cl">NAME                                 READY   STATUS    RESTARTS   AGE
-</span></span><span class="line"><span class="cl">mysql-6648cc9c79-48s6r               1/1     Running   <span class="m">0</span>          103s</span></span></code></pre></div><div class="highlight" id="id-71"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 去容器中查看挂载情况</span>
+</span></span><span class="line"><span class="cl">mysql-6648cc9c79-48s6r               1/1     Running   <span class="m">0</span>          103s</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-71"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 去容器中查看挂载情况</span>
 </span></span><span class="line"><span class="cl">root@k8s-made-01-32:~# kubectl <span class="nb">exec</span> -it mysql-6648cc9c79-48s6r -- bash
 </span></span><span class="line"><span class="cl">root@mysql-6648cc9c79-48s6r:/#
 </span></span><span class="line"><span class="cl">root@mysql-6648cc9c79-48s6r:/#
@@ -1226,7 +1238,8 @@
 </span></span><span class="line"><span class="cl">tmpfs          tmpfs    7.5G   12K  7.5G   1% /run/secrets/kubernetes.io/serviceaccount
 </span></span><span class="line"><span class="cl">tmpfs          tmpfs    3.9G     <span class="m">0</span>  3.9G   0% /proc/acpi
 </span></span><span class="line"><span class="cl">tmpfs          tmpfs    3.9G     <span class="m">0</span>  3.9G   0% /proc/scsi
-</span></span><span class="line"><span class="cl">tmpfs          tmpfs    3.9G     <span class="m">0</span>  3.9G   0% /sys/firmware</span></span></code></pre></div><div class="highlight" id="id-72"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 查看rbd image 信息</span>
+</span></span><span class="line"><span class="cl">tmpfs          tmpfs    3.9G     <span class="m">0</span>  3.9G   0% /sys/firmware</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-72"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 查看rbd image 信息</span>
 </span></span><span class="line"><span class="cl">root@ceph-mon1<span class="o">[</span>16:42:11<span class="o">]</span>~ <span class="c1">#:rbd --pool k8s-xrbd-pool1 --image kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97 info</span>
 </span></span><span class="line"><span class="cl">rbd image <span class="s1">&#39;kubernetes-dynamic-pvc-f446af2d-f594-49e0-ba59-d32bb3552b97&#39;</span>:
 </span></span><span class="line"><span class="cl">        size <span class="m">5</span> GiB in <span class="m">1280</span> objects
@@ -1240,7 +1253,8 @@
 </span></span><span class="line"><span class="cl">        flags:
 </span></span><span class="line"><span class="cl">        create_timestamp: Wed Nov  <span class="m">8</span> 23:28:50 <span class="m">2023</span>
 </span></span><span class="line"><span class="cl">        access_timestamp: Wed Nov  <span class="m">8</span> 23:28:50 <span class="m">2023</span>
-</span></span><span class="line"><span class="cl">        modify_timestamp: Wed Nov  <span class="m">8</span> 23:28:50 <span class="m">2023</span></span></span></code></pre></div><div class="highlight" id="id-73"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 查看ceph使用情况</span>
+</span></span><span class="line"><span class="cl">        modify_timestamp: Wed Nov  <span class="m">8</span> 23:28:50 <span class="m">2023</span></span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-73"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 查看ceph使用情况</span>
 </span></span><span class="line"><span class="cl">root@ceph-mon1<span class="o">[</span>16:43:40<span class="o">]</span>~ <span class="c1">#:ceph df</span>
 </span></span><span class="line"><span class="cl">--- RAW STORAGE ---
 </span></span><span class="line"><span class="cl">CLASS     SIZE    AVAIL     USED  RAW USED  %RAW USED
@@ -1259,12 +1273,179 @@
 </span></span><span class="line"><span class="cl">default.rgw.control     <span class="m">9</span>   <span class="m">32</span>      <span class="m">0</span> B        <span class="m">8</span>      <span class="m">0</span> B      <span class="m">0</span>    <span class="m">321</span> GiB
 </span></span><span class="line"><span class="cl">default.rgw.meta       <span class="m">10</span>   <span class="m">32</span>      <span class="m">0</span> B        <span class="m">0</span>      <span class="m">0</span> B      <span class="m">0</span>    <span class="m">321</span> GiB
 </span></span><span class="line"><span class="cl">k8s-xrbd-pool1         <span class="m">13</span>   <span class="m">32</span>  <span class="m">188</span> MiB       <span class="m">80</span>  <span class="m">565</span> MiB   0.06    <span class="m">321</span> GiB</span></span></code></pre></div><h2 id="15--cephfs使用案例">1.5  Cephfs使用案例</h2>
-<h3 id="151-创建secret">1.5.1 创建secret</h3>
+<p>使用Cephfs实现类似于nginx这样的服务多主机同时挂载。</p>
+<p>之前的mysql如果使用主从结构,每个容器都需要自己单独的存储用来持久化数据,那么就比较适合使用rbd的存储.
+这里我们要模拟一个deployment下多个副本共用一个存储,这样rbd就不是很适合了,这里我们使用cephfs方式挂载存储实现多pod间数据共享.</p>
+<p>准备好cephfs,安装过程见：<a href="https://www.xinn.cc/posts/ceph/7.-ceph-fs%E4%BD%BF%E7%94%A8/"target="_blank" rel="external nofollow noopener noreferrer">Ceph FS</a></p>
+<div class="highlight" id="id-74"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-mon1<span class="o">[</span>10:03:49<span class="o">]</span>~ <span class="c1">#:ceph osd pool ls</span>
+</span></span><span class="line"><span class="cl">device_health_metrics
+</span></span><span class="line"><span class="cl">xxrbd3
+</span></span><span class="line"><span class="cl">xxrbd2
+</span></span><span class="line"><span class="cl"><span class="c1">#cephfs-metadata</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#cephfs-data</span>
+</span></span><span class="line"><span class="cl">.rgw.root
+</span></span><span class="line"><span class="cl">default.rgw.log
+</span></span><span class="line"><span class="cl">default.rgw.control
+</span></span><span class="line"><span class="cl">default.rgw.meta
+</span></span><span class="line"><span class="cl">k8s-xrbd-pool1</span></span></code></pre></div><div class="highlight" id="id-75"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-mon1<span class="o">[</span>10:03:59<span class="o">]</span>~ <span class="c1">#:ceph fs ls</span>
+</span></span><span class="line"><span class="cl">name: mycephfs, metadata pool: cephfs-metadata, data pools: <span class="o">[</span>cephfs-data <span class="o">]</span></span></span></code></pre></div><div class="highlight" id="id-76"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@ceph-mon1<span class="o">[</span>10:07:54<span class="o">]</span>~ <span class="c1">#:ceph mds stat</span>
+</span></span><span class="line"><span class="cl">mycephfs:1 <span class="o">{</span><span class="nv">0</span><span class="o">=</span>ceph-mon1<span class="o">=</span>up:active<span class="o">}</span></span></span></code></pre></div><!-- raw HTML omitted -->
+<p>创建CephFS客户端账户</p>
+<div class="highlight" id="id-77"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#创建账户</span>
+</span></span><span class="line"><span class="cl">$ ceph auth add client.xxfs mon <span class="s1">&#39;allow r&#39;</span> mds <span class="s1">&#39;allow rw&#39;</span> osd <span class="s1">&#39;allow rwx pool=cephfs-data&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@ceph-mon1<span class="o">[</span>10:32:21<span class="o">]</span>~ <span class="c1">#:ceph auth add client.xxfs mon &#39;allow r&#39; mds &#39;allow rw&#39; osd &#39;allow rwx pool=cephfs-data&#39;</span>
+</span></span><span class="line"><span class="cl">added key <span class="k">for</span> client.xxfs
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#验证用户的keyring文件</span>
+</span></span><span class="line"><span class="cl">root@ceph-mon1<span class="o">[</span>10:32:23<span class="o">]</span>~ <span class="c1">#:ceph auth get client.xxfs</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>client.xxfs<span class="o">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">key</span> <span class="o">=</span> AQA2lk1lCpnQMhAA2KmjS7uNINgp/xCep/wcSA<span class="o">==</span>
+</span></span><span class="line"><span class="cl">        caps <span class="nv">mds</span> <span class="o">=</span> <span class="s2">&#34;allow rw&#34;</span>
+</span></span><span class="line"><span class="cl">        caps <span class="nv">mon</span> <span class="o">=</span> <span class="s2">&#34;allow r&#34;</span>
+</span></span><span class="line"><span class="cl">        caps <span class="nv">osd</span> <span class="o">=</span> <span class="s2">&#34;allow rwx pool=cephfs-data&#34;</span>
+</span></span><span class="line"><span class="cl">exported keyring <span class="k">for</span> client.xxfs
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#创建用keyring文件</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>ceph@ceph-deploy ceph-cluster<span class="o">]</span><span class="nv">$ceph</span> auth get client.yanyan -o ceph.client.yanyan.keyring
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#创建key文件:</span>
+</span></span><span class="line"><span class="cl">$ ceph auth print-key client.xxfs <span class="p">|</span> base64
+</span></span><span class="line"><span class="cl"><span class="nv">QVFBMmxrMWxDcG5RTWhBQTJLbWpTN3VOSU5ncC94Q2VwL3djU0E9PQ</span><span class="o">==</span></span></span></code></pre></div><!-- raw HTML omitted -->
+<h3 id="151-创建cephfs客户端账户secret">1.5.1 创建CephFS客户端账户Secret</h3>
+<div class="highlight" id="id-78"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Secret</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">cephfs-secret</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes.io/cephfs</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">QVFBMmxrMWxDcG5RTWhBQTJLbWpTN3VOSU5ncC94Q2VwL3djU0E9PQ==</span></span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-79"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:~# kubectl apply -f /yaml/ceph/cephfs-secret.yaml
+</span></span><span class="line"><span class="cl">secret/cephfs-secret created
+</span></span><span class="line"><span class="cl">root@k8s-made-01-32:~# kubectl get secrets
+</span></span><span class="line"><span class="cl">NAME                          TYPE                             DATA   AGE
+</span></span><span class="line"><span class="cl">ceph-secret-admin             kubernetes.io/rbd                <span class="m">1</span>      37h
+</span></span><span class="line"><span class="cl">ceph-secret-admk8s-ceamg      kubernetes.io/rbd                <span class="m">1</span>      37h
+</span></span><span class="line"><span class="cl">cephfs-secret                 kubernetes.io/cephfs             <span class="m">1</span>      8s</span></span></code></pre></div><!-- raw HTML omitted -->
 <h3 id="152-创建pod">1.5.2 创建pod</h3>
+<div class="highlight" id="id-80"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">#case9-nginx-cephfs.yaml</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-cephfs</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-cs-80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-cs-80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-cs-80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">nginx</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-cephfs </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/usr/share/nginx/html/cephfs</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-cephfs</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">cephfs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">monitors</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="s1">&#39;10.1.0.39:6789&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="s1">&#39;10.1.0.40:6789&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="s1">&#39;10.1.0.41:6789&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l">xxfs</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">secretRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">cephfs-secret</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-cs-80-service-label</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-cs-80-service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">NodePort</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">http</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="m">33380</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">nnginx-cs-80</span></span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-81"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/ceph# kubectl apply -f case9-nginx-cephfs.yaml
+</span></span><span class="line"><span class="cl">deployment.apps/nginx-cephfs created
+</span></span><span class="line"><span class="cl">service/nginx-cs-80-service created</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-82"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 验证pod状态</span>
+</span></span><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/ceph# kubectl get pod
+</span></span><span class="line"><span class="cl">NAME                                 READY   STATUS    RESTARTS   AGE
+</span></span><span class="line"><span class="cl">busybox                              1/1     Running   <span class="m">0</span>          148d
+</span></span><span class="line"><span class="cl">cert-nginx-deploy-59449496d7-jpztj   1/1     Running   <span class="m">0</span>          147d
+</span></span><span class="line"><span class="cl">mysql-6648cc9c79-48s6r               1/1     Running   <span class="m">0</span>          19h
+</span></span><span class="line"><span class="cl">nginx-cephfs-767f7dc6d9-9ssh7        1/1     Running   <span class="m">0</span>          32s
+</span></span><span class="line"><span class="cl">nginx-cephfs-767f7dc6d9-pmdpz        1/1     Running   <span class="m">0</span>          32s
+</span></span><span class="line"><span class="cl">nginx-cephfs-767f7dc6d9-s4nl4        1/1     Running   <span class="m">0</span>          32s
+</span></span><span class="line"><span class="cl">redis-79df5f8996-k2zx9               1/1     Running   <span class="m">0</span>          127d</span></span></code></pre></div><!-- raw HTML omitted -->
 <h3 id="153-验证pod挂载">1.5.3 验证pod挂载</h3>
+<p>进入容器查看cephfs挂载情况</p>
+<div class="highlight" id="id-83"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/ceph# kubectl <span class="nb">exec</span> -it nginx-cephfs-767f7dc6d9-9ssh7 bash
+</span></span><span class="line"><span class="cl">kubectl <span class="nb">exec</span> <span class="o">[</span>POD<span class="o">]</span> <span class="o">[</span>COMMAND<span class="o">]</span> is DEPRECATED and will be removed in a future version. Use kubectl <span class="nb">exec</span> <span class="o">[</span>POD<span class="o">]</span> -- <span class="o">[</span>COMMAND<span class="o">]</span> instead.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## 这里可以看到cephfs已经被挂载到了/usr/share/nginx/html/cephfs目录</span>
+</span></span><span class="line"><span class="cl">root@nginx-cephfs-767f7dc6d9-9ssh7:/# df -Th
+</span></span><span class="line"><span class="cl">Filesystem                                     Type     Size  Used Avail Use% Mounted on
+</span></span><span class="line"><span class="cl">overlay                                        overlay  810G   28G  741G   4% /
+</span></span><span class="line"><span class="cl">tmpfs                                          tmpfs     64M     <span class="m">0</span>   64M   0% /dev
+</span></span><span class="line"><span class="cl">tmpfs                                          tmpfs    3.9G     <span class="m">0</span>  3.9G   0% /sys/fs/cgroup
+</span></span><span class="line"><span class="cl">/dev/vda4                                      ext4     810G   28G  741G   4% /etc/hosts
+</span></span><span class="line"><span class="cl">shm                                            tmpfs     64M     <span class="m">0</span>   64M   0% /dev/shm
+</span></span><span class="line"><span class="cl">10.1.0.39:6789,10.1.0.40:6789,10.1.0.41:6789:/ ceph     505G  184G  322G  37% /usr/share/nginx/html/cephfs
+</span></span><span class="line"><span class="cl">tmpfs                                          tmpfs    7.5G   12K  7.5G   1% /run/secrets/kubernetes.io/serviceaccount
+</span></span><span class="line"><span class="cl">tmpfs                                          tmpfs    3.9G     <span class="m">0</span>  3.9G   0% /proc/acpi
+</span></span><span class="line"><span class="cl">tmpfs                                          tmpfs    3.9G     <span class="m">0</span>  3.9G   0% /proc/scsi
+</span></span><span class="line"><span class="cl">tmpfs                                          tmpfs    3.9G     <span class="m">0</span>  3.9G   0% /sys/firmware</span></span></code></pre></div><p>可以看到之前CephFS中存储的文件</p>
+<div class="highlight" id="id-84"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@nginx-cephfs-767f7dc6d9-pmdpz:/# <span class="nb">cd</span> /usr/share/nginx/html/cephfs/
+</span></span><span class="line"><span class="cl">root@nginx-cephfs-767f7dc6d9-pmdpz:/usr/share/nginx/html/cephfs# ls
+</span></span><span class="line"><span class="cl">alist  emby  fd  file3  jellyfin  softs</span></span></code></pre></div><!-- raw HTML omitted -->
 <h3 id="154-pod多副本挂载验证">1.5.4 pod多副本挂载验证</h3>
+<div class="highlight" id="id-85"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl <span class="nb">exec</span> -it nginx-cephfs-767f7dc6d9-pmdpz bash
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /usr/share/nginx/html/cephfs
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> xxxxxxxxxxxfs &gt; index.html</span></span></code></pre></div><p>依次访问查看</p>
+<p><img loading="lazy" src="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231110111453319.png" srcset="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231110111453319.png, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231110111453319.png 1.5x, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231110111453319.png 2x" sizes="auto" data-title="image-20231110111453319" data-alt="image-20231110111453319" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231110111555350.png" srcset="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231110111555350.png, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231110111555350.png 1.5x, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231110111555350.png 2x" sizes="auto" data-title="image-20231110111555350" data-alt="image-20231110111555350" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231110111627656.png" srcset="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231110111627656.png, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231110111627656.png 1.5x, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231110111627656.png 2x" sizes="auto" data-title="image-20231110111627656" data-alt="image-20231110111627656" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<!-- raw HTML omitted -->
 <h3 id="155-宿主机验证">1.5.5 宿主机验证</h3>
-</div><div class="post-footer" id="post-footer">
+<div class="highlight" id="id-86"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/ceph# kubectl get pod -o wide
+</span></span><span class="line"><span class="cl">NAME                                 READY   STATUS    RESTARTS   AGE    IP              NODE        NOMINATED NODE   READINESS GATES
+</span></span><span class="line"><span class="cl">busybox                              1/1     Running   <span class="m">0</span>          148d   10.48.35.130    10.1.0.34   &lt;none&gt;           &lt;none&gt;
+</span></span><span class="line"><span class="cl">cert-nginx-deploy-59449496d7-jpztj   1/1     Running   <span class="m">0</span>          147d   10.48.245.18    10.1.0.35   &lt;none&gt;           &lt;none&gt;
+</span></span><span class="line"><span class="cl">mysql-6648cc9c79-48s6r               1/1     Running   <span class="m">0</span>          19h    10.48.150.125   10.1.0.37   &lt;none&gt;           &lt;none&gt;
+</span></span><span class="line"><span class="cl">nginx-cephfs-767f7dc6d9-9ssh7        1/1     Running   <span class="m">0</span>          109s   10.48.35.151    10.1.0.34   &lt;none&gt;           &lt;none&gt;
+</span></span><span class="line"><span class="cl">nginx-cephfs-767f7dc6d9-pmdpz        1/1     Running   <span class="m">0</span>          109s   10.48.150.126   10.1.0.37   &lt;none&gt;           &lt;none&gt;
+</span></span><span class="line"><span class="cl">nginx-cephfs-767f7dc6d9-s4nl4        1/1     Running   <span class="m">0</span>          109s   10.48.245.63    10.1.0.35   &lt;none&gt;           &lt;none&gt;
+</span></span><span class="line"><span class="cl">redis-79df5f8996-k2zx9               1/1     Running   <span class="m">0</span>          127d   10.48.150.82    10.1.0.37   &lt;none&gt;           &lt;none&gt;</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-87"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 10.1.0.35</span>
+</span></span><span class="line"><span class="cl">root@k8s-w-04-35:~# df -h
+</span></span><span class="line"><span class="cl">Filesystem                                                                                            Size  Used Avail Use% Mounted on
+</span></span><span class="line"><span class="cl">192.168.10.26:/nfs-server/k8s/jtcs-prod-log-pvc-3a655d84-a20e-4f18-8aa9-49006bbf78b3                  492G   48G  419G  11% 
+</span></span><span class="line"><span class="cl">10.1.0.39:6789,10.1.0.40:6789,10.1.0.41:6789:/                                                        505G  184G  322G  37% </span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-88"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 10.1.0.34</span>
+</span></span><span class="line"><span class="cl">kuroot@k8s-we-03-34:~# df -Th <span class="p">|</span> grep nginx
+</span></span><span class="line"><span class="cl">192.168.10.26:/nfs-server/k8s/jtcs-prod-fe-nginx-data-pvc-2c82bbdc-ebee-4838-a7d7-67daa1a9d362       nfs4      492G   48G  419G  11% /var/lib/kubelet/pods/11336c8a-e02f-44b1-9349-e3044dcd3bfa/volumes/kubernetes.io~nfs/pvc-2c82bbdc-ebee-4838-a7d7-67daa1a9d362
+</span></span><span class="line"><span class="cl">192.168.10.26:/nfs-server/k8s/jtcs-prod-fe-nginx-log-pvc-5453fe13-0f1c-4c07-9fbd-b847d1caea8d        nfs4      492G   48G  419G  11% /var/lib/kubelet/pods/11336c8a-e02f-44b1-9349-e3044dcd3bfa/volumes/kubernetes.io~nfs/pvc-5453fe13-0f1c-4c07-9fbd-b847d1caea8d
+</span></span><span class="line"><span class="cl">10.1.0.39:6789,10.1.0.40:6789,10.1.0.41:6789:/                                                       ceph      505G  184G  322G  37% /var/lib/kubelet/pods/68562d03-3927-42d6-8cdd-f4e52550921e/volumes/kubernetes.io~cephfs/nginx-cephfs</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-89"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 10.1.0.37</span>
+</span></span><span class="line"><span class="cl">root@k8s-w-05-37:~#  df -Th <span class="p">|</span> grep nginx
+</span></span><span class="line"><span class="cl">10.1.0.39:6789,10.1.0.40:6789,10.1.0.41:6789:/                                                            ceph      505G  184G  322G  37% /var/lib/kubelet/pods/4b438f25-c40e-40af-bb6c-75f895319170/volumes/kubernetes.io~cephfs/nginx-cephfs</span></span></code></pre></div></div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">
