@@ -210,7 +210,14 @@
     </li>
   </ul>
 </nav></div>
-      </div><div class="content" id="content"><h2 id="一简介">一、简介</h2>
+      </div><div class="content" id="content"><div class="details admonition note open">
+      <div class="details-summary admonition-title">
+        <i class="icon fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i>注意<i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i>
+      </div>
+      <div class="details-content">
+        <div class="admonition-content">本文最后更新于 2023-08-14，文中内容可能已过时。</div>
+      </div>
+    </div><h2 id="一简介">一、简介</h2>
 <p>NFS Subdir External Provisioner 是 Kubernetes 的一个外部存储供应者（External Provisioner），专门用于处理 NFS 存储卷的动态创建。</p>
 <p>在 Kubernetes 中，存储供应者是一种机制，用于动态创建持久卷（Persistent Volumes）以及与之关联的持久卷声明（Persistent Volume Claims）。而外部存储供应者是指这样的供应者，它并非 Kubernetes 核心组件的一部分，而是由社区或第三方提供的插件。</p>
 <p><strong>NFS-subdir-external-provisioner</strong>可动态为kubernetes提供pv卷，是Kubernetes的简易NFS的外部provisioner，本身不提供NFS，需要现有的NFS服务器提供存储。<!-- raw HTML omitted --></p>

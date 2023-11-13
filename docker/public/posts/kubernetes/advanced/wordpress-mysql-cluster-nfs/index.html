@@ -7,12 +7,12 @@
     <meta name="robots" content="noodp" />
     <title> - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
 <meta name="author-link" content="https://github.com/ryanxin7">
-<meta name="description" content="mysql deployment apiVersion: v1 kind: Service metadata: name: wpdb labels: app: wpdb spec: type: ClusterIP selector: app: wpdb ports: - protocol: TCP port: 3306 targetPort: 3306 --- apiVersion: apps/v1 kind: Deployment metadata: name: wpdb labels: app: wpdb spec: replicas: 1 selector: matchLabels: app: wpdb template: metadata: labels: app: wpdb spec: containers: - image: mysql:5.7.36 imagePullPolicy: IfNotPresent name: wpdb env: - name: MYSQL_DATABASE value: wpdb - name: MYSQL_USER value: wpuser - name: MYSQL_PASSWORD valueFrom: secretKeyRef: name: wpdb-secret key: password volumeMounts: - mountPath: &#34;/var/lib/mysql&#34; name: mysql-data-volume - mountPath: &#34;/var/log/mysql&#34; name: mysql-log-volume volumes: - name: mysql-data-volume persistentVolumeClaim: claimName: wpdb-data-pvc - name: mysql-log-volume persistentVolumeClaim: claimName: wpdb-log-pvckubectl create secret generic wpdb-secret --from-literal=password=YourMySQLPasswordWordPress deployment apiVersion: v1 kind: Service metadata: labels: app: wordpress name: wordpress spec: selector: app: wordpress type: NodePort ports: - protocol: TCP port: 8099 targetPort: 80 --- apiVersion: apps/v1 kind: Deployment metadata: name: wordpress labels: app: wordpress spec: replicas: 3 selector: matchLabels: app: wordpress template: metadata: labels: app: wordpress spec: containers: - image: wordpress name: wordpress env: - name: WORDPRESS_DB_NAME value: wpdb - name: WORDPRESS_DB_USER value: wpuser - name: WORDPRESS_DB_PASSWORD value: Ceamg." /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="">
-<meta itemprop="description" content="mysql deployment apiVersion: v1 kind: Service metadata: name: wpdb labels: app: wpdb spec: type: ClusterIP selector: app: wpdb ports: - protocol: TCP port: 3306 targetPort: 3306 --- apiVersion: apps/v1 kind: Deployment metadata: name: wpdb labels: app: wpdb spec: replicas: 1 selector: matchLabels: app: wpdb template: metadata: labels: app: wpdb spec: containers: - image: mysql:5.7.36 imagePullPolicy: IfNotPresent name: wpdb env: - name: MYSQL_DATABASE value: wpdb - name: MYSQL_USER value: wpuser - name: MYSQL_PASSWORD valueFrom: secretKeyRef: name: wpdb-secret key: password volumeMounts: - mountPath: &#34;/var/lib/mysql&#34; name: mysql-data-volume - mountPath: &#34;/var/log/mysql&#34; name: mysql-log-volume volumes: - name: mysql-data-volume persistentVolumeClaim: claimName: wpdb-data-pvc - name: mysql-log-volume persistentVolumeClaim: claimName: wpdb-log-pvckubectl create secret generic wpdb-secret --from-literal=password=YourMySQLPasswordWordPress deployment apiVersion: v1 kind: Service metadata: labels: app: wordpress name: wordpress spec: selector: app: wordpress type: NodePort ports: - protocol: TCP port: 8099 targetPort: 80 --- apiVersion: apps/v1 kind: Deployment metadata: name: wordpress labels: app: wordpress spec: replicas: 3 selector: matchLabels: app: wordpress template: metadata: labels: app: wordpress spec: containers: - image: wordpress name: wordpress env: - name: WORDPRESS_DB_NAME value: wpdb - name: WORDPRESS_DB_USER value: wpuser - name: WORDPRESS_DB_PASSWORD value: Ceamg.">
+<meta name="description" content="namespace apiVersion: v1 kind: Namespace metadata: name: wp-cluster mysql deployment --- apiVersion: apps/v1 kind: Deployment metadata: name: wpdb57 spec: replicas: 1 selector: matchLabels: app: wpdb57 strategy: type: Recreate template: metadata: labels: app: wpdb57 spec: securityContext: runAsUser: 1000 fsGroup: 1000 containers: - name: wpdb57 image: mysql:5.7 env: - name: TZ value: Asia/Shanghai - name: MYSQL_ROOT_PASSWORD valueFrom: secretKeyRef: name: wpdb-secret key: password - name: MYSQL_DATABASE value: wpdb - name: MYSQL_USER value: wp_user" /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="">
+<meta itemprop="description" content="namespace apiVersion: v1 kind: Namespace metadata: name: wp-cluster mysql deployment --- apiVersion: apps/v1 kind: Deployment metadata: name: wpdb57 spec: replicas: 1 selector: matchLabels: app: wpdb57 strategy: type: Recreate template: metadata: labels: app: wpdb57 spec: securityContext: runAsUser: 1000 fsGroup: 1000 containers: - name: wpdb57 image: mysql:5.7 env: - name: TZ value: Asia/Shanghai - name: MYSQL_ROOT_PASSWORD valueFrom: secretKeyRef: name: wpdb-secret key: password - name: MYSQL_DATABASE value: wpdb - name: MYSQL_USER value: wp_user">
 
-<meta itemprop="wordCount" content="196"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="1003"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="" /><meta property="og:title" content="" />
-<meta property="og:description" content="mysql deployment apiVersion: v1 kind: Service metadata: name: wpdb labels: app: wpdb spec: type: ClusterIP selector: app: wpdb ports: - protocol: TCP port: 3306 targetPort: 3306 --- apiVersion: apps/v1 kind: Deployment metadata: name: wpdb labels: app: wpdb spec: replicas: 1 selector: matchLabels: app: wpdb template: metadata: labels: app: wpdb spec: containers: - image: mysql:5.7.36 imagePullPolicy: IfNotPresent name: wpdb env: - name: MYSQL_DATABASE value: wpdb - name: MYSQL_USER value: wpuser - name: MYSQL_PASSWORD valueFrom: secretKeyRef: name: wpdb-secret key: password volumeMounts: - mountPath: &#34;/var/lib/mysql&#34; name: mysql-data-volume - mountPath: &#34;/var/log/mysql&#34; name: mysql-log-volume volumes: - name: mysql-data-volume persistentVolumeClaim: claimName: wpdb-data-pvc - name: mysql-log-volume persistentVolumeClaim: claimName: wpdb-log-pvckubectl create secret generic wpdb-secret --from-literal=password=YourMySQLPasswordWordPress deployment apiVersion: v1 kind: Service metadata: labels: app: wordpress name: wordpress spec: selector: app: wordpress type: NodePort ports: - protocol: TCP port: 8099 targetPort: 80 --- apiVersion: apps/v1 kind: Deployment metadata: name: wordpress labels: app: wordpress spec: replicas: 3 selector: matchLabels: app: wordpress template: metadata: labels: app: wordpress spec: containers: - image: wordpress name: wordpress env: - name: WORDPRESS_DB_NAME value: wpdb - name: WORDPRESS_DB_USER value: wpuser - name: WORDPRESS_DB_PASSWORD value: Ceamg." />
+<meta property="og:description" content="namespace apiVersion: v1 kind: Namespace metadata: name: wp-cluster mysql deployment --- apiVersion: apps/v1 kind: Deployment metadata: name: wpdb57 spec: replicas: 1 selector: matchLabels: app: wpdb57 strategy: type: Recreate template: metadata: labels: app: wpdb57 spec: securityContext: runAsUser: 1000 fsGroup: 1000 containers: - name: wpdb57 image: mysql:5.7 env: - name: TZ value: Asia/Shanghai - name: MYSQL_ROOT_PASSWORD valueFrom: secretKeyRef: name: wpdb-secret key: password - name: MYSQL_DATABASE value: wpdb - name: MYSQL_USER value: wp_user" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hg-xnlog.github.io/posts/kubernetes/advanced/wordpress-mysql-cluster-nfs/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
 
@@ -21,7 +21,7 @@
 <meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
 
 <meta name="twitter:title" content=""/>
-<meta name="twitter:description" content="mysql deployment apiVersion: v1 kind: Service metadata: name: wpdb labels: app: wpdb spec: type: ClusterIP selector: app: wpdb ports: - protocol: TCP port: 3306 targetPort: 3306 --- apiVersion: apps/v1 kind: Deployment metadata: name: wpdb labels: app: wpdb spec: replicas: 1 selector: matchLabels: app: wpdb template: metadata: labels: app: wpdb spec: containers: - image: mysql:5.7.36 imagePullPolicy: IfNotPresent name: wpdb env: - name: MYSQL_DATABASE value: wpdb - name: MYSQL_USER value: wpuser - name: MYSQL_PASSWORD valueFrom: secretKeyRef: name: wpdb-secret key: password volumeMounts: - mountPath: &#34;/var/lib/mysql&#34; name: mysql-data-volume - mountPath: &#34;/var/log/mysql&#34; name: mysql-log-volume volumes: - name: mysql-data-volume persistentVolumeClaim: claimName: wpdb-data-pvc - name: mysql-log-volume persistentVolumeClaim: claimName: wpdb-log-pvckubectl create secret generic wpdb-secret --from-literal=password=YourMySQLPasswordWordPress deployment apiVersion: v1 kind: Service metadata: labels: app: wordpress name: wordpress spec: selector: app: wordpress type: NodePort ports: - protocol: TCP port: 8099 targetPort: 80 --- apiVersion: apps/v1 kind: Deployment metadata: name: wordpress labels: app: wordpress spec: replicas: 3 selector: matchLabels: app: wordpress template: metadata: labels: app: wordpress spec: containers: - image: wordpress name: wordpress env: - name: WORDPRESS_DB_NAME value: wpdb - name: WORDPRESS_DB_USER value: wpuser - name: WORDPRESS_DB_PASSWORD value: Ceamg."/>
+<meta name="twitter:description" content="namespace apiVersion: v1 kind: Namespace metadata: name: wp-cluster mysql deployment --- apiVersion: apps/v1 kind: Deployment metadata: name: wpdb57 spec: replicas: 1 selector: matchLabels: app: wpdb57 strategy: type: Recreate template: metadata: labels: app: wpdb57 spec: securityContext: runAsUser: 1000 fsGroup: 1000 containers: - name: wpdb57 image: mysql:5.7 env: - name: TZ value: Asia/Shanghai - name: MYSQL_ROOT_PASSWORD valueFrom: secretKeyRef: name: wpdb-secret key: password - name: MYSQL_DATABASE value: wpdb - name: MYSQL_USER value: wp_user"/>
 <meta name="application-name" content="Ryan’s Notebook">
 <meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/kubernetes/advanced/wordpress-mysql-cluster-nfs/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/primary/cert-manager-&#43;-zerossl-%E7%9A%84%E4%B8%80%E4%BA%9B%E9%85%8D%E7%BD%AE%E7%9A%84%E7%A0%94%E7%A9%B6/" /><link rel="next" href="https://hg-xnlog.github.io/posts/linux-basic/nfs/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/advanced\/wordpress-mysql-cluster-nfs\/"
-    },"genre": "posts","wordcount":  196 ,
+    },"genre": "posts","wordcount":  1003 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/advanced\/wordpress-mysql-cluster-nfs\/","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -180,7 +180,7 @@
     <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span></span>
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span></div>
-      <div class="post-meta-line"><span title="发布于 0001-01-01 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="0001-01-01">0001-01-01</time></span>&nbsp;<span title="更新于 0001-01-01 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="0001-01-01">0001-01-01</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 196 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 1 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="">
+      <div class="post-meta-line"><span title="发布于 0001-01-01 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="0001-01-01">0001-01-01</time></span>&nbsp;<span title="更新于 0001-01-01 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="0001-01-01">0001-01-01</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 1003 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 3 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -190,8 +190,16 @@
         </div>
         <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
+    <li><a href="#namespace">namespace</a></li>
     <li><a href="#mysql-deployment">mysql deployment</a></li>
     <li><a href="#wordpress-deployment">WordPress deployment</a></li>
+    <li><a href="#nfs-provisioner-values">NFS Provisioner Values</a></li>
+    <li><a href="#helm-install">helm install</a></li>
+    <li><a href="#创建wpdb-pvc">创建wpdb-pvc</a></li>
+    <li><a href="#创建wpdata-pvc">创建wpdata-pvc</a></li>
+    <li><a href="#创建mysql-secret">创建mysql-secret</a></li>
+    <li><a href="#创建mysql-pod">创建mysql-pod</a></li>
+    <li><a href="#创建wordpress-pod">创建wordpress Pod</a></li>
   </ul>
 </nav></div>
       </div><div class="content" id="content"><div class="details admonition warning open">
@@ -201,65 +209,188 @@
       <div class="details-content">
         <div class="admonition-content">本文最后更新于 0001-01-01，文中内容可能已过时。</div>
       </div>
-    </div><h2 id="mysql-deployment">mysql deployment</h2>
+    </div><h2 id="namespace">namespace</h2>
 <div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Namespace</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterIP</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">3306</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="m">3306</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wp-cluster</span></span></span></code></pre></div><!-- raw HTML omitted -->
+<h2 id="mysql-deployment">mysql deployment</h2>
+<div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb57</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb57</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">strategy</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">Recreate</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb57</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">securityContext</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="m">1000</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">fsGroup</span><span class="p">:</span><span class="w"> </span><span class="m">1000</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">mysql:5.7.36</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">IfNotPresent</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">env</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">MYSQL_DATABASE</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">MYSQL_USER</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">wpuser</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">MYSQL_PASSWORD</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">secretKeyRef</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb-secret</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">password</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;/var/lib/mysql&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql-data-volume</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;/var/log/mysql&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql-log-volume        </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb57</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">mysql:5.7</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">env</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">TZ</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">Asia/Shanghai</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">MYSQL_ROOT_PASSWORD</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">secretKeyRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb-secret</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">password</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">MYSQL_DATABASE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">MYSQL_USER</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">wp_user</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">MYSQL_PASSWORD</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">secretKeyRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb-secret</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">password</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">3306</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql-data-volume</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/var/lib/mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql-log-volume</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/var/log/mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb57-config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/mysql/conf.d/custom.cnf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">subPath</span><span class="p">:</span><span class="w"> </span><span class="l">custom.cnf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">readOnly</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2Gi&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">limits</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;8Gi&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql-data-volume</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb-data-pvc</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql-log-volume</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb-log-pvc</span></span></span></code></pre></div><div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl create secret generic wpdb-secret --from-literal<span class="o">=</span><span class="nv">password</span><span class="o">=</span>YourMySQLPassword</span></span></code></pre></div><h2 id="wordpress-deployment">WordPress deployment</h2>
-<div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb-log-pvc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb57-config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">configMap</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb57-config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">items</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">custom.cnf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">custom.cnf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb57-config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">custom.cnf</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    [mysqld]
+</span></span></span><span class="line"><span class="cl"><span class="sd">    default_authentication_plugin=mysql_native_password
+</span></span></span><span class="line"><span class="cl"><span class="sd">    skip-name-resolve
+</span></span></span><span class="line"><span class="cl"><span class="sd">    datadir=/var/lib/mysql
+</span></span></span><span class="line"><span class="cl"><span class="sd">    bind-address=0.0.0.0
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    log-error=/var/log/mysql/error.log
+</span></span></span><span class="line"><span class="cl"><span class="sd">    slow_query_log=1
+</span></span></span><span class="line"><span class="cl"><span class="sd">    long_query_time=3
+</span></span></span><span class="line"><span class="cl"><span class="sd">    slow_query_log_file=/var/log/mysql/slow_query.log
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    # replication
+</span></span></span><span class="line"><span class="cl"><span class="sd">    log-bin=binlog
+</span></span></span><span class="line"><span class="cl"><span class="sd">    binlog_format=ROW
+</span></span></span><span class="line"><span class="cl"><span class="sd">    server-id=1
+</span></span></span><span class="line"><span class="cl"><span class="sd">    innodb_flush_log_at_trx_commit=1
+</span></span></span><span class="line"><span class="cl"><span class="sd">    sync_binlog=1
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    # fulltext index
+</span></span></span><span class="line"><span class="cl"><span class="sd">    ngram_token_size=1
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    # required by confluence
+</span></span></span><span class="line"><span class="cl"><span class="sd">    default_storage_engine=InnoDB
+</span></span></span><span class="line"><span class="cl"><span class="sd">    character-set-server=utf8mb4
+</span></span></span><span class="line"><span class="cl"><span class="sd">    collation-server=utf8mb4_bin
+</span></span></span><span class="line"><span class="cl"><span class="sd">    max_allowed_packet=256M
+</span></span></span><span class="line"><span class="cl"><span class="sd">    innodb_log_file_size=2GB
+</span></span></span><span class="line"><span class="cl"><span class="sd">    transaction-isolation=READ-COMMITTED
+</span></span></span><span class="line"><span class="cl"><span class="sd">    binlog_format=row
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    # required by quartz
+</span></span></span><span class="line"><span class="cl"><span class="sd">    # will make table name case-insensitive
+</span></span></span><span class="line"><span class="cl"><span class="sd">    lower_case_table_names=1
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    # sql mode disable full_group for backward compatibility
+</span></span></span><span class="line"><span class="cl"><span class="sd">    sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION</span><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mpdb57-nodeport</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">NodePort</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">3306</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="m">30357</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">mpdb57</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mpdb57</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterIP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">3306</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">mpdb57</span></span></span></code></pre></div><div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl create secret generic wpdb-secret --from-literal<span class="o">=</span><span class="nv">password</span><span class="o">=</span>YourMySQLPassword</span></span></code></pre></div><div class="highlight" id="id-4"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolumeClaim</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb-data-pvc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">wp-cluster</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-wp-cluster</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">ReadWriteOnce</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">150Gi</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolumeClaim</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb-log-pvc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">wp-cluster</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-wp-cluster</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">ReadWriteOnce</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">50Gi</span></span></span></code></pre></div><!-- raw HTML omitted -->
+<h2 id="wordpress-deployment">WordPress deployment</h2>
+<div class="highlight" id="id-5"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
@@ -278,6 +409,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">wp-cluster</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
@@ -308,7 +440,240 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wp-data-volume</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">wp-data-pvc</span></span></span></code></pre></div></div><div class="post-footer" id="post-footer">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">wp-data-pvc</span></span></span></code></pre></div><div class="highlight" id="id-6"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">PersistentVolumeClaim</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wp-data-pvc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">wp-cluster</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">storageClassName</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-wp-cluster</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">accessModes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">ReadWriteOnce</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">200Gi</span></span></span></code></pre></div><!-- raw HTML omitted -->
+<h2 id="nfs-provisioner-values">NFS Provisioner Values</h2>
+<div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">nfs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="m">10.1.0.38</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/data/k8s/wp-cluster</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">mountOptions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">vers=4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    - minorversion=0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    - rsize=1048576</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    - wsize=1048576</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    - hard</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    - timeo=600</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    - retrans=2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    - noresvport</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">storageClass</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-wp-cluster</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">defaultClass</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">allowVolumeExpansion</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">reclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Delete</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">provisionerName</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-wp-cluster</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">archiveOnDelete</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span></span></span></code></pre></div><div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#添加harbor私有仓库</span>
+</span></span><span class="line"><span class="cl">helm repo add --username<span class="o">=</span>xceo --password<span class="o">=</span>Ceamg.com1234 ceamg https://harbor.ceamg.com/chartrepo/chart <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--ca-file /etc/containerd/certs.d/harbor.ceamg.com/ca.crt <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--cert-file  /etc/containerd/certs.d/harbor.ceamg.com/harbor.ceamg.com.crt <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>--key-file /etc/containerd/certs.d/harbor.ceamg.com/harbor.ceamg.com.key
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;ceamg&#34;</span> has been added to your repositories</span></span></code></pre></div><div class="highlight" id="id-9"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/nfs# helm repo list
+</span></span><span class="line"><span class="cl">NAME                            URL
+</span></span><span class="line"><span class="cl">nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+</span></span><span class="line"><span class="cl">rmxc                            https://harbor.rmxc.tech/chartrepo/charts
+</span></span><span class="line"><span class="cl">ceamg                           https://harbor.ceamg.com/chartrepo/chart
+</span></span><span class="line"><span class="cl">bitnami                         https://charts.bitnami.com/bitnami
+</span></span><span class="line"><span class="cl">jetstack                        https://charts.jetstack.io</span></span></code></pre></div><div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm install -n wp-cluster -f /yaml/nfs/nfs-provisioner.value.yaml nfs-wp-cluster ceamg/nfs-subdir-external-provisioner</span></span></code></pre></div><!-- raw HTML omitted -->
+<h2 id="helm-install">helm install</h2>
+<div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/nfs# helm install -n wp-cluster -f /yaml/nfs/nfs-provisioner.value.yaml nfs-wp-cluster ceamg/nfs-subdir-external-provisioner
+</span></span><span class="line"><span class="cl">NAME: nfs-wp-cluster
+</span></span><span class="line"><span class="cl">LAST DEPLOYED: Mon Nov <span class="m">13</span> 15:46:52 <span class="m">2023</span>
+</span></span><span class="line"><span class="cl">NAMESPACE: wp-cluster
+</span></span><span class="line"><span class="cl">STATUS: deployed
+</span></span><span class="line"><span class="cl">REVISION: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">TEST SUITE: None</span></span></code></pre></div><div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl get pod -n wp-cluster
+</span></span><span class="line"><span class="cl">NAME                                                              READY   STATUS    RESTARTS   AGE
+</span></span><span class="line"><span class="cl">nfs-wp-cluster-nfs-subdir-external-provisioner-77d6fc75dc-hfxrb   1/1     Running   <span class="m">0</span>          51m</span></span></code></pre></div><!-- raw HTML omitted -->
+<h2 id="创建wpdb-pvc">创建wpdb-pvc</h2>
+<div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl apply -f wpdb-pvc.yaml
+</span></span><span class="line"><span class="cl">persistentvolumeclaim/wpdb-data-pvc created
+</span></span><span class="line"><span class="cl">persistentvolumeclaim/wpdb-log-pvc created</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl get pvc -n wp-cluster
+</span></span><span class="line"><span class="cl">NAME            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS     AGE
+</span></span><span class="line"><span class="cl">wpdb-data-pvc   Bound    pvc-92a0cbb3-a060-4d5c-9c87-66f87ad802e9   150Gi      RWO            nfs-wp-cluster   19s
+</span></span><span class="line"><span class="cl">wpdb-log-pvc    Bound    pvc-b0811659-797d-4e91-9cb9-6c87ab8a2812   50Gi       RWO            nfs-wp-cluster   19s</span></span></code></pre></div><!-- raw HTML omitted -->
+<h2 id="创建wpdata-pvc">创建wpdata-pvc</h2>
+<div class="highlight" id="id-15"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl apply -f wp-data.yaml
+</span></span><span class="line"><span class="cl">persistentvolumeclaim/wp-data-pvc created</span></span></code></pre></div><div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl get pvc -n wp-cluster
+</span></span><span class="line"><span class="cl">NAME            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS     AGE
+</span></span><span class="line"><span class="cl">wp-data-pvc     Bound    pvc-e3e1b943-b567-49e6-a7bf-ed8f0534ab2c   200Gi      RWO            nfs-wp-cluster   3s
+</span></span><span class="line"><span class="cl">wpdb-data-pvc   Bound    pvc-92a0cbb3-a060-4d5c-9c87-66f87ad802e9   150Gi      RWO            nfs-wp-cluster   2m12s
+</span></span><span class="line"><span class="cl">wpdb-log-pvc    Bound    pvc-b0811659-797d-4e91-9cb9-6c87ab8a2812   50Gi       RWO            nfs-wp-cluster   2m12s</span></span></code></pre></div><h2 id="创建mysql-secret">创建mysql-secret</h2>
+<div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl create secret generic -n wp-cluster  wpdb-secret --from-literal<span class="o">=</span><span class="nv">password</span><span class="o">=</span>Ceamg.com
+</span></span><span class="line"><span class="cl">secret/wpdb-secret created
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl get secrets -n wp-cluster
+</span></span><span class="line"><span class="cl">NAME                                   TYPE                 DATA   AGE
+</span></span><span class="line"><span class="cl">sh.helm.release.v1.nfs-wp-cluster.v1   helm.sh/release.v1   <span class="m">1</span>      62m
+</span></span><span class="line"><span class="cl">wpdb-secret                            Opaque               <span class="m">1</span>      16s</span></span></code></pre></div><h2 id="创建mysql-pod">创建mysql-pod</h2>
+<div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl apply -f wpdb-deploy.yaml
+</span></span><span class="line"><span class="cl">service/wpdb created
+</span></span><span class="line"><span class="cl">deployment.apps/wpdb created</span></span></code></pre></div><h2 id="创建wordpress-pod">创建wordpress Pod</h2>
+<div class="highlight" id="id-19"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"></code></pre></div><div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">strategy</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">Recreate</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">securityContext</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="m">1000</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">fsGroup</span><span class="p">:</span><span class="w"> </span><span class="m">1000</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">mysql:5.7</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">env</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">TZ</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">Asia/Shanghai</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">MYSQL_ROOT_PASSWORD</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">secretKeyRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57-secrets</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">root</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">MYSQL_DATABASE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">test</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">MYSQL_USER</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">test_user</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">MYSQL_PASSWORD</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">secretKeyRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57-secrets</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">test_user</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="m">3306</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57-data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/var/lib/mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57-log</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/var/log/mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57-config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/etc/mysql/conf.d/custom.cnf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">subPath</span><span class="p">:</span><span class="w"> </span><span class="l">custom.cnf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">readOnly</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">requests</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2Gi&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">limits</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;4Gi&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;2&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57-data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57-data</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57-log</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57-log</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57-config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">configMap</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57-config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">items</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l">custom.cnf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">custom.cnf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57-config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">custom.cnf</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    [mysqld]
+</span></span></span><span class="line"><span class="cl"><span class="sd">    default_authentication_plugin=mysql_native_password
+</span></span></span><span class="line"><span class="cl"><span class="sd">    skip-name-resolve
+</span></span></span><span class="line"><span class="cl"><span class="sd">    datadir=/var/lib/mysql
+</span></span></span><span class="line"><span class="cl"><span class="sd">    bind-address=0.0.0.0
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    log-error=/var/log/mysql/error.log
+</span></span></span><span class="line"><span class="cl"><span class="sd">    slow_query_log=1
+</span></span></span><span class="line"><span class="cl"><span class="sd">    long_query_time=3
+</span></span></span><span class="line"><span class="cl"><span class="sd">    slow_query_log_file=/var/log/mysql/slow_query.log
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    # replication
+</span></span></span><span class="line"><span class="cl"><span class="sd">    log-bin=binlog
+</span></span></span><span class="line"><span class="cl"><span class="sd">    binlog_format=ROW
+</span></span></span><span class="line"><span class="cl"><span class="sd">    server-id=1
+</span></span></span><span class="line"><span class="cl"><span class="sd">    innodb_flush_log_at_trx_commit=1
+</span></span></span><span class="line"><span class="cl"><span class="sd">    sync_binlog=1
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    # fulltext index
+</span></span></span><span class="line"><span class="cl"><span class="sd">    ngram_token_size=1
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    # required by confluence
+</span></span></span><span class="line"><span class="cl"><span class="sd">    default_storage_engine=InnoDB
+</span></span></span><span class="line"><span class="cl"><span class="sd">    character-set-server=utf8mb4
+</span></span></span><span class="line"><span class="cl"><span class="sd">    collation-server=utf8mb4_bin
+</span></span></span><span class="line"><span class="cl"><span class="sd">    max_allowed_packet=256M
+</span></span></span><span class="line"><span class="cl"><span class="sd">    innodb_log_file_size=2GB
+</span></span></span><span class="line"><span class="cl"><span class="sd">    transaction-isolation=READ-COMMITTED
+</span></span></span><span class="line"><span class="cl"><span class="sd">    binlog_format=row
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    # required by quartz
+</span></span></span><span class="line"><span class="cl"><span class="sd">    # will make table name case-insensitive
+</span></span></span><span class="line"><span class="cl"><span class="sd">    lower_case_table_names=1
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">    # sql mode disable full_group for backward compatibility
+</span></span></span><span class="line"><span class="cl"><span class="sd">    sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION</span><span class="w">    
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57-nodeport</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">NodePort</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">3306</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="m">30357</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">ClusterIP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">3306</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57</span></span></span></code></pre></div><div class="highlight" id="id-21"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">exit<span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">kubectl create secret generic mysql57-secrets <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">root</span><span class="o">=</span><span class="s2">&#34;</span><span class="k">$(</span>openssl rand -hex 12<span class="k">)</span><span class="s2">&#34;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">test_user</span><span class="o">=</span><span class="s2">&#34;</span><span class="k">$(</span>openssl rand -hex 12<span class="k">)</span><span class="s2">&#34;</span></span></span></code></pre></div></div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">

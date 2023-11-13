@@ -183,7 +183,14 @@
       <div class="post-meta-line"><span title="发布于 2023-04-24 21:23:22"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-04-24">2023-04-24</time></span>&nbsp;<span title="更新于 2023-08-14 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-08-14">2023-08-14</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 3028 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 7 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Kubernetes 基础">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
-    </div><div class="content" id="content"><h1 id="1为什么需要容器编排系统">1.为什么需要容器编排系统？</h1>
+    </div><div class="content" id="content"><div class="details admonition note open">
+      <div class="details-summary admonition-title">
+        <i class="icon fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i>注意<i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i>
+      </div>
+      <div class="details-content">
+        <div class="admonition-content">本文最后更新于 2023-08-14，文中内容可能已过时。</div>
+      </div>
+    </div><h1 id="1为什么需要容器编排系统">1.为什么需要容器编排系统？</h1>
 <p>      Docker在管理单个容器时表现出色，对于一些由有限几个或十几个容器构建的应用程序来说，直接在Docker引擎上自主运行、部署和管理是相对容易的。然而，当涉及到企业级应用程序，其中包含数百甚至上千个容器时，仅依赖Docker引擎来进行管理将变得异常复杂，甚至难以实现。<!-- raw HTML omitted --></p>
 <p>容器编排是一套自动化管理容器应用的流程，包括部署、管理、扩展和联网等各种操作，旨在应对大规模容器集群的挑战。它能够自动化许多任务，例如容器的调度和部署、资源的分配、应用规模的弹性扩缩、在主机故障或资源不足时的容器迁移、负载均衡，以及对容器和主机运行状况的监控等。</p>
 <p>对于企业级应用程序，其中容器数量庞大、复杂性高，容器编排成为不可或缺的工具。通过容器编排平台，如Kubernetes，可以实现高度自动化的容器管理和协调，无论是在多台主机上还是跨多个数据中心中。容器编排能够实现复杂的任务调度、负载均衡、故障恢复，同时提供灵活的扩展性和资源管理。</p>
