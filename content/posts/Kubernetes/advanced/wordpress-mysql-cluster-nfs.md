@@ -580,3 +580,6 @@ kubectl create secret generic mysql57-secrets \
   --from-literal=root="$(openssl rand -hex 12)" \
   --from-literal=test_user="$(openssl rand -hex 12)"
 ```
+
+
+https://blog.csdn.net/zwqjoy/article/details/112243757
