@@ -1,5 +1,80 @@
+---
+author: Ryan
+title: 在Kubernetes（K8s）环境中部署WordPress知识库项目
+date: 2023-11-14
+lastmod: 2023-11-14
+tags:
+  - Kubernetes实战案例
+  - wordpress
+categories:
+  - Kubernetes
+expirationReminder:
+  enable: false
+---
+
+
+
+
+
+## 在Kubernetes（K8s）环境中部署WordPress知识库项目
+
+
+
+这是一个相当复杂的配置过程，涉及多个步骤和Kubernetes资源的设置,具体的步骤如下：
+
+### 步骤一：创建持久化存储
+
+1. NFS服务器
+   - 配置并启动NFS服务器。
+   - 在Kubernetes中创建一个 `PersistentVolume` 和 `PersistentVolumeClaim`，将NFS服务器的存储卷动态绑定到 `PersistentVolumeClaim`（PVC）上。
+
+### 步骤二：部署MySQL数据库
+
+1. **MySQL服务**：
+   - 使用Kubernetes部署MySQL数据库。在`Deployment`或`StatefulSet`中配置MySQL容器。
+   - 使用动态PVC将MySQL的数据存储持久化到NFS上。
+2. **Secrets管理**：
+   - 创建包含MySQL凭据的Kubernetes Secret，并在MySQL Pod中使用这些凭据。
+
+### 步骤三：部署WordPress
+
+1. **WordPress服务**：
+   - 创建WordPress的Deployment，在Pod中运行WordPress容器。
+   - 使用动态PVC将WordPress的数据存储持久化到NFS上。
+   - 配置WordPress Pod以使用MySQL服务。
+2. **Secrets管理**：
+   - 创建包含WordPress连接MySQL所需的凭据的Kubernetes Secret，并在WordPress Pod中使用这些凭据。
+
+### 步骤四：部署Nginx代理服务器
+
+1. Nginx服务
+   - 部署Nginx服务器，并配置作为代理服务器。
+   - 在Nginx配置中使用upstream模块将流量转发到WordPress Pod服务上。
+   - 配置HTTPS服务，使用证书确保安全通信。
+
+### 步骤五：HTTPS配置
+
+1. **SSL/TLS证书**：
+   - 获取有效的SSL/TLS证书（可以使用Let's Encrypt等工具）。
+   - 将证书配置到Nginx服务器中。
+2. **HTTPS代理**：
+   - 在Nginx配置中启用HTTPS代理，确保WordPress基于HTTPS协议实现交互。
+
+
+
+### 步骤六：Wordpress 知识库主题配置
+
+1. **样式调整**：
+   - 调整主题的本地化显示。
+   - 增加Logo和banner图片。
+2. **文章录入**：
+   - 安装插件解决Markdown格式的文档更好的适配文章编辑器。
+   - 安装插件解决代码高亮显示。
+
+
 
 ## namespace
+
 ```yaml
 apiVersion: v1
 kind: Namespace
@@ -582,4 +657,233 @@ kubectl create secret generic mysql57-secrets \
 ```
 
 
-https://blog.csdn.net/zwqjoy/article/details/112243757
+
+## 访问测试
+
+![image-20231115161831228](https://cdn1.ryanxin.live/image-20231115161831228.png)
+
+
+
+## 配置Nginx 代理
+
+
+
+编译安装 Nginx 在 Ubuntu 20.04 上相对直接，但是需要注意安装编译所需的依赖项。以下是编译安装 Nginx 的基本步骤：
+
+### 1. 安装编译依赖项
+
+确保您的系统已经安装了编译 Nginx 所需的基本工具和依赖项：
+
+```bash
+sudo apt update
+sudo apt install -y curl gnupg2 build-essential libpcre3 libpcre3-dev zlib1g zlib1g-dev libssl-dev
+```
+
+
+
+### 2. 下载并解压 Nginx 源代码
+
+您可以从 Nginx 官网下载最新的稳定版或特定版本的源代码：
+
+```bash
+cd /tmp
+curl -LO https://nginx.org/download/nginx-1.24.0.tar.gz   # 请替换为您希望使用的版本链接
+tar -zxvf nginx-1.24.0.tar.gz
+cd nginx-1.24.0  # 进入解压后的目录
+```
+
+
+
+### 配置并编译 Nginx
+
+执行 `configure` 脚本以配置编译参数。这里仅提供了最基本的配置示例：
+
+```bash
+./configure --prefix=/usr/local/nginx \
+            --with-http_ssl_module \
+            --with-http_v2_module \
+            --with-http_gzip_static_module \
+            --with-http_stub_status_module \
+            --with-pcre \
+            --with-http_realip_module \
+            --with-threads \
+            --with-http_sub_module \
+            --with-http_secure_link_module \
+            --with-stream
+```
+
+如果您有其他需要的模块或特定的配置选项，请根据实际需求添加到 `./configure` 命令中。
+
+
+
+### 4. 编译和安装
+
+运行以下命令来编译和安装 Nginx：
+
+```bash
+make
+sudo make install
+```
+
+### 5. 启动 Nginx
+
+完成安装后，您可以使用以下命令启动 Nginx：
+
+```bash
+sudo /usr/local/nginx/sbin/nginx
+```
+
+### 6. 验证安装
+
+在浏览器中输入您服务器的 IP 地址或域名，如果一切正常，您应该能够看到默认的 Nginx 欢迎页面。
+
+### 注意事项
+
+- 编译安装的 Nginx 默认安装路径为 `/usr/local/nginx`，您可以根据需要修改。
+- 启动 Nginx 后，可以使用 `sudo /usr/local/nginx/sbin/nginx -s stop` 停止它，或者使用 `sudo /usr/local/nginx/sbin/nginx -s reload` 重新加载配置文件。
+
+
+
+以下是一些常用的 Nginx 编译参数和其作用：
+
+```bash
+--prefix=path
+
+指定安装目录，默认为 /usr/local/nginx。
+--with-http_ssl_module
+
+启用 HTTPS 支持，允许使用 SSL/TLS 协议。
+--with-http_v2_module
+
+启用 HTTP/2 支持，提升性能和效率。
+--with-http_gzip_static_module
+
+启用静态 Gzip 模块，使 Nginx 在传输静态文件时压缩文件。
+--with-http_stub_status_module
+
+启用状态页面模块，允许通过特定端点查看 Nginx 的状态和统计信息。
+--with-pcre
+
+启用 Perl Compatible Regular Expressions (PCRE) 库，用于支持正则表达式。
+--with-http_realip_module
+
+启用 Real IP 模块，用于获取客户端真实 IP 地址。
+--with-threads
+
+启用线程支持。
+--with-http_sub_module
+
+启用 Substitution 模块，用于在传送响应之前替换响应文本中的字符串。
+--with-http_secure_link_module
+
+启用 Secure Link 模块，用于生成和验证安全链接。
+--with-stream
+
+启用 Stream 模块，用于 TCP 和 UDP 的负载均衡和代理。
+```
+
+
+
+这些参数只是一小部分可用选项的示例。根据您的实际需求和项目要求，您可能需要根据需要选择其他模块或特定功能。您可以通过运行 `./configure --help` 命令来查看所有可用的配置选项和模块。
+
+
+
+```bash
+export PATH=$PATH:/usr/local/nginx/sbin
+```
+
+
+
+```bash
+root@k8s-master01:/usr/local/nginx# vim /etc/profile.d/nginx.sh
+root@k8s-master01:/usr/local/nginx# source /etc/profile.d/nginx.sh
+root@k8s-master01:/usr/local/nginx#
+root@k8s-master01:/usr/local/nginx# nginx -t
+nginx: the configuration file /usr/local/nginx/conf/nginx.conf syntax is ok
+nginx: configuration file /usr/local/nginx/conf/nginx.conf test is successful
+```
+
+
+
+
+
+## 基于HTTP协议实现 
+
+```bash
+http {
+    upstream backend_servers {
+        server 10.1.0.33:30388;
+        server 10.1.0.32:30388;
+        server 10.1.0.34:30388;
+        server 10.1.0.37:30388;
+        server 10.1.0.35:30388;
+    }
+
+    server {
+        listen 80;
+        server_name wiki.ceamg.com;
+
+        location / {
+            proxy_pass http://backend_servers;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+}
+```
+
+
+
+
+
+## 基于HTTPS 协议实现
+
+```bash
+http {
+    upstream backend_servers {
+        server 10.1.0.33:30388;
+        server 10.1.0.32:30388;
+        server 10.1.0.34:30388;
+        server 10.1.0.37:30388;
+        server 10.1.0.35:30388;
+    }
+
+    server {
+        listen 80;
+        server_name wiki.ceamg.com;
+
+
+        return 301 https://$server_name$request_uri;
+    }
+
+    server {
+        listen 443 ssl;
+        server_name wiki.ceamg.com;
+
+        ssl_certificate /path/to/your/fullchain.pem;
+        ssl_certificate_key /path/to/your/privkey.pem;
+
+        # SSL 配置，可以根据需求添加其他 SSL 相关配置项
+
+        location / {
+            proxy_pass http://backend_servers;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+}
+```
+
+
+
+## 测试代理访问
+
+![image-20231115162053336](https://cdn1.ryanxin.live/image-20231115162053336.png)
+
+
+
+Mysql 8.0 安装 https://blog.csdn.net/zwqjoy/article/details/112243757
