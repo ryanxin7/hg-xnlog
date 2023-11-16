@@ -2,7 +2,7 @@
 author: Ryan
 title: Pod的状态和探针 (七)
 date: 2023-01-18
-lastmod: 2023-01-18
+lastmod: 2023-11-16
 tags:
   - k8s进阶训练营
 categories:
@@ -14,24 +14,27 @@ expirationReminder:
 
 
 
-**Pod状态**<br />![Pod状态](https://cdn1.ryanxin.live/1674895053415-2477036f-d642-41c9-90c7-942d1a238360.png)
+## 一、Pod的状态<br />
+
+![Pod状态](https://cdn1.ryanxin.live/1674895053415-2477036f-d642-41c9-90c7-942d1a238360.png)
 
 
-> **第一阶段 **
-> 1. **Pending  **正在创建Pod但是Pod中的容器还没有全部被创建完成=[处于此状态的Pod应该检查Pod依赖的存储是否有权限挂载、镜像是否可以下载、调度是否正常等。
-> 2. **Failed **Pod中有容器启动失败而导致pod工作异常。
-> 3. **Unknown **由于某种原因无法获得pod的当前状态，通常是由于与pod所在的node节点通信错误。
+> **第一阶段**
+> 1. **Pending** 正在创建Pod但是Pod中的容器还没有全部被创建完成=[处于此状态的Pod应该检查Pod依赖的存储是否有权限挂载、镜像是否可以下载、调度是否正常等。
+> 2. **Failed** Pod中有容器启动失败而导致pod工作异常。
+> 3. **Unknown** 由于某种原因无法获得pod的当前状态，通常是由于与pod所在的node节点通信错误。
 > 4. **Succeeded** Pod中的所有容器都被成功终止即pod里所有的containers均已terminated.
 
 
+<br>
 
 > **第二阶段**
-> 1. **Unschedulable **Pod不能被调度，kube-scheduler没有匹配到合适的node节点。
+> 1. **Unschedulable** Pod不能被调度，kube-scheduler没有匹配到合适的node节点。
 > 2. **Podscheduled** pod正处于调度中，在kube-scheduler刚开始调度的时候，还没有将pod分配到指定的node，在筛选出合适的节点后就会更新etcd数据，将pod分配到指定的node。
-> 3. **Initialized **所有pod中的初始化容器已经完成了**。**
-> 4. **ImagePullBackoff **Pod所在的node节点下载镜像失败
-> 5. **Running **Pod内部的容器已经被创建并且启动。
-> 6.  **Ready **表示pod中的容器已经可以提供访问服务
+> 3. **Initialized** 所有pod中的初始化容器已经完成了。
+> 4. **ImagePullBackoff** Pod所在的node节点下载镜像失败
+> 5. **Running** Pod内部的容器已经被创建并且启动。
+> 6.  **Ready** 表示pod中的容器已经可以提供访问服务
 
 
 
@@ -66,70 +69,153 @@ NetworkPluginNotReady: #网络插件还没有完全启动
 ```
 
 
-## Pod 探针
+
+<br>
+
+
+
+## 二、Pod 探针
+
 [https://kubernetes.io/zh-cn/docs/concepts/workloads/pods/pod-lifecycle/](https://kubernetes.io/zh-cn/docs/concepts/workloads/pods/pod-lifecycle/)
 
 
-### 探针简介
-探针 是由 kubelet 对容器执行的定期诊断，以保证Pod的状态始终处于运行状态，要执行诊断，kubelet 调用由容器实现的Handler(处理程序)，有三种类型的处理程序:
+### 2.1 探针简介
+在 Kubernetes 中，探针（Probes）是由 kubelet 进行的定期诊断，以确保 Pod 中的容器保持在健康状态。为了执行这些诊断，kubelet 调用由容器内部实现的处理程序（Handlers）。这些处理程序有三种类型：
 
-```bash
-ExecAction
-#在容器内执行指定命令，如果命令退出时返回码为0则认为诊断成功。
+<br>
 
-TcPSocketAction
-#对指定端口上的容器的IP地址进行TCP检查，如果端口打开，则诊断被认为是成功的。
+#### 2.1.1 ExecAction（命令执行动作）
+这种处理程序类型会在容器中执行特定的命令。kubelet 将执行指定的命令，并通过进程的退出状态来判断容器的健康状态。如果命令成功执行（返回退出码为0），则探针认为容器是健康的；否则，它将被标记为不健康。
 
-HTTPGetAction
-#对指定的端口和路径上的容器的IP地址执行HTTPGet请求，如果响应的状态码大于等于200且小于 400，则诊断被认为是成功的。
+<br>
+
+#### 2.1.2 HTTPGetAction（HTTP GET 动作）
+这种处理程序类型会向容器中指定的 HTTP 地址发送 GET 请求。如果返回的状态码在一定范围内（通常是 2xx 或 3xx），则探针认为容器是健康的；否则，它将被标记为不健康。
+
+#### 2.1.3 TCPSocketAction（TCP 套接字动作）:
+这种处理程序类型会尝试建立到容器中指定端口的 TCP 连接。如果连接成功建立，探针将认为容器是健康的；否则，它将被标记为不健康。
+
+
+<br>
+
+
+#### 2.1.4 探测结果
+
+在 Kubernetes 中，每次探测都会产生以下三种结果之一：
+
+- **成功（Success）**
+当探针成功检测到容器处于健康状态时，将返回成功。这表示容器通过了诊断，可以接收流量或请求。
+
+- **失败（Failure）**
+如果探针未能检测到容器处于健康状态，将返回失败。这意味着容器未通过诊断，不能接收流量或请求。
+
+- **未知（Unknown）**
+在某些情况下，可能由于无法完成诊断检查或处理程序发生错误，探针无法得出明确的健康状态。在这种情况下，探针会返回未知状态。当探针返回未知状态时，Kubernetes 不会做出任何假设或行动，而是等待下一次探测来确认容器的状态。
+
+
+
+<br>
+
+
+
+### 2.2 探针类型
+
+#### 2.2.1 livenessProbe
+
+> **存活探针** 是 Kubernetes 中一种用于检测容器是否处于运行状态的探针机制。通过配置 livenessProbe，Kubernetes 可以定期检查容器的健康状况，并根据检查结果来决定是否需要重启容器。如果 livenessProbe 失败，则 Kubernetes 的 kubelet 将认为容器不再处于运行状态，并根据其重启策略采取相应的措施。
+
+
+重启策略是指在容器失败时 Kubernetes 如何处理 Pod。如果容器的存活探针（livenessProbe）失败，kubelet 将视其为容器已经失效，并根据 Pod 的重启策略采取行动。
+
+**Pod 的重启策略通常有以下几种**：
+
+- Always：始终尝试重启容器。无论何时容器退出或崩溃，Kubernetes 都会尝试重新启动容器。
+- OnFailure：仅在容器退出代码非零时尝试重启容器。
+- Never：从不尝试重启容器。在容器失败时不会重启。
+
+
+如果容器未提供 **livenessProbe**（存活探针），则默认情况下 kubelet 会假定该容器的状态为成功。这会导致 Kubernetes 将不会周期性地检查容器的健康状态。这意味着 Kubernetes 无法直接了解容器是否在运行。因此，如果容器进入了不健康的状态（例如死锁、无限循环、挂起等），Kubernetes 将不会自动检测到这些问题。
+
+其次这种情况还会导致 Kubernetes 无法及时处理容器故障在缺少存活探针的情况下，如果容器发生故障导致停止运行，Kubernetes 将不会主动进行重启或采取其他措施。这可能会导致服务中断，因为 Kubernetes 不会意识到容器已经停止运行，也无法自动采取纠正措施。
+
+
+<br>
+
+#### 2.2.2 readinessProbe
+
+>**就绪探针**，一种用于检测应用程序是否已经准备好处理请求的健康检查机制，通过定期检查应用程序的状态来确定容器是否已经准备好开始接收流量。
+**readinessProbe** 用于控制 Pod 是否被添加至 Service 的端点。就绪探测失败会导致端点控制器将该 Pod 的 IP 从对应的 Service 端点中删除，如果容器没有提供 readinessProbe，则默认情况下该容器的状态将被视为成功。这意味着如果没有明确配置就绪探测，Kubernetes 不会等待容器就绪就开始将流量引导到该容器。
+
+
+## 三、探针配置
+
+
+
+[https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/](https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
+
+探针有很多配置字段，可以使用这些字段精确的控制存活和就绪检测的行为。
+
 ```
-
-
-**每次探测都将获得以下三种结果之一：**
-
-- 成功: 容器通过了诊断
-- 失败: 容器未通过诊断
-- 未知: 诊断失败，因此不会采取任何行动
-
-
-## 配置探针
-实现对Pod的状态检测
-
-
-
-### 探针类型
-```bash
-livenessProbe
-#存活探针，检测容器容器是否正在运行，如果存活探测失败，则kubelet会杀死容器，并且容器将受到其重启策略的影响，如果容器不提供存活探针，则默认状态为 Success，livenessProbe用于控制是否重启pod。
-
-readinessProbe
-#就绪探针，如果就绪探测失败，端点控制器将从与Pod匹配的所有Service的端点中删除该Pod的IP地址，初始延迟之前的就绪状态默认为Failure(失败)，如果容器不提供就绪探针，则默认状态为 Success，readinessProbe用于控制pod是否添加至service。
-```
-
-
-### 探针配置
-
-[https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/](https://kubernetes.io/zh-cn/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)<br />探针有很多配置字段，可以使用这些字段精确的控制存活和就绪检测的行为
-```bash
 initialDelaySeconds: 120
-#初始化延迟时间，告诉kubelet在执行第一次探测前应该等待多少秒，默认是0秒，最小值是0
+初始化延迟时间，告诉kubelet在执行第一次探测前应该等待多少秒，默认是0秒，最小值是0
 
 periodseconds: 60
-#探测周期间隔时间，指定了kubelet应该每多少秒秒执行一次存活探测，默认是 10 秒。最小值是 1
+探测周期间隔时间，指定了kubelet应该每多少秒秒执行一次存活探测，默认是 10 秒。最小值是 1
 
 timeoutseconds: 5
-#单次探测超时时间，探测的超时后等待多少秒，默认值是1秒，最小值是1。
+单次探测超时时间，探测的超时后等待多少秒，默认值是1秒，最小值是1。
 
 successThreshold: 1
-#从失败转为成功的重试次数，探测器在失败后，被视为成功的最小连续成功数，默认值是1，存活探测的这个值必须是1，最小值是 1。
+从失败转为成功的重试次数，探测器在失败后，被视为成功的最小连续成功数，默认值是1，存活探测的这个值必须是1，最小值是 1。
 
 failureThreshold: 3 
-#从成功转为失败的重试次数，当Pod启动了并目探测到失败，Kubernetes的重试次数，存活探测情况下的放弃就意味着重新启动容器，就绪探测情况下的放弃Pod 会被打上未就绪的标签，默认值是3，最小值是1。
+从成功转为失败的重试次数，当Pod启动了并目探测到失败，Kubernetes的重试次数，存活探测情况下的放弃就意味着重新启动容器，就绪探测情况下的放弃Pod 会被打上未就绪的标签，默认值是3，最小值是1。
 ```
 
 
 
-### HTTP 探测器可以在 httpGet 上配置额外的字段
+### 3.1 存活探针（livenessProbe）配置字段
+
+1. **httpGet**：
+   - `path`：指定要检查的 HTTP 路径。
+   - `port`：指定用于检查的端口号。
+2. **tcpSocket**：
+   - `port`：指定要检查的 TCP 端口号。
+3. **exec**：
+   - `command`：执行的命令。如果该命令成功执行（返回退出码为0），则探针认为容器是健康的。
+4. **initialDelaySeconds**：
+   - 定义容器启动后等待执行第一次探测的时间。
+5. **periodSeconds**：
+   - 定义探测之间的间隔时间。
+6. **timeoutSeconds**：
+   - 指定探测超时时间，如果探测在该时间内未返回，则认为探测失败。
+7. **successThreshold**：
+   - 表示连续成功探测的次数，达到该次数后认为容器是健康的。
+8. **failureThreshold**：
+   - 表示连续失败探测的次数，达到该次数后认为容器是不健康的。
+
+
+
+### 3.2 就绪探针（readinessProbe）配置字段
+
+就绪探针与存活探针类似，但它影响的是容器的就绪状态，而不是其运行状态。它也具有与存活探针类似的配置字段，包括：
+
+- **httpGet**
+- **tcpSocket**
+- **exec**
+- **initialDelaySeconds**
+- **periodSeconds**
+- **timeoutSeconds**
+- **successThreshold**
+- **failureThreshold**
+
+
+
+
+
+
+
+### 3.3 HTTP 探测器可以在 httpGet 上配置额外的字段
 ```bash
 
 host:
@@ -149,9 +235,12 @@ port: 80
 ```
 
 
-### HTTP探针示例
+
+
+
+### 3.4 HTTP探针示例
+
 ```yaml
-#apiVersion: extensions/v1beta1
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -159,15 +248,13 @@ metadata:
 spec:
   replicas: 1
   selector:
-    matchLabels: #rs or deployment
+    matchLabels:
       app: ng-deploy-80
-    #matchExpressions:
-    # - {key: app, operator: In, values: [ng-deploy-80,ng-rs-81]}
-   template:
-     metadata:
-       labels:
-         app: ng-deploy-80
-     spec:
+  template:
+    metadata:
+      labels:
+        app: ng-deploy-80
+    spec:
       containers:
       - name: ng-deploy-80
         image: nginx:1.17.5
@@ -176,7 +263,6 @@ spec:
         #readinessProbe:
         livenessProbe:
           httpGet:
-            #path: /monitor/monitor.html
             path: /index.html
             port: 80
           initialDelaySeconds: 5
@@ -202,10 +288,14 @@ spec:
     app: ng-deploy-80
 ```
 
-验证http探针： <br /> ![](https://cdn1.ryanxin.live/1674961913237-ed82df48-ae02-4275-aa5c-2099f4fd5fae.png)
+验证http探针： <br />
 
+![image-20231116172455588](https://cdn1.ryanxin.live/image-20231116172455588.png)
 
-### TCP 探针示例
+<br>
+
+### 3.5 TCP 探针示例
+
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -214,10 +304,8 @@ metadata:
 spec:
   replicas: 1
   selector:
-    matchLabels: #rs or deployment
+    matchLabels:
       app: ng-deploy-80
-    #matchExpressions:
-    # - {key: app, operator: In, values: [ng-deploy-80,ng-rs-81]}
   template:
     metadata:
       labels:
@@ -257,7 +345,11 @@ spec:
 ```
 
 
-### ExecAction探针 <br /> 
+
+<br>
+
+### 3.6 ExecAction探针  
+
 可以基于指定的命令对Pod进⾏特定的状态检查。
 ```yaml
 apiVersion: apps/v1
@@ -267,10 +359,8 @@ metadata:
 spec:
   replicas: 1
   selector:
-    matchLabels: #rs or deployment
+    matchLabels:
       app: redis-deploy-6379
-    #matchExpressions:
-    # - {key: app, operator: In, values: [redis-deploy-6379,ng-rs-81]}
   template:
     metadata:
       labels:
@@ -279,20 +369,18 @@ spec:
       containers:
       - name: redis-deploy-6379
         image: redis
-        ports: 
-      - containerPort: 6379
-      livenessProbe:
-      #readinessProbe:
-        exec:
-          command:
-          #- /apps/redis/bin/redis-cli
-          - /usr/local/bin/redis-cli
-          - quit
-        initialDelaySeconds: 5
-        periodSeconds: 3
-        timeoutSeconds: 5
-        successThreshold: 1
-        failureThreshold: 3
+        ports:
+        - containerPort: 6379
+        livenessProbe:
+          exec:
+            command:
+            - /usr/local/bin/redis-cli
+            - quit
+          initialDelaySeconds: 5
+          periodSeconds: 3
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
 ---
 apiVersion: v1
 kind: Service
@@ -314,8 +402,62 @@ spec:
 
 
 
+<br>
 
-### livenessProbe和readinessProbe的对⽐ <br /><br />
+
+
+### 3.8  livenessProbe和readinessProbe 结合使用
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-deploy-6379
+  template:
+    metadata:
+      labels:
+        app: redis-deploy-6379
+    spec:
+      containers:
+      - name: redis-deploy-6379
+        image: redis
+        ports:
+        - containerPort: 6379
+        readinessProbe:
+          exec:
+            command:
+            - /usr/local/bin/redis-cli
+            - ping
+          initialDelaySeconds: 5
+          periodSeconds: 3
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        livenessProbe:
+          exec:
+            command:
+            - /usr/local/bin/redis-cli
+            - ping
+          initialDelaySeconds: 5
+          periodSeconds: 3
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+```
+
+
+
+
+
+
+
+
+### 3.7 livenessProbe和readinessProbe的对⽐
 > 1. **配置参数⼀样**
 > 2. livenessProbe **连续探测失败会重启、重建pod， readinessProbe不会执⾏重启或者重建Pod操作**<br />livenessProbe **连续检测指定次数失败后会将容器置于(Crash Loop BackOff)且不可⽤，readinessProbe不会**
 > 3. readinessProbe **连续探测失败会从service的endpointd中删除该Pod， livenessProbe不具备此功能，但是会将容器挂起livenessProbe**
@@ -328,12 +470,8 @@ spec:
 
 
 
-## Pod重启策略 
-k8s在Pod出现异常的时候会⾃动将Pod重启以恢复Pod中的服务。 <br /> 
-:::success
-**restartPolicy**<br />**Always**：**当容器异常时， k8s⾃动重启该容器， ReplicationController/Replicaset/Deployment。**<br />**OnFailure**：**当容器失败时(容器停⽌运⾏且退出码不为0)， k8s⾃动重启该容器。**<br />**Never**：**不论容器运⾏状态如何都不会重启该容器,Job或CronJob。** 
-:::
 
-## 镜像拉取策略
+## 四、镜像拉取策略
+
 > **IfNotPresent** **node节点没有此镜像就去指定的镜像仓库拉取， node有就使⽤node本地镜像。**<br />**Always** **每次重建pod都会重新拉取镜像**<br />**Never** **从不到镜像中⼼拉取镜像，只使⽤本地镜像 **
 
