@@ -10,7 +10,7 @@
 <meta name="description" content="在Kubernetes（K8s）环境中部署WordPress知识库项目 这是一个相当复杂的配置过程，涉及多个步骤和Kubernetes资源的设" /><meta name="keywords" content='Kubernetes实战案例, wordpress' /><meta itemprop="name" content="在Kubernetes（K8s）环境中部署WordPress知识库项目">
 <meta itemprop="description" content="在Kubernetes（K8s）环境中部署WordPress知识库项目 这是一个相当复杂的配置过程，涉及多个步骤和Kubernetes资源的设"><meta itemprop="datePublished" content="2023-11-14T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-11-14T00:00:00+00:00" />
-<meta itemprop="wordCount" content="2879"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="3076"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="Kubernetes实战案例,wordpress," /><meta property="og:title" content="在Kubernetes（K8s）环境中部署WordPress知识库项目" />
 <meta property="og:description" content="在Kubernetes（K8s）环境中部署WordPress知识库项目 这是一个相当复杂的配置过程，涉及多个步骤和Kubernetes资源的设" />
 <meta property="og:type" content="article" />
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/advanced\/wordpress-mysql-cluster-nfs\/"
-    },"genre": "posts","keywords": "Kubernetes实战案例, wordpress","wordcount":  2879 ,
+    },"genre": "posts","keywords": "Kubernetes实战案例, wordpress","wordcount":  3076 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/advanced\/wordpress-mysql-cluster-nfs\/","datePublished": "2023-11-14T00:00:00+00:00","dateModified": "2023-11-14T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -181,7 +181,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/kubernetes/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Kubernetes</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-11-14 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-14">2023-11-14</time></span>&nbsp;<span title="更新于 2023-11-14 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-14">2023-11-14</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2879 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 6 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="在Kubernetes（K8s）环境中部署WordPress知识库项目">
+      <div class="post-meta-line"><span title="发布于 2023-11-14 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-14">2023-11-14</time></span>&nbsp;<span title="更新于 2023-11-14 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-14">2023-11-14</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 3076 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 7 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="在Kubernetes（K8s）环境中部署WordPress知识库项目">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -500,8 +500,9 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">NodePort</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">8099</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="m">30388</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
@@ -527,14 +528,14 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">WORDPRESS_DB_NAME</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">WORDPRESS_DB_USER</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">wpuser</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">wp_user</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">WORDPRESS_DB_PASSWORD</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">Ceamg.com</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">WORDPRESS_DB_HOST</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb.default.svc.cluster.local</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb57</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;/var/www/html&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wp-data-volume     </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wp-data-volume</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wp-data-volume</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
@@ -550,9 +551,67 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">ReadWriteOnce</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">requests</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">200Gi</span></span></span></code></pre></div><!-- raw HTML omitted -->
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">storage</span><span class="p">:</span><span class="w"> </span><span class="l">200Gi</span></span></span></code></pre></div><div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Service</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">NodePort</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="m">30388</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">wp-cluster</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">env</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">WORDPRESS_DB_NAME</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">WORDPRESS_DB_USER</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">wp_user</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">WORDPRESS_DB_PASSWORD</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">Ceamg.com</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">WORDPRESS_DB_HOST</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l">wpdb57</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;/var/www/html&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wp-data-volume</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">phpini-config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/usr/local/etc/php/conf.addition        </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wp-data-volume</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">persistentVolumeClaim</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l">wp-data-pvc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">phpini-config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">configMap</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">wordpress-php-addition-config</span></span></span></code></pre></div><!-- raw HTML omitted -->
 <h2 id="nfs-provisioner-values">NFS Provisioner Values</h2>
-<div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">nfs</span><span class="p">:</span><span class="w">
+<div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">nfs</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="m">10.1.0.38</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/data/k8s/wp-cluster</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">mountOptions</span><span class="p">:</span><span class="w">
@@ -571,45 +630,45 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">allowVolumeExpansion</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">reclaimPolicy</span><span class="p">:</span><span class="w"> </span><span class="l">Delete</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">provisionerName</span><span class="p">:</span><span class="w"> </span><span class="l">nfs-wp-cluster</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">archiveOnDelete</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span></span></span></code></pre></div><div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#添加harbor私有仓库</span>
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">archiveOnDelete</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span></span></span></code></pre></div><div class="highlight" id="id-9"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#添加harbor私有仓库</span>
 </span></span><span class="line"><span class="cl">helm repo add --username<span class="o">=</span>xceo --password<span class="o">=</span>Ceamg.com1234 ceamg https://harbor.ceamg.com/chartrepo/chart <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>--ca-file /etc/containerd/certs.d/harbor.ceamg.com/ca.crt <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>--cert-file  /etc/containerd/certs.d/harbor.ceamg.com/harbor.ceamg.com.crt <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>--key-file /etc/containerd/certs.d/harbor.ceamg.com/harbor.ceamg.com.key
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="s2">&#34;ceamg&#34;</span> has been added to your repositories</span></span></code></pre></div><div class="highlight" id="id-9"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/nfs# helm repo list
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;ceamg&#34;</span> has been added to your repositories</span></span></code></pre></div><div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/nfs# helm repo list
 </span></span><span class="line"><span class="cl">NAME                            URL
 </span></span><span class="line"><span class="cl">nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
 </span></span><span class="line"><span class="cl">rmxc                            https://harbor.rmxc.tech/chartrepo/charts
 </span></span><span class="line"><span class="cl">ceamg                           https://harbor.ceamg.com/chartrepo/chart
 </span></span><span class="line"><span class="cl">bitnami                         https://charts.bitnami.com/bitnami
-</span></span><span class="line"><span class="cl">jetstack                        https://charts.jetstack.io</span></span></code></pre></div><div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm install -n wp-cluster -f /yaml/nfs/nfs-provisioner.value.yaml nfs-wp-cluster ceamg/nfs-subdir-external-provisioner</span></span></code></pre></div><!-- raw HTML omitted -->
+</span></span><span class="line"><span class="cl">jetstack                        https://charts.jetstack.io</span></span></code></pre></div><div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">helm install -n wp-cluster -f /yaml/nfs/nfs-provisioner.value.yaml nfs-wp-cluster ceamg/nfs-subdir-external-provisioner</span></span></code></pre></div><!-- raw HTML omitted -->
 <h2 id="helm-install">helm install</h2>
-<div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/nfs# helm install -n wp-cluster -f /yaml/nfs/nfs-provisioner.value.yaml nfs-wp-cluster ceamg/nfs-subdir-external-provisioner
+<div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/nfs# helm install -n wp-cluster -f /yaml/nfs/nfs-provisioner.value.yaml nfs-wp-cluster ceamg/nfs-subdir-external-provisioner
 </span></span><span class="line"><span class="cl">NAME: nfs-wp-cluster
 </span></span><span class="line"><span class="cl">LAST DEPLOYED: Mon Nov <span class="m">13</span> 15:46:52 <span class="m">2023</span>
 </span></span><span class="line"><span class="cl">NAMESPACE: wp-cluster
 </span></span><span class="line"><span class="cl">STATUS: deployed
 </span></span><span class="line"><span class="cl">REVISION: <span class="m">1</span>
-</span></span><span class="line"><span class="cl">TEST SUITE: None</span></span></code></pre></div><div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl get pod -n wp-cluster
+</span></span><span class="line"><span class="cl">TEST SUITE: None</span></span></code></pre></div><div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl get pod -n wp-cluster
 </span></span><span class="line"><span class="cl">NAME                                                              READY   STATUS    RESTARTS   AGE
 </span></span><span class="line"><span class="cl">nfs-wp-cluster-nfs-subdir-external-provisioner-77d6fc75dc-hfxrb   1/1     Running   <span class="m">0</span>          51m</span></span></code></pre></div><!-- raw HTML omitted -->
 <h2 id="创建wpdb-pvc">创建wpdb-pvc</h2>
-<div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl apply -f wpdb-pvc.yaml
+<div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl apply -f wpdb-pvc.yaml
 </span></span><span class="line"><span class="cl">persistentvolumeclaim/wpdb-data-pvc created
 </span></span><span class="line"><span class="cl">persistentvolumeclaim/wpdb-log-pvc created</span></span></code></pre></div><!-- raw HTML omitted -->
-<div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl get pvc -n wp-cluster
+<div class="highlight" id="id-15"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl get pvc -n wp-cluster
 </span></span><span class="line"><span class="cl">NAME            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS     AGE
 </span></span><span class="line"><span class="cl">wpdb-data-pvc   Bound    pvc-92a0cbb3-a060-4d5c-9c87-66f87ad802e9   150Gi      RWO            nfs-wp-cluster   19s
 </span></span><span class="line"><span class="cl">wpdb-log-pvc    Bound    pvc-b0811659-797d-4e91-9cb9-6c87ab8a2812   50Gi       RWO            nfs-wp-cluster   19s</span></span></code></pre></div><!-- raw HTML omitted -->
 <h2 id="创建wpdata-pvc">创建wpdata-pvc</h2>
-<div class="highlight" id="id-15"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl apply -f wp-data.yaml
-</span></span><span class="line"><span class="cl">persistentvolumeclaim/wp-data-pvc created</span></span></code></pre></div><div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl get pvc -n wp-cluster
+<div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl apply -f wp-data.yaml
+</span></span><span class="line"><span class="cl">persistentvolumeclaim/wp-data-pvc created</span></span></code></pre></div><div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl get pvc -n wp-cluster
 </span></span><span class="line"><span class="cl">NAME            STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS     AGE
 </span></span><span class="line"><span class="cl">wp-data-pvc     Bound    pvc-e3e1b943-b567-49e6-a7bf-ed8f0534ab2c   200Gi      RWO            nfs-wp-cluster   3s
 </span></span><span class="line"><span class="cl">wpdb-data-pvc   Bound    pvc-92a0cbb3-a060-4d5c-9c87-66f87ad802e9   150Gi      RWO            nfs-wp-cluster   2m12s
 </span></span><span class="line"><span class="cl">wpdb-log-pvc    Bound    pvc-b0811659-797d-4e91-9cb9-6c87ab8a2812   50Gi       RWO            nfs-wp-cluster   2m12s</span></span></code></pre></div><h2 id="创建mysql-secret">创建mysql-secret</h2>
-<div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">
+<div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl create secret generic -n wp-cluster  wpdb-secret --from-literal<span class="o">=</span><span class="nv">password</span><span class="o">=</span>Ceamg.com
 </span></span><span class="line"><span class="cl">secret/wpdb-secret created
 </span></span><span class="line"><span class="cl">
@@ -617,10 +676,61 @@
 </span></span><span class="line"><span class="cl">NAME                                   TYPE                 DATA   AGE
 </span></span><span class="line"><span class="cl">sh.helm.release.v1.nfs-wp-cluster.v1   helm.sh/release.v1   <span class="m">1</span>      62m
 </span></span><span class="line"><span class="cl">wpdb-secret                            Opaque               <span class="m">1</span>      16s</span></span></code></pre></div><h2 id="创建mysql-pod">创建mysql-pod</h2>
-<div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl apply -f wpdb-deploy.yaml
+<div class="highlight" id="id-19"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/yaml/wp-cluster# kubectl apply -f wpdb-deploy.yaml
 </span></span><span class="line"><span class="cl">service/wpdb created
 </span></span><span class="line"><span class="cl">deployment.apps/wpdb created</span></span></code></pre></div><h2 id="创建wordpress-pod">创建wordpress Pod</h2>
-<div class="highlight" id="id-19"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"></code></pre></div><div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
+<div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apiVersion: v1
+</span></span><span class="line"><span class="cl">kind: Service
+</span></span><span class="line"><span class="cl">metadata:
+</span></span><span class="line"><span class="cl">  labels:
+</span></span><span class="line"><span class="cl">    app: wordpress
+</span></span><span class="line"><span class="cl">  name: wordpress
+</span></span><span class="line"><span class="cl">spec:
+</span></span><span class="line"><span class="cl">  selector:
+</span></span><span class="line"><span class="cl">    app: wordpress
+</span></span><span class="line"><span class="cl">  type: NodePort
+</span></span><span class="line"><span class="cl">  ports:
+</span></span><span class="line"><span class="cl">  - protocol: TCP
+</span></span><span class="line"><span class="cl">    port: <span class="m">80</span>
+</span></span><span class="line"><span class="cl">    targetPort: <span class="m">80</span>
+</span></span><span class="line"><span class="cl">    nodePort: <span class="m">30388</span>
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">apiVersion: apps/v1
+</span></span><span class="line"><span class="cl">kind: Deployment
+</span></span><span class="line"><span class="cl">metadata:
+</span></span><span class="line"><span class="cl">  name: wordpress
+</span></span><span class="line"><span class="cl">  namespace: wp-cluster
+</span></span><span class="line"><span class="cl">  labels:
+</span></span><span class="line"><span class="cl">    app: wordpress
+</span></span><span class="line"><span class="cl">spec:
+</span></span><span class="line"><span class="cl">  replicas: <span class="m">3</span>
+</span></span><span class="line"><span class="cl">  selector:
+</span></span><span class="line"><span class="cl">    matchLabels:
+</span></span><span class="line"><span class="cl">      app: wordpress
+</span></span><span class="line"><span class="cl">  template:
+</span></span><span class="line"><span class="cl">    metadata:
+</span></span><span class="line"><span class="cl">      labels:
+</span></span><span class="line"><span class="cl">        app: wordpress
+</span></span><span class="line"><span class="cl">    spec:
+</span></span><span class="line"><span class="cl">      containers:
+</span></span><span class="line"><span class="cl">      - image: wordpress
+</span></span><span class="line"><span class="cl">        name: wordpress
+</span></span><span class="line"><span class="cl">        env:
+</span></span><span class="line"><span class="cl">        - name: WORDPRESS_DB_NAME
+</span></span><span class="line"><span class="cl">          value: wpdb
+</span></span><span class="line"><span class="cl">        - name: WORDPRESS_DB_USER
+</span></span><span class="line"><span class="cl">          value: wp_user
+</span></span><span class="line"><span class="cl">        - name: WORDPRESS_DB_PASSWORD
+</span></span><span class="line"><span class="cl">          value: Ceamg.com
+</span></span><span class="line"><span class="cl">        - name: WORDPRESS_DB_HOST
+</span></span><span class="line"><span class="cl">          value: wpdb57
+</span></span><span class="line"><span class="cl">        volumeMounts:
+</span></span><span class="line"><span class="cl">        - mountPath: <span class="s2">&#34;/var/www/html&#34;</span>
+</span></span><span class="line"><span class="cl">          name: wp-data-volume
+</span></span><span class="line"><span class="cl">      volumes:
+</span></span><span class="line"><span class="cl">        - name: wp-data-volume
+</span></span><span class="line"><span class="cl">          persistentVolumeClaim:
+</span></span><span class="line"><span class="cl">            claimName: wp-data-pvc</span></span></code></pre></div><div class="highlight" id="id-21"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -767,7 +877,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l">mysql</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57</span></span></span></code></pre></div><div class="highlight" id="id-21"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">exit<span class="p">;</span>
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l">mysql57</span></span></span></code></pre></div><div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">exit<span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">kubectl create secret generic mysql57-secrets <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>  --from-literal<span class="o">=</span><span class="nv">root</span><span class="o">=</span><span class="s2">&#34;</span><span class="k">$(</span>openssl rand -hex 12<span class="k">)</span><span class="s2">&#34;</span> <span class="se">\
@@ -777,15 +887,15 @@
 <p>编译安装 Nginx 在 Ubuntu 20.04 上相对直接，但是需要注意安装编译所需的依赖项。以下是编译安装 Nginx 的基本步骤：</p>
 <h3 id="1-安装编译依赖项">1. 安装编译依赖项</h3>
 <p>确保您的系统已经安装了编译 Nginx 所需的基本工具和依赖项：</p>
-<div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt update
+<div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt update
 </span></span><span class="line"><span class="cl">sudo apt install -y curl gnupg2 build-essential libpcre3 libpcre3-dev zlib1g zlib1g-dev libssl-dev</span></span></code></pre></div><h3 id="2-下载并解压-nginx-源代码">2. 下载并解压 Nginx 源代码</h3>
 <p>您可以从 Nginx 官网下载最新的稳定版或特定版本的源代码：</p>
-<div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /tmp
+<div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">cd</span> /tmp
 </span></span><span class="line"><span class="cl">curl -LO https://nginx.org/download/nginx-1.24.0.tar.gz   <span class="c1"># 请替换为您希望使用的版本链接</span>
 </span></span><span class="line"><span class="cl">tar -zxvf nginx-1.24.0.tar.gz
 </span></span><span class="line"><span class="cl"><span class="nb">cd</span> nginx-1.24.0  <span class="c1"># 进入解压后的目录</span></span></span></code></pre></div><h3 id="配置并编译-nginx">配置并编译 Nginx</h3>
 <p>执行 <code>configure</code> 脚本以配置编译参数。这里仅提供了最基本的配置示例：</p>
-<div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./configure --prefix<span class="o">=</span>/usr/local/nginx <span class="se">\
+<div class="highlight" id="id-25"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">./configure --prefix<span class="o">=</span>/usr/local/nginx <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>            --with-http_ssl_module <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>            --with-http_v2_module <span class="se">\
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>            --with-http_gzip_static_module <span class="se">\
@@ -798,10 +908,10 @@
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>            --with-stream</span></span></code></pre></div><p>如果您有其他需要的模块或特定的配置选项，请根据实际需求添加到 <code>./configure</code> 命令中。</p>
 <h3 id="4-编译和安装">4. 编译和安装</h3>
 <p>运行以下命令来编译和安装 Nginx：</p>
-<div class="highlight" id="id-25"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">make
+<div class="highlight" id="id-26"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">make
 </span></span><span class="line"><span class="cl">sudo make install</span></span></code></pre></div><h3 id="5-启动-nginx">5. 启动 Nginx</h3>
 <p>完成安装后，您可以使用以下命令启动 Nginx：</p>
-<div class="highlight" id="id-26"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo /usr/local/nginx/sbin/nginx</span></span></code></pre></div><h3 id="6-验证安装">6. 验证安装</h3>
+<div class="highlight" id="id-27"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo /usr/local/nginx/sbin/nginx</span></span></code></pre></div><h3 id="6-验证安装">6. 验证安装</h3>
 <p>在浏览器中输入您服务器的 IP 地址或域名，如果一切正常，您应该能够看到默认的 Nginx 欢迎页面。</p>
 <h3 id="注意事项">注意事项</h3>
 <ul>
@@ -809,7 +919,7 @@
 <li>启动 Nginx 后，可以使用 <code>sudo /usr/local/nginx/sbin/nginx -s stop</code> 停止它，或者使用 <code>sudo /usr/local/nginx/sbin/nginx -s reload</code> 重新加载配置文件。</li>
 </ul>
 <p>以下是一些常用的 Nginx 编译参数和其作用：</p>
-<div class="highlight" id="id-27"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">--prefix<span class="o">=</span>path
+<div class="highlight" id="id-28"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">--prefix<span class="o">=</span>path
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">指定安装目录，默认为 /usr/local/nginx。
 </span></span><span class="line"><span class="cl">--with-http_ssl_module
@@ -842,13 +952,13 @@
 </span></span><span class="line"><span class="cl">--with-stream
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">启用 Stream 模块，用于 TCP 和 UDP 的负载均衡和代理。</span></span></code></pre></div><p>这些参数只是一小部分可用选项的示例。根据您的实际需求和项目要求，您可能需要根据需要选择其他模块或特定功能。您可以通过运行 <code>./configure --help</code> 命令来查看所有可用的配置选项和模块。</p>
-<div class="highlight" id="id-28"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:/usr/local/nginx/sbin</span></span></code></pre></div><div class="highlight" id="id-29"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/usr/local/nginx# vim /etc/profile.d/nginx.sh
+<div class="highlight" id="id-29"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:/usr/local/nginx/sbin</span></span></code></pre></div><div class="highlight" id="id-30"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-master01:/usr/local/nginx# vim /etc/profile.d/nginx.sh
 </span></span><span class="line"><span class="cl">root@k8s-master01:/usr/local/nginx# <span class="nb">source</span> /etc/profile.d/nginx.sh
 </span></span><span class="line"><span class="cl">root@k8s-master01:/usr/local/nginx#
 </span></span><span class="line"><span class="cl">root@k8s-master01:/usr/local/nginx# nginx -t
 </span></span><span class="line"><span class="cl">nginx: the configuration file /usr/local/nginx/conf/nginx.conf syntax is ok
 </span></span><span class="line"><span class="cl">nginx: configuration file /usr/local/nginx/conf/nginx.conf <span class="nb">test</span> is successful</span></span></code></pre></div><h2 id="基于http协议实现">基于HTTP协议实现</h2>
-<div class="highlight" id="id-30"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">http <span class="o">{</span>
+<div class="highlight" id="id-31"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">http <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    upstream backend_servers <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        server 10.1.0.33:30388<span class="p">;</span>
 </span></span><span class="line"><span class="cl">        server 10.1.0.32:30388<span class="p">;</span>
@@ -870,7 +980,7 @@
 </span></span><span class="line"><span class="cl">        <span class="o">}</span>
 </span></span><span class="line"><span class="cl">    <span class="o">}</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></div><h2 id="基于https-协议实现">基于HTTPS 协议实现</h2>
-<div class="highlight" id="id-31"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">http <span class="o">{</span>
+<div class="highlight" id="id-32"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">http <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    upstream backend_servers <span class="o">{</span>
 </span></span><span class="line"><span class="cl">        server 10.1.0.33:30388<span class="p">;</span>
 </span></span><span class="line"><span class="cl">        server 10.1.0.32:30388<span class="p">;</span>

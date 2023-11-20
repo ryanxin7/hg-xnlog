@@ -278,8 +278,9 @@ spec:
   type: NodePort
   ports:
   - protocol: TCP
-    port: 8099
+    port: 80
     targetPort: 80
+    nodePort: 30388
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -305,14 +306,14 @@ spec:
         - name: WORDPRESS_DB_NAME
           value: wpdb
         - name: WORDPRESS_DB_USER
-          value: wpuser
+          value: wp_user
         - name: WORDPRESS_DB_PASSWORD
           value: Ceamg.com
         - name: WORDPRESS_DB_HOST
-          value: wpdb.default.svc.cluster.local
+          value: wpdb57
         volumeMounts:
         - mountPath: "/var/www/html"
-          name: wp-data-volume     
+          name: wp-data-volume
       volumes:
         - name: wp-data-volume
           persistentVolumeClaim:
@@ -335,6 +336,76 @@ spec:
     requests:
       storage: 200Gi
 ```
+
+
+
+
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: wordpress
+  name: wordpress
+spec:
+  selector:
+    app: wordpress
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30388
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  namespace: wp-cluster
+  labels:
+    app: wordpress
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: wordpress
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      containers:
+      - image: wordpress
+        name: wordpress
+        env:
+        - name: WORDPRESS_DB_NAME
+          value: wpdb
+        - name: WORDPRESS_DB_USER
+          value: wp_user
+        - name: WORDPRESS_DB_PASSWORD
+          value: Ceamg.com
+        - name: WORDPRESS_DB_HOST
+          value: wpdb57
+        volumeMounts:
+        - mountPath: "/var/www/html"
+          name: wp-data-volume
+        volumeMounts:
+        - name: phpini-config
+          mountPath: /usr/local/etc/php/conf.addition        
+      volumes:
+        - name: wp-data-volume
+          persistentVolumeClaim:
+            claimName: wp-data-pvc
+      volumes:
+        - name: phpini-config
+          configMap:
+            name: wordpress-php-addition-config
+```
+
+
+
+
 
 <br>
 
@@ -478,6 +549,58 @@ deployment.apps/wpdb created
 ## 创建wordpress Pod
 
 ```bash
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: wordpress
+  name: wordpress
+spec:
+  selector:
+    app: wordpress
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30388
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress
+  namespace: wp-cluster
+  labels:
+    app: wordpress
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: wordpress
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      containers:
+      - image: wordpress
+        name: wordpress
+        env:
+        - name: WORDPRESS_DB_NAME
+          value: wpdb
+        - name: WORDPRESS_DB_USER
+          value: wp_user
+        - name: WORDPRESS_DB_PASSWORD
+          value: Ceamg.com
+        - name: WORDPRESS_DB_HOST
+          value: wpdb57
+        volumeMounts:
+        - mountPath: "/var/www/html"
+          name: wp-data-volume
+      volumes:
+        - name: wp-data-volume
+          persistentVolumeClaim:
+            claimName: wp-data-pvc
 
 ```
 

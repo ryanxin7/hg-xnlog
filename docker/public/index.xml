@@ -4,9 +4,17 @@
     <link>https://hg-xnlog.github.io/</link>
     <description>Ryan’s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Tue, 14 Nov 2023 00:00:00 &#43;0000</lastBuildDate>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 20 Nov 2023 00:00:00 &#43;0000</lastBuildDate>
       <atom:link href="https://hg-xnlog.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
+  <title>基于K8S 动态持久化存储部署Alist项目</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/%E5%9F%BA%E4%BA%8Ek8s-%E5%8A%A8%E6%80%81%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8%E9%83%A8%E7%BD%B2alist%E9%A1%B9%E7%9B%AE/</link>
+  <pubDate>Mon, 20 Nov 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/%E5%9F%BA%E4%BA%8Ek8s-%E5%8A%A8%E6%80%81%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8%E9%83%A8%E7%BD%B2alist%E9%A1%B9%E7%9B%AE/</guid>
+  <description><![CDATA[基于K8S 动态持久化存储 部署Alist项目 AList 支持多个存储提供商，包括本地存储、阿里云盘、OneDrive、Google Drive 等，且易于拓展。 之前]]></description>
+</item>
+<item>
   <title>Wordpress常用插件整理</title>
   <link>https://hg-xnlog.github.io/posts/wordpress/wordpress%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6/</link>
   <pubDate>Tue, 14 Nov 2023 00:00:00 &#43;0000</pubDate>
@@ -77,14 +85,6 @@
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/cicd/ansibleautopassword/</guid>
   <description><![CDATA[为了满足三级等保中服务器密码更改周期的要求。通过使用 Ansible 执行密码生成脚本，并将执行结果记录在日志文件中，可以确保密码的自动生成和周期性更改，并]]></description>
-</item>
-<item>
-  <title>Brocade ICX 6450交换机简单配置命令</title>
-  <link>https://hg-xnlog.github.io/posts/notes/2023-10-09-brocade-icx-6450%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE%E5%91%BD%E4%BB%A4/</link>
-  <pubDate>Mon, 09 Oct 2023 21:23:22 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/notes/2023-10-09-brocade-icx-6450%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE%E5%91%BD%E4%BB%A4/</guid>
-  <description><![CDATA[登录到交换机： 使用SSH、Telnet或串口连接登录到Brocade ICX 6450交换机。 进入特权EXEC模式： 输入以下命令，进入特权EXEC模]]></description>
 </item>
 </channel>
 </rss>
