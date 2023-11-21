@@ -3,37 +3,92 @@
 
 
 
-
-[https://kubernetes.io/zh-cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/](https://kubernetes.io/zh-cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/)<br />Pod调度运⾏时，如果应⽤不需要任何稳定的标示、有序的部署、删除和扩展，则应该使⽤⼀组⽆状态副本的控制<br />器来部署应⽤，例如 Deployment 或 ReplicaSet更适合⽆状态服务需求，⽽StatefulSet适合管理所有有状态的服<br />务，⽐如MySQL、 MongoDB集群等。 
-
-**运行一个有状态的应用程序：**<br />[https://kubernetes.io/zh-cn/docs/tasks/run-application/run-replicated-stateful-application/](https://kubernetes.io/zh-cn/docs/tasks/run-application/run-replicated-stateful-application/)
-
- <br />![有状态的应用启动顺序](https://cdn1.ryanxin.live/1675045229487-bc9ccd32-8c67-4f4c-8097-e358c394297b.png)
+## 控制器简介
 
 
 
-**StatefulSet **本质上是Deployment的⼀种变体，在v1.9版本中已成为GA版本，它为了解决有状态服务的问题，**它所管理的Pod拥有固定的Pod名称，启停顺序，在StatefulSet中， Pod名字称为⽹络标识(hostname)，还必须要⽤到共享存储。**
 
-**在Deployment中，与之对应的服务是service，⽽在StatefulSet中与之对应的headless service**， headless<br />service，即**⽆头服务**，与service的区别就是它没有Cluster IP，解析它的名称时将返回该Headless Service 对应的全部Pod的Endpoint列表。 <br /> 
 
-**StatefulSet 特点**
+## 一、控制器简介
 
-- 给每个pod分配固定且唯⼀的⽹络标识符
-- 给每个pod分配固定且持久化的外部存储
-- 对pod进⾏有序的部署和扩展
-- 对pod进有序的删除和终⽌
-- 对pod进有序的⾃动滚动更新<br /> <br /> 
 
-## StatefulSet 的组成部分 
-:::info
-**Headless Service**：⽤来定义Pod⽹络标识( DNS domain)，指的是短的serfvice(丢失了domainname)。直接解析到pod。<br />**StatefulSet**：定义具体应⽤，有多少个Pod副本，并为每个Pod定义了⼀个域名。
 
-**volumeClaimTemplates**： 存储卷申请模板，创建PVC，指定pvc名称⼤⼩，将⾃动创建pvc，且pvc必须由存储类供应。 
-:::
+在 Kubernetes 中，有几种不同的控制器用于管理容器化应用程序的部署和运行。这些控制器包括 Deployment、ReplicaSet 和 StatefulSet。它们各自适用于不同类型的应用需求。
 
-##  
 
-## <br /> 镜像准备 <br /> 
+
+1. **Deployment**:
+   - Deployment 用于管理无状态应用程序的部署。无状态应用程序是指不依赖于特定节点的数据或状态的应用程序，可以水平扩展以应对负载增加，如 Web 服务器。
+   - Deployment 可以确保在节点故障或需要更新时，应用程序能够自动恢复，保持稳定运行。
+2. **ReplicaSet**:
+   - ReplicaSet 是 Deployment 的底层实现，用于确保指定数量的 Pod 实例在任何时候运行。一般情况下，您可以通过使用 Deployment 来管理应用，而 Deployment 会创建 ReplicaSet。
+   - ReplicaSet 通常与无状态应用程序一起使用，确保其副本的数量保持在指定的数量。
+3. **StatefulSet**:
+   - StatefulSet 用于管理有状态应用程序的部署。有状态应用程序通常包含依赖于持久性存储和唯一标识的服务，如数据库 (例如 MySQL、MongoDB) 或有状态的消息队列。
+   - StatefulSet 提供有序部署和唯一标识，并且在 Pod 删除或缩放时有更多的控制力，适用于需要稳定标识和有序操作的服务。
+
+
+
+Pod调度运⾏时，如果应⽤不需要任何稳定的标示、有序的部署、删除和扩展，则应该使⽤⼀组⽆状态副本的控制<br />器来部署应⽤，例如 Deployment 或 ReplicaSet更适合⽆状态服务需求，⽽StatefulSet适合管理所有有状态的服<br />务，⽐如MySQL、 MongoDB集群等。 
+
+<br>
+
+官网示例：
+
+[https://kubernetes.io/zh-cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/](https://kubernetes.io/zh-cn/docs/tutorials/stateful-application/mysql-wordpress-persistent-volume/)<br />
+
+
+
+<br>
+
+
+
+## 二、Statefulset 控制器简介
+
+### 2.1 StatefulSet 控制器的特性
+
+1. **固定的 Pod 名称**：
+   - StatefulSet 管理的每个 Pod 都有一个固定的、稳定的名称。这个名称基于 StatefulSet 的名称和 Pod 的索引。例如，如果 StatefulSet 名称是 `myapp`，则 Pod 的名称可能是 `myapp-0`、`myapp-1` 等。
+   - 这种稳定的命名方案有助于识别和保持 Pod 的身份，即使 Pod 重新调度或重启，名称也不会改变。
+2. **启动和停止顺序**：
+   - StatefulSet 可以定义 Pod 启动和停止的顺序。Pod 将按照其索引顺序进行启动和关闭，确保有序的操作。这对于需要有序操作的应用程序（例如数据库）非常重要。
+3. **网络标识（hostname）**：
+   - StatefulSet 中的 Pod 拥有网络标识（hostname）。这意味着每个 Pod 都有一个唯一的主机名，与 Pod 的标识和名称相关联。
+   - 这个网络标识对于一些有状态应用程序是至关重要的，因为它可以保证在 Pod 重启或重新调度后，其网络标识不变，保持稳定性。
+4. **共享存储**：
+   - StatefulSet 通常需要使用持久性存储来保存其状态数据。它支持将持久性存储卷（如 PersistentVolume）与 Pod 关联，确保数据的持久性和共享性。
+
+
+
+### 2.2  Headless Service
+
+在 Kubernetes 中，与 Deployment 部署的应用程序相对应的服务是普通的 Service。而对于 StatefulSet，其对应的服务是 Headless Service，也称为无头服务。
+
+普通的 Service 通常会分配一个 Cluster IP（集群 IP），该 IP 可以用来访问 Service 后端的 Pod。它会负责将流量负载均衡到后端 Pod。
+
+而 Headless Service（无头服务）是一种特殊类型的 Kubernetes 服务，它没有分配 Cluster IP。当查询该 Headless Service 的域名时，DNS 解析会返回与该服务对应的全部 Pod 的完整域名列表。这使得每个 Pod 的唯一标识和网络标识都可以直接用于服务发现。
+
+Headless Service 对于需要直接与每个 Pod 进行通信的场景非常有用，尤其适用于 StatefulSet 管理的有状态应用程序，因为它们通常需要直接访问每个 Pod，而不是通过负载均衡到单个 IP 地址的方式。
+
+
+
+
+
+
+
+
+
+## 三、运行一个有状态的应用程序
+
+
+
+示例：[run-replicated-stateful-application](https://kubernetes.io/zh-cn/docs/tasks/run-application/run-replicated-stateful-application/)
+
+![有状态的应用启动顺序](https://cdn1.ryanxin.live/1675045229487-bc9ccd32-8c67-4f4c-8097-e358c394297b.png)
+
+
+
+### 3.1  镜像准备 
 ```yaml
 #准备xtrabackup镜像
 root@harbor01[11:17:56]~ #:docker pull registry.cn-hangzhou.aliyuncs.com/hxpdocker/xtrabackup:1.0
@@ -50,20 +105,18 @@ root@harbor01[10:31:42]~ #:docker push harbor.ceamg.com/databases/mysql:5.7
 
 
 
-## 创建PV <br /> 
+<br>
 
 
-pvc会⾃动基于PV创建，只需要有多个可⽤的PV即可， PV数量取决于计划启动多少个mysql pod，本次创建5个PV，也就是最多启动5个mysql pod 。
 
+###  3.2 创建nfs共享存储目录
 
-### 创建nfs共享存储目录
 ```bash
 root@harbor01[10:35:02]/data/k8s #:mkdir /data/k8s/mysqldata/mysql-datadir-1 
 root@harbor01[10:35:20]/data/k8s #:mkdir /data/k8s/mysqldata/mysql-datadir-2
 root@harbor01[10:35:22]/data/k8s #:mkdir /data/k8s/mysqldata/mysql-datadir-3
 root@harbor01[10:35:23]/data/k8s #:mkdir /data/k8s/mysqldata/mysql-datadir-4
 root@harbor01[10:35:24]/data/k8s #:mkdir /data/k8s/mysqldata/mysql-datadir-5
-
 
 vim /etc/exports
 /data/k8s/xinzk *(rw,sync,no_root_squash)
@@ -79,7 +132,16 @@ Export list for harbor01:
 /data/k8s/xinzk     *
 ```
 
-### <br /> 创建PV yaml文件
+
+
+<br>
+
+
+
+### 3.3 创建PV 
+
+pvc会⾃动基于PV创建，只需要有多个可⽤的PV即可， PV数量取决于计划启动多少个mysql pod，本次创建5个PV，也就是最多启动5个mysql pod 。
+
 ```yaml
 ---
 apiVersion: v1
@@ -126,8 +188,10 @@ spec:
     server: 10.1.0.38
 ```
 
+ 
 
- **检查pv状态**
+### 3.4 检查pv状态
+
 ```bash
 root@master01[12:06:23]~/mysql-sts-yaml #:kubectl apply -f mysql-persistentvolume.yaml 
 persistentvolume/mysql-datadir-1 created
@@ -144,7 +208,9 @@ mysql-datadir-3          50Gi       RWO            Retain           Available   
 
 
 
-## 创建 ConfigMap
+
+
+## 四、创建 ConfigMap
 
 ```yaml
 apiVersion: v1
@@ -173,7 +239,11 @@ $ kubectl apply -f mysql-configmap.yaml
 
 
 
-## 创建 无头服务
+
+
+
+
+## 五、创建 无头服务
 
  Headless Service⽆头服务，与service的**区别就是它没有Cluster IP**，解析它的名称时将返回该Headless Service对应的全部Pod的Endpoint列表。
 
@@ -219,7 +289,7 @@ kubectl apply -f mysql-services.yaml
 
 
 
-##  创建 StatefulSet
+##  六、创建 StatefulSet
 **创建MySQL一主多从集群，每个pod分别执行4个容器。具体作用如下：**
 
 1. **初始化容器1**：根据mysql-0数字标记为master，其它为slave，并分发不同配置文件。
@@ -402,7 +472,7 @@ spec:
 
 
 
-### 运⾏mysql服务 <br /> 
+### 6.1 运⾏mysql服务  
 ```bash
 root@master01[13:33:35]~/mysql-sts-yaml #:kubectl get pod -n mysql-sts
 NAME      READY   STATUS    RESTARTS   AGE
@@ -414,7 +484,9 @@ mysql-2   1/2     Running   0          18s
 ![](https://cdn1.ryanxin.live/1675321021708-f97227f0-ef0f-484e-977a-eb4be4d79421.png)
 
 
-### 验证MySQL主从同步是否正常 <br /> 
+
+### 6.2 验证MySQL主从同步是否正常  
+
 ![](https://cdn1.ryanxin.live/1675063510415-a66964a9-27e4-466f-92d9-1185adfa1ce7.png)
 
 

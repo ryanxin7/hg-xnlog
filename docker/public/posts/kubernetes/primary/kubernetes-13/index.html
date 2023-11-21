@@ -7,21 +7,21 @@
     <meta name="robots" content="noodp" />
     <title>HPA自动伸缩pod数量 (十三) - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
 <meta name="author-link" content="https://github.com/ryanxin7">
-<meta name="description" content="1.HPA简介 HPA（Horizontal Pod Autoscaler），Pod水平自动缩放器，可以根据Pod的负载动态调整Pod的副本数量，业务" /><meta name="keywords" content='k8s进阶训练营' /><meta itemprop="name" content="HPA自动伸缩pod数量 (十三)">
-<meta itemprop="description" content="1.HPA简介 HPA（Horizontal Pod Autoscaler），Pod水平自动缩放器，可以根据Pod的负载动态调整Pod的副本数量，业务"><meta itemprop="datePublished" content="2023-02-16T00:00:00+00:00" />
-<meta itemprop="dateModified" content="2023-02-16T00:00:00+00:00" />
-<meta itemprop="wordCount" content="2719"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta name="description" content="1.HPA简介 HPA（Horizontal Pod Autoscaler）和 VPA（Vertical Pod Autoscaler）是 Kubernetes 中用于自动调整容器资" /><meta name="keywords" content='k8s进阶训练营' /><meta itemprop="name" content="HPA自动伸缩pod数量 (十三)">
+<meta itemprop="description" content="1.HPA简介 HPA（Horizontal Pod Autoscaler）和 VPA（Vertical Pod Autoscaler）是 Kubernetes 中用于自动调整容器资"><meta itemprop="datePublished" content="2023-02-16T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-11-21T00:00:00+00:00" />
+<meta itemprop="wordCount" content="2963"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="k8s进阶训练营," /><meta property="og:title" content="HPA自动伸缩pod数量 (十三)" />
-<meta property="og:description" content="1.HPA简介 HPA（Horizontal Pod Autoscaler），Pod水平自动缩放器，可以根据Pod的负载动态调整Pod的副本数量，业务" />
+<meta property="og:description" content="1.HPA简介 HPA（Horizontal Pod Autoscaler）和 VPA（Vertical Pod Autoscaler）是 Kubernetes 中用于自动调整容器资" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-13/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2023-02-16T00:00:00+00:00" />
-<meta property="article:modified_time" content="2023-02-16T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-11-21T00:00:00+00:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
 
 <meta name="twitter:title" content="HPA自动伸缩pod数量 (十三)"/>
-<meta name="twitter:description" content="1.HPA简介 HPA（Horizontal Pod Autoscaler），Pod水平自动缩放器，可以根据Pod的负载动态调整Pod的副本数量，业务"/>
+<meta name="twitter:description" content="1.HPA简介 HPA（Horizontal Pod Autoscaler）和 VPA（Vertical Pod Autoscaler）是 Kubernetes 中用于自动调整容器资"/>
 <meta name="application-name" content="Ryan’s Notebook">
 <meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-13/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-12/" /><link rel="next" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
@@ -32,8 +32,8 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/primary\/kubernetes-13\/"
-    },"genre": "posts","keywords": "k8s进阶训练营","wordcount":  2719 ,
-    "url": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/primary\/kubernetes-13\/","datePublished": "2023-02-16T00:00:00+00:00","dateModified": "2023-02-16T00:00:00+00:00","publisher": {
+    },"genre": "posts","keywords": "k8s进阶训练营","wordcount":  2963 ,
+    "url": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/primary\/kubernetes-13\/","datePublished": "2023-02-16T00:00:00+00:00","dateModified": "2023-11-21T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
         "@type": "Person",
@@ -181,7 +181,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/kubernetes/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Kubernetes</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-02-16 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-16">2023-02-16</time></span>&nbsp;<span title="更新于 2023-02-16 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-16">2023-02-16</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2719 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 6 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="HPA自动伸缩pod数量 (十三)">
+      <div class="post-meta-line"><span title="发布于 2023-02-16 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-16">2023-02-16</time></span>&nbsp;<span title="更新于 2023-11-21 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-11-21">2023-11-21</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2963 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 6 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="HPA自动伸缩pod数量 (十三)">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -206,16 +206,10 @@
     </li>
   </ul>
 </nav></div>
-      </div><div class="content" id="content"><div class="details admonition warning open">
-      <div class="details-summary admonition-title">
-        <i class="icon fa-solid fa-exclamation-triangle fa-fw" aria-hidden="true"></i>警告<i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i>
-      </div>
-      <div class="details-content">
-        <div class="admonition-content">本文最后更新于 2023-02-16，文中内容可能已过时。</div>
-      </div>
-    </div><h2 id="1hpa简介">1.HPA简介</h2>
-<p>HPA（Horizontal Pod Autoscaler），Pod水平自动缩放器，可以根据Pod的负载动态调整Pod的副本数量，业务高峰期自动扩容Pod副本以满足业务请求。在业务低峰期自动缩容Pod，实现节约资源的目的。</p>
-<p>与HPA相对的是VPA （Vertical Pod Autoscaler），Pod垂直自动缩放器，可以基于Pod的资源利用率，调整对单个Pod的最大资源限制，不能与HPA同时使用。</p>
+      </div><div class="content" id="content"><h2 id="1hpa简介">1.HPA简介</h2>
+<p>HPA（Horizontal Pod Autoscaler）和 VPA（Vertical Pod Autoscaler）是 Kubernetes 中用于自动调整容器资源的两种不同方法。</p>
+<p>HPA 用于水平自动缩放，可以根据 Pod 的负载情况自动调整 Pod 的副本数量。在业务高峰期，HPA 可以自动扩展 Pod 副本以满足增加的业务请求，而在低峰期则可以自动缩减 Pod 的副本数量，以节约资源。</p>
+<p>VPA 则用于垂直自动缩放，它关注的是单个 Pod 的资源利用率，可以根据 Pod 的资源需求动态调整 Pod 的资源限制，例如 CPU 和内存。VPA 可以调整 Pod 的资源请求和限制，以更好地适应 Pod 实际的需求，但不能像 HPA 那样增加或减少 Pod 的副本数量。</p>
 <p>HPA隶属于autoscaling API群组目前主要有v1和v2两个版本：</p>
 <table>
 <thead>
@@ -476,13 +470,12 @@
 <p>可以获取node和pod的资源指标就表示metrics-server可以正常工作</p>
 <h2 id="3-hpa配置参数">3. HPA配置参数</h2>
 <p>HPA控制器有一些重要配置参数，用于控制Pod缩放的行为，这些参数都可以在kube-controller的启动参数中配置：</p>
-<ul>
-<li><code>**–horizontal-pod-autoscaler-sync-period**</code>：查询Pod资源利用率的时间间隔，默认15s查询一次</li>
-<li><code>**–horizontal-pod-autoscaler-downscale-stabilization**</code>：两次缩容操作之间的最小间隔周期，默认5m</li>
-<li><code>**–horizontal-pod-autoscaler-cpu-initialization-period**</code>：初始化延迟时间，在此期间内Pod的CPU指标将不生效，默认5m</li>
-<li><code>**–horizontal-pod-autoscaler-initial-readiness-delay**</code>：用于设置Pod初始化时间，在此期间内内的Pod被认为未就绪不会被采集数据，默认30s</li>
-<li><code>**–horizontal-pod-autoscaler-tolerance**</code>：HPA控制器能容忍的数据差异（浮点数，默认0.1），即当前指标与阈值的差异要在0.1之内，比如阈值设置的是CPU利率50%，如果当前CPU利用率为80%，那么80/50=1.6&gt;1.1，就会触发扩容；如果当前CPU利用率为40%，40/50=0.8&lt;0.9，就会触发缩容。大于1.1扩容，小于0.9缩容</li>
-</ul>
+<p><code>--horizontal-pod-autoscaler-sync-period</code>：这个参数定义了 HPA 查询 Pod 资源利用率的时间间隔，默认为 15 秒，也就是 HPA 每隔 15 秒查询一次 Pod 的资源利用率来进行调整。</p>
+<p><code>--horizontal-pod-autoscaler-downscale-stabilization</code>：这个参数指定了两次缩容操作之间的最小间隔周期，默认为 5 分钟。这意味着如果在该间隔内已经进行了一次缩容操作，HPA 将不会在此期间内继续执行缩容操作，以避免频繁地调整 Pod 的副本数量。</p>
+<p><code>--horizontal-pod-autoscaler-cpu-initialization-period</code>：该参数定义了初始化延迟时间，在此期间内 Pod 的 CPU 指标将不会被纳入考虑。默认为 5 分钟，意味着在刚启动 HPA 或者 Pod 初始化的时候，HPA 将不会立即根据 CPU 利用率进行缩放操作。</p>
+<p><code>--horizontal-pod-autoscaler-initial-readiness-delay</code>：这个参数用于设置 Pod 初始化时间，在此期间内的 Pod 被认为未就绪不会被采集数据。默认为 30 秒，即 Pod 初始化时，在 30 秒内被认为未就绪，不会被纳入资源利用率的计算。</p>
+<p><code>--horizontal-pod-autoscaler-tolerance</code>：这个参数定义了 HPA 控制器能容忍的数据差异（浮点数，默认为 0.1）。即当前指标与阈值的差异要在 0.1 之内，例如，如果阈值设置的是 CPU 利率为 50%，如果当前 CPU 利用率为 80%，那么 80/50=1.6，超过了 1.1（1+0.1），就会触发扩容；如果当前 CPU 利用率为 40%，那么 40/50=0.8，低于 0.9（1-0.1），就会触发缩容。即大于 1.1 扩容，小于 0.9 缩容。</p>
+<!-- raw HTML omitted -->
 <h3 id="31-hpa示例">3.1 HPA示例</h3>
 <p>下面使用HAP v1版本通过CPU指标实现Pod自动扩缩容。</p>
 <h4 id="311-自动缩容示例">3.1.1 自动缩容示例</h4>
@@ -571,12 +564,11 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l">512Mi</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">limits</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l">1Gi</span></span></span></code></pre></div><p><!-- raw HTML omitted -->```</p>
-<pre tabindex="0"><code>root@master01[16:34:20]~/metrics/test #:kubectl get pod                                                                                                                                                                                                                     
-NAME                                READY   STATUS    RESTARTS       AGE                                                                                                                                                                                                                                                                                                                                                                                                     
-stress-ng-deploy-5c9d6db588-dmwh8   1/1     Running   0              30s                                                                                                                                                                                                    
-stress-ng-deploy-5c9d6db588-mfr7m   1/1     Running   0              30s                                                                                                                                                                                                    
-stress-ng-deploy-5c9d6db588-vg82w   1/1     Running   0              30s</code></pre><p>hpa部署文件如下：</p>
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l">1Gi</span></span></span></code></pre></div><div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@master01<span class="o">[</span>16:34:20<span class="o">]</span>~/metrics/test <span class="c1">#:kubectl get pod                                                                                              </span>
+</span></span><span class="line"><span class="cl">NAME                                READY   STATUS    RESTARTS       AGE                                                      
+</span></span><span class="line"><span class="cl">stress-ng-deploy-5c9d6db588-dmwh8   1/1     Running   <span class="m">0</span>              30s                                                                
+</span></span><span class="line"><span class="cl">stress-ng-deploy-5c9d6db588-mfr7m   1/1     Running   <span class="m">0</span>              30s                                                                
+</span></span><span class="line"><span class="cl">stress-ng-deploy-5c9d6db588-vg82w   1/1     Running   <span class="m">0</span>              30s</span></span></code></pre></div><p>hpa部署文件如下：</p>
 <div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">autoscaling/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">HorizontalPodAutoscaler</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
@@ -642,30 +634,20 @@ stress-ng-deploy-5c9d6db588-vg82w   1/1     Running   0              30s</code><
 </span></span><span class="line"><span class="cl"><span class="m">1</span></span></span></code></pre></div><p>删除后查看</p>
 <div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@etcd01<span class="o">[</span>17:05:07<span class="o">]</span>~ <span class="c1">#:/usr/local/bin/etcdctl get /registry/pods/default/ --prefix --keys-only</span>
 </span></span><span class="line"><span class="cl">/registry/pods/default/emptydirtest
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">/registry/pods/default/net-test2
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">/registry/pods/default/net-test3
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">/registry/pods/default/net-test4
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">/registry/pods/default/nginx-deploy-74d4966b8c-2qs8m
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">/registry/pods/default/nginx-deploy-74d4966b8c-k28hh
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">/registry/pods/default/nginx-deploy-74d4966b8c-pn6nx
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">/registry/pods/default/nginx-deploy-74d4966b8c-rhgm4
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">/registry/pods/default/tomcat-app1-6fd79cfbd4-8tg64
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">/registry/pods/default/tomcat-app1-6fd79cfbd4-sts9v
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">/registry/pods/default/tomcat-app2-54b548dfbf-zsgpd</span></span></code></pre></div></div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">
-        <span title="更新于 2023-02-16 00:00:00">更新于 2023-02-16&nbsp;</span>
+        <span title="更新于 2023-11-21 00:00:00">更新于 2023-11-21&nbsp;</span>
       </div><div class="post-info-license">
           <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
         </div></div>

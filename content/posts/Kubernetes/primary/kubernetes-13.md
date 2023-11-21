@@ -2,7 +2,7 @@
 author: Ryan
 title: HPA自动伸缩pod数量 (十三)
 date: 2023-02-16
-lastmod: 2023-02-16
+lastmod: 2023-11-21
 tags:
   - k8s进阶训练营
 categories:
@@ -15,9 +15,15 @@ expirationReminder:
 
 ## 1.HPA简介
 
-HPA（Horizontal Pod Autoscaler），Pod水平自动缩放器，可以根据Pod的负载动态调整Pod的副本数量，业务高峰期自动扩容Pod副本以满足业务请求。在业务低峰期自动缩容Pod，实现节约资源的目的。
 
-与HPA相对的是VPA （Vertical Pod Autoscaler），Pod垂直自动缩放器，可以基于Pod的资源利用率，调整对单个Pod的最大资源限制，不能与HPA同时使用。
+
+HPA（Horizontal Pod Autoscaler）和 VPA（Vertical Pod Autoscaler）是 Kubernetes 中用于自动调整容器资源的两种不同方法。
+
+HPA 用于水平自动缩放，可以根据 Pod 的负载情况自动调整 Pod 的副本数量。在业务高峰期，HPA 可以自动扩展 Pod 副本以满足增加的业务请求，而在低峰期则可以自动缩减 Pod 的副本数量，以节约资源。
+
+VPA 则用于垂直自动缩放，它关注的是单个 Pod 的资源利用率，可以根据 Pod 的资源需求动态调整 Pod 的资源限制，例如 CPU 和内存。VPA 可以调整 Pod 的资源请求和限制，以更好地适应 Pod 实际的需求，但不能像 HPA 那样增加或减少 Pod 的副本数量。
+
+
 
  HPA隶属于autoscaling API群组目前主要有v1和v2两个版本：  
 
@@ -310,11 +316,21 @@ NAME        CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
 
 HPA控制器有一些重要配置参数，用于控制Pod缩放的行为，这些参数都可以在kube-controller的启动参数中配置：
 
-- `**–horizontal-pod-autoscaler-sync-period**`：查询Pod资源利用率的时间间隔，默认15s查询一次
-- `**–horizontal-pod-autoscaler-downscale-stabilization**`：两次缩容操作之间的最小间隔周期，默认5m
-- `**–horizontal-pod-autoscaler-cpu-initialization-period**`：初始化延迟时间，在此期间内Pod的CPU指标将不生效，默认5m
-- `**–horizontal-pod-autoscaler-initial-readiness-delay**`：用于设置Pod初始化时间，在此期间内内的Pod被认为未就绪不会被采集数据，默认30s
-- `**–horizontal-pod-autoscaler-tolerance**`：HPA控制器能容忍的数据差异（浮点数，默认0.1），即当前指标与阈值的差异要在0.1之内，比如阈值设置的是CPU利率50%，如果当前CPU利用率为80%，那么80/50=1.6>1.1，就会触发扩容；如果当前CPU利用率为40%，40/50=0.8<0.9，就会触发缩容。大于1.1扩容，小于0.9缩容
+`--horizontal-pod-autoscaler-sync-period`：这个参数定义了 HPA 查询 Pod 资源利用率的时间间隔，默认为 15 秒，也就是 HPA 每隔 15 秒查询一次 Pod 的资源利用率来进行调整。
+
+`--horizontal-pod-autoscaler-downscale-stabilization`：这个参数指定了两次缩容操作之间的最小间隔周期，默认为 5 分钟。这意味着如果在该间隔内已经进行了一次缩容操作，HPA 将不会在此期间内继续执行缩容操作，以避免频繁地调整 Pod 的副本数量。
+
+`--horizontal-pod-autoscaler-cpu-initialization-period`：该参数定义了初始化延迟时间，在此期间内 Pod 的 CPU 指标将不会被纳入考虑。默认为 5 分钟，意味着在刚启动 HPA 或者 Pod 初始化的时候，HPA 将不会立即根据 CPU 利用率进行缩放操作。
+
+`--horizontal-pod-autoscaler-initial-readiness-delay`：这个参数用于设置 Pod 初始化时间，在此期间内的 Pod 被认为未就绪不会被采集数据。默认为 30 秒，即 Pod 初始化时，在 30 秒内被认为未就绪，不会被纳入资源利用率的计算。
+
+`--horizontal-pod-autoscaler-tolerance`：这个参数定义了 HPA 控制器能容忍的数据差异（浮点数，默认为 0.1）。即当前指标与阈值的差异要在 0.1 之内，例如，如果阈值设置的是 CPU 利率为 50%，如果当前 CPU 利用率为 80%，那么 80/50=1.6，超过了 1.1（1+0.1），就会触发扩容；如果当前 CPU 利用率为 40%，那么 40/50=0.8，低于 0.9（1-0.1），就会触发缩容。即大于 1.1 扩容，小于 0.9 缩容。
+
+
+
+<br>
+
+
 
 
 ### 3.1 HPA示例
@@ -355,6 +371,10 @@ spec:
 ```
 
 
+
+
+
+
 ```bash
 root@master01[13:56:32]~/metrics/test #:kubectl get pod 
 NAME                            READY   STATUS    RESTARTS        AGE
@@ -383,7 +403,6 @@ spec:
     kind: Deployment
     name: nginx-deploy
   targetCPUUtilizationPercentage: 80	#cpu利用率阈值
-
 ```
 
 
@@ -436,12 +455,15 @@ spec:
             memory: 1Gi
 
 ```
-<br />```
-```
-root@master01[16:34:20]~/metrics/test #:kubectl get pod                                                                                                                                                                                                                     
-NAME                                READY   STATUS    RESTARTS       AGE                                                                                                                                                                                                                                                                                                                                                                                                     
-stress-ng-deploy-5c9d6db588-dmwh8   1/1     Running   0              30s                                                                                                                                                                                                    
-stress-ng-deploy-5c9d6db588-mfr7m   1/1     Running   0              30s                                                                                                                                                                                                    
+
+
+
+
+```bash
+root@master01[16:34:20]~/metrics/test #:kubectl get pod                                                                                              
+NAME                                READY   STATUS    RESTARTS       AGE                                                      
+stress-ng-deploy-5c9d6db588-dmwh8   1/1     Running   0              30s                                                                
+stress-ng-deploy-5c9d6db588-mfr7m   1/1     Running   0              30s                                                                
 stress-ng-deploy-5c9d6db588-vg82w   1/1     Running   0              30s
 ```
 
@@ -533,24 +555,14 @@ root@etcd01[17:04:54]~ #:etcdctl del /registry/pods/default/stress-ng-deploy-5c9
 ```bash
 root@etcd01[17:05:07]~ #:/usr/local/bin/etcdctl get /registry/pods/default/ --prefix --keys-only
 /registry/pods/default/emptydirtest
-
 /registry/pods/default/net-test2
-
 /registry/pods/default/net-test3
-
 /registry/pods/default/net-test4
-
 /registry/pods/default/nginx-deploy-74d4966b8c-2qs8m
-
 /registry/pods/default/nginx-deploy-74d4966b8c-k28hh
-
 /registry/pods/default/nginx-deploy-74d4966b8c-pn6nx
-
 /registry/pods/default/nginx-deploy-74d4966b8c-rhgm4
-
 /registry/pods/default/tomcat-app1-6fd79cfbd4-8tg64
-
 /registry/pods/default/tomcat-app1-6fd79cfbd4-sts9v
-
 /registry/pods/default/tomcat-app2-54b548dfbf-zsgpd
 ```

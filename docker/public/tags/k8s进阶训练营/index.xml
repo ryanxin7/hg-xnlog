@@ -50,7 +50,7 @@
   <pubDate>Thu, 16 Feb 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-13/</guid>
-  <description><![CDATA[1.HPA简介 HPA（Horizontal Pod Autoscaler），Pod水平自动缩放器，可以根据Pod的负载动态调整Pod的副本数量，业务]]></description>
+  <description><![CDATA[1.HPA简介 HPA（Horizontal Pod Autoscaler）和 VPA（Vertical Pod Autoscaler）是 Kubernetes 中用于自动调整容器资]]></description>
 </item>
 <item>
   <title>实战案例-基于zookeeper实现微服务动态注册和发现 (十二)</title>
