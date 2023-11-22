@@ -67,36 +67,62 @@ Kubernetes的默认发布策略。
 
 ![滚动发布](https://cdn1.ryanxin.live/1676623521344-a5370e0c-871d-4c52-b3a8-0eeb9d42c93e.png)
 
-## 2.版本升级及回滚
-** 原理**：在指定的deployment 控制器中通过`kubectl set image` 指定新版本的镜像tag,来实现代码更新的目的。<br />** 例如**:<br />更新deployment中的2个pod,busybox ，pod更新到2.1版本,nginx pod更新到1.21.1版本 。
+## 2.业务镜像版本升级及回滚
+
+在指定的deployment 控制器中通过`kubectl set image` 指定新版本的镜像tag,来实现代码更新的目的。
+
+
+deployment 控制器支持两种更新策略：默认为滚动更新
+
+1.滚动更新（Rolling Update）
+滚动更新是默认的资源更新策略。这种更新策略确保了应用在更新过程中的高可用性和稳定性。
+
+在滚动更新期间，Kubernetes 会按照以下步骤逐步更新 Deployment 中的 Pod：
+ 1. 创建新版本的 Pod（新版本的 ReplicaSet 控制器）。
+ 2. 逐步减少旧版本的 Pod 数量，并逐渐增加新版本的 Pod 数量，以确保应用的稳定性。
+ 3. 当新版本的 Pod 数量达到期望数量时，Kubernetes 开始缩减旧版本的 Pod 数量。
+ 4. 一旦所有旧版本的 Pod 都被缩减，更新过程完成。
+
+**滚动更新的优势**：是在更新过程中服务不会完全中断，应用能够持续提供服务。
+**滚动更新的缺点**：在更新期间，可能会有新旧版本的 Pod 共存，这会导致一段时间内存在两个不同版本的应用程序。
+
+
+**滚动更新的两个关键参数：**
+
+`deployment.spec.strategy.rollingUpdate.maxSurge`：指定在更新期间可以超出所需 Pod 数量的额外 Pod 数量或百分比。
+`deployment.spec.strategy.rollingUpdate.maxUnavailable`：指定在更新期间最大不可用的 Pod 数量或百分比。
+
+这些参数允许在更新期间控制 Pod 的数量，以确保服务的稳定性。
+
+2.重建更新（Recreate）
+
+重建更新是一种更新策略，它直接删除所有旧版本的 Pod，然后创建新版本的 Pod。在重建更新期间，服务可能会短暂不可用，因为在旧 Pod 被删除后到新 Pod 创建之间的时间段内，应用无法提供服务。
+
+**重建更新的优势**
+
+在于更新期间只有一个版本的 Pod 在线，不会出现多个版本的 Pod 共存的情况。
+
+**重建更新的缺点**
+在重建期间可能存在服务中断，用户可能会经历一段时间的无法访问服务状态。
+
+**总结：**
+通常情况下，滚动更新更受欢迎，因为它可以确保服务在更新过程中保持可用性。但根据特定情况和应用要求，可以选择合适的更新策略来满足需求。
+
+
+** 示例**:
+
+更新deployment中的2个pod,busybox ，pod更新到2.1版本,nginx pod更新到1.21.1版本 。
+
+
+
 
 ```bash
 kubectl set image deployment/nginx busybox=busybox:v2.1 nginx=nginx:1.21.1
 ```
 
 
-
-
-
-**更新方法有2种**:  
-
-1. **rolling update 滚动更新**
-
-先创建一批新POD再删除一批旧Pod,升级完成后再升级下一批pod.(一批的默认值是25%的pod数)
-
-- 优点:业务不会中断.
-- 缺点:同一时间内会有2个不同版本同时存在。
-
-2. **recreate 重建更新**
-
-**先删除所有Pod再重新创建Pod.**
-
-- 优点:不会同时有多个版本存在
-- 缺点:在旧版本删除,新版本创建完成之前,该服务无法访问。
-
-### 
-
 ### 1.1 更新示例环境准备
+构建三个不同版本的nginx镜像，第一次使用V1,后逐渐升级到V2 和 V3，测试镜像版本升级与回滚操作。
 准备10个pod的deployment,命名空间为cicd
 ```yaml
 kind: Deployment

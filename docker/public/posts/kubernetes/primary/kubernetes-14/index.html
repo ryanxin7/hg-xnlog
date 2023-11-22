@@ -10,7 +10,7 @@
 <meta name="description" content="1.发布方式解读 1.1 金丝雀发布 金丝雀发布这个术语源自20世纪初期，当时英国的煤矿工人在下井采矿之前，会把笼养的金丝雀携带到矿井中，如果矿井中一" /><meta name="keywords" content='k8s进阶训练营' /><meta itemprop="name" content="K8S 持续集成与部署 (十四)">
 <meta itemprop="description" content="1.发布方式解读 1.1 金丝雀发布 金丝雀发布这个术语源自20世纪初期，当时英国的煤矿工人在下井采矿之前，会把笼养的金丝雀携带到矿井中，如果矿井中一"><meta itemprop="datePublished" content="2023-02-17T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-02-17T00:00:00+00:00" />
-<meta itemprop="wordCount" content="6033"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="6667"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="k8s进阶训练营," /><meta property="og:title" content="K8S 持续集成与部署 (十四)" />
 <meta property="og:description" content="1.发布方式解读 1.1 金丝雀发布 金丝雀发布这个术语源自20世纪初期，当时英国的煤矿工人在下井采矿之前，会把笼养的金丝雀携带到矿井中，如果矿井中一" />
 <meta property="og:type" content="article" />
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/primary\/kubernetes-14\/"
-    },"genre": "posts","keywords": "k8s进阶训练营","wordcount":  6033 ,
+    },"genre": "posts","keywords": "k8s进阶训练营","wordcount":  6667 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/primary\/kubernetes-14\/","datePublished": "2023-02-17T00:00:00+00:00","dateModified": "2023-02-17T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -181,7 +181,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/kubernetes/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Kubernetes</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-02-17 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-17">2023-02-17</time></span>&nbsp;<span title="更新于 2023-02-17 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-17">2023-02-17</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 6033 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 13 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="K8S 持续集成与部署 (十四)">
+      <div class="post-meta-line"><span title="发布于 2023-02-17 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-17">2023-02-17</time></span>&nbsp;<span title="更新于 2023-02-17 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-17">2023-02-17</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 6667 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 14 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="K8S 持续集成与部署 (十四)">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -198,9 +198,8 @@
         <li><a href="#13-滚动发布">1.3 滚动发布</a></li>
       </ul>
     </li>
-    <li><a href="#2版本升级及回滚">2.版本升级及回滚</a>
+    <li><a href="#2业务镜像版本升级及回滚">2.业务镜像版本升级及回滚</a>
       <ul>
-        <li><a href="#heading"></a></li>
         <li><a href="#11-更新示例环境准备">1.1 更新示例环境准备</a></li>
         <li><a href="#12--更新版本">1.2  更新版本</a></li>
         <li><a href="#13-回滚版本">1.3 回滚版本</a></li>
@@ -278,28 +277,37 @@
 <li>有影响范围较大</li>
 </ul>
 <p><img loading="lazy" src="https://cdn1.ryanxin.live/1676623521344-a5370e0c-871d-4c52-b3a8-0eeb9d42c93e.png" srcset="https://cdn1.ryanxin.live/1676623521344-a5370e0c-871d-4c52-b3a8-0eeb9d42c93e.png, https://cdn1.ryanxin.live/1676623521344-a5370e0c-871d-4c52-b3a8-0eeb9d42c93e.png 1.5x, https://cdn1.ryanxin.live/1676623521344-a5370e0c-871d-4c52-b3a8-0eeb9d42c93e.png 2x" sizes="auto" data-title="滚动发布" data-alt="滚动发布" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<h2 id="2版本升级及回滚">2.版本升级及回滚</h2>
-<p>** 原理**：在指定的deployment 控制器中通过<code>kubectl set image</code> 指定新版本的镜像tag,来实现代码更新的目的。<!-- raw HTML omitted -->** 例如**:<!-- raw HTML omitted -->更新deployment中的2个pod,busybox ，pod更新到2.1版本,nginx pod更新到1.21.1版本 。</p>
-<div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl <span class="nb">set</span> image deployment/nginx <span class="nv">busybox</span><span class="o">=</span>busybox:v2.1 <span class="nv">nginx</span><span class="o">=</span>nginx:1.21.1</span></span></code></pre></div><p><strong>更新方法有2种</strong>:</p>
+<h2 id="2业务镜像版本升级及回滚">2.业务镜像版本升级及回滚</h2>
+<p>在指定的deployment 控制器中通过<code>kubectl set image</code> 指定新版本的镜像tag,来实现代码更新的目的。</p>
+<p>deployment 控制器支持两种更新策略：默认为滚动更新</p>
+<p>1.滚动更新（Rolling Update）
+滚动更新是默认的资源更新策略。这种更新策略确保了应用在更新过程中的高可用性和稳定性。</p>
+<p>在滚动更新期间，Kubernetes 会按照以下步骤逐步更新 Deployment 中的 Pod：</p>
 <ol>
-<li><strong>rolling update 滚动更新</strong></li>
+<li>创建新版本的 Pod（新版本的 ReplicaSet 控制器）。</li>
+<li>逐步减少旧版本的 Pod 数量，并逐渐增加新版本的 Pod 数量，以确保应用的稳定性。</li>
+<li>当新版本的 Pod 数量达到期望数量时，Kubernetes 开始缩减旧版本的 Pod 数量。</li>
+<li>一旦所有旧版本的 Pod 都被缩减，更新过程完成。</li>
 </ol>
-<p>先创建一批新POD再删除一批旧Pod,升级完成后再升级下一批pod.(一批的默认值是25%的pod数)</p>
-<ul>
-<li>优点:业务不会中断.</li>
-<li>缺点:同一时间内会有2个不同版本同时存在。</li>
-</ul>
-<ol start="2">
-<li><strong>recreate 重建更新</strong></li>
-</ol>
-<p><strong>先删除所有Pod再重新创建Pod.</strong></p>
-<ul>
-<li>优点:不会同时有多个版本存在</li>
-<li>缺点:在旧版本删除,新版本创建完成之前,该服务无法访问。</li>
-</ul>
-<h3 id="heading"></h3>
-<h3 id="11-更新示例环境准备">1.1 更新示例环境准备</h3>
-<p>准备10个pod的deployment,命名空间为cicd</p>
+<p><strong>滚动更新的优势</strong>：是在更新过程中服务不会完全中断，应用能够持续提供服务。
+<strong>滚动更新的缺点</strong>：在更新期间，可能会有新旧版本的 Pod 共存，这会导致一段时间内存在两个不同版本的应用程序。</p>
+<p><strong>滚动更新的两个关键参数：</strong></p>
+<p><code>deployment.spec.strategy.rollingUpdate.maxSurge</code>：指定在更新期间可以超出所需 Pod 数量的额外 Pod 数量或百分比。
+<code>deployment.spec.strategy.rollingUpdate.maxUnavailable</code>：指定在更新期间最大不可用的 Pod 数量或百分比。</p>
+<p>这些参数允许在更新期间控制 Pod 的数量，以确保服务的稳定性。</p>
+<p>2.重建更新（Recreate）</p>
+<p>重建更新是一种更新策略，它直接删除所有旧版本的 Pod，然后创建新版本的 Pod。在重建更新期间，服务可能会短暂不可用，因为在旧 Pod 被删除后到新 Pod 创建之间的时间段内，应用无法提供服务。</p>
+<p><strong>重建更新的优势</strong></p>
+<p>在于更新期间只有一个版本的 Pod 在线，不会出现多个版本的 Pod 共存的情况。</p>
+<p><strong>重建更新的缺点</strong>
+在重建期间可能存在服务中断，用户可能会经历一段时间的无法访问服务状态。</p>
+<p><strong>总结：</strong>
+通常情况下，滚动更新更受欢迎，因为它可以确保服务在更新过程中保持可用性。但根据特定情况和应用要求，可以选择合适的更新策略来满足需求。</p>
+<p>** 示例**:</p>
+<p>更新deployment中的2个pod,busybox ，pod更新到2.1版本,nginx pod更新到1.21.1版本 。</p>
+<div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl <span class="nb">set</span> image deployment/nginx <span class="nv">busybox</span><span class="o">=</span>busybox:v2.1 <span class="nv">nginx</span><span class="o">=</span>nginx:1.21.1</span></span></code></pre></div><h3 id="11-更新示例环境准备">1.1 更新示例环境准备</h3>
+<p>构建三个不同版本的nginx镜像，第一次使用V1,后逐渐升级到V2 和 V3，测试镜像版本升级与回滚操作。
+准备10个pod的deployment,命名空间为cicd</p>
 <div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
