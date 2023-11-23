@@ -1,4 +1,4 @@
-# K8S 持续集成与部署 (十四)
+# K8S 持续集成与部署 (十五)
 
 
 
@@ -67,309 +67,15 @@ Kubernetes的默认发布策略。
 
 ![滚动发布](https://cdn1.ryanxin.live/1676623521344-a5370e0c-871d-4c52-b3a8-0eeb9d42c93e.png)
 
-## 2.业务镜像版本升级及回滚
-
-在指定的deployment 控制器中通过`kubectl set image` 指定新版本的镜像tag,来实现代码更新的目的。
 
 
-deployment 控制器支持两种更新策略：默认为滚动更新
+## 2. K8S 基于Jenkins CICD
 
-1.滚动更新（Rolling Update）
-滚动更新是默认的资源更新策略。这种更新策略确保了应用在更新过程中的高可用性和稳定性。
+### 2.1 安装Gitlab
 
-在滚动更新期间，Kubernetes 会按照以下步骤逐步更新 Deployment 中的 Pod：
- 1. 创建新版本的 Pod（新版本的 ReplicaSet 控制器）。
- 2. 逐步减少旧版本的 Pod 数量，并逐渐增加新版本的 Pod 数量，以确保应用的稳定性。
- 3. 当新版本的 Pod 数量达到期望数量时，Kubernetes 开始缩减旧版本的 Pod 数量。
- 4. 一旦所有旧版本的 Pod 都被缩减，更新过程完成。
+#### 2.1.1准备环境
 
-**滚动更新的优势**：是在更新过程中服务不会完全中断，应用能够持续提供服务。
-**滚动更新的缺点**：在更新期间，可能会有新旧版本的 Pod 共存，这会导致一段时间内存在两个不同版本的应用程序。
-
-
-**滚动更新的两个关键参数：**
-
-`deployment.spec.strategy.rollingUpdate.maxSurge`：指定在更新期间可以超出所需 Pod 数量的额外 Pod 数量或百分比。
-`deployment.spec.strategy.rollingUpdate.maxUnavailable`：指定在更新期间最大不可用的 Pod 数量或百分比。
-
-这些参数允许在更新期间控制 Pod 的数量，以确保服务的稳定性。
-
-2.重建更新（Recreate）
-
-重建更新是一种更新策略，它直接删除所有旧版本的 Pod，然后创建新版本的 Pod。在重建更新期间，服务可能会短暂不可用，因为在旧 Pod 被删除后到新 Pod 创建之间的时间段内，应用无法提供服务。
-
-**重建更新的优势**
-
-在于更新期间只有一个版本的 Pod 在线，不会出现多个版本的 Pod 共存的情况。
-
-**重建更新的缺点**
-在重建期间可能存在服务中断，用户可能会经历一段时间的无法访问服务状态。
-
-**总结：**
-通常情况下，滚动更新更受欢迎，因为它可以确保服务在更新过程中保持可用性。但根据特定情况和应用要求，可以选择合适的更新策略来满足需求。
-
-
-** 示例**:
-
-更新deployment中的2个pod,busybox ，pod更新到2.1版本,nginx pod更新到1.21.1版本 。
-
-
-
-
-```bash
-kubectl set image deployment/nginx busybox=busybox:v2.1 nginx=nginx:1.21.1
-```
-
-
-### 1.1 更新示例环境准备
-构建三个不同版本的nginx镜像，第一次使用V1,后逐渐升级到V2 和 V3，测试镜像版本升级与回滚操作。
-准备10个pod的deployment,命名空间为cicd
-```yaml
-kind: Deployment
-apiVersion: apps/v1
-metadata:
-  labels:
-    app: tomcat-app1-deployment-update
-  name: tomcat-app1-deployment
-  namespace: cicd
-spec:
-  replicas: 10
-  selector:
-    matchLabels:
-      app: update-tomcat-app1-selector
-  template:
-    metadata:
-      labels:
-        app: update-tomcat-app1-selector
-    spec:
-      containers:
-      - name: update-tomcat-app1-container
-        image: harbor.ceamg.com/xinweb11/tomcat-app1:V2.0
-        ports:
-        - containerPort: 8080
-          protocol: TCP
-          name: http
----
-kind: Service
-apiVersion: v1
-metadata:
-  labels:
-    app: update-tomcat-app1-service-label
-  name: update-tomcat-app1-service
-  namespace: cicd
-spec:
-  type: NodePort
-  ports:
-  - name: http
-    port: 80
-    protocol: TCP
-    targetPort: 8080
-    nodePort: 30022
-  selector:
-    app: update-tomcat-app1-selector
-```
-
-可以看到tomcat-app1-deployment 副本数是10/10  
-```yaml
-root@master01[15:50:47]~/cicd #:vim test-tomcatapp1-deploy.yaml 
-root@master01[15:51:10]~/cicd #:kubectl apply -f test-tomcatapp1-deploy.yaml 
-deployment.apps/tomcat-app1-deployment created
-service/update-tomcat-app1-service created
-root@master01[15:51:12]~/cicd #:
-root@master01[15:51:12]~/cicd #:
-root@master01[15:51:12]~/cicd #:kubectl get pod -n cicd
-NAME                                      READY   STATUS    RESTARTS   AGE
-tomcat-app1-deployment-64bd79b5b7-49t6g   1/1     Running   0          7s
-tomcat-app1-deployment-64bd79b5b7-4gz9n   1/1     Running   0          7s
-tomcat-app1-deployment-64bd79b5b7-829jc   1/1     Running   0          7s
-tomcat-app1-deployment-64bd79b5b7-fclsh   1/1     Running   0          7s
-tomcat-app1-deployment-64bd79b5b7-jnkk6   1/1     Running   0          7s
-tomcat-app1-deployment-64bd79b5b7-ngxsl   1/1     Running   0          7s
-tomcat-app1-deployment-64bd79b5b7-nscqt   1/1     Running   0          7s
-tomcat-app1-deployment-64bd79b5b7-td72k   1/1     Running   0          7s
-tomcat-app1-deployment-64bd79b5b7-wh98d   1/1     Running   0          7s
-tomcat-app1-deployment-64bd79b5b7-wr8q6   1/1     Running   0          7s
-
-root@master01[15:51:19]~/cicd #:kubectl get deployments.apps -n cicd
-NAME                     READY   UP-TO-DATE   AVAILABLE   AGE
-tomcat-app1-deployment   10/10   10           10          2m1s
-```
-
-### 1.2  更新版本
-**滚动策略**
-
-1. **maxSurge:**  deploy 在更新过程中，Pod 数量可以超过定义的数量，超过的最大的值就叫 maxSurge。<br />该值可以是一个百分比，也可以是一个具体的数字，默认情况下，该值为 25%。  
-
-2. **maxUnavailable**:  和期望ready的副本数比，不可用副本数最大比例（或最大值），**这个值越小，越能保证服务稳定，更新越平滑；**
-```yaml
-kind: Deployment
-apiVersion: apps/v1
-metadata:
-  labels:
-    app: tomcat-app1-deployment-update
-  name: tomcat-app1-deployment
-  namespace: cicd
-spec:
-  strategy:
-    rollingUpdate:
-      maxSurge: 0  #在更新过程中,Pod 数量可以超过定义的数量5个
-      maxUnavailable: 1 #在更新过程中，不可用副本数
-  replicas: 10
-  selector:
-    matchLabels:
-      app: update-tomcat-app1-selector
-  template:
-    metadata:
-      labels:
-        app: update-tomcat-app1-selector
-    spec:
-      containers:
-      - name: update-tomcat-app1-container
-        image: harbor.ceamg.com/xinweb11/tomcat-app1:1.9
-        ports:
-        - containerPort: 8080
-          protocol: TCP
-          name: http
-
----
-kind: Service
-apiVersion: v1
-metadata:
-  labels:
-    app: update-tomcat-app1-service-label
-  name: update-tomcat-app1-service
-  namespace: cicd
-spec:
-  type: NodePort
-  ports:
-  - name: http
-    port: 80
-    protocol: TCP
-    targetPort: 8080
-    nodePort: 30022
-  selector:
-    app: update-tomcat-app1-selector
-```
-
-```bash
-kubectl set image deployment/tomcat-app1-deployment update-tomcat-app1-container=harbor.ceamg.com/xinweb11/tomcat-app1:2.1 --namespace=cicd --record=true 
-```
-
-
-
-```yaml
-root@master01[16:16:23]~/cicd #:kubectl get pod -n cicd
-NAME                                      READY   STATUS              RESTARTS   AGE
-tomcat-app1-deployment-64bd79b5b7-2q7mk   1/1     Running             0          3m49s
-tomcat-app1-deployment-64bd79b5b7-4mnhr   1/1     Running             0          4m51s
-tomcat-app1-deployment-64bd79b5b7-55x5h   1/1     Running             0          4m51s
-tomcat-app1-deployment-64bd79b5b7-csxs2   1/1     Running             0          3m49s
-tomcat-app1-deployment-64bd79b5b7-h76pj   1/1     Running             0          3m49s
-tomcat-app1-deployment-64bd79b5b7-h9qcw   1/1     Running             0          4m51s
-tomcat-app1-deployment-64bd79b5b7-hvv2w   1/1     Running             0          4m51s
-tomcat-app1-deployment-64bd79b5b7-l6hxc   1/1     Running             0          3m49s
-tomcat-app1-deployment-64bd79b5b7-wlhzx   1/1     Running             0          4m51s
-tomcat-app1-deployment-788dbfc749-hjlg2   0/1     ContainerCreating   0          2s
-
-
-
-
-```
- 因为将 maxSurge，最大超出数量设置成了 0，所以无论如何都不会超过定义的数量。<br />都是先减少再新增，也就是说，更新过程中，只会出现缺少服务数量的情况，不会多。  
-
-### 1.3 回滚版本
- 通过命令kubectl rollout history查看更新历史,可以看到除了第一次部署外我们还做了3次升级.当前版本是v3.  
-```bash
-root@master01[10:26:06]~ #:kubectl rollout history deployment -n cicd tomcat-app1-deployment 
-deployment.apps/tomcat-app1-deployment 
-REVISION  CHANGE-CAUSE
-2         <none>
-3         <none>
-4         <none>
-5         kubectl set image deployment/tomcat-app1-deployment update-tomcat-app1-container=harbor.ceamg.com/xinweb11/tomcat-app1:2.1 --namespace=cicd --record=true
-6         kubectl set image deployment/tomcat-app1-deployment update-tomcat-app1-container=harbor.ceamg.com/xinweb11/tomcat-app1:2.2 --namespace=cicd --record=true
-7         kubectl set image deployment/tomcat-app1-deployment update-tomcat-app1-container=harbor.ceamg.com/xinweb11/tomcat-app1:2.3 --namespace=cicd --record=true
-
-```
-
-#### 1.3.1 回滚到上一个版本
-假设现在的V3版本有问题,需要回滚到v2的状态
-
-```bash
-root@master01[10:26:14]~ #:kubectl rollout undo deployment -n cicd tomcat-app1-deployment 
-deployment.apps/tomcat-app1-deployment rolled back
-
-root@master01[10:42:21]~ #:kubectl rollout history deployment -n cicd tomcat-app1-deployment 
-deployment.apps/tomcat-app1-deployment 
-REVISION  CHANGE-CAUSE
-2         <none>
-3         <none>
-4         <none>
-5         kubectl set image deployment/tomcat-app1-deployment update-tomcat-app1-container=harbor.ceamg.com/xinweb11/tomcat-app1:2.1 --namespace=cicd --record=true
-7         kubectl set image deployment/tomcat-app1-deployment update-tomcat-app1-container=harbor.ceamg.com/xinweb11/tomcat-app1:2.3 --namespace=cicd --record=true
-8         kubectl set image deployment/tomcat-app1-deployment update-tomcat-app1-container=harbor.ceamg.com/xinweb11/tomcat-app1:2.2 --namespace=cicd --record=true
-
-可见最新版本又回到了2.2版本
-
-
-
-root@master01[10:44:28]~ #:kubectl describe pod -n cicd  tomcat-app1-deployment-b6bbbdfd7-f7r74 | grep "Image"
-    Image:          harbor.ceamg.com/xinweb11/tomcat-app1:2.2
-```
-
-#### 1.3.2 回滚到指定版本
-那么有没有办法直接回滚到2.1的版本呢?<br />除了用set image将版本指定到想要的版本外是否可以用rollout实现回滚呢?
-
-```bash
-deployment.apps/tomcat-app1-deployment 
-REVISION  CHANGE-CAUSE
-2         <none>
-3         <none>
-4         <none>
-5         kubectl set image deployment/tomcat-app1-deployment update-tomcat-app1-container=harbor.ceamg.com/xinweb11/tomcat-app1:2.1 --namespace=cicd --record=true
-7         kubectl set image deployment/tomcat-app1-deployment update-tomcat-app1-container=harbor.ceamg.com/xinweb11/tomcat-app1:2.3 --namespace=cicd --record=true
-8         kubectl set image deployment/tomcat-app1-deployment update-tomcat-app1-container=harbor.ceamg.com/xinweb11/tomcat-app1:2.2 --namespace=cicd --record=true
-
-```
-
- 答案显然是可以的,使用参数`--to-version`就可将版本回滚到指定版本  
-```bash
-root@master01[10:54:49]~ #:kubectl rollout undo --to-revision=5  deploy tomcat-app1-deployment -n cicd
-deployment.apps/tomcat-app1-deployment rolled back
-
------------------------------------------------------------------------------------------------------
-root@master01[10:59:23]~ #:kubectl rollout history deployment -n cicd tomcat-app1-deployment 
-deployment.apps/tomcat-app1-deployment 
-REVISION  CHANGE-CAUSE
-2         <none>
-3         <none>
-4         <none>
-7         kubectl set image deployment/tomcat-app1-deployment update-tomcat-app1-container=harbor.ceamg.com/xinweb11/tomcat-app1:2.3 --namespace=cicd --record=true
-8         kubectl set image deployment/tomcat-app1-deployment update-tomcat-app1-container=harbor.ceamg.com/xinweb11/tomcat-app1:2.2 --namespace=cicd --record=true
-9         kubectl set image deployment/tomcat-app1-deployment update-tomcat-app1-container=harbor.ceamg.com/xinweb11/tomcat-app1:2.1 --namespace=cicd --record=true
-------------------------------------------------------------------------------------------------------
-
-#查看版本
-root@master01[11:00:50]~ #:kubectl describe pod -n cicd  tomcat-app1-deployment-6c57484478-2h4d6 | grep "Image"
-    Image:          harbor.ceamg.com/xinweb11/tomcat-app1:2.1
-    
-    
-root@master01[11:01:14]~ #:kubectl rollout undo --to-revision=7  deploy tomcat-app1-deployment -n cicd
-deployment.apps/tomcat-app1-deployment rolled back
-
-```
-
-http://10.1.0.101/mi/
-
-
-
-## 3. K8S 基于Jenkins CICD
-
-### 3.1 安装Gitlab
-
-#### 3.1.1准备环境
-
-#####  3.1.1.1 创建nfs共享目录
+#####  2.1.1.1 创建nfs共享目录
 
 在nfs服务器创建共享目录，部署的gitlib使用共享目录来进行持久化
 
@@ -381,7 +87,7 @@ $ mkdir -p /data/k8s/gitlab/data
 
 
 
-##### 3.1.1.2 添加到共享目录
+##### 2.1.1.2 添加到共享目录
 
 ```bash
 $ vim /etc/exports
@@ -392,7 +98,7 @@ $ vim /etc/exports
 
 
 
-##### 3.1.1.2 重启服务
+##### 2.1.1.2 重启服务
 
 ```bash
 $ /data/k8s/gitlab #:systemctl restart nfs-server.service
@@ -402,9 +108,9 @@ $ exportfs -r
 
 
 
-#### 3.1.2 部署Gitlab
+#### 2.1.2 部署Gitlab
 
-##### 3.1.2.1 准备部署yaml文件
+##### 2.1.2.1 准备部署yaml文件
 
 ```yaml
 apiVersion: v1
@@ -484,7 +190,7 @@ spec:
 
 
 
-##### 3.1.2.2 执行部署
+##### 2.1.2.2 执行部署
 
 ```bash
 $ kubectl apply -f gitlib-ce.yaml
@@ -492,7 +198,7 @@ $ kubectl apply -f gitlib-ce.yaml
 
 
 
-##### 3.1.2.3 查看部署结果
+##### 2.1.2.3 查看部署结果
 
 ```bash
 $ kubectl get svc -n cicd
@@ -509,7 +215,7 @@ http://10.1.0.31:38880/users/sign_in
 
 ![gitlab](https://cdn1.ryanxin.live/image-20230227155127621.png)
 
-##### 3.1.2.4  初始用户名和密码
+##### 2.1.2.4  初始用户名和密码
 
 初始用户名为root，初始密码gitlib自动创建，在如下文件中：
 

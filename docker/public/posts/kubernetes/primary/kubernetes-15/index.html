@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
     <meta name="robots" content="noodp" />
-    <title>K8S集群证书更新 (十五) - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
+    <title>K8S集群证书更新 (十六) - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
 <meta name="author-link" content="https://github.com/ryanxin7">
-<meta name="description" content="更新证书 为了更新的安全性，更新之前可以将所有 Master 节点的配置目录做一个备份： cp -r /etc/kubernetes /etc/kubernetes_$(date &#43;%F) cp -r /var/lib/etcd /var/lib/etcd_$(date &#43;%F)通过执行证书更新命令查看： kubeadm certs renew --hel" /><meta name="keywords" content='k8s进阶训练营' /><meta itemprop="name" content="K8S集群证书更新 (十五)">
+<meta name="description" content="更新证书 为了更新的安全性，更新之前可以将所有 Master 节点的配置目录做一个备份： cp -r /etc/kubernetes /etc/kubernetes_$(date &#43;%F) cp -r /var/lib/etcd /var/lib/etcd_$(date &#43;%F)通过执行证书更新命令查看： kubeadm certs renew --hel" /><meta name="keywords" content='k8s进阶训练营' /><meta itemprop="name" content="K8S集群证书更新 (十六)">
 <meta itemprop="description" content="更新证书 为了更新的安全性，更新之前可以将所有 Master 节点的配置目录做一个备份： cp -r /etc/kubernetes /etc/kubernetes_$(date &#43;%F) cp -r /var/lib/etcd /var/lib/etcd_$(date &#43;%F)通过执行证书更新命令查看： kubeadm certs renew --hel"><meta itemprop="datePublished" content="2023-02-17T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2023-02-17T00:00:00+00:00" />
 <meta itemprop="wordCount" content="397"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
-<meta itemprop="keywords" content="k8s进阶训练营," /><meta property="og:title" content="K8S集群证书更新 (十五)" />
+<meta itemprop="keywords" content="k8s进阶训练营," /><meta property="og:title" content="K8S集群证书更新 (十六)" />
 <meta property="og:description" content="更新证书 为了更新的安全性，更新之前可以将所有 Master 节点的配置目录做一个备份： cp -r /etc/kubernetes /etc/kubernetes_$(date &#43;%F) cp -r /var/lib/etcd /var/lib/etcd_$(date &#43;%F)通过执行证书更新命令查看： kubeadm certs renew --hel" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
@@ -20,14 +20,14 @@
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
 
-<meta name="twitter:title" content="K8S集群证书更新 (十五)"/>
+<meta name="twitter:title" content="K8S集群证书更新 (十六)"/>
 <meta name="twitter:description" content="更新证书 为了更新的安全性，更新之前可以将所有 Master 节点的配置目录做一个备份： cp -r /etc/kubernetes /etc/kubernetes_$(date &#43;%F) cp -r /var/lib/etcd /var/lib/etcd_$(date &#43;%F)通过执行证书更新命令查看： kubeadm certs renew --hel"/>
 <meta name="application-name" content="Ryan’s Notebook">
 <meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-13/" /><link rel="next" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-14/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
-    "headline": "K8S集群证书更新 (十五)",
+    "headline": "K8S集群证书更新 (十六)",
     "inLanguage": "zh-CN",
     "mainEntityOfPage": {
       "@type": "WebPage",
@@ -177,11 +177,11 @@
     </aside>
 
   <article class="page single">
-    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>K8S集群证书更新 (十五)</span>
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>K8S集群证书更新 (十六)</span>
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/kubernetes/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Kubernetes</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2023-02-17 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-17">2023-02-17</time></span>&nbsp;<span title="更新于 2023-02-17 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-17">2023-02-17</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 397 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 1 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="K8S集群证书更新 (十五)">
+      <div class="post-meta-line"><span title="发布于 2023-02-17 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-17">2023-02-17</time></span>&nbsp;<span title="更新于 2023-02-17 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-02-17">2023-02-17</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 397 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 1 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="K8S集群证书更新 (十六)">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -244,14 +244,14 @@
     <div class="post-info-line">
       <div class="post-info-md"><span><a href="/posts/kubernetes/primary/kubernetes-15/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
       <div class="post-info-share">
-        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" data-title="K8S集群证书更新 (十五)" data-hashtags="k8s进阶训练营"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" data-title="K8S集群证书更新 (十六)" data-hashtags="k8s进阶训练营"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
   <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" data-hashtag="k8s进阶训练营"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" data-title="K8S集群证书更新 (十五)" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" data-title="K8S集群证书更新 (十五)"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" data-title="K8S集群证书更新 (十五)"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" data-title="K8S集群证书更新 (十五)" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" data-title="K8S集群证书更新 (十五)" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" data-title="K8S集群证书更新 (十五)"><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" data-title="K8S集群证书更新 (十六)" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" data-title="K8S集群证书更新 (十六)"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" data-title="K8S集群证书更新 (十六)"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" data-title="K8S集群证书更新 (十六)" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" data-title="K8S集群证书更新 (十六)" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-15/" data-title="K8S集群证书更新 (十六)"><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
   </span>
       </div>
     </div>
@@ -265,7 +265,7 @@
   </div>
 
   <div class="post-nav"><a href="/posts/kubernetes/primary/kubernetes-13/" class="post-nav-item" rel="prev" title="HPA自动伸缩pod数量 (十三)"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>HPA自动伸缩pod数量 (十三)</a>
-      <a href="/posts/kubernetes/primary/kubernetes-14/" class="post-nav-item" rel="next" title="K8S 持续集成与部署 (十四)">K8S 持续集成与部署 (十四)<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+      <a href="/posts/kubernetes/primary/kubernetes-14/" class="post-nav-item" rel="next" title="K8S 持续集成与部署 (十五)">K8S 持续集成与部署 (十五)<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></main><footer class="footer">
     <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>

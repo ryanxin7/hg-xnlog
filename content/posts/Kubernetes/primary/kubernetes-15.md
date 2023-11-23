@@ -1,6 +1,6 @@
 ---
 author: Ryan
-title: K8S集群证书更新 (十五)
+title: K8S集群证书更新 (十六)
 date: 2023-02-17
 lastmod: 2023-02-17
 tags:

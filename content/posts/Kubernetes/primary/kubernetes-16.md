@@ -1,6 +1,6 @@
 ---
 author: Ryan
-title: 实战案例-Cert-Manager 实现 K8s 服务域名证书自动化续签 (十六)
+title: 实战案例-Cert-Manager 实现 K8s 服务域名证书自动化续签 (十七)
 date: 2023-02-21
 lastmod: 2023-02-21
 tags:
