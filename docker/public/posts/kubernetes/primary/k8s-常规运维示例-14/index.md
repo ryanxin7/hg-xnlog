@@ -435,6 +435,27 @@ URL: http://10.1.0.101/mi/
 
 
 
+灰度发布
+
+![image-20231124143431468](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231124143431468.png)
+
+```bash
+```
+
+
+
+![image-20231124143545843](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231124143545843.png)
+
+![image-20231124143648538](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231124143648538.png)
+
+
+
+![image-20231124143720447](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231124143720447.png)
+
+![image-20231124145635107](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231124145635107.png)
+
+![image-20231124145732604](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231124145732604.png)
+
 ## 5.配置主机为封锁状态且不参与调度
 
 ```bash
