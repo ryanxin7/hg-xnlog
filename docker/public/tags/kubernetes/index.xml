@@ -4,7 +4,15 @@
     <link>https://hg-xnlog.github.io/tags/kubernetes/</link>
     <description>Kubernetes - 标签 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Wed, 13 Sep 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/kubernetes/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 04 Dec 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/kubernetes/" rel="self" type="application/rss+xml" /><item>
+  <title>k8s结合Jenkins与gitlab代码升级与回滚</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E7%BB%93%E5%90%88jenkins%E4%B8%8Egitlab%E4%BB%A3%E7%A0%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%9B%9E%E6%BB%9A/</link>
+  <pubDate>Mon, 04 Dec 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E7%BB%93%E5%90%88jenkins%E4%B8%8Egitlab%E4%BB%A3%E7%A0%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%9B%9E%E6%BB%9A/</guid>
+  <description><![CDATA[k8s结合Jenkins与gitlab代码升级与回滚 一、jenkins环境准备 1.1 安装jdk17 tar -xf jdk-17.0.9_linux-x64.tar.gz -C /opt ## 配置环境变量 vim /etc/profile.d/java.sh JAVA_HOME=/opt/jdk-17.0.9 CLASSPATH=.:$JAVA_HOME/lib/jrt-fs.jar PATH=$PATH:$JAVA_HOME/bin source /etc/]]></description>
+</item>
+<item>
   <title>K8S集群证书过期处理-Node NoReady状态</title>
   <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/</link>
   <pubDate>Wed, 13 Sep 2023 00:00:00 &#43;0000</pubDate>

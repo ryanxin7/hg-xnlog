@@ -1,0 +1,445 @@
+# 
+
+
+
+安装java
+
+```bash
+root@ceamg-server:/opt/jdk-17.0.9# java -version
+java version "17.0.9" 2023-10-17 LTS
+Java(TM) SE Runtime Environment (build 17.0.9+11-LTS-201)
+Java HotSpot(TM) 64-Bit Server VM (build 17.0.9+11-LTS-201, mixed mode, sharing)
+```
+
+
+
+
+
+安装Jenkins
+
+```bash
+root@ceamg-server:/tmp# dpkg -i jenkins_2.414.3_all.deb
+Selecting previously unselected package jenkins.
+(Reading database ... 75661 files and directories currently installed.)
+Preparing to unpack jenkins_2.414.3_all.deb ...
+Unpacking jenkins (2.414.3) ...
+dpkg: dependency problems prevent configuration of jenkins:
+ jenkins depends on net-tools; however:
+  Package net-tools is not installed.
+
+dpkg: error processing package jenkins (--install):
+ dependency problems - leaving unconfigured
+Processing triggers for systemd (245.4-4ubuntu3.11) ...
+Errors were encountered while processing:
+ jenkins
+
+
+root@ceamg-server:/tmp# dpkg -r jenkins
+(Reading database ... 75675 files and directories currently installed.)
+Removing jenkins (2.414.3) ...
+
+```
+
+
+
+安装依赖
+
+```bash
+root@ceamg-server:/tmp# apt install  net-tools
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following NEW packages will be installed:
+  net-tools
+0 upgraded, 1 newly installed, 0 to remove and 264 not upgraded.
+Need to get 196 kB of archives.
+After this operation, 864 kB of additional disk space will be used.
+Get:1 http://mirrors.tuna.tsinghua.edu.cn/ubuntu focal/main amd64 net-tools amd64 1.60+git20180626.aebd88e-1ubuntu1 [196 kB]
+Fetched 196 kB in 2s (121 kB/s)
+Selecting previously unselected package net-tools.
+(Reading database ... 75664 files and directories currently installed.)
+Preparing to unpack .../net-tools_1.60+git20180626.aebd88e-1ubuntu1_amd64.deb ...
+Unpacking net-tools (1.60+git20180626.aebd88e-1ubuntu1) ...
+Setting up net-tools (1.60+git20180626.aebd88e-1ubuntu1) ...
+Processing triggers for man-db (2.9.1-1) ...
+```
+
+
+
+```bash
+root@ceamg-server:/opt/jdk-17.0.9# systemctl restart jenkins.service
+Warning: The unit file, source configuration file or drop-ins of jenkins.service changed on disk. Run 'systemctl daemon-reload' to reload units.
+Job for jenkins.service failed because the control process exited with error code.
+See "systemctl status jenkins.service" and "journalctl -xe" for details.
+root@ceamg-server:/opt/jdk-17.0.9#
+root@ceamg-server:/opt/jdk-17.0.9# systemctl daemon-reload
+root@ceamg-server:/opt/jdk-17.0.9#
+root@ceamg-server:/opt/jdk-17.0.9# systemctl restart jenkins.service
+root@ceamg-server:/opt/jdk-17.0.9#
+root@ceamg-server:/opt/jdk-17.0.9# systemctl status jenkins.service
+● jenkins.service - Jenkins Continuous Integration Server
+     Loaded: loaded (/lib/systemd/system/jenkins.service; enabled; vendor preset: enabled)
+    Drop-In: /etc/systemd/system/jenkins.service.d
+             └─override.conf
+     Active: active (running) since Fri 2023-12-01 06:03:29 UTC; 49s ago
+   Main PID: 1083179 (java)
+      Tasks: 59 (limit: 9447)
+     Memory: 2.1G
+     CGroup: /system.slice/jenkins.service
+             └─1083179 /opt/jdk-17.0.9/bin/java -Djava.awt.headless=true -jar /usr/share/java/jenkins.war --webroot=/var/cache/jenkins/war --httpPort=>
+
+Dec 01 06:03:11 ceamg-server jenkins[1083179]: Jenkins initial setup is required. An admin user has been created and a password generated.
+Dec 01 06:03:11 ceamg-server jenkins[1083179]: Please use the following password to proceed to installation:
+Dec 01 06:03:11 ceamg-server jenkins[1083179]: aad0ca64ee9a499cb00ea803b0563694
+Dec 01 06:03:11 ceamg-server jenkins[1083179]: This may also be found at: /var/lib/jenkins/secrets/initialAdminPassword
+Dec 01 06:03:11 ceamg-server jenkins[1083179]: *************************************************************
+Dec 01 06:03:11 ceamg-server jenkins[1083179]: *************************************************************
+Dec 01 06:03:11 ceamg-server jenkins[1083179]: *************************************************************
+Dec 01 06:03:29 ceamg-server jenkins[1083179]: 2023-12-01 06:03:29.569+0000 [id=48]        INFO        jenkins.InitReactorRunner$1#onAttained: Complet>
+Dec 01 06:03:29 ceamg-server jenkins[1083179]: 2023-12-01 06:03:29.584+0000 [id=26]        INFO        hudson.lifecycle.Lifecycle#onReady: Jenkins is >
+Dec 01 06:03:29 ceamg-server systemd[1]: Started Jenkins Continuous Integration Server.
+
+root@ceamg-server:/opt/jdk-17.0.9#
+root@ceamg-server:/opt/jdk-17.0.9# netstat -lntup
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:41991           0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:41643           0.0.0.0:*               LISTEN      625/rpc.mountd
+tcp        0      0 0.0.0.0:54605           0.0.0.0:*               LISTEN      625/rpc.mountd
+tcp        0      0 0.0.0.0:111             0.0.0.0:*               LISTEN      1/init
+tcp        0      0 127.0.0.1:20180         0.0.0.0:*               LISTEN      82703/VMToolsAgentA
+tcp        0      0 127.0.0.1:20181         0.0.0.0:*               LISTEN      82703/VMToolsAgentA
+tcp        0      0 127.0.0.1:33397         0.0.0.0:*               LISTEN      82686/G2HProxy
+tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      621/systemd-resolve
+tcp        0      0 127.0.0.1:20182         0.0.0.0:*               LISTEN      82686/G2HProxy
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1666/sshd: /usr/sbi
+tcp        0      0 127.0.0.1:6010          0.0.0.0:*               LISTEN      29129/sshd: ceamg@p
+tcp        0      0 0.0.0.0:2049            0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:58913           0.0.0.0:*               LISTEN      625/rpc.mountd
+tcp6       0      0 :::34469                :::*                    LISTEN      625/rpc.mountd
+tcp6       0      0 :::35597                :::*                    LISTEN      -
+tcp6       0      0 :::60909                :::*                    LISTEN      625/rpc.mountd
+tcp6       0      0 :::111                  :::*                    LISTEN      1/init
+tcp6       0      0 :::8080                 :::*                    LISTEN      1083179/java
+
+```
+
+
+
+![image-20231201143838772](https://cdn1.ryanxin.live/image-20231201143838772.png)
+
+
+
+```bash
+root@ceamg-server:/opt/jdk-17.0.9# cat /var/lib/jenkins/secrets/initialAdminPassword
+aad0ca64ee9a499cb00ea803b0563694
+```
+
+![image-20231201144616862](C:\Users\xx9z\Downloads\image-20231201144616862.png)
+
+![image-20231201144709325](C:\Users\xx9z\Downloads\image-20231201144709325.png)
+
+
+
+![image-20231201152600697](https://cdn1.ryanxin.live/image-20231201152600697.png)
+
+
+
+先重启一下变成中文
+
+
+
+测试Jenkins 
+
+![image-20231201154407514](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231201154407514.png)
+
+![image-20231201154614638](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231201154614638.png)
+
+![image-20231201155058023](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231201155058023.png)
+
+![image-20231201155159325](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231201155159325.png)
+
+
+
+测试clone
+
+```bash
+root@ceamg-server:/opt# git clone  http://10.1.0.140/xxteam/xinn.git
+Cloning into 'xinn'...
+Username for 'http://10.1.0.140': xin1
+Password for 'http://xin1@10.1.0.140':
+remote: Enumerating objects: 6, done.
+remote: Counting objects: 100% (6/6), done.
+remote: Compressing objects: 100% (4/4), done.
+remote: Total 6 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (6/6), 3.03 KiB | 57.00 KiB/s, done.
+
+```
+
+
+
+![image-20231201161908459](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231201161908459.png)
+
+![image-20231201162914825](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231201162914825.png)
+
+
+
+![image-20231201171418209](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231201171418209.png)
+
+```bash
+root@ceamg-server:/data# ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/id_rsa
+Your public key has been saved in /root/.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:aZCal90HsZPHoIcJj4ggYFdSDU3UJ51+shAMTOt4bVU root@ceamg-server
+The key's randomart image is:
++---[RSA 3072]----+
+|=. oo+X=+ + .E   |
+|o..... O.O X.    |
+|  . . +.= @.o    |
+|     oo+.=.* .   |
+|    o.ooSoo =    |
+|     ....  o     |
+|                 |
+|                 |
+|                 |
++----[SHA256]-----+
+root@ceamg-server:/data#
+root@ceamg-server:/data# cat /root/.ssh/
+authorized_keys  id_rsa           id_rsa.pub
+root@ceamg-server:/data# cat /root/.ssh/id_rsa.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDNRtj7OYSloUzmkhC/o9IohtoqKT9hhXlfM9t8VxnQZKqoCSlnZrlrpSk32Ds9JcKfpytu5x2iwPsF/Ytb8wS4dTBKc/89FyO+U1cOMxXakNBL9lYIbyxNrVs2GAWRwJyyYsfa8kOTLvkPejRm2d5HeQKLqbbTChHsubFQDHDLjz0DVNPx9J5t4Z33Dn8cSjAjMtKVLCgb810gOW0S60RMFLSSmoEzDwWG4Kv7vbOgugNDhQS3UVfOY1DU6/b8OMrWzaPLySaUXe0CjDf3sDgMU3LG2CsHaJ9eIqBwI5YQ84RanCINfbuyrlFW4Mu3FF1B2lxfZlen/O0vcfOq0sJX990/1xO136xkngWzElOEIkCpVCUqMyIj4BS0qdYu+IUw3+diKcsOC9nbJ1E3zootRiTUD6oejbAB1aSy4g0JaavfGJjpoJXLSWV09wk8Osivrf3MXme7vhzLNzF9vraiwenNUM/BAvYSVAJQyQNvksGFrLFm4U9KXG5WqpDLTP8= root@ceamg-server
+```
+
+![image-20231201163530046](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231201163530046.png)
+
+
+
+```bash
+root@ceamg-server:/opt# rm -rf xinn/
+root@ceamg-server:/opt#
+root@ceamg-server:/opt# git clone git@10.1.0.140:xxteam/xinn.git
+Cloning into 'xinn'...
+The authenticity of host '10.1.0.140 (10.1.0.140)' can't be established.
+ECDSA key fingerprint is SHA256:lhRjKQBhgEhjbqcfKBb6oyle8C9EIOzu48QUoaeISIE.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '10.1.0.140' (ECDSA) to the list of known hosts.
+remote: Enumerating objects: 6, done.
+remote: Counting objects: 100% (6/6), done.
+remote: Compressing objects: 100% (4/4), done.
+remote: Total 6 (delta 0), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (6/6), done.
+root@ceamg-server:/opt#
+root@ceamg-server:/opt# rm -rf xinn/
+root@ceamg-server:/opt#
+root@ceamg-server:/opt# git clone git@10.1.0.140:xxteam/xinn.git
+Cloning into 'xinn'...
+remote: Enumerating objects: 6, done.
+remote: Counting objects: 100% (6/6), done.
+remote: Compressing objects: 100% (4/4), done.
+remote: Total 6 (delta 0), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (6/6), done.
+```
+
+```bash
+mkdir /data/gitdata
+```
+
+
+
+
+
+
+
+
+
+
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xinn-web1-deployment
+  namespace: xinn
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: xinn-web1-tomcat
+  template:
+    metadata:
+      labels:
+        app: xinn-web1-tomcat
+    spec:
+      containers:
+      - name: xinn-web1
+        image: harbor.ceamg.com/baseimages/webapp-tomcat:x1
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: xinn-web1-service
+  namespace: xinn
+spec:
+  selector:
+    app: xinn-web1-tomcat
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 9988
+  type: NodePort
+```
+
+![image-20231201171639534](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231201171639534.png)
+
+
+
+
+
+## 执行构建
+
+![image-20231201174158992](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231201174158992.png)
+
+```bash
+/opt/k8s-data/yaml/xinn-web1.yaml
+/opt/k8s-data/dockerfile/xinn
+
+```
+
+```bash
+root@k8s-made-01-32:/opt/k8s-data/dockerfile/xinn# docker login harbor.ceamg.com
+Username: xcd
+Password:
+WARNING! Your password will be stored unencrypted in /root/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+
+```
+
+
+
+```bash
+#!/bin/bash
+#Author: ZhangShiJie
+#Date: 2019-08-03
+#Version: v1
+#记录脚本开始执行时间
+starttime=$(date +'%Y-%m-%d %H:%M:%S')
+#变量
+SHELL_DIR="/root/scripts"
+SHELL_NAME="$0"
+K8S_CONTROLLER1="10.1.0.32"
+K8S_CONTROLLER2="10.1.0.33"
+DATE=$(date +%Y-%m-%d_%H_%M_%S)
+METHOD=$1
+Branch=$2
+if test -z $Branch; then
+    Branch=develop
+fi
+function Code_Clone() {
+    Git_URL="git@10.1.0.140:xxteam/xinn.git"
+    DIR_NAME=$(echo ${Git_URL} | awk -F "/" '{print $2}' | awk -F "." '{print $1}')
+    DATA_DIR="/data/gitdata/"
+    Git_Dir="${DATA_DIR}/${DIR_NAME}"
+    cd ${DATA_DIR} && echo "即将清空上一版本代码并获取当前分支最新代码" && sleep 1 && rm -rf ${DIR_NAME}
+    echo "即将开始从分支${Branch} 获取代码" && sleep 1
+    git clone -b ${Branch} ${Git_URL}
+    echo "分支${Branch} 克隆完成，即将进行代码编译!" && sleep 1
+    #cd ${Git_Dir} && mvn clean package
+    #echo "代码编译完成，即将开始将IP地址等信息替换为测试环境"
+    #####################################################
+    sleep 1
+    cd ${Git_Dir}
+    tar czf ${DIR_NAME}.tar.gz ./*
+}
+
+#将打包好的压缩文件拷贝到k8s 控制端服务器
+function Copy_File() {
+    echo "压缩文件打包完成，即将拷贝到k8s 控制端服务器${K8S_CONTROLLER1}" && sleep 1
+    scp ${Git_Dir}/${DIR_NAME}.tar.gz root@${K8S_CONTROLLER1}:/opt/k8s-data/dockerfile/xinn
+    ssh root@${K8S_CONTROLLER1} "cd /opt/k8s-data/dockerfile/xinn && tar xf ${DIR_NAME}.tar.gz ./"
+    echo "压缩文件拷贝完成,服务器${K8S_CONTROLLER1}即将开始制作Docker 镜像!" && sleep 1
+}
+
+#到控制端执行脚本制作并上传镜像
+function Make_Image() {
+    echo "开始制作Docker镜像并上传到Harbor服务器" && sleep 1
+    ssh root@${K8S_CONTROLLER1} "cd /opt/k8s-data/dockerfile/xinn && bash build-command.sh ${DATE}"
+    echo "Docker镜像制作完成并已经上传到harbor服务器" && sleep 1
+}
+
+#到控制端更新k8s yaml文件中的镜像版本号,从而保持yaml文件中的镜像版本号和k8s中版本号一致
+function Update_k8s_yaml() {
+    echo "即将更新k8s yaml文件中镜像版本" && sleep 1
+    ssh root@${K8S_CONTROLLER1} "cd /opt/k8s-data/yaml && sed -i 's/image: harbor.ceamg.*/image: harbor.ceamg.com\/baseimages\/xinn-web1:${DATE}/g' xinn-web1.yaml"
+    echo "k8s yaml文件镜像版本更新完成,即将开始更新容器中镜像版本" && sleep 1
+}
+
+#到控制端更新k8s中容器的版本号,有两种更新办法，一是指定镜像版本更新，二是apply执行修改过的yaml文件
+function Update_k8s_container() {
+    #第一种方法
+    #ssh root@${K8S_CONTROLLER1} "kubectl set image deployment/linux36-nginx-deployment linux36-nginx-container=harbor.magedu.net/linux36/nginx-web1:${DATE} -n linux36"
+    #第二种方法,推荐使用第一种
+    ssh root@${K8S_CONTROLLER1} "cd /opt/k8s-data/yaml && kubectl apply -f xinn-web1.yaml --record"
+    echo "k8s 镜像更新完成" && sleep 1
+    echo "当前业务镜像版本: harbor.ceamg.com/baseimages/xinn-web1:${DATE}"
+    #计算脚本累计执行时间，如果不需要的话可以去掉下面四行
+    endtime=$(date +'%Y-%m-%d %H:%M:%S')
+    start_seconds=$(date --date="$starttime" +%s)
+    end_seconds=$(date --date="$endtime" +%s)
+    echo "本次业务镜像更新总计耗时："$((end_seconds - start_seconds))"s"
+}
+
+#基于k8s 内置版本管理回滚到上一个版本
+function rollback_last_version() {
+    echo "即将回滚之上一个版本"
+    ssh root@${K8S_CONTROLLER1} "kubectl rollout undo deployment/xinn-web1-deployment -n xinn"
+    sleep 1
+    echo "已执行回滚至上一个版本"
+}
+
+#使用帮助
+usage() {
+    echo "部署使用方法为 ${SHELL_DIR}/${SHELL_NAME} deploy "
+    echo "回滚到上一版本使用方法为 ${SHELL_DIR}/${SHELL_NAME} rollback_last_version"
+}
+
+#主函数
+main() {
+    case ${METHOD} in
+    deploy)
+        Code_Clone
+        Copy_File
+        Make_Image
+        Update_k8s_yaml
+        Update_k8s_container
+        ;;
+    rollback_last_version)
+        rollback_last_version
+        ;;
+    *)
+        usage
+        ;;
+    esac
+}
+
+main $1 $2 $3
+```
+
+
+
+---
+
+> 作者: [Ryan](https://github.com/ryanxin7)  
+> URL: https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%901/  
+

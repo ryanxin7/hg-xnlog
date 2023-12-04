@@ -1,3 +1,4 @@
+https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E7%BB%93%E5%90%88jenkins%E4%B8%8Egitlab%E4%BB%A3%E7%A0%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%9B%9E%E6%BB%9A/
 https://hg-xnlog.github.io/posts/notes/windows%E7%B3%BB%E7%BB%9F%E6%9F%A5%E6%89%BE%E8%AE%BF%E9%97%AE%E7%9B%AE%E7%9A%84%E7%AB%AF%E5%8F%A3%E7%9A%84%E8%BF%9B%E7%A8%8B/
 https://hg-xnlog.github.io/posts/kubernetes/advanced/%E5%9F%BA%E4%BA%8Ek8s-%E5%8A%A8%E6%80%81%E6%8C%81%E4%B9%85%E5%8C%96%E5%AD%98%E5%82%A8%E9%83%A8%E7%BD%B2alist%E9%A1%B9%E7%9B%AE/
 https://hg-xnlog.github.io/posts/wordpress/wordpress%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6/
@@ -93,4 +94,8 @@ https://hg-xnlog.github.io/posts/linux-basic/linux1/
 https://hg-xnlog.github.io/posts/linux-basic/linux-network/
 https://hg-xnlog.github.io/posts/linux-basic/linux-technology-stack/
 https://hg-xnlog.github.io/posts/linux-basic/nfs/
+https://hg-xnlog.github.io/posts/docker/tomcat%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/
+https://hg-xnlog.github.io/posts/docker/%E6%9E%84%E5%BB%BAjdk17%E9%95%9C%E5%83%8F/
+https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%901/
+https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%902/
 https://hg-xnlog.github.io/posts/kubernetes/primary/cert-manager-&#43;-zerossl-%E7%9A%84%E4%B8%80%E4%BA%9B%E9%85%8D%E7%BD%AE%E7%9A%84%E7%A0%94%E7%A9%B6/
