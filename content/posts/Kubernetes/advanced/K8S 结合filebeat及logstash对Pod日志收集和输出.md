@@ -313,3 +313,175 @@ Client port found: 2181. Client address: localhost. Client SSL: false.
 Mode: follower
 ```
 
+
+
+
+
+
+
+## 三、安装kafka
+
+### 3.1  下载 kafka程序包安装
+
+https://kafka.apache.org/downloads
+
+
+
+```bash
+tar xf kafka_2.13-2.4.1.tgz
+mkdir /data/kafka-logs
+ln -s kafka_2.13-2.4.1  kafka
+vim config/server.properties
+```
+
+
+
+
+
+### 3.2 编辑kafka配置文件
+
+```bash
+
+
+```
+
+
+
+
+
+
+
+
+
+```bash
+root@zk1:/apps/kafka# systemctl status kafka.service
+● kafka.service - Apache Kafka server (broker)
+   Loaded: loaded (/etc/systemd/system/kafka.service; disabled; vendor preset: enabled)
+   Active: active (running) since Fri 2023-12-08 02:15:50 UTC; 5s ago
+ Main PID: 94927 (java)
+    Tasks: 23 (limit: 2287)
+   CGroup: /system.slice/kafka.service
+           └─94927 java -Xmx1G -Xms1G -server -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:+ExplicitGCInvokesConcurrent -D
+
+Dec 08 02:15:53 zk1 kafka-server-start.sh[94927]: [2023-12-08 02:15:53,194] INFO Client environment:user.home=/root (org.apache.zookeeper.ZooKeeper)
+Dec 08 02:15:53 zk1 kafka-server-start.sh[94927]: [2023-12-08 02:15:53,195] INFO Client environment:user.dir=/ (org.apache.zookeeper.ZooKeeper)
+Dec 08 02:15:53 zk1 kafka-server-start.sh[94927]: [2023-12-08 02:15:53,195] INFO Client environment:os.memory.free=973MB (org.apache.zookeeper.ZooKeeper)
+Dec 08 02:15:53 zk1 kafka-server-start.sh[94927]: [2023-12-08 02:15:53,196] INFO Client environment:os.memory.max=1024MB (org.apache.zookeeper.ZooKeeper)
+Dec 08 02:15:53 zk1 kafka-server-start.sh[94927]: [2023-12-08 02:15:53,196] INFO Client environment:os.memory.total=1024MB (org.apache.zookeeper.ZooKeeper)
+Dec 08 02:15:53 zk1 kafka-server-start.sh[94927]: [2023-12-08 02:15:53,203] INFO Initiating client connection, connectString=192.167.149.26:2181,192.168.149
+Dec 08 02:15:53 zk1 kafka-server-start.sh[94927]: [2023-12-08 02:15:53,304] INFO Setting -D jdk.tls.rejectClientInitiatedRenegotiation=true to disable clien
+Dec 08 02:15:53 zk1 kafka-server-start.sh[94927]: [2023-12-08 02:15:53,324] INFO jute.maxbuffer value is 4194304 Bytes (org.apache.zookeeper.ClientCnxnSocke
+```
+
+
+
+```bash
+root@zk3:/apps# systemctl enable kafka.service
+Created symlink /etc/systemd/system/multi-user.target.wants/kafka.service → /etc/systemd/system/kafka.service.
+```
+
+
+
+![image-20231208104323045](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231208104323045.png)
+
+![image-20231208104413087](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231208104413087.png)
+
+
+
+### 四、在业务镜像中加入filebeat
+
+
+
+### centos dockerfile
+
+```docker
+FROM centos:7.8.2003
+LABEL maintainer="Ryan"
+
+# 添加文件到镜像中
+ADD filebeat-7.6.2-x86_64.rpm /tmp/
+
+# 安装所需软件包
+RUN yum install -y vim wget tree lrzsz gcc gcc-c++ automake pcre pcre-devel zlib zlib-devel openssl openssl-devel iproute net-tools iotop && \
+    rm -rf /var/cache/yum/* && \
+    yum clean all
+
+# 设置系统时区为上海时区
+RUN rm -rf /etc/localtime && \
+    ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+# 添加用户到系统中
+RUN useradd www -u 2023 && \
+    useradd nginx -u 2024
+```
+
+
+
+### JDK dockerfile
+
+```dockerfile
+FROM harbor.ceamg.com/baseimages/centos7.8-filebate:x1
+MAINTAINER xinn.cc
+WORKDIR /usr/local/java17
+ADD ./jdk-17.0.9_linux-x64.tar.gz  /usr/local/java17/
+ENV JAVA_HOME=/usr/local/java17/jdk-17.0.9
+ENV CLASSPATH=.:$JAVA_HOME/lib/jrt-fs.jar
+ENV PATH=$PATH:$JAVA_HOME/bin
+```
+
+
+
+`harbor.ceamg.com/baseimages/jdk17_0.9:x3`
+
+
+
+### tomcat dockerfile
+
+```dockerfile
+FROM harbor.ceamg.com/baseimages/jdk17_0.9:x3
+
+# Tomcat version to be installed
+ENV TOMCAT_VERSION 10.1.16
+
+COPY ./apache-tomcat-10.1.16.tar.gz /tmp/
+
+# 在容器中解压缩Tomcat文件
+RUN tar -xf /tmp/apache-tomcat-${TOMCAT_VERSION}.tar.gz -C /opt/ && \
+    mv /opt/apache-tomcat-${TOMCAT_VERSION} /opt/tomcat && \
+    rm -rf /tmp/apache-tomcat-${TOMCAT_VERSION}.tar.gz
+
+
+# Set environment variables
+ENV CATALINA_HOME /opt/tomcat
+ENV PATH $CATALINA_HOME/bin:$PATH
+
+
+COPY ./index.html /$CATALINA_HOME/webapps/ROOT
+
+# Expose the port that Tomcat runs on
+EXPOSE 8080
+
+# Set the working directory inside the container
+WORKDIR $CATALINA_HOME
+
+# Start Tomcat
+CMD ["catalina.sh", "run"]
+
+```
+
+```bash
+## 测试一下
+docker run --rm -d -p 8088:8080 harbor.ceamg.com/baseimages/xinn-web1:x3
+```
+
+
+
+![image-20231208172004824](https://cdn1.ryanxin.live/image-20231208172004824.png)
+
+![image-20231208172026399](https://cdn1.ryanxin.live/image-20231208172026399.png)
+
+![image-20231205155610290](https://cdn1.ryanxin.live/image-20231205155610290.png)
+
+
+
+## 五、安装logstash 
