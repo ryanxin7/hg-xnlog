@@ -388,11 +388,11 @@ Created symlink /etc/systemd/system/multi-user.target.wants/kafka.service → /e
 
 
 
-### 四、在业务镜像中加入filebeat
+## 四、在业务镜像中加入filebeat
 
 
 
-### centos dockerfile
+### 4.1 centos dockerfile
 
 ```docker
 FROM centos:7.8.2003
@@ -417,7 +417,7 @@ RUN useradd www -u 2023 && \
 
 
 
-### JDK dockerfile
+### 4.2 JDK dockerfile
 
 ```dockerfile
 FROM harbor.ceamg.com/baseimages/centos7.8-filebate:x1
@@ -435,7 +435,7 @@ ENV PATH=$PATH:$JAVA_HOME/bin
 
 
 
-### tomcat dockerfile
+### 4.3 tomcat dockerfile
 
 ```dockerfile
 FROM harbor.ceamg.com/baseimages/jdk17_0.9:x3
@@ -450,6 +450,10 @@ RUN tar -xf /tmp/apache-tomcat-${TOMCAT_VERSION}.tar.gz -C /opt/ && \
     mv /opt/apache-tomcat-${TOMCAT_VERSION} /opt/tomcat && \
     rm -rf /tmp/apache-tomcat-${TOMCAT_VERSION}.tar.gz
 
+ADD filebeat.yaml /etc/filebeat/filebeat.yaml
+ADD filebeat-7.5.1-amd64.deb /tmp
+
+RUN cd /tmp && yum localinstall -y filebeat-7.5.1-amd64.deb
 
 # Set environment variables
 ENV CATALINA_HOME /opt/tomcat
@@ -476,7 +480,46 @@ docker run --rm -d -p 8088:8080 harbor.ceamg.com/baseimages/xinn-web1:x3
 
 
 
+### 4.4 filebeat 配置
+
+```bash
+filebeat.inputs:
+- type: log
+  enabled: true
+  paths:
+    - /opt/tomcat/logs/catalina.*.log 
+  fields:
+    type: tomcat-catalina
+- type: log
+  enabled: true
+  paths:
+    - /opt/tomcat/logs/localhost_access_log.*.txt
+  fields: 
+    type: tomcat-accesslog
+filebeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+setup.template.settings:
+  index.number_of_shards: 1
+setup.kibana:
+
+output.kafka:
+  hosts: ["192.168.149.26:9092"]
+  required_acks: 1
+  topic: "xinn-app1"
+  compression: gzip
+  max_message_bytes: 1000000
+```
+
+
+
+
+
+
+
 ![image-20231208172004824](https://cdn1.ryanxin.live/image-20231208172004824.png)
+
+
 
 ![image-20231208172026399](https://cdn1.ryanxin.live/image-20231208172026399.png)
 
@@ -484,4 +527,103 @@ docker run --rm -d -p 8088:8080 harbor.ceamg.com/baseimages/xinn-web1:x3
 
 
 
+![image-20231221101157108](https://cdn1.ryanxin.live/image-20231221101157108.png)
+
+
+
+
+
 ## 五、安装logstash 
+
+
+
+```bash
+apt install openjdk-11-jdk -y
+
+root@logstash:/tmp# dpkg -i logstash-7.6.2.deb
+Selecting previously unselected package logstash.
+(Reading database ... 106223 files and directories currently installed.)
+Preparing to unpack logstash-7.6.2.deb ...
+Unpacking logstash (1:7.6.2-1) ...
+Setting up logstash (1:7.6.2-1) ...
+Using provided startup.options file: /etc/logstash/startup.options
+OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release.
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by com.headius.backport9.modules.Modules to method sun.nio.ch.NativeThread.signal(long)
+WARNING: Please consider reporting this to the maintainers of com.headius.backport9.modules.Modules
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+/usr/share/logstash/vendor/bundle/jruby/2.5.0/gems/pleaserun-0.0.30/lib/pleaserun/platform/base.rb:112: warning: constant ::Fixnum is deprecated
+Successfully created system startup script for Logstash
+```
+
+
+
+### 5.1 测试从kafka中读并输出到标准输出
+
+```bash
+vim /etc/logstash/conf.d/kafkatoes.conf
+input {
+  kafka {
+    bootstrap_servers => "192.168.149.26:9092,192.168.149.27:9092,192.168.149.28:9092"
+    topics => ["xinn-app1"]
+    codec => "json"
+  }
+}
+
+output {
+  stdout {
+    codec => rubydebug
+  }
+}
+
+```
+
+
+
+![image-20231221154105861](https://cdn1.ryanxin.live/image-20231221154105861.png)
+
+
+
+### 5.2 从kafka中读并输出到ES集群
+
+```bash
+vim /etc/logstash/conf.d/kafkatoes.conf
+input {
+  kafka {
+    bootstrap_servers => "192.168.149.26:9092,192.168.149.27:9092,192.168.149.28:9092"
+    topics => ["xinn-app1"]
+    codec => "json"
+  }
+}
+
+output {
+  if [fields][type] == "tomcat-accesslog" {
+    elasticsearch {
+    hosts => ["192.168.149.22:9200","192.168.149.23:9200","192.168.149.24:9200"]
+    index => "xinn-app1-accesslog-%{+YYYY.MM.dd}"
+    }
+  }
+  if [fields][type] == "tomcat-catalina" {
+    elasticsearch {
+    hosts => ["192.168.149.22:9200","192.168.149.23:9200","192.168.149.24:9200"]
+    index => "xinn-app1-catalina-%{+YYYY.MM.dd}"
+    }
+  }
+
+
+#  stdout {
+#    codec => rubydebug
+#  }
+}
+```
+
+
+
+### 5.3 安装head插件查看数据
+
+![image-20231221172155957](https://cdn1.ryanxin.live/image-20231221172155957.png)
+
+![image-20231221172437806](https://cdn1.ryanxin.live/image-20231221172437806.png)
+
+![image-20231221172519941](https://cdn1.ryanxin.live/image-20231221172519941.png)
