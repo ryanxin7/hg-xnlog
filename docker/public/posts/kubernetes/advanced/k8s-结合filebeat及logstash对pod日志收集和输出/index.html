@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>K8S 结合filebeat及logstash对Pod日志收集和输出 - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
+<meta name="author-link" content="https://github.com/ryanxin7">
+<meta name="description" content="K8S 结合filebeat及logstash对Pod日志收集和输出 一、安装Elasticsearch 1.1 安装软件包 root@es1:/tmp# dpkg -i elasticsearch-7.6.2-amd64.deb Selecting previously unselected package elasticsearch. (Reading database ... 67342 files and directories" /><meta name="keywords" content='Kubernetes实战案例, 日志收集' /><meta itemprop="name" content="K8S 结合filebeat及logstash对Pod日志收集和输出">
+<meta itemprop="description" content="K8S 结合filebeat及logstash对Pod日志收集和输出 一、安装Elasticsearch 1.1 安装软件包 root@es1:/tmp# dpkg -i elasticsearch-7.6.2-amd64.deb Selecting previously unselected package elasticsearch. (Reading database ... 67342 files and directories"><meta itemprop="datePublished" content="2023-12-07T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2023-12-07T00:00:00+00:00" />
+<meta itemprop="wordCount" content="2303"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="keywords" content="Kubernetes实战案例,日志收集," /><meta property="og:title" content="K8S 结合filebeat及logstash对Pod日志收集和输出" />
+<meta property="og:description" content="K8S 结合filebeat及logstash对Pod日志收集和输出 一、安装Elasticsearch 1.1 安装软件包 root@es1:/tmp# dpkg -i elasticsearch-7.6.2-amd64.deb Selecting previously unselected package elasticsearch. (Reading database ... 67342 files and directories" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2023-12-07T00:00:00+00:00" />
+<meta property="article:modified_time" content="2023-12-07T00:00:00+00:00" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
+
+<meta name="twitter:title" content="K8S 结合filebeat及logstash对Pod日志收集和输出"/>
+<meta name="twitter:description" content="K8S 结合filebeat及logstash对Pod日志收集和输出 一、安装Elasticsearch 1.1 安装软件包 root@es1:/tmp# dpkg -i elasticsearch-7.6.2-amd64.deb Selecting previously unselected package elasticsearch. (Reading database ... 67342 files and directories"/>
+<meta name="application-name" content="Ryan’s Notebook">
+<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E7%BB%93%E5%90%88jenkins%E4%B8%8Egitlab%E4%BB%A3%E7%A0%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%9B%9E%E6%BB%9A/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "K8S 结合filebeat及logstash对Pod日志收集和输出",
+    "inLanguage": "zh-CN",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/advanced\/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA\/"
+    },"genre": "posts","keywords": "Kubernetes实战案例, 日志收集","wordcount":  2303 ,
+    "url": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/advanced\/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA\/","datePublished": "2023-12-07T00:00:00+00:00","dateModified": "2023-12-07T00:00:00+00:00","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "Ryan"
+      },"description": ""
+  }
+  </script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><script>(window.localStorage?.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('auto' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'auto' === 'dark')) && document.body.setAttribute('data-theme', 'dark');</script><div class="wrapper" data-page-style="wide"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper" data-github-corner="right">
+    <div class="header-title">
+      <a href="/" title="Ryan&#39;s Notebook"><img loading="lazy" src="/images/pow.png" srcset="/images/pow.png, /images/pow.png 1.5x, /images/pow.png 2x" sizes="auto" data-title="Ryan&#39;s Notebook" data-alt="Ryan&#39;s Notebook" class="logo" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/><span class="header-title-text">Ryan’s Notebook</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/posts/"
+                
+                
+              ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 所有文章</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/categories/"
+                
+                
+              ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/tags/"
+                
+                
+              ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/friends/"
+                title="友情链接"
+                
+              ><i class="fa-solid fa-users fa-fw fa-sm" aria-hidden="true"></i> 友链</a></li><li class="menu-item">
+              <a
+                class="menu-link"
+                href="/about/"
+                
+                
+              ><i class="fa-solid fa-user-tie fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="搜索文章标题或内容……" id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="搜索">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="清空">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="切换主题">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="Ryan&#39;s Notebook"><img loading="lazy" src="/images/pow.png" srcset="/images/pow.png, /images/pow.png 1.5x, /images/pow.png 2x" sizes="auto" data-title="/images/pow.png" data-alt="/images/pow.png" class="logo" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/><span class="header-title-text">Ryan’s Notebook</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="搜索文章标题或内容……" id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="搜索">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="清空">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              取消
+            </a>
+          </li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/posts/"
+                  
+                  
+                ><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> 所有文章</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/categories/"
+                  
+                  
+                ><i class="fa-solid fa-th fa-fw fa-sm" aria-hidden="true"></i> 分类</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/tags/"
+                  
+                  
+                ><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> 标签</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/friends/"
+                  title="友情链接"
+                  
+                ><i class="fa-solid fa-users fa-fw fa-sm" aria-hidden="true"></i> 友链</a></li><li
+              class="menu-item"
+            ><a
+                  class="menu-link"
+                  href="/about/"
+                  
+                  
+                ><i class="fa-solid fa-user-tie fa-fw fa-sm" aria-hidden="true"></i> 关于</a></li><li
+              class="menu-item text-center"
+            ><a
+                  class="menu-link"
+                  href="https://github.com/ryanxin7/hg-xnlog"
+                  title="GitHub"
+                  rel="noopener noreferrer" target="_blank"
+                ><i class='fa-brands fa-github fa-fw' aria-hidden='true'></i> </a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="切换主题"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container"><aside class="toc" id="toc-auto"><h2 class="toc-title">目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside>
+
+  <aside class="aside-custom">
+    </aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>K8S 结合filebeat及logstash对Pod日志收集和输出</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
+          <span class="post-category">收录于 <a href="/categories/kubernetes/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Kubernetes</a>&ensp;<a href="/categories/elk/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> ELK</a></span></div>
+      <div class="post-meta-line"><span title="发布于 2023-12-07 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2023-12-07">2023-12-07</time></span>&nbsp;<span title="更新于 2023-12-07 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2023-12-07">2023-12-07</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 2303 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 5 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="K8S 结合filebeat及logstash对Pod日志收集和输出">
+            <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
+          </span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>目录</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#一安装elasticsearch">一、安装Elasticsearch</a>
+      <ul>
+        <li><a href="#11-安装软件包">1.1 安装软件包</a></li>
+        <li><a href="#12-修改配置文件">1.2 修改配置文件</a></li>
+        <li><a href="#13-创建数据路径和权限">1.3 创建数据路径和权限</a></li>
+        <li><a href="#14-启动服务">1.4 启动服务</a></li>
+        <li><a href="#15-检查运行状态">1.5 检查运行状态</a></li>
+      </ul>
+    </li>
+    <li><a href="#二安装zookeeper">二、安装zookeeper</a>
+      <ul>
+        <li><a href="#21-安装openjdk-8">2.1 安装openjdk-8</a></li>
+        <li><a href="#22-安装zookeeper">2.2 安装zookeeper</a></li>
+        <li><a href="#23-编辑zookeeper配置文件">2.3 编辑zookeeper配置文件</a></li>
+        <li><a href="#24-配置zookeeper">2.4 配置zookeeper</a></li>
+        <li><a href="#25-使用systemd-管理zookeeper">2.5 使用Systemd 管理zookeeper</a></li>
+        <li><a href="#25-启动服务">2.5 启动服务</a></li>
+        <li><a href="#26-查看服务状态">2.6 查看服务状态</a></li>
+      </ul>
+    </li>
+    <li><a href="#三安装kafka">三、安装kafka</a>
+      <ul>
+        <li><a href="#31--下载-kafka程序包安装">3.1  下载 kafka程序包安装</a></li>
+        <li><a href="#32-编辑kafka配置文件">3.2 编辑kafka配置文件</a></li>
+      </ul>
+    </li>
+    <li><a href="#四在业务镜像中加入filebeat">四、在业务镜像中加入filebeat</a>
+      <ul>
+        <li><a href="#41-centos-dockerfile">4.1 centos dockerfile</a></li>
+        <li><a href="#42-jdk-dockerfile">4.2 JDK dockerfile</a></li>
+        <li><a href="#43-tomcat-dockerfile">4.3 tomcat dockerfile</a></li>
+        <li><a href="#44-filebeat-配置">4.4 filebeat 配置</a></li>
+      </ul>
+    </li>
+    <li><a href="#五安装logstash">五、安装logstash</a>
+      <ul>
+        <li><a href="#51-测试从kafka中读并输出到标准输出">5.1 测试从kafka中读并输出到标准输出</a></li>
+        <li><a href="#52-从kafka中读并输出到es集群">5.2 从kafka中读并输出到ES集群</a></li>
+        <li><a href="#53-安装head插件查看数据">5.3 安装head插件查看数据</a></li>
+      </ul>
+    </li>
+    <li><a href="#六安装kibana">六、安装Kibana</a>
+      <ul>
+        <li><a href="#61-配置对接es集群">6.1 配置对接ES集群</a></li>
+        <li><a href="#62-创建页面索引模式">6.2 创建页面索引模式</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content"><h1 id="k8s-结合filebeat及logstash对pod日志收集和输出">K8S 结合filebeat及logstash对Pod日志收集和输出</h1>
+<h2 id="一安装elasticsearch">一、安装Elasticsearch</h2>
+<h3 id="11-安装软件包">1.1 安装软件包</h3>
+<div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@es1:/tmp# dpkg -i elasticsearch-7.6.2-amd64.deb
+</span></span><span class="line"><span class="cl">Selecting previously unselected package elasticsearch.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">67342</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack elasticsearch-7.6.2-amd64.deb ...
+</span></span><span class="line"><span class="cl">Creating elasticsearch group... OK
+</span></span><span class="line"><span class="cl">Creating elasticsearch user... OK
+</span></span><span class="line"><span class="cl">Unpacking elasticsearch <span class="o">(</span>7.6.2<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Setting up elasticsearch <span class="o">(</span>7.6.2<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Created elasticsearch keystore in /etc/elasticsearch
+</span></span><span class="line"><span class="cl">Processing triggers <span class="k">for</span> ureadahead <span class="o">(</span>0.100.0-21<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Processing triggers <span class="k">for</span> systemd <span class="o">(</span>237-3ubuntu10.52<span class="o">)</span> ...</span></span></code></pre></div><h3 id="12-修改配置文件">1.2 修改配置文件</h3>
+<div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"> vim /etc/elasticsearch/elasticsearch.yml
+</span></span><span class="line"><span class="cl"><span class="c1">#集群名称三个节点保持一致</span>
+</span></span><span class="line"><span class="cl">cluster.name: xk8s-lgs
+</span></span><span class="line"><span class="cl"><span class="c1">##   node身份不能一样</span>
+</span></span><span class="line"><span class="cl">node.name: 192.168.149.22
+</span></span><span class="line"><span class="cl"><span class="c1">## 数据路径</span>
+</span></span><span class="line"><span class="cl">path.data: /data/elasticsearch
+</span></span><span class="line"><span class="cl">path.logs: /data/log/elasticsearch
+</span></span><span class="line"><span class="cl"><span class="c1">## 监听地址也可以设置为0.0.0.0</span>
+</span></span><span class="line"><span class="cl">network.host: 192.168.149.22
+</span></span><span class="line"><span class="cl">http.port: <span class="m">9200</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## 集群发现节点的配置有几个节点写几个</span>
+</span></span><span class="line"><span class="cl">discovery.seed_hosts: <span class="o">[</span><span class="s2">&#34;192.168.149.22&#34;</span>, <span class="s2">&#34;192.168.149.23&#34;</span>,<span class="s2">&#34;192.168.149.24&#34;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1">## 那些节点可以被选为master</span>
+</span></span><span class="line"><span class="cl">cluster.initial_master_nodes: <span class="o">[</span><span class="s2">&#34;192.168.149.22&#34;</span>, <span class="s2">&#34;192.168.149.23&#34;</span>,<span class="s2">&#34;192.168.149.24&#34;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1">##这个设置表示在集群中至少有指定数量的节点启动并加入后，Elasticsearch 集群才会开始执行数据恢复操作</span>
+</span></span><span class="line"><span class="cl">gateway.recover_after_nodes: <span class="m">2</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">##这个设置强制要求在执行例如删除索引、删除模板等时必须提供名称</span>
+</span></span><span class="line"><span class="cl">action.destructive_requires_name: true</span></span></code></pre></div><h3 id="13-创建数据路径和权限">1.3 创建数据路径和权限</h3>
+<div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">mkdir -p /data/log/elasticsearch <span class="o">&amp;&amp;</span> mkdir -p /data/elasticsearch
+</span></span><span class="line"><span class="cl">chown -R elasticsearch.elasticsearch  /data/elasticsearch/ <span class="o">&amp;&amp;</span> chown -R elasticsearch.elasticsearch  /data/log/elasticsearch/</span></span></code></pre></div><h3 id="14-启动服务">1.4 启动服务</h3>
+<div class="highlight" id="id-4"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@es1:/data/log#  systemctl <span class="nb">enable</span> elasticsearch.service --now
+</span></span><span class="line"><span class="cl">Synchronizing state of elasticsearch.service with SysV service script with /lib/systemd/systemd-sysv-install.
+</span></span><span class="line"><span class="cl">Executing: /lib/systemd/systemd-sysv-install <span class="nb">enable</span> elasticsearch
+</span></span><span class="line"><span class="cl">Created symlink /etc/systemd/system/multi-user.target.wants/elasticsearch.service → /usr/lib/systemd/system/elasticsearch.service.</span></span></code></pre></div><h3 id="15-检查运行状态">1.5 检查运行状态</h3>
+<div class="highlight" id="id-5"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@es1:/data/log# systemctl status elasticsearch.service
+</span></span><span class="line"><span class="cl">● elasticsearch.service - Elasticsearch
+</span></span><span class="line"><span class="cl">   Loaded: loaded <span class="o">(</span>/usr/lib/systemd/system/elasticsearch.service<span class="p">;</span> enabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
+</span></span><span class="line"><span class="cl">   Active: active <span class="o">(</span>running<span class="o">)</span> since Thu 2023-12-07 02:10:29 UTC<span class="p">;</span> 12s ago
+</span></span><span class="line"><span class="cl">     Docs: http://www.elastic.co
+</span></span><span class="line"><span class="cl"> Main PID: <span class="m">21935</span> <span class="o">(</span>java<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    Tasks: <span class="m">45</span> <span class="o">(</span>limit: 4629<span class="o">)</span>
+</span></span><span class="line"><span class="cl">   CGroup: /system.slice/elasticsearch.service
+</span></span><span class="line"><span class="cl">           ├─21935 /usr/share/elasticsearch/jdk/bin/java -Des.networkaddress.cache.ttl<span class="o">=</span><span class="m">60</span> -Des.networkaddress.cache.negative.ttl<span class="o">=</span><span class="m">10</span> -XX:+AlwaysPreTouch -Xss
+</span></span><span class="line"><span class="cl">           └─22054 /usr/share/elasticsearch/modules/x-pack-ml/platform/linux-x86_64/bin/controller
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Dec <span class="m">07</span> 02:10:14 es1 systemd<span class="o">[</span>1<span class="o">]</span>: Starting Elasticsearch...
+</span></span><span class="line"><span class="cl">Dec <span class="m">07</span> 02:10:15 es1 elasticsearch<span class="o">[</span>21935<span class="o">]</span>: OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be remov
+</span></span><span class="line"><span class="cl">Dec <span class="m">07</span> 02:10:29 es1 systemd<span class="o">[</span>1<span class="o">]</span>: Started Elasticsearch.</span></span></code></pre></div><div class="highlight" id="id-6"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 查看服务端口</span>
+</span></span><span class="line"><span class="cl">root@es1:/data/log# ss -tnl
+</span></span><span class="line"><span class="cl">State             Recv-Q             Send-Q                                      Local Address:Port                           Peer Address:Port
+</span></span><span class="line"><span class="cl">LISTEN            <span class="m">0</span>                  <span class="m">128</span>                                         127.0.0.53%lo:53                                  0.0.0.0:*
+</span></span><span class="line"><span class="cl">LISTEN            <span class="m">0</span>                  <span class="m">128</span>                                               0.0.0.0:22                                  0.0.0.0:*
+</span></span><span class="line"><span class="cl">LISTEN            <span class="m">0</span>                  <span class="m">128</span>                                             127.0.0.1:6010                                0.0.0.0:*
+</span></span><span class="line"><span class="cl">LISTEN            <span class="m">0</span>                  <span class="m">128</span>                                             127.0.0.1:6011                                0.0.0.0:*
+</span></span><span class="line"><span class="cl">LISTEN            <span class="m">0</span>                  <span class="m">128</span>                               <span class="o">[</span>::ffff:192.168.149.22<span class="o">]</span>:9200                                      *:*
+</span></span><span class="line"><span class="cl">LISTEN            <span class="m">0</span>                  <span class="m">128</span>                               <span class="o">[</span>::ffff:192.168.149.22<span class="o">]</span>:9300                                      *:*</span></span></code></pre></div><h2 id="二安装zookeeper">二、安装zookeeper</h2>
+<h3 id="21-安装openjdk-8">2.1 安装openjdk-8</h3>
+<pre tabindex="0"><code>apt update
+
+apt install openjdk-8-jdk -y</code></pre><h3 id="22-安装zookeeper">2.2 安装zookeeper</h3>
+<div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@zk1:~# mkdir /apps
+</span></span><span class="line"><span class="cl">root@zk1:~# mv /tmp/apache-zookeeper-3.5.9-bin.tar.gz /apps/
+</span></span><span class="line"><span class="cl">root@zk1:~# tar -xf /apps/apache-zookeeper-3.5.9-bin.tar.gz
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@zk1:~# scp /apps/apache-zookeeper-3.5.9-bin.tar.gz xin@192.168.149.27:/tmp
+</span></span><span class="line"><span class="cl">The authenticity of host <span class="s1">&#39;192.168.149.27 (192.168.149.27)&#39;</span> can<span class="s1">&#39;t be established.
+</span></span></span><span class="line"><span class="cl"><span class="s1">ECDSA key fingerprint is SHA256:A8lG3v6uOS8zPSzTlx/kLoRBhgMFUK9I5pngntoeVWc.
+</span></span></span><span class="line"><span class="cl"><span class="s1">Are you sure you want to continue connecting (yes/no)? yes
+</span></span></span><span class="line"><span class="cl"><span class="s1">Warning: Permanently added &#39;</span>192.168.149.27<span class="s1">&#39; (ECDSA) to the list of known hosts.
+</span></span></span><span class="line"><span class="cl"><span class="s1">xin@192.168.149.27&#39;</span>s password:
+</span></span><span class="line"><span class="cl">apache-zookeeper-3.5.9-bin.tar.gz                                                                                         100% 9397KB  91.3MB/s   00:00
+</span></span><span class="line"><span class="cl">root@zk1:~# scp /apps/apache-zookeeper-3.5.9-bin.tar.gz xin@192.168.149.28:/tmp
+</span></span><span class="line"><span class="cl">The authenticity of host <span class="s1">&#39;192.168.149.28 (192.168.149.28)&#39;</span> can<span class="s1">&#39;t be established.
+</span></span></span><span class="line"><span class="cl"><span class="s1">ECDSA key fingerprint is SHA256:A8lG3v6uOS8zPSzTlx/kLoRBhgMFUK9I5pngntoeVWc.
+</span></span></span><span class="line"><span class="cl"><span class="s1">Are you sure you want to continue connecting (yes/no)? yes
+</span></span></span><span class="line"><span class="cl"><span class="s1">Warning: Permanently added &#39;</span>192.168.149.28<span class="s1">&#39; (ECDSA) to the list of known hosts.
+</span></span></span><span class="line"><span class="cl"><span class="s1">xin@192.168.149.28&#39;</span>s password:
+</span></span><span class="line"><span class="cl">apache-zookeeper-3.5.9-bin.tar.gz                                                                                         100% 9397KB 135.1MB/s   00:00</span></span></code></pre></div><div class="highlight" id="id-9"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@zk1:/apps# tar xf apache-zookeeper-3.5.9-bin.tar.gz
+</span></span><span class="line"><span class="cl">root@zk1:/apps# <span class="nb">cd</span> apache-zookeeper-3.5.9-bin/
+</span></span><span class="line"><span class="cl">root@zk1:/apps/apache-zookeeper-3.5.9-bin# ls
+</span></span><span class="line"><span class="cl">LICENSE.txt  NOTICE.txt  README.md  README_packaging.txt  bin  conf  docs  lib
+</span></span><span class="line"><span class="cl">root@zk1:/apps/apache-zookeeper-3.5.9-bin# <span class="nb">cd</span> conf/
+</span></span><span class="line"><span class="cl">root@zk1:/apps/apache-zookeeper-3.5.9-bin/conf# ls
+</span></span><span class="line"><span class="cl">configuration.xsl  log4j.properties  zoo_sample.cfg
+</span></span><span class="line"><span class="cl">root@zk1:/apps/apache-zookeeper-3.5.9-bin/conf# cp zoo_sample.cfg zoo.cfg
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">mkdir -p /data/zookeeper</span></span></code></pre></div><h3 id="23-编辑zookeeper配置文件">2.3 编辑zookeeper配置文件</h3>
+<div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@zk1:/apps/apache-zookeeper-3.5.9-bin/conf# vim zoo.cfg
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># tickTime 每个 tick 的时间长度，单位为毫秒。ZooKeeper 使用 tick 作为时间单位来衡量时间。</span>
+</span></span><span class="line"><span class="cl"><span class="nv">tickTime</span><span class="o">=</span><span class="m">2000</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 初始同步阶段可以持续的 tick 数。这个设置指定了 ZooKeeper 集群启动时，follower 节点与 leader 节点进行初始同步的最长时间。在这个阶段内，follower 节点将尽力与 leader 进行同步。</span>
+</span></span><span class="line"><span class="cl"><span class="nv">initLimit</span><span class="o">=</span><span class="m">10</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 发送请求和收到确认之间允许的最大 tick 数。在这个设置的时间内，如果一个 follower 节点发送请求但未收到确认，则认为同步失败。</span>
+</span></span><span class="line"><span class="cl"><span class="nv">syncLimit</span><span class="o">=</span><span class="m">5</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#存储 ZooKeeper 快照的目录。ZooKeeper 保存的数据包括事务日志和快照，这个目录用于存放快照数据。</span>
+</span></span><span class="line"><span class="cl"><span class="nv">dataDir</span><span class="o">=</span>/data/zookeeper
+</span></span><span class="line"><span class="cl"><span class="c1"># the port at which the clients will connect</span>
+</span></span><span class="line"><span class="cl"><span class="nv">clientPort</span><span class="o">=</span><span class="m">2181</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 最大客户端连接数。这个设置限制了能够连接到 ZooKeeper 服务器的最大客户端连接数。</span>
+</span></span><span class="line"><span class="cl"><span class="nv">maxClientCnxns</span><span class="o">=</span><span class="m">60</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#目录中要保留的快照数量。ZooKeeper 会定期创建快照来备份数据，并根据这个设置保留最近的几个快照。</span>
+</span></span><span class="line"><span class="cl">autopurge.snapRetainCount<span class="o">=</span><span class="m">3</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#定义ZooKeeper 集群中各个节点的信息，包括节点的 ID、IP 地址以及用于通信的端口号。</span>
+</span></span><span class="line"><span class="cl">server.1<span class="o">=</span>192.168.149.26:2888:3888
+</span></span><span class="line"><span class="cl">server.2<span class="o">=</span>192.168.149.27:2888:3888
+</span></span><span class="line"><span class="cl">server.3<span class="o">=</span>192.168.149.28:2888:3888</span></span></code></pre></div><h3 id="24-配置zookeeper">2.4 配置zookeeper</h3>
+<div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@zk1:/apps/apache-zookeeper-3.5.9-bin/conf# scp zoo.cfg xin@192.168.149.27:/tmp
+</span></span><span class="line"><span class="cl">root@zk1:/apps/apache-zookeeper-3.5.9-bin/conf# scp zoo.cfg xin@192.168.149.28:/tmp     
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@zk1:/apps/apache-zookeeper-3.5.9-bin/conf# <span class="nb">echo</span> <span class="m">1</span> &gt; /data/zookeeper/myid
+</span></span><span class="line"><span class="cl">root@zk2:/apps/apache-zookeeper-3.5.9-bin/conf# <span class="nb">echo</span> <span class="m">2</span> &gt; /data/zookeeper/myid
+</span></span><span class="line"><span class="cl">root@zk3:/apps/apache-zookeeper-3.5.9-bin/conf# <span class="nb">echo</span> <span class="m">3</span> &gt; /data/zookeeper/myid</span></span></code></pre></div><div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 创建软连接</span>
+</span></span><span class="line"><span class="cl">ln -s /apps/apache-zookeeper-3.5.9-bin /apps/zookeeper</span></span></code></pre></div><h3 id="25-使用systemd-管理zookeeper">2.5 使用Systemd 管理zookeeper</h3>
+<div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/systemd/system/zookeeper.service
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Description</span><span class="o">=</span>Zookeeper Service unit Configuration
+</span></span><span class="line"><span class="cl"><span class="nv">After</span><span class="o">=</span>network.target
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Service<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Type</span><span class="o">=</span>forking
+</span></span><span class="line"><span class="cl"><span class="nv">ExecStart</span><span class="o">=</span>/apps/zookeeper/bin/zkServer.sh start /apps/zookeeper/conf/zoo.cfg
+</span></span><span class="line"><span class="cl"><span class="nv">ExecStop</span><span class="o">=</span>/apps/zookeeper/bin/zkServer.sh stop
+</span></span><span class="line"><span class="cl"><span class="nv">PIDFile</span><span class="o">=</span>/data/zookeeper/zookeeper_server.pid
+</span></span><span class="line"><span class="cl"><span class="nv">KillMode</span><span class="o">=</span>none
+</span></span><span class="line"><span class="cl"><span class="nv">User</span><span class="o">=</span>root
+</span></span><span class="line"><span class="cl"><span class="nv">Group</span><span class="o">=</span>root
+</span></span><span class="line"><span class="cl"><span class="nv">Restart</span><span class="o">=</span>on-failure
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target</span></span></code></pre></div><h3 id="25-启动服务">2.5 启动服务</h3>
+<div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@zk1:/data/zookeeper# systemctl status zookeeper.service
+</span></span><span class="line"><span class="cl">● zookeeper.service - Zookeeper Service unit Configuration
+</span></span><span class="line"><span class="cl">   Loaded: loaded <span class="o">(</span>/etc/systemd/system/zookeeper.service<span class="p">;</span> enabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
+</span></span><span class="line"><span class="cl">   Active: active <span class="o">(</span>running<span class="o">)</span> since Thu 2023-12-07 08:18:43 UTC<span class="p">;</span> 32s ago
+</span></span><span class="line"><span class="cl">  Process: <span class="m">104123</span> <span class="nv">ExecStart</span><span class="o">=</span>/apps/zookeeper/bin/zkServer.sh start /apps/zookeeper/conf/zoo.cfg <span class="o">(</span><span class="nv">code</span><span class="o">=</span>exited, <span class="nv">status</span><span class="o">=</span>0/SUCCESS<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> Main PID: <span class="m">104151</span> <span class="o">(</span>java<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    Tasks: <span class="m">39</span> <span class="o">(</span>limit: 2287<span class="o">)</span>
+</span></span><span class="line"><span class="cl">   CGroup: /system.slice/zookeeper.service
+</span></span><span class="line"><span class="cl">           └─104151 java -Dzookeeper.log.dir<span class="o">=</span>/apps/zookeeper/bin/../logs -Dzookeeper.log.file<span class="o">=</span>zookeeper-root-server-zk1.log -Dzookeeper.root.logger<span class="o">=</span>INFO,CON
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Dec <span class="m">07</span> 08:18:42 zk1 systemd<span class="o">[</span>1<span class="o">]</span>: Starting Zookeeper Service unit Configuration...
+</span></span><span class="line"><span class="cl">Dec <span class="m">07</span> 08:18:42 zk1 zkServer.sh<span class="o">[</span>104123<span class="o">]</span>: /usr/bin/java
+</span></span><span class="line"><span class="cl">Dec <span class="m">07</span> 08:18:42 zk1 zkServer.sh<span class="o">[</span>104123<span class="o">]</span>: ZooKeeper JMX enabled by default
+</span></span><span class="line"><span class="cl">Dec <span class="m">07</span> 08:18:42 zk1 zkServer.sh<span class="o">[</span>104123<span class="o">]</span>: Using config: /apps/zookeeper/conf/zoo.cfg
+</span></span><span class="line"><span class="cl">Dec <span class="m">07</span> 08:18:43 zk1 zkServer.sh<span class="o">[</span>104123<span class="o">]</span>: Starting zookeeper ... STARTED
+</span></span><span class="line"><span class="cl">Dec <span class="m">07</span> 08:18:43 zk1 systemd<span class="o">[</span>1<span class="o">]</span>: Started Zookeeper Service unit Configuration.
+</span></span><span class="line"><span class="cl">lines 1-15/15 <span class="o">(</span>END<span class="o">)</span>
+</span></span><span class="line"><span class="cl">root@zk1:/data/zookeeper#
+</span></span><span class="line"><span class="cl">root@zk1:/data/zookeeper#
+</span></span><span class="line"><span class="cl">root@zk1:/data/zookeeper# ss -tnl
+</span></span><span class="line"><span class="cl">State             Recv-Q             Send-Q                                     Local Address:Port                            Peer Address:Port
+</span></span><span class="line"><span class="cl">LISTEN            <span class="m">0</span>                  <span class="m">128</span>                                            127.0.0.1:6010                                 0.0.0.0:*
+</span></span><span class="line"><span class="cl">LISTEN            <span class="m">0</span>                  <span class="m">128</span>                                            127.0.0.1:6011                                 0.0.0.0:*
+</span></span><span class="line"><span class="cl">LISTEN            <span class="m">0</span>                  <span class="m">128</span>                                            127.0.0.1:6012                                 0.0.0.0:*
+</span></span><span class="line"><span class="cl">LISTEN            <span class="m">0</span>                  <span class="m">128</span>                                        127.0.0.53%lo:53                                   0.0.0.0:*
+</span></span><span class="line"><span class="cl">LISTEN            <span class="m">0</span>                  <span class="m">128</span>                                              0.0.0.0:22                                   0.0.0.0:*
+</span></span><span class="line"><span class="cl">LISTEN            <span class="m">0</span>                  <span class="m">128</span>                                                <span class="o">[</span>::1<span class="o">]</span>:6010                                    <span class="o">[</span>::<span class="o">]</span>:*
+</span></span><span class="line"><span class="cl">LISTEN            <span class="m">0</span>                  <span class="m">128</span>                                                <span class="o">[</span>::1<span class="o">]</span>:6011                                    <span class="o">[</span>::<span class="o">]</span>:*
+</span></span><span class="line"><span class="cl">LISTEN            <span class="m">0</span>                  <span class="m">128</span>                                                <span class="o">[</span>::1<span class="o">]</span>:6012                                    <span class="o">[</span>::<span class="o">]</span>:*
+</span></span><span class="line"><span class="cl">LISTEN            <span class="m">0</span>                  <span class="m">50</span>                                                     *:36673                                      *:*
+</span></span><span class="line"><span class="cl">LISTEN            <span class="m">0</span>                  <span class="m">50</span>                                                     *:2181                                       *:*</span></span></code></pre></div><h3 id="26-查看服务状态">2.6 查看服务状态</h3>
+<div class="highlight" id="id-15"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@zk1:/data/zookeeper/version-2# /apps/zookeeper/bin/zkServer.sh status
+</span></span><span class="line"><span class="cl">/usr/bin/java
+</span></span><span class="line"><span class="cl">ZooKeeper JMX enabled by default
+</span></span><span class="line"><span class="cl">Using config: /apps/zookeeper/bin/../conf/zoo.cfg
+</span></span><span class="line"><span class="cl">Client port found: 2181. Client address: localhost. Client SSL: false.
+</span></span><span class="line"><span class="cl">Mode: follower
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@zk2:/data/zookeeper/version-2# /apps/zookeeper/bin/zkServer.sh status
+</span></span><span class="line"><span class="cl">/usr/bin/java
+</span></span><span class="line"><span class="cl">ZooKeeper JMX enabled by default
+</span></span><span class="line"><span class="cl">Using config: /apps/zookeeper/bin/../conf/zoo.cfg
+</span></span><span class="line"><span class="cl">Client port found: 2181. Client address: localhost. Client SSL: false.
+</span></span><span class="line"><span class="cl">Mode: leader
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@zk3:/data/zookeeper/version-2# /apps/zookeeper/bin/zkServer.sh status
+</span></span><span class="line"><span class="cl">/usr/bin/java
+</span></span><span class="line"><span class="cl">ZooKeeper JMX enabled by default
+</span></span><span class="line"><span class="cl">Using config: /apps/zookeeper/bin/../conf/zoo.cfg
+</span></span><span class="line"><span class="cl">Client port found: 2181. Client address: localhost. Client SSL: false.
+</span></span><span class="line"><span class="cl">Mode: follower</span></span></code></pre></div><h2 id="三安装kafka">三、安装kafka</h2>
+<h3 id="31--下载-kafka程序包安装">3.1  下载 kafka程序包安装</h3>
+<p><a href="https://kafka.apache.org/downloads"target="_blank" rel="external nofollow noopener noreferrer">https://kafka.apache.org/downloads</a></p>
+<div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">tar xf kafka_2.13-2.4.1.tgz
+</span></span><span class="line"><span class="cl">mkdir /data/kafka-logs
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /apps
+</span></span><span class="line"><span class="cl">ln -s kafka_2.13-2.4.1  kafka
+</span></span><span class="line"><span class="cl">vim config/server.properties</span></span></code></pre></div><h3 id="32-编辑kafka配置文件">3.2 编辑kafka配置文件</h3>
+<div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@zk1:/apps/kafka# cat config/server.properties <span class="p">|</span> grep -v <span class="s2">&#34;^#&#34;</span>  <span class="p">|</span>grep -v <span class="s2">&#34;^</span>$<span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">broker.id<span class="o">=</span><span class="m">26</span>
+</span></span><span class="line"><span class="cl"><span class="nv">listeners</span><span class="o">=</span>PLAINTEXT://192.168.149.26:9092
+</span></span><span class="line"><span class="cl">num.network.threads<span class="o">=</span><span class="m">3</span>
+</span></span><span class="line"><span class="cl">num.io.threads<span class="o">=</span><span class="m">8</span>
+</span></span><span class="line"><span class="cl">socket.send.buffer.bytes<span class="o">=</span><span class="m">102400</span>
+</span></span><span class="line"><span class="cl">socket.receive.buffer.bytes<span class="o">=</span><span class="m">102400</span>
+</span></span><span class="line"><span class="cl">socket.request.max.bytes<span class="o">=</span><span class="m">104857600</span>
+</span></span><span class="line"><span class="cl">log.dirs<span class="o">=</span>/data/kafka-logs
+</span></span><span class="line"><span class="cl">num.partitions<span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">num.recovery.threads.per.data.dir<span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">offsets.topic.replication.factor<span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">transaction.state.log.replication.factor<span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">transaction.state.log.min.isr<span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">log.retention.hours<span class="o">=</span><span class="m">168</span>
+</span></span><span class="line"><span class="cl">log.segment.bytes<span class="o">=</span><span class="m">1073741824</span>
+</span></span><span class="line"><span class="cl">log.retention.check.interval.ms<span class="o">=</span><span class="m">300000</span>
+</span></span><span class="line"><span class="cl">zookeeper.connect<span class="o">=</span>192.167.149.26:2181,192.168.149.27:2181,192.168.149.28:2181
+</span></span><span class="line"><span class="cl">zookeeper.connection.timeout.ms<span class="o">=</span><span class="m">6000</span>
+</span></span><span class="line"><span class="cl">group.initial.rebalance.delay.ms<span class="o">=</span><span class="m">0</span></span></span></code></pre></div><div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@zk1:/apps/kafka# systemctl status kafka.service
+</span></span><span class="line"><span class="cl">● kafka.service - Apache Kafka server <span class="o">(</span>broker<span class="o">)</span>
+</span></span><span class="line"><span class="cl">   Loaded: loaded <span class="o">(</span>/etc/systemd/system/kafka.service<span class="p">;</span> disabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
+</span></span><span class="line"><span class="cl">   Active: active <span class="o">(</span>running<span class="o">)</span> since Fri 2023-12-08 02:15:50 UTC<span class="p">;</span> 5s ago
+</span></span><span class="line"><span class="cl"> Main PID: <span class="m">94927</span> <span class="o">(</span>java<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    Tasks: <span class="m">23</span> <span class="o">(</span>limit: 2287<span class="o">)</span>
+</span></span><span class="line"><span class="cl">   CGroup: /system.slice/kafka.service
+</span></span><span class="line"><span class="cl">           └─94927 java -Xmx1G -Xms1G -server -XX:+UseG1GC -XX:MaxGCPauseMillis<span class="o">=</span><span class="m">20</span> -XX:InitiatingHeapOccupancyPercent<span class="o">=</span><span class="m">35</span> -XX:+ExplicitGCInvokesConcurrent -D
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Dec <span class="m">08</span> 02:15:53 zk1 kafka-server-start.sh<span class="o">[</span>94927<span class="o">]</span>: <span class="o">[</span>2023-12-08 02:15:53,194<span class="o">]</span> INFO Client environment:user.home<span class="o">=</span>/root <span class="o">(</span>org.apache.zookeeper.ZooKeeper<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Dec <span class="m">08</span> 02:15:53 zk1 kafka-server-start.sh<span class="o">[</span>94927<span class="o">]</span>: <span class="o">[</span>2023-12-08 02:15:53,195<span class="o">]</span> INFO Client environment:user.dir<span class="o">=</span>/ <span class="o">(</span>org.apache.zookeeper.ZooKeeper<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Dec <span class="m">08</span> 02:15:53 zk1 kafka-server-start.sh<span class="o">[</span>94927<span class="o">]</span>: <span class="o">[</span>2023-12-08 02:15:53,195<span class="o">]</span> INFO Client environment:os.memory.free<span class="o">=</span>973MB <span class="o">(</span>org.apache.zookeeper.ZooKeeper<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Dec <span class="m">08</span> 02:15:53 zk1 kafka-server-start.sh<span class="o">[</span>94927<span class="o">]</span>: <span class="o">[</span>2023-12-08 02:15:53,196<span class="o">]</span> INFO Client environment:os.memory.max<span class="o">=</span>1024MB <span class="o">(</span>org.apache.zookeeper.ZooKeeper<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Dec <span class="m">08</span> 02:15:53 zk1 kafka-server-start.sh<span class="o">[</span>94927<span class="o">]</span>: <span class="o">[</span>2023-12-08 02:15:53,196<span class="o">]</span> INFO Client environment:os.memory.total<span class="o">=</span>1024MB <span class="o">(</span>org.apache.zookeeper.ZooKeeper<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Dec <span class="m">08</span> 02:15:53 zk1 kafka-server-start.sh<span class="o">[</span>94927<span class="o">]</span>: <span class="o">[</span>2023-12-08 02:15:53,203<span class="o">]</span> INFO Initiating client connection, <span class="nv">connectString</span><span class="o">=</span>192.167.149.26:2181,192.168.149
+</span></span><span class="line"><span class="cl">Dec <span class="m">08</span> 02:15:53 zk1 kafka-server-start.sh<span class="o">[</span>94927<span class="o">]</span>: <span class="o">[</span>2023-12-08 02:15:53,304<span class="o">]</span> INFO Setting -D jdk.tls.rejectClientInitiatedRenegotiation<span class="o">=</span><span class="nb">true</span> to disable clien
+</span></span><span class="line"><span class="cl">Dec <span class="m">08</span> 02:15:53 zk1 kafka-server-start.sh<span class="o">[</span>94927<span class="o">]</span>: <span class="o">[</span>2023-12-08 02:15:53,324<span class="o">]</span> INFO jute.maxbuffer value is <span class="m">4194304</span> Bytes <span class="o">(</span>org.apache.zookeeper.ClientCnxnSocke</span></span></code></pre></div><div class="highlight" id="id-19"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@zk3:/apps# systemctl <span class="nb">enable</span> kafka.service
+</span></span><span class="line"><span class="cl">Created symlink /etc/systemd/system/multi-user.target.wants/kafka.service → /etc/systemd/system/kafka.service.</span></span></code></pre></div><p><img loading="lazy" src="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231208104323045.png" srcset="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231208104323045.png, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231208104323045.png 1.5x, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231208104323045.png 2x" sizes="auto" data-title="image-20231208104323045" data-alt="image-20231208104323045" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231208104413087.png" srcset="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231208104413087.png, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231208104413087.png 1.5x, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231208104413087.png 2x" sizes="auto" data-title="image-20231208104413087" data-alt="image-20231208104413087" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h2 id="四在业务镜像中加入filebeat">四、在业务镜像中加入filebeat</h2>
+<h3 id="41-centos-dockerfile">4.1 centos dockerfile</h3>
+<div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-docker" data-lang="docker"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> centos:7.8.2003</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">LABEL</span> <span class="nv">maintainer</span><span class="o">=</span><span class="s2">&#34;Ryan&#34;</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 添加文件到镜像中</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ADD</span> filebeat-7.6.2-x86_64.rpm /tmp/<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 安装所需软件包</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> yum install -y vim wget tree lrzsz gcc gcc-c++ automake pcre pcre-devel zlib zlib-devel openssl openssl-devel iproute net-tools iotop <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    rm -rf /var/cache/yum/* <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    yum clean all<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 设置系统时区为上海时区</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> rm -rf /etc/localtime <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 添加用户到系统中</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> useradd www -u <span class="m">2023</span> <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    useradd nginx -u <span class="m">2024</span></span></span></code></pre></div><h3 id="42-jdk-dockerfile">4.2 JDK dockerfile</h3>
+<div class="highlight" id="id-21"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> harbor.ceamg.com/baseimages/centos7.8-filebate:x1</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">MAINTAINER</span><span class="s"> xinn.cc</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">WORKDIR</span><span class="s"> /usr/local/java17</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ADD</span> ./jdk-17.0.9_linux-x64.tar.gz  /usr/local/java17/<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> <span class="nv">JAVA_HOME</span><span class="o">=</span>/usr/local/java17/jdk-17.0.9<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> <span class="nv">CLASSPATH</span><span class="o">=</span>.:<span class="nv">$JAVA_HOME</span>/lib/jrt-fs.jar<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> <span class="nv">PATH</span><span class="o">=</span><span class="nv">$PATH</span>:<span class="nv">$JAVA_HOME</span>/bin</span></span></code></pre></div><p><code>harbor.ceamg.com/baseimages/jdk17_0.9:x3</code></p>
+<h3 id="43-tomcat-dockerfile">4.3 tomcat dockerfile</h3>
+<div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="s"> harbor.ceamg.com/baseimages/jdk17_0.9:x3</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Tomcat version to be installed</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> TOMCAT_VERSION 10.1.16<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> ./apache-tomcat-10.1.16.tar.gz /tmp/<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># 在容器中解压缩Tomcat文件</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> tar -xf /tmp/apache-tomcat-<span class="si">${</span><span class="nv">TOMCAT_VERSION</span><span class="si">}</span>.tar.gz -C /opt/ <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    mv /opt/apache-tomcat-<span class="si">${</span><span class="nv">TOMCAT_VERSION</span><span class="si">}</span> /opt/tomcat <span class="o">&amp;&amp;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    rm -rf /tmp/apache-tomcat-<span class="si">${</span><span class="nv">TOMCAT_VERSION</span><span class="si">}</span>.tar.gz<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ADD</span> filebeat.yaml /etc/filebeat/filebeat.yaml<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ADD</span> filebeat-7.5.1-amd64.deb /tmp<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">RUN</span> <span class="nb">cd</span> /tmp <span class="o">&amp;&amp;</span> yum localinstall -y filebeat-7.5.1-amd64.deb<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Set environment variables</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> CATALINA_HOME /opt/tomcat<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">ENV</span> PATH <span class="nv">$CATALINA_HOME</span>/bin:<span class="nv">$PATH</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">COPY</span> ./index.html /<span class="nv">$CATALINA_HOME</span>/webapps/ROOT<span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Expose the port that Tomcat runs on</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">EXPOSE</span><span class="s"> 8080</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Set the working directory inside the container</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">WORKDIR</span><span class="s"> $CATALINA_HOME</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># Start Tomcat</span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;catalina.sh&#34;</span><span class="p">,</span> <span class="s2">&#34;run&#34;</span><span class="p">]</span></span></span></code></pre></div><div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">## 测试一下</span>
+</span></span><span class="line"><span class="cl">docker run --rm -d -p 8088:8080 harbor.ceamg.com/baseimages/xinn-web1:x3</span></span></code></pre></div><h3 id="44-filebeat-配置">4.4 filebeat 配置</h3>
+<div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">filebeat.inputs:
+</span></span><span class="line"><span class="cl">- type: log
+</span></span><span class="line"><span class="cl">  enabled: <span class="nb">true</span>
+</span></span><span class="line"><span class="cl">  paths:
+</span></span><span class="line"><span class="cl">    - /opt/tomcat/logs/catalina.*.log 
+</span></span><span class="line"><span class="cl">  fields:
+</span></span><span class="line"><span class="cl">    type: tomcat-catalina
+</span></span><span class="line"><span class="cl">- type: log
+</span></span><span class="line"><span class="cl">  enabled: <span class="nb">true</span>
+</span></span><span class="line"><span class="cl">  paths:
+</span></span><span class="line"><span class="cl">    - /opt/tomcat/logs/localhost_access_log.*.txt
+</span></span><span class="line"><span class="cl">  fields: 
+</span></span><span class="line"><span class="cl">    type: tomcat-accesslog
+</span></span><span class="line"><span class="cl">filebeat.config.modules:
+</span></span><span class="line"><span class="cl">  path: <span class="si">${</span><span class="nv">path</span><span class="p">.config</span><span class="si">}</span>/modules.d/*.yml
+</span></span><span class="line"><span class="cl">  reload.enabled: <span class="nb">false</span>
+</span></span><span class="line"><span class="cl">setup.template.settings:
+</span></span><span class="line"><span class="cl">  index.number_of_shards: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">setup.kibana:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">output.kafka:
+</span></span><span class="line"><span class="cl">  hosts: <span class="o">[</span><span class="s2">&#34;192.168.149.26:9092&#34;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">  required_acks: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">  topic: <span class="s2">&#34;xinn-app1&#34;</span>
+</span></span><span class="line"><span class="cl">  compression: gzip
+</span></span><span class="line"><span class="cl">  max_message_bytes: <span class="m">1000000</span></span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20231208172004824.png" srcset="https://cdn1.ryanxin.live/image-20231208172004824.png, https://cdn1.ryanxin.live/image-20231208172004824.png 1.5x, https://cdn1.ryanxin.live/image-20231208172004824.png 2x" sizes="auto" data-title="image-20231208172004824" data-alt="image-20231208172004824" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20231208172026399.png" srcset="https://cdn1.ryanxin.live/image-20231208172026399.png, https://cdn1.ryanxin.live/image-20231208172026399.png 1.5x, https://cdn1.ryanxin.live/image-20231208172026399.png 2x" sizes="auto" data-title="image-20231208172026399" data-alt="image-20231208172026399" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20231205155610290.png" srcset="https://cdn1.ryanxin.live/image-20231205155610290.png, https://cdn1.ryanxin.live/image-20231205155610290.png 1.5x, https://cdn1.ryanxin.live/image-20231205155610290.png 2x" sizes="auto" data-title="image-20231205155610290" data-alt="image-20231205155610290" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20231221101157108.png" srcset="https://cdn1.ryanxin.live/image-20231221101157108.png, https://cdn1.ryanxin.live/image-20231221101157108.png 1.5x, https://cdn1.ryanxin.live/image-20231221101157108.png 2x" sizes="auto" data-title="image-20231221101157108" data-alt="image-20231221101157108" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h2 id="五安装logstash">五、安装logstash</h2>
+<div class="highlight" id="id-25"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">apt install openjdk-11-jdk -y
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">root@logstash:/tmp# dpkg -i logstash-7.6.2.deb
+</span></span><span class="line"><span class="cl">Selecting previously unselected package logstash.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">106223</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack logstash-7.6.2.deb ...
+</span></span><span class="line"><span class="cl">Unpacking logstash <span class="o">(</span>1:7.6.2-1<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Setting up logstash <span class="o">(</span>1:7.6.2-1<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Using provided startup.options file: /etc/logstash/startup.options
+</span></span><span class="line"><span class="cl">OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release.
+</span></span><span class="line"><span class="cl">WARNING: An illegal reflective access operation has occurred
+</span></span><span class="line"><span class="cl">WARNING: Illegal reflective access by com.headius.backport9.modules.Modules to method sun.nio.ch.NativeThread.signal<span class="o">(</span>long<span class="o">)</span>
+</span></span><span class="line"><span class="cl">WARNING: Please consider reporting this to the maintainers of com.headius.backport9.modules.Modules
+</span></span><span class="line"><span class="cl">WARNING: Use --illegal-access<span class="o">=</span>warn to <span class="nb">enable</span> warnings of further illegal reflective access operations
+</span></span><span class="line"><span class="cl">WARNING: All illegal access operations will be denied in a future release
+</span></span><span class="line"><span class="cl">/usr/share/logstash/vendor/bundle/jruby/2.5.0/gems/pleaserun-0.0.30/lib/pleaserun/platform/base.rb:112: warning: constant ::Fixnum is deprecated
+</span></span><span class="line"><span class="cl">Successfully created system startup script <span class="k">for</span> Logstash</span></span></code></pre></div><h3 id="51-测试从kafka中读并输出到标准输出">5.1 测试从kafka中读并输出到标准输出</h3>
+<div class="highlight" id="id-26"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/logstash/conf.d/kafkatoes.conf
+</span></span><span class="line"><span class="cl">input <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  kafka <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">bootstrap_servers</span> <span class="o">=</span>&gt; <span class="s2">&#34;192.168.149.26:9092,192.168.149.27:9092,192.168.149.28:9092&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">topics</span> <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">&#34;xinn-app1&#34;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">codec</span> <span class="o">=</span>&gt; <span class="s2">&#34;json&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">output <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  stdout <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">codec</span> <span class="o">=</span>&gt; rubydebug
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20231221154105861.png" srcset="https://cdn1.ryanxin.live/image-20231221154105861.png, https://cdn1.ryanxin.live/image-20231221154105861.png 1.5x, https://cdn1.ryanxin.live/image-20231221154105861.png 2x" sizes="auto" data-title="image-20231221154105861" data-alt="image-20231221154105861" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h3 id="52-从kafka中读并输出到es集群">5.2 从kafka中读并输出到ES集群</h3>
+<div class="highlight" id="id-27"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/logstash/conf.d/kafkatoes.conf
+</span></span><span class="line"><span class="cl">input <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  kafka <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">bootstrap_servers</span> <span class="o">=</span>&gt; <span class="s2">&#34;192.168.149.26:9092,192.168.149.27:9092,192.168.149.28:9092&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">topics</span> <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">&#34;xinn-app1&#34;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">codec</span> <span class="o">=</span>&gt; <span class="s2">&#34;json&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">output <span class="o">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span>fields<span class="o">][</span>type<span class="o">]</span> <span class="o">==</span> <span class="s2">&#34;tomcat-accesslog&#34;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    elasticsearch <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">hosts</span> <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">&#34;192.168.149.22:9200&#34;</span>,<span class="s2">&#34;192.168.149.23:9200&#34;</span>,<span class="s2">&#34;192.168.149.24:9200&#34;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">index</span> <span class="o">=</span>&gt; <span class="s2">&#34;xinn-app1-accesslog-%{+YYYY.MM.dd}&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="o">[</span>fields<span class="o">][</span>type<span class="o">]</span> <span class="o">==</span> <span class="s2">&#34;tomcat-catalina&#34;</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    elasticsearch <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">hosts</span> <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">&#34;192.168.149.22:9200&#34;</span>,<span class="s2">&#34;192.168.149.23:9200&#34;</span>,<span class="s2">&#34;192.168.149.24:9200&#34;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">index</span> <span class="o">=</span>&gt; <span class="s2">&#34;xinn-app1-catalina-%{+YYYY.MM.dd}&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl">  <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#  stdout {</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#    codec =&gt; rubydebug</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#  }</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></div><h3 id="53-安装head插件查看数据">5.3 安装head插件查看数据</h3>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20231221172155957.png" srcset="https://cdn1.ryanxin.live/image-20231221172155957.png, https://cdn1.ryanxin.live/image-20231221172155957.png 1.5x, https://cdn1.ryanxin.live/image-20231221172155957.png 2x" sizes="auto" data-title="image-20231221172155957" data-alt="image-20231221172155957" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20231221172437806.png" srcset="https://cdn1.ryanxin.live/image-20231221172437806.png, https://cdn1.ryanxin.live/image-20231221172437806.png 1.5x, https://cdn1.ryanxin.live/image-20231221172437806.png 2x" sizes="auto" data-title="image-20231221172437806" data-alt="image-20231221172437806" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20231221172519941.png" srcset="https://cdn1.ryanxin.live/image-20231221172519941.png, https://cdn1.ryanxin.live/image-20231221172519941.png 1.5x, https://cdn1.ryanxin.live/image-20231221172519941.png 2x" sizes="auto" data-title="image-20231221172519941" data-alt="image-20231221172519941" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h2 id="六安装kibana">六、安装Kibana</h2>
+<h3 id="61-配置对接es集群">6.1 配置对接ES集群</h3>
+<div class="highlight" id="id-28"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@kibana:/tmp# dpkg -i kibana-7.6.2-amd64.deb
+</span></span><span class="line"><span class="cl">Selecting previously unselected package kibana.
+</span></span><span class="line"><span class="cl"><span class="o">(</span>Reading database ... <span class="m">67342</span> files and directories currently installed.<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Preparing to unpack kibana-7.6.2-amd64.deb ...
+</span></span><span class="line"><span class="cl">Unpacking kibana <span class="o">(</span>7.6.2<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Setting up kibana <span class="o">(</span>7.6.2<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Processing triggers <span class="k">for</span> ureadahead <span class="o">(</span>0.100.0-21<span class="o">)</span> ...
+</span></span><span class="line"><span class="cl">Processing triggers <span class="k">for</span> systemd <span class="o">(</span>237-3ubuntu10.52<span class="o">)</span> ...</span></span></code></pre></div><div class="highlight" id="id-29"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/kibana/kibana.yml
+</span></span><span class="line"><span class="cl">server.host: <span class="s2">&#34;192.168.149.29&#34;</span>
+</span></span><span class="line"><span class="cl">elasticsearch.hosts: <span class="o">[</span><span class="s2">&#34;http://192.168.149.22:9200&#34;</span>,<span class="s2">&#34;http://192.168.149.23:9200&#34;</span>,<span class="s2">&#34;http://192.168.149.24:9200&#34;</span><span class="o">]</span></span></span></code></pre></div><h3 id="62-创建页面索引模式">6.2 创建页面索引模式</h3>
+<p><img loading="lazy" src="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231222111521963.png" srcset="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231222111521963.png, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231222111521963.png 1.5x, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20231222111521963.png 2x" sizes="auto" data-title="image-20231222111521963" data-alt="image-20231222111521963" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20231222111954545.png" srcset="https://cdn1.ryanxin.live/image-20231222111954545.png, https://cdn1.ryanxin.live/image-20231222111954545.png 1.5x, https://cdn1.ryanxin.live/image-20231222111954545.png 2x" sizes="auto" data-title="image-20231222111954545" data-alt="image-20231222111954545" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title="更新于 2023-12-07 00:00:00">更新于 2023-12-07&nbsp;</span>
+      </div><div class="post-info-license">
+          <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
+        </div></div>
+    <div class="post-info-line">
+      <div class="post-info-md"><span><a href="/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
+      <div class="post-info-share">
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/" data-title="K8S 结合filebeat及logstash对Pod日志收集和输出" data-hashtags="Kubernetes实战案例,日志收集"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/" data-hashtag="Kubernetes实战案例"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/" data-title="K8S 结合filebeat及logstash对Pod日志收集和输出" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/" data-title="K8S 结合filebeat及logstash对Pod日志收集和输出"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/" data-title="K8S 结合filebeat及logstash对Pod日志收集和输出"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/" data-title="K8S 结合filebeat及logstash对Pod日志收集和输出" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/" data-title="K8S 结合filebeat及logstash对Pod日志收集和输出" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/" data-title="K8S 结合filebeat及logstash对Pod日志收集和输出"><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
+  </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href='/tags/kubernetes%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B/' class="post-tag">Kubernetes实战案例</a><a href='/tags/%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86/' class="post-tag">日志收集</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
+    </section>
+  </div>
+
+  <div class="post-nav"><a href="/posts/kubernetes/advanced/k8s%E7%BB%93%E5%90%88jenkins%E4%B8%8Egitlab%E4%BB%A3%E7%A0%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%9B%9E%E6%BB%9A/" class="post-nav-item" rel="prev" title="k8s结合Jenkins与gitlab代码升级与回滚"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>k8s结合Jenkins与gitlab代码升级与回滚</a></div>
+</div>
+</article></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2021 - 2023</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/ryanxin7"target="_blank" rel="external nofollow noopener noreferrer">Ryan</a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div><div class="footer-line statistics"><span class="site-time" title='网站运行中……'><i class="fa-solid fa-heartbeat fa-fw animate-icon" aria-hidden="true"></i><span class="run-times ms-1">网站运行中……</span></span></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='总访客数'><i class="fa-regular fa-user fa-fw" aria-hidden="true"></i>&nbsp;<span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='总访问量'><i class="fa-regular fa-eye fa-fw" aria-hidden="true"></i>&nbsp;<span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="回到顶部"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric d-none">0%</span>
+        </div></div><a href="https://github.com/ryanxin7" title="在 GitHub 上查看源代码"target="_blank" rel="external nofollow" class="github-corner right d-none-mobile"><svg viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">FixIt 主题在启用 JavaScript 的情况下效果最佳。</div>
+  </noscript>
+</div><link rel="stylesheet" href="/lib/katex/katex.min.css"><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.css"><link rel="stylesheet" href="/lib/pace/themes/blue/pace-theme-minimal.css"><script src="/lib/autocomplete/autocomplete.min.js" defer></script><script src="/lib/algoliasearch/algoliasearch-lite.umd.min.js" defer></script><script src="/lib/sharer/sharer.min.js" async defer></script><script src="/lib/katex/katex.min.js" defer></script><script src="/lib/katex/auto-render.min.js" defer></script><script src="/lib/katex/copy-tex.min.js" defer></script><script src="/lib/katex/mhchem.min.js" defer></script><script src="/lib/cookieconsent/cookieconsent.min.js" defer></script><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async defer></script><script src="/lib/pace/pace.min.js" async defer></script><script>window.config={"code":{"copyTitle":"复制到剪贴板","editLockTitle":"锁定可编辑代码块","editUnLockTitle":"解锁可编辑代码块","editable":true,"maxShownLines":80},"comment":{"enable":false},"cookieconsent":{"content":{"dismiss":"同意","link":"了解更多","message":"本网站使用 Cookies 来改善您的浏览体验。"},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"enablePWA":true,"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"algoliaAppID":"HFAFNY4NX2","algoliaIndex":"xn-log","algoliaSearchKey":"bd08388586b2f88b20753c17c60ba92f","highlightTag":"em","maxResultLength":10,"noResultsFound":"没有找到结果","snippetLength":50,"type":"algolia"},"siteTime":"2021-09-09T09:09:09+09:00"};</script><script src="/js/theme.min.js" defer></script></body>
+</html>

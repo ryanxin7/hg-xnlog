@@ -4,7 +4,15 @@
     <link>https://hg-xnlog.github.io/posts/</link>
     <description>所有文章 | Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 04 Dec 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Thu, 07 Dec 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+  <title>K8S 结合filebeat及logstash对Pod日志收集和输出</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/</link>
+  <pubDate>Thu, 07 Dec 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/</guid>
+  <description><![CDATA[K8S 结合filebeat及logstash对Pod日志收集和输出 一、安装Elasticsearch 1.1 安装软件包 root@es1:/tmp# dpkg -i elasticsearch-7.6.2-amd64.deb Selecting previously unselected package elasticsearch. (Reading database ... 67342 files and directories]]></description>
+</item>
+<item>
   <title>k8s结合Jenkins与gitlab代码升级与回滚</title>
   <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E7%BB%93%E5%90%88jenkins%E4%B8%8Egitlab%E4%BB%A3%E7%A0%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%9B%9E%E6%BB%9A/</link>
   <pubDate>Mon, 04 Dec 2023 00:00:00 &#43;0000</pubDate>
@@ -75,14 +83,6 @@
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/elk/elasticsearch-8.10.4%E5%AE%89%E8%A3%85/</guid>
   <description><![CDATA[1.环境准备 1.1 集群规划 服务器 角色 192.168.10.107,eslg01 master/data节点 192.168.10.108,eslg02 master/data节点 192.168.10.109,eslg03 master/data节点 es各节点均为maste]]></description>
-</item>
-<item>
-  <title>网络安全等级保护测评-服务器整改项</title>
-  <link>https://hg-xnlog.github.io/posts/linux-basic/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AD%89%E7%BA%A7%E4%BF%9D%E6%8A%A4%E6%B5%8B%E8%AF%84-%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%B4%E6%94%B9/</link>
-  <pubDate>Mon, 23 Oct 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/linux-basic/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E7%AD%89%E7%BA%A7%E4%BF%9D%E6%8A%A4%E6%B5%8B%E8%AF%84-%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%95%B4%E6%94%B9/</guid>
-  <description><![CDATA[配置服务器密码复杂度、账户锁定策略、登录连接超时自动断开等项目。 1. 设置密码强度 设置复杂度策略 vim /etc/pam.d/system-auth找]]></description>
 </item>
 </channel>
 </rss>

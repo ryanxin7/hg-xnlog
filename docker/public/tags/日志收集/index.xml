@@ -4,7 +4,15 @@
     <link>https://hg-xnlog.github.io/tags/%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86/</link>
     <description>日志收集 - 标签 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 23 Oct 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Thu, 07 Dec 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86/" rel="self" type="application/rss+xml" /><item>
+  <title>K8S 结合filebeat及logstash对Pod日志收集和输出</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/</link>
+  <pubDate>Thu, 07 Dec 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/</guid>
+  <description><![CDATA[K8S 结合filebeat及logstash对Pod日志收集和输出 一、安装Elasticsearch 1.1 安装软件包 root@es1:/tmp# dpkg -i elasticsearch-7.6.2-amd64.deb Selecting previously unselected package elasticsearch. (Reading database ... 67342 files and directories]]></description>
+</item>
+<item>
   <title>2023-10月最新8.10.4版本ELK集群服务搭建 HTTPS</title>
   <link>https://hg-xnlog.github.io/posts/elk/elasticsearch-kibana-https/</link>
   <pubDate>Mon, 23 Oct 2023 00:00:00 &#43;0000</pubDate>
@@ -75,14 +83,6 @@
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/elk/elk-elasticsearch/</guid>
   <description><![CDATA[两三年前ELK还是一套日志分析平台的解决方案 ，它是由Elastic公司开发，管理和维护的三款开源产品Elasticsearch，Logsta]]></description>
-</item>
-<item>
-  <title>ELK组件-beats （二）</title>
-  <link>https://hg-xnlog.github.io/posts/elk/elk-filebeat/</link>
-  <pubDate>Sat, 02 Oct 2021 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/elk/elk-filebeat/</guid>
-  <description><![CDATA[轻量型数据采集器 Beats 是一个免费且开放的平台，集合了多种单一用途数据采集器。它们从成百上千或成千上万台机器和系统向 Logstash 或 Elasticsearch 发送数据。Beats 是数]]></description>
 </item>
 </channel>
 </rss>

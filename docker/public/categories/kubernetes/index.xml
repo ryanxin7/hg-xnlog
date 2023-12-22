@@ -4,7 +4,15 @@
     <link>https://hg-xnlog.github.io/categories/kubernetes/</link>
     <description>Kubernetes - 分类 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 04 Dec 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/categories/kubernetes/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Thu, 07 Dec 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/categories/kubernetes/" rel="self" type="application/rss+xml" /><item>
+  <title>K8S 结合filebeat及logstash对Pod日志收集和输出</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/</link>
+  <pubDate>Thu, 07 Dec 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/</guid>
+  <description><![CDATA[K8S 结合filebeat及logstash对Pod日志收集和输出 一、安装Elasticsearch 1.1 安装软件包 root@es1:/tmp# dpkg -i elasticsearch-7.6.2-amd64.deb Selecting previously unselected package elasticsearch. (Reading database ... 67342 files and directories]]></description>
+</item>
+<item>
   <title>k8s结合Jenkins与gitlab代码升级与回滚</title>
   <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E7%BB%93%E5%90%88jenkins%E4%B8%8Egitlab%E4%BB%A3%E7%A0%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%9B%9E%E6%BB%9A/</link>
   <pubDate>Mon, 04 Dec 2023 00:00:00 &#43;0000</pubDate>
@@ -75,14 +83,6 @@
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/nfs-subdir-external-provisioner/</guid>
   <description><![CDATA[一、简介 NFS Subdir External Provisioner 是 Kubernetes 的一个外部存储供应者（External Provisioner），专门用于处理 NFS 存储卷的动态创建。 在 Kubernetes 中，存储供应者是一种]]></description>
-</item>
-<item>
-  <title>Kubernetes 基础</title>
-  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/1.kubernetes%E5%9F%BA%E7%A1%80/</link>
-  <pubDate>Mon, 24 Apr 2023 21:23:22 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/1.kubernetes%E5%9F%BA%E7%A1%80/</guid>
-  <description><![CDATA[1.为什么需要容器编排系统？ Docker在管理单个容器时表现出色，对于一些由有限几个或十几个容器构建的应用程序来说，直接在Docker引擎上]]></description>
 </item>
 </channel>
 </rss>

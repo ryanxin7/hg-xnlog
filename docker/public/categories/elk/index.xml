@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>ELK - 分类 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/categories/elk/</link>
+    <description>ELK - 分类 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Thu, 07 Dec 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/categories/elk/" rel="self" type="application/rss+xml" /><item>
+  <title>K8S 结合filebeat及logstash对Pod日志收集和输出</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/</link>
+  <pubDate>Thu, 07 Dec 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/</guid>
+  <description><![CDATA[K8S 结合filebeat及logstash对Pod日志收集和输出 一、安装Elasticsearch 1.1 安装软件包 root@es1:/tmp# dpkg -i elasticsearch-7.6.2-amd64.deb Selecting previously unselected package elasticsearch. (Reading database ... 67342 files and directories]]></description>
+</item>
+</channel>
+</rss>

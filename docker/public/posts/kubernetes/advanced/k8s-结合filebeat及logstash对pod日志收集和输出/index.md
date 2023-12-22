@@ -1,17 +1,5 @@
----
-author: Ryan
-title: K8S 结合filebeat及logstash对Pod日志收集和输出
-date: 2023-12-07
-lastmod: 2023-12-07
-tags:
-  - Kubernetes实战案例
-  - 日志收集
-categories:
-  - Kubernetes
-  - ELK
-expirationReminder:
-  enable: false
----
+# K8S 结合filebeat及logstash对Pod日志收集和输出
+
 
 # K8S 结合filebeat及logstash对Pod日志收集和输出
 
@@ -685,3 +673,10 @@ elasticsearch.hosts: ["http://192.168.149.22:9200","http://192.168.149.23:9200",
 ![image-20231222111521963](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231222111521963.png)
 
 ![image-20231222111954545](https://cdn1.ryanxin.live/image-20231222111954545.png)
+
+
+---
+
+> 作者: [Ryan](https://github.com/ryanxin7)  
+> URL: https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/  
+

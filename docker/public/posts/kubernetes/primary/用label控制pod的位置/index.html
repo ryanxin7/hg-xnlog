@@ -201,7 +201,14 @@
     <li><a href="#4验证调度">4.<strong>验证调度</strong></a></li>
   </ul>
 </nav></div>
-      </div><div class="content" id="content"><h2 id="用label控制pod的位置">用label控制Pod的位置</h2>
+      </div><div class="content" id="content"><div class="details admonition note open">
+      <div class="details-summary admonition-title">
+        <i class="icon fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i>注意<i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i>
+      </div>
+      <div class="details-content">
+        <div class="admonition-content">本文最后更新于 2023-09-06，文中内容可能已过时。</div>
+      </div>
+    </div><h2 id="用label控制pod的位置">用label控制Pod的位置</h2>
 <p>在 Kubernetes 中，你可以使用节点标签（Node Labels）和节点选择器（Node Selector）来控制将 Pod 调度到特定的节点上。这允许你根据节点的属性和特征，如硬件配置、资源需求、GPU 支持等，将 Pod 定向地调度到特定的节点上。</p>
 <h3 id="1为节点添加标签node-labels">1.<strong>为节点添加标签（Node Labels）</strong></h3>
 <p>首先，你需要为节点添加标签，以标识它们的属性。例如，如果你有一些节点配置了 SSD 磁盘，可以给它们添加一个名为 &ldquo;<code>ssd=true</code> 的标签。你可以使用以下命令为节点添加标签：</p>
