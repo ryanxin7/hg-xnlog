@@ -2,18 +2,24 @@
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
   ><url>
-      <loc>https://hg-xnlog.github.io/categories/</loc><lastmod>2023-12-07T00:00:00&#43;00:00</lastmod></url><url>
+      <loc>https://hg-xnlog.github.io/categories/</loc><lastmod>2023-12-25T00:00:00&#43;00:00</lastmod></url><url>
+      <loc>https://hg-xnlog.github.io/categories/docker/</loc><lastmod>2023-12-25T00:00:00&#43;00:00</lastmod></url><url>
+      <loc>https://hg-xnlog.github.io/tags/docker/</loc><lastmod>2023-12-25T00:00:00&#43;00:00</lastmod></url><url>
+      <loc>https://hg-xnlog.github.io/posts/docker/dockerce%E5%9C%A8%E7%BA%BF%E5%AE%89%E8%A3%85/</loc><lastmod>2023-12-25T00:00:00&#43;00:00</lastmod></url><url>
+      <loc>https://hg-xnlog.github.io/posts/</loc><lastmod>2023-12-25T00:00:00&#43;00:00</lastmod></url><url>
+      <loc>https://hg-xnlog.github.io/</loc><lastmod>2023-12-25T00:00:00&#43;00:00</lastmod></url><url>
+      <loc>https://hg-xnlog.github.io/tags/</loc><lastmod>2023-12-25T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/categories/elk/</loc><lastmod>2023-12-07T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/</loc><lastmod>2023-12-07T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/categories/kubernetes/</loc><lastmod>2023-12-07T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/tags/kubernetes%E5%AE%9E%E6%88%98%E6%A1%88%E4%BE%8B/</loc><lastmod>2023-12-07T00:00:00&#43;00:00</lastmod></url><url>
-      <loc>https://hg-xnlog.github.io/posts/</loc><lastmod>2023-12-07T00:00:00&#43;00:00</lastmod></url><url>
-      <loc>https://hg-xnlog.github.io/</loc><lastmod>2023-12-07T00:00:00&#43;00:00</lastmod></url><url>
-      <loc>https://hg-xnlog.github.io/tags/</loc><lastmod>2023-12-07T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/tags/%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86/</loc><lastmod>2023-12-07T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E7%BB%93%E5%90%88jenkins%E4%B8%8Egitlab%E4%BB%A3%E7%A0%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%9B%9E%E6%BB%9A/</loc><lastmod>2023-12-04T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/tags/kubernetes/</loc><lastmod>2023-12-04T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/</loc><lastmod>2023-12-04T00:00:00&#43;00:00</lastmod></url><url>
+      <loc>https://hg-xnlog.github.io/posts/docker/%E6%9E%84%E5%BB%BAjdk17%E9%95%9C%E5%83%8F/</loc><lastmod>2023-12-01T00:00:00&#43;00:00</lastmod></url><url>
+      <loc>https://hg-xnlog.github.io/posts/docker/docker-%E6%89%B9%E9%87%8F%E5%88%A0%E9%99%A4-exited-%E7%8A%B6%E6%80%81%E7%9A%84%E5%AE%B9%E5%99%A8/</loc><lastmod>2023-12-01T00:00:00&#43;00:00</lastmod></url><url>
+      <loc>https://hg-xnlog.github.io/posts/docker/tomcat%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/</loc><lastmod>2023-12-01T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/posts/notes/windows%E7%B3%BB%E7%BB%9F%E6%9F%A5%E6%89%BE%E8%AE%BF%E9%97%AE%E7%9B%AE%E7%9A%84%E7%AB%AF%E5%8F%A3%E7%9A%84%E8%BF%9B%E7%A8%8B/</loc><lastmod>2023-11-24T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/</loc><lastmod>2023-11-24T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/tags/%E7%BB%88%E7%AB%AF%E5%AE%89%E5%85%A8/</loc><lastmod>2023-11-24T00:00:00&#43;00:00</lastmod></url><url>
@@ -45,7 +51,6 @@
       <loc>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E9%9B%86%E7%BE%A4%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E5%A4%84%E7%90%86-node-noready%E7%8A%B6%E6%80%81/</loc><lastmod>2023-09-13T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/tags/k8s%E7%9F%A5%E8%AF%86%E7%82%B9/</loc><lastmod>2023-09-06T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/posts/kubernetes/primary/%E7%94%A8label%E6%8E%A7%E5%88%B6pod%E7%9A%84%E4%BD%8D%E7%BD%AE/</loc><lastmod>2023-09-06T00:00:00&#43;00:00</lastmod></url><url>
-      <loc>https://hg-xnlog.github.io/tags/docker/</loc><lastmod>2023-08-26T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/categories/github/</loc><lastmod>2023-08-26T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/tags/hugo/</loc><lastmod>2023-08-26T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/posts/blog/push-docker-images-github-registry/</loc><lastmod>2023-08-26T00:00:00&#43;00:00</lastmod></url><url>
@@ -85,7 +90,6 @@
       <loc>https://hg-xnlog.github.io/tags/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</loc><lastmod>2023-08-17T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/posts/haproxy/haproxy-3/</loc><lastmod>2023-08-17T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/posts/haproxy/haproxy-2/</loc><lastmod>2023-08-17T00:00:00&#43;00:00</lastmod></url><url>
-      <loc>https://hg-xnlog.github.io/categories/docker/</loc><lastmod>2023-08-17T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/posts/docker/docker%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%8C%85%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85/</loc><lastmod>2023-08-17T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/posts/haproxy/haproxy-1/</loc><lastmod>2023-08-17T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-11/</loc><lastmod>2023-01-31T00:00:00&#43;00:00</lastmod></url><url>
@@ -157,9 +161,6 @@
       <loc>https://hg-xnlog.github.io/posts/linux-basic/linux-network/</loc><lastmod>2019-11-20T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/posts/linux-basic/linux-technology-stack/</loc><lastmod>2019-11-11T00:00:00&#43;00:00</lastmod></url><url>
       <loc>https://hg-xnlog.github.io/posts/linux-basic/nfs/</loc><lastmod>2019-11-26T00:00:00&#43;00:00</lastmod></url><url>
-      <loc>https://hg-xnlog.github.io/posts/docker/docker-%E6%89%B9%E9%87%8F%E5%88%A0%E9%99%A4-exited-%E7%8A%B6%E6%80%81%E7%9A%84%E5%AE%B9%E5%99%A8/</loc></url><url>
-      <loc>https://hg-xnlog.github.io/posts/docker/tomcat%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/</loc></url><url>
-      <loc>https://hg-xnlog.github.io/posts/docker/%E6%9E%84%E5%BB%BAjdk17%E9%95%9C%E5%83%8F/</loc></url><url>
       <loc>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%901/</loc></url><url>
       <loc>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%902/</loc></url><url>
       <loc>https://hg-xnlog.github.io/posts/kubernetes/primary/cert-manager-&#43;-zerossl-%E7%9A%84%E4%B8%80%E4%BA%9B%E9%85%8D%E7%BD%AE%E7%9A%84%E7%A0%94%E7%A9%B6/</loc></url><url>

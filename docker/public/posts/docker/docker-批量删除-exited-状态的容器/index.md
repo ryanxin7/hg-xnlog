@@ -1,5 +1,4 @@
-# 
-
+# docker 批量删除  Exited  状态的容器
 
 
 

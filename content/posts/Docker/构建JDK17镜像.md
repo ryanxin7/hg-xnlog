@@ -1,3 +1,16 @@
+---
+author: Ryan
+title: docker 构建JDK17 镜像
+date: 2023-12-01
+lastmod: 2023-12-01
+tags:
+  - docker
+categories:
+  - docker
+expirationReminder:
+  enable: false
+---
+
 ## 构建JDK17 镜像
 
 

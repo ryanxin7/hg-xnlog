@@ -1,6 +1,5 @@
-# 
+# docker 制作 tomcat 基础镜像
 
-![image-20231128163312010](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231128163312010.png)
 
 
 

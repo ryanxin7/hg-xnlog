@@ -1,4 +1,15 @@
-![image-20231128163312010](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20231128163312010.png)
+---
+author: Ryan
+title: docker 制作 tomcat 基础镜像
+date: 2023-12-01
+lastmod: 2023-12-01
+tags:
+  - docker
+categories:
+  - docker
+expirationReminder:
+  enable: false
+---
 
 
 
