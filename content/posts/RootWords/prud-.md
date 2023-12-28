@@ -1,4 +1,17 @@
-## 词根 prud-
+---
+author: Ryan
+title: 词根 prud
+date: 2023-12-26
+lastmod: 2023-12-26
+tags:
+  - 词根
+categories:
+  - RootWords
+expirationReminder:
+  enable: false
+---
+
+## 词根 prud
 
 这个词根的含义与智慧、谨慎和审慎相关，与对情况的思考、考虑和预见有关。
 

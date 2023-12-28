@@ -4,7 +4,15 @@
     <link>https://hg-xnlog.github.io/categories/kubernetes/</link>
     <description>Kubernetes - 分类 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Thu, 07 Dec 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/categories/kubernetes/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Thu, 28 Dec 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/categories/kubernetes/" rel="self" type="application/rss+xml" /><item>
+  <title>kubernetes pod、container与namespace资源限制</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetespodcontainer%E4%B8%8Enamespace%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6/</link>
+  <pubDate>Thu, 28 Dec 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetespodcontainer%E4%B8%8Enamespace%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6/</guid>
+  <description><![CDATA[1.kubernetes中资源限制概括 CPU 以核心为单位,1C =1000 豪核，例如24核心48线程就是 48x1000 = 4800豪核 memory 以字节为单位， 1G = 1x1024x1024 requests 为kube]]></description>
+</item>
+<item>
   <title>K8S 结合filebeat及logstash对Pod日志收集和输出</title>
   <link>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-%E7%BB%93%E5%90%88filebeat%E5%8F%8Alogstash%E5%AF%B9pod%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E5%92%8C%E8%BE%93%E5%87%BA/</link>
   <pubDate>Thu, 07 Dec 2023 00:00:00 &#43;0000</pubDate>
@@ -75,14 +83,6 @@
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s-replace-nfs-storage/</guid>
   <description><![CDATA[使用 Kubernetes NFS Subdir External Provisioner 插件来动态为 Kubernetes 提供 PV（Persistent Volume）卷，并且该插件本身并不提供 NFS 存储，而是依赖于现有的 NFS 服务器来提供存储]]></description>
-</item>
-<item>
-  <title>基于NFS Subdir External Provisioner插件提供K8S存储</title>
-  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/nfs-subdir-external-provisioner/</link>
-  <pubDate>Mon, 24 Jul 2023 21:23:22 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/nfs-subdir-external-provisioner/</guid>
-  <description><![CDATA[一、简介 NFS Subdir External Provisioner 是 Kubernetes 的一个外部存储供应者（External Provisioner），专门用于处理 NFS 存储卷的动态创建。 在 Kubernetes 中，存储供应者是一种]]></description>
 </item>
 </channel>
 </rss>
