@@ -4,10 +4,10 @@
     <link>https://hg-xnlog.github.io/tags/kubernetes%E5%9F%BA%E7%A1%80/</link>
     <description>kubernetes基础 - 标签 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><atom:link href="https://hg-xnlog.github.io/tags/kubernetes%E5%9F%BA%E7%A1%80/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Thu, 04 Jan 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/kubernetes%E5%9F%BA%E7%A1%80/" rel="self" type="application/rss+xml" /><item>
   <title>kubernetes RBAC鉴权机制与多用户实例</title>
   <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-rbac-and-multi-user-instances/</link>
-  <pubDate>Mon, 01 Jan 0001 00:00:00 &#43;0000</pubDate>
+  <pubDate>Thu, 04 Jan 2024 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-rbac-and-multi-user-instances/</guid>
   <description><![CDATA[1.概述 基于角色的访问控制（Role-Based Access Control，RBAC）是一种广泛应用的访问控制模型，它基于用户的角色来管理对系统资源的]]></description>

@@ -1,8 +1,8 @@
 ---
 author: Ryan
 title: kubernetes RBAC鉴权机制与多用户实例
-date: 2024-1-04
-lastmod: 2024-1-04
+date: 2024-01-04
+lastmod: 2024-01-04
 tags:
   - kubernetes基础
 categories:

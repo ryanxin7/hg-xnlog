@@ -4,7 +4,15 @@
     <link>https://hg-xnlog.github.io/tags/</link>
     <description>Tags - 标签 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Fri, 29 Dec 2023 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Thu, 04 Jan 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+  <title>kubernetes基础</title>
+  <link>https://hg-xnlog.github.io/tags/kubernetes%E5%9F%BA%E7%A1%80/</link>
+  <pubDate>Thu, 04 Jan 2024 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/tags/kubernetes%E5%9F%BA%E7%A1%80/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
   <title>20000词</title>
   <link>https://hg-xnlog.github.io/tags/20000%E8%AF%8D/</link>
   <pubDate>Fri, 29 Dec 2023 00:00:00 &#43;0000</pubDate>
@@ -74,14 +82,6 @@
   <pubDate>Fri, 24 Nov 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/tags/%E7%BB%88%E7%AB%AF%E5%AE%89%E5%85%A8/</guid>
-  <description><![CDATA[]]></description>
-</item>
-<item>
-  <title>AList</title>
-  <link>https://hg-xnlog.github.io/tags/alist/</link>
-  <pubDate>Mon, 20 Nov 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/tags/alist/</guid>
   <description><![CDATA[]]></description>
 </item>
 </channel>
