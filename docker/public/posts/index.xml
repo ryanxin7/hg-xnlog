@@ -4,7 +4,15 @@
     <link>https://hg-xnlog.github.io/posts/</link>
     <description>所有文章 | Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Thu, 04 Jan 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 08 Jan 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+  <title>kubernetes 中的网络实现方式</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/networking-implementation-in-kubernetes/</link>
+  <pubDate>Mon, 08 Jan 2024 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/networking-implementation-in-kubernetes/</guid>
+  <description><![CDATA[1.kubernetes 网络通信方案简介 Kubernetes 的网络涉及到各种 Pod 之间的通信以及 Pod 与外部网络的连接。而 Kubernetes 的网络实现通常依赖于第三方网络插件，这些插件需要遵循一定的规范，]]></description>
+</item>
+<item>
   <title>kubernetes RBAC鉴权机制与多用户实例</title>
   <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-rbac-and-multi-user-instances/</link>
   <pubDate>Thu, 04 Jan 2024 00:00:00 &#43;0000</pubDate>
@@ -75,14 +83,6 @@
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/docker/docker-%E6%89%B9%E9%87%8F%E5%88%A0%E9%99%A4-exited-%E7%8A%B6%E6%80%81%E7%9A%84%E5%AE%B9%E5%99%A8/</guid>
   <description><![CDATA[docker 批量删除 Exited 状态的容器 docker rm $(docker ps -a -q -f status=exited)这个命令会列出所有处于 Exited 状态的容器，并将其删除。 docker ps -a：列出所有的容器，包]]></description>
-</item>
-<item>
-  <title>docker 制作 tomcat 基础镜像</title>
-  <link>https://hg-xnlog.github.io/posts/docker/tomcat%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/</link>
-  <pubDate>Fri, 01 Dec 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/docker/tomcat%E5%9F%BA%E7%A1%80%E9%95%9C%E5%83%8F/</guid>
-  <description><![CDATA[tomcat 基础镜像 # Use a base image with Java 17 and Tomcat FROM adoptopenjdk:17-jdk-hotspot # Tomcat version to be installed ENV TOMCAT_VERSION 10.1.16 COPY ./apache-tomcat-10.1.16.tar.gz /tmp/ # 在容器中解压缩Tomcat文件 RUN tar -xf /tmp/apache-tomcat-${TOMCAT_VERSION}.tar.gz -C /opt/ &amp;&amp; \ mv /opt/apache-tomcat-${TOMCAT_VERSION} /opt/tomcat &amp;&amp; \ rm apache-tomcat-${TOMCAT_VERSION}.tar.gz # Set environment variables ENV CATALINA_HOME /opt/tomcat ENV PATH $CATALINA_HOME/bin:$PATH]]></description>
 </item>
 </channel>
 </rss>

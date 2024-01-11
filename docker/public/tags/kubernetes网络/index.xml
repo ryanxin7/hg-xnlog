@@ -1,0 +1,16 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>kubernetes网络 - 标签 - Ryan&#39;s Notebook</title>
+    <link>https://hg-xnlog.github.io/tags/kubernetes%E7%BD%91%E7%BB%9C/</link>
+    <description>kubernetes网络 - 标签 - Ryan&#39;s Notebook</description>
+    <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 08 Jan 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/kubernetes%E7%BD%91%E7%BB%9C/" rel="self" type="application/rss+xml" /><item>
+  <title>kubernetes 中的网络实现方式</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/networking-implementation-in-kubernetes/</link>
+  <pubDate>Mon, 08 Jan 2024 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/networking-implementation-in-kubernetes/</guid>
+  <description><![CDATA[1.kubernetes 网络通信方案简介 Kubernetes 的网络涉及到各种 Pod 之间的通信以及 Pod 与外部网络的连接。而 Kubernetes 的网络实现通常依赖于第三方网络插件，这些插件需要遵循一定的规范，]]></description>
+</item>
+</channel>
+</rss>

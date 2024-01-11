@@ -1,3 +1,4 @@
+https://hg-xnlog.github.io/posts/kubernetes/primary/networking-implementation-in-kubernetes/
 https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-rbac-and-multi-user-instances/
 https://hg-xnlog.github.io/posts/20000/lesson5/
 https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetespodcontainer%E4%B8%8Enamespace%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6/
