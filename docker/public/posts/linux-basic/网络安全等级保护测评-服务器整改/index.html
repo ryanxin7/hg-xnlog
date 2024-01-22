@@ -210,7 +210,14 @@
     </li>
   </ul>
 </nav></div>
-      </div><div class="content" id="content"><p>配置服务器密码复杂度、账户锁定策略、登录连接超时自动断开等项目。</p>
+      </div><div class="content" id="content"><div class="details admonition note open">
+      <div class="details-summary admonition-title">
+        <i class="icon fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i>注意<i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i>
+      </div>
+      <div class="details-content">
+        <div class="admonition-content">本文最后更新于 2023-10-23，文中内容可能已过时。</div>
+      </div>
+    </div><p>配置服务器密码复杂度、账户锁定策略、登录连接超时自动断开等项目。</p>
 <h2 id="1-设置密码强度"><strong>1. 设置密码强度</strong></h2>
 <p>设置复杂度策略</p>
 <div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/pam.d/system-auth</span></span></code></pre></div><p>找到包含<code>pam_pwquality.so</code>模块的行，将原有行注释并修改为如下的新配置</p>

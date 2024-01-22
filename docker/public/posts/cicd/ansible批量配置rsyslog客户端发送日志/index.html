@@ -201,7 +201,14 @@
     <li><a href="#查看日志已经收到了">查看日志已经收到了</a></li>
   </ul>
 </nav></div>
-      </div><div class="content" id="content"><p>由于等保要求，需要收集所有服务器的日志，但是服务器这么多每个都配置工作量太大了，所以使用ansible 批量管理工具，配置并启用各个节点服务器的rsyslog客户端，然后将日志发送到一个集中的日志服务端，达到日志收集的目的。</p>
+      </div><div class="content" id="content"><div class="details admonition note open">
+      <div class="details-summary admonition-title">
+        <i class="icon fa-solid fa-pencil-alt fa-fw" aria-hidden="true"></i>注意<i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i>
+      </div>
+      <div class="details-content">
+        <div class="admonition-content">本文最后更新于 2023-10-20，文中内容可能已过时。</div>
+      </div>
+    </div><p>由于等保要求，需要收集所有服务器的日志，但是服务器这么多每个都配置工作量太大了，所以使用ansible 批量管理工具，配置并启用各个节点服务器的rsyslog客户端，然后将日志发送到一个集中的日志服务端，达到日志收集的目的。</p>
 <p>ansible 安装和配置见Ansible 批量生成并服务器密码</p>
 <h2 id="创建ansible项目">创建Ansible项目</h2>
 <div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">mkdir -p /ansible-project/log-sync/playbooks

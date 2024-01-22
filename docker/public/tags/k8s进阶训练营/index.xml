@@ -4,7 +4,15 @@
     <link>https://hg-xnlog.github.io/tags/k8s%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/</link>
     <description>k8s进阶训练营 - 标签 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 24 Apr 2023 21:23:22 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/k8s%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/" rel="self" type="application/rss+xml" /><item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 22 Jan 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/k8s%E8%BF%9B%E9%98%B6%E8%AE%AD%E7%BB%83%E8%90%A5/" rel="self" type="application/rss+xml" /><item>
+  <title>kubernetes配置imagePullSecrets秘钥来拉取镜像</title>
+  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes%E9%85%8D%E7%BD%AEimagepullsecrets%E7%A7%98%E9%92%A5%E6%9D%A5%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F/</link>
+  <pubDate>Mon, 22 Jan 2024 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes%E9%85%8D%E7%BD%AEimagepullsecrets%E7%A7%98%E9%92%A5%E6%9D%A5%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F/</guid>
+  <description><![CDATA[imagePullSecrets 简介 在Kubernetes中，imagePullSecrets是一个用于指定用于从私有Docker仓库拉取镜像的凭据的字段。私有Docke]]></description>
+</item>
+<item>
   <title>Kubernetes 基础</title>
   <link>https://hg-xnlog.github.io/posts/kubernetes/primary/1.kubernetes%E5%9F%BA%E7%A1%80/</link>
   <pubDate>Mon, 24 Apr 2023 21:23:22 &#43;0000</pubDate>
@@ -75,14 +83,6 @@
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-11/</guid>
   <description><![CDATA[Apache Dubbo 最初在 2008 年由 Alibaba 捐献开源，很快成为了国内开源服务框架选型的事实标准框架 ，得到了各行各业的广泛应用。在 2017 年，Dubbo 正式捐献到 Apache 软件基金会]]></description>
-</item>
-<item>
-  <title>实战案例-WordPress (十)</title>
-  <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-10/</link>
-  <pubDate>Sun, 29 Jan 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-10/</guid>
-  <description><![CDATA[https://cn.wordpress.org/download/releases/ 1.准备PHP镜像 官方PHP镜像 root@harbor01[09:20:39]/dockerfile/web/wordpress #:docker pull php:5.6.40-fpm root@harbor01[09:21:35]/dockerfile/web/wordpress #:docker tag php:5.6.40-fpm harbor.ceamg.com/baseimages/php-fpm:5.6.40 root@harbor01[09:23:12]/dockerfile/web/wordpress #:docker push harbor.ceamg.com/baseimages/php-fpm:5.6.4]]></description>
 </item>
 </channel>
 </rss>

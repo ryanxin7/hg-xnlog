@@ -23,7 +23,7 @@
 <meta name="twitter:title" content="kubernetes 中的网络实现方式"/>
 <meta name="twitter:description" content="1.kubernetes 网络通信方案简介 Kubernetes 的网络涉及到各种 Pod 之间的通信以及 Pod 与外部网络的连接。而 Kubernetes 的网络实现通常依赖于第三方网络插件，这些插件需要遵循一定的规范，"/>
 <meta name="application-name" content="Ryan’s Notebook">
-<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/kubernetes/primary/networking-implementation-in-kubernetes/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-rbac-and-multi-user-instances/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/kubernetes/primary/networking-implementation-in-kubernetes/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes-rbac-and-multi-user-instances/" /><link rel="next" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes%E9%85%8D%E7%BD%AEimagepullsecrets%E7%A7%98%E9%92%A5%E6%9D%A5%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
@@ -952,7 +952,8 @@
     </section>
   </div>
 
-  <div class="post-nav"><a href="/posts/kubernetes/primary/kubernetes-rbac-and-multi-user-instances/" class="post-nav-item" rel="prev" title="kubernetes RBAC鉴权机制与多用户实例"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>kubernetes RBAC鉴权机制与多用户实例</a></div>
+  <div class="post-nav"><a href="/posts/kubernetes/primary/kubernetes-rbac-and-multi-user-instances/" class="post-nav-item" rel="prev" title="kubernetes RBAC鉴权机制与多用户实例"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>kubernetes RBAC鉴权机制与多用户实例</a>
+      <a href="/posts/kubernetes/primary/kubernetes%E9%85%8D%E7%BD%AEimagepullsecrets%E7%A7%98%E9%92%A5%E6%9D%A5%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F/" class="post-nav-item" rel="next" title="kubernetes配置imagePullSecrets秘钥来拉取镜像">kubernetes配置imagePullSecrets秘钥来拉取镜像<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></main><footer class="footer">
     <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
