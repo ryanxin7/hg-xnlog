@@ -1,4 +1,18 @@
-## Prometheus 简介与安装
+---
+author: Ryan
+title: Prometheus 简介与安装
+date: 2024-01-23
+lastmod: 2024-01-23
+tags:
+  - 监控
+categories:
+  - Prometheus
+expirationReminder:
+  enable: true
+---
+
+
+
 
 
 
@@ -9,27 +23,27 @@ Prometheus是基于go语言开发的一套开源的监控、报警和时间序�
 
 
 ```bash
-使用key-value的多维度（多个角度，多个层面，多个方面）格式保存数据；
+使用key-value的多维度格式保存数据： Prometheus使用标签（labels）来实现多维度的数据存储，允许您更灵活地查询和过滤数据。
 
-数据不使用MySQL这样的传统数据库，而是使用时序数据库，目前是使用的TSDB；
+使用时序数据库： Prometheus使用时序数据库（TSDB）来存储和查询时间序列数据，这有助于高效地处理大量的指标数据。
 
-支持第三方dashboard实现更绚丽的图形界面，如grafana （Grafana 2. 5.0版本及以上）；
+支持第三方dashboard： Prometheus可以与第三方仪表板工具集成，例如Grafana，以实现更丰富和可视化的图形界面，提供用户友好的监控仪表板。
 
-组件模块化；
+组件模块化： Prometheus的组件被设计为模块化的，这使得它易于定制和扩展，同时提高了系统的灵活性。
 
-不需要依赖存储，数据可以本地保存也可以远程保存；
+不依赖传统数据库： Prometheus不使用传统的关系型数据库（如MySQL），而是采用自己的时序数据库，简化了部署和维护过程。
 
-平均每个采样点仅占 3.5 bytes，且一个Prometheus server 可以处理数百万级别的的 metrics 指标数据；
+每个采样点仅占3.5字节： Prometheus对数据的高效存储使其能够处理大规模的指标数据，同时节省存储空间。
 
-支持服务自动化发现（基于 consul 等方式动态发现被监控的目标服务）；
+支持服务自动化发现： Prometheus支持通过诸如Consul等方式进行服务自动发现，使得监控目标的管理更加灵活和自动化。
 
-强大的数据查询语句功能（PromQL，Prometheus Query Language）；
+强大的查询语句功能（PromQL）： Prometheus Query Language（PromQL）提供了强大的查询语言，可以对时间序列数据执行灵活的查询和分析。
 
-数据可以直接进行算术运算；
+数据直接进行算术运算： PromQL允许用户对指标数据进行算术运算，从而更灵活地分析和汇总监控数据。
 
-易于横向伸缩；
+易于横向伸缩： Prometheus的架构支持横向扩展，可以通过添加更多的实例来处理更多的数据和负载。
 
-众多官方和第三方的 exporter （“数据"导出器）实现不同的指标数据收集。
+众多官方和第三方exporter： Prometheus提供了许多官方和第三方的exporter，这些exporter负责从各种服务和系统中收集指标数据，实现了广泛的数据源覆盖。
 ```
 
 
@@ -52,25 +66,33 @@ Prometheus 更适合监控 Kubernetes，主要是因为以下几个原因：
 
    
 
-### Prometheus 架构图
-
-几个组件：
+### Prometheus  组件
 
 ```bash
-prometheus server: 主服务，接受外部http请求，收集、存储与查询数据等；
-prometheus targets: 静态收集的目标服务数据；
-service discovery: 动态发现服务；
-prometheus alerting: 报警通知；
-push gateway: 数据收集代理服务器（类似于zabbix proxy）；
-data visualization and export: 数据可视化与数据导出（访问客户端）。
+Prometheus Server
+#主服务，接受外部HTTP请求,负责收集、存储和查询指标数据。使用PromQL进行数据查询和分析,可以配置告警规则，用于监测和通知异常情况。
+
+Prometheus Targets
+#态收集的目标服务数据,Prometheus服务器定期从这些目标中拉取指标数据。
+
+Service Discovery
+#于动态发现服务,Prometheus支持多种服务发现机制，例如Consul、Kubernetes、EC2等，使新的目标能够自动加入监控。
+
+Prometheus Alerting
+#于配置和管理告警规则。当规则匹配到异常情况时，可以触发告警通知。支持配置多种告警通知方式，如电子邮件、Slack等。
+
+Push Gateway
+#据收集代理服务器，类似于Zabbix Proxy的角色。允许短暂的服务（例如批处理作业）将指标推送到Push Gateway，而不需要直接与Prometheus Server通信。对于短暂生命周期的任务，Push Gateway可以更方便地处理指标数据。
+
+Data Visualization and Export
+#于数据可视化和导出的组件。可以使用第三方工具如Grafana连接到Prometheus，创建仪表板以实时监视和分析数据。
 ```
 
 
 
 
-![img](https://cdn1.ryanxin.live/6418afe7495bfc33298a6dda7cefe762.png)
 
-
+![img](https://cdn1.ryanxin.live/1200756-20220929093158606-1647337583.png)
 
 
 
@@ -85,15 +107,23 @@ data visualization and export: 数据可视化与数据导出（访问客户端�
 
 
 
-### 2.1 docker-compose部署Prometheus Server、node-exporter与grafana
+### 2.1 docker-compose部署Prometheus Server
 
 https://github.com/mohamadhoseinmoradi/Docker-Compose-Prometheus-and-Grafana
 
-![image-20230302155306464](https://cdn1.ryanxin.live/7f84f915c536a28d738b997529172b0b.png)
+![image-20240122101201441](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20240122101201441.png)
+
+
+
+安装 docker compose
+
+https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-linux-x86_64
+
+
 
 ```bash
 # 安装好docker后，将项目clone到本地
-root@prometheus01:~# git clone https://github.com/mohamadhoseinmoradi/Docker-Compose-Prometheus-and-Grafana.git
+root@prometheus-server:~# git clone https://github.com/mohamadhoseinmoradi/Docker-Compose-Prometheus-and-Grafana.git
 Cloning into 'Docker-Compose-Prometheus-and-Grafana'...
 remote: Enumerating objects: 40, done.
 remote: Counting objects: 100% (8/8), done.
@@ -102,41 +132,38 @@ remote: Total 40 (delta 1), reused 0 (delta 0), pack-reused 32
 Unpacking objects: 100% (40/40), 2.90 MiB | 4.47 MiB/s, done.
 
 # 进入目录执行
-root@prometheus01:~# cd Docker-Compose-Prometheus-and-Grafana
-root@prometheus01:~/Docker-Compose-Prometheus-and-Grafana# docker-compose up -d
+root@prometheus-server:/apps/docker-compose/Docker-Compose-Prometheus-and-Grafana-master# docker-compose up -d
+[+] Running 7/7
+ ✔ Container pushgateway   Running                                                                                                                      0.0s
+ ✔ Container grafana       Started                                                                                                                      0.5s
+ ✔ Container prometheus    Started                                                                                                                      0.6s
+ ✔ Container cadvisor      Running                                                                                                                      0.0s
+ ✔ Container alertmanager  Running                                                                                                                      0.0s
+ ✔ Container nodeexporter  Running                                                                                                                      0.0s
+ ✔ Container caddy         Started          
 ```
 
-修改 `docker-compose.yml` 文件，暴露 Prometheus 的9090端口和 grafana 的3000端口，之后再次执行 `docker-compose up -d`
+![](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20240122143521141.png)
 
-```dockerfile
- # Prometheus 
-    expose:
-      - 9090
-    ports:
-      - "9090:9090"
-    networks:
-      - monitor-net
 
-# grafana
-    expose:
-      - 3000
-    ports:
-      - "3000:3000"
-    networks:
-      - monitor-net
-```
-
-![img](https://cdn1.ryanxin.live/acf3b6780353c4b6e1f311b866a2cc48.png)
 
 grafana 账户密码默认是admin/admin
 
-![img](https://cdn1.ryanxin.live/040e53b5f4d95c33fc1cd9110169245a.png)
+![image-20240122143620417](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20240122143620417.png)
+
+
 
 ### 2.2 operator 部署 Prometheus
 
-Operator部署器是基于已经编写好的yaml文件，可以将prometheus server、alertmanager. grafana、 node-exporter等组件-键批量部署。
+Operator部署器是基于已经编写好的yaml文件，可以将prometheus server、alertmanager、grafana、 node-exporter等组件一键批量部署。
 
 部署环境：在当前已有的 kubernetes 里部署
+
+
+
+![image-20240122143823108](https://cdn1.ryanxin.live/image-20240122143823108.png)
+
+
 
 #### 2.2.1 clone 项目并部署
 
@@ -144,59 +171,135 @@ https://github.com/prometheus-operator/kube-prometheus
 
 其中这两个镜像无法下载，需要替换成国内源
 
-![image-20230302165950320](https://cdn1.ryanxin.live/cbada12d59fa32ecae0ddf60c693f6ad.png)
 
-替换镜像源
+
+**创建命名空间和 CRDs**
 
 ```bash
-root@master01:~/kube-prometheus# vim ./manifests/kubeStateMetrics-deployment.yaml
+root@k8s-made-01-32:/softs/kube-prometheus-release-0.13# kubectl apply --server-side -f manifests/setup
+customresourcedefinition.apiextensions.k8s.io/alertmanagerconfigs.monitoring.coreos.com serverside-applied
+customresourcedefinition.apiextensions.k8s.io/alertmanagers.monitoring.coreos.com serverside-applied
+customresourcedefinition.apiextensions.k8s.io/podmonitors.monitoring.coreos.com serverside-applied
+customresourcedefinition.apiextensions.k8s.io/probes.monitoring.coreos.com serverside-applied
+customresourcedefinition.apiextensions.k8s.io/prometheuses.monitoring.coreos.com serverside-applied
+customresourcedefinition.apiextensions.k8s.io/prometheusagents.monitoring.coreos.com serverside-applied
+customresourcedefinition.apiextensions.k8s.io/prometheusrules.monitoring.coreos.com serverside-applied
+customresourcedefinition.apiextensions.k8s.io/scrapeconfigs.monitoring.coreos.com serverside-applied
+customresourcedefinition.apiextensions.k8s.io/servicemonitors.monitoring.coreos.com serverside-applied
+customresourcedefinition.apiextensions.k8s.io/thanosrulers.monitoring.coreos.com serverside-applied
+namespace/monitoring serverside-applied
 
-        image: registry.cn-hangzhou.aliyuncs.com/zhangshijie/kube-state-metrics:2.5.0
 
-
-root@master01:~/kube-prometheus# vim ./manifests/prometheusAdapter-deployment.yaml
-
-        image: registry.cn-hangzhou.aliyuncs.com/zhangshijie/prometheus-adapter:v0.9.1
-
+kubectl wait \
+	--for condition=Established \
+	--all CustomResourceDefinition \
+	--namespace=monitoring
 ```
 
-执行 `kubectl apply -f ./manifests/setup/` 时报错，使用 create 命令执行
 
-![image-20230302171333998](https://cdn1.ryanxin.live/710e47bb0b00526f9bb0cedafce2e033.png)
+
+
 
 ```bash
-root@master01:~/kube-prometheus# kubectl create -f ./manifests/setup/
-customresourcedefinition.apiextensions.k8s.io/alertmanagerconfigs.monitoring.coreos.com created
-customresourcedefinition.apiextensions.k8s.io/alertmanagers.monitoring.coreos.com created
-customresourcedefinition.apiextensions.k8s.io/podmonitors.monitoring.coreos.com created
-customresourcedefinition.apiextensions.k8s.io/probes.monitoring.coreos.com created
-customresourcedefinition.apiextensions.k8s.io/prometheuses.monitoring.coreos.com created
-customresourcedefinition.apiextensions.k8s.io/prometheusrules.monitoring.coreos.com created
-customresourcedefinition.apiextensions.k8s.io/servicemonitors.monitoring.coreos.com created
-customresourcedefinition.apiextensions.k8s.io/thanosrulers.monitoring.coreos.com created
-namespace/monitoring created
+#指定命名空间 "monitoring" 中的 CustomResourceDefinition (CRD) 已经达到了 "Established" 的条件。
+#condition met 表示指定的条件已经被满足，资源处于期望的状态
+root@k8s-made-01-32:/softs/kube-prometheus-release-0.13# kubectl wait \
+> --for condition=Established \
+> --all CustomResourceDefinition \
+> --namespace=monitoring
+customresourcedefinition.apiextensions.k8s.io/alertmanagerconfigs.monitoring.coreos.com condition met
+customresourcedefinition.apiextensions.k8s.io/alertmanagers.monitoring.coreos.com condition met
+customresourcedefinition.apiextensions.k8s.io/certificaterequests.cert-manager.io condition met
+customresourcedefinition.apiextensions.k8s.io/certificates.cert-manager.io condition met
+customresourcedefinition.apiextensions.k8s.io/challenges.acme.cert-manager.io condition met
+customresourcedefinition.apiextensions.k8s.io/clusterissuers.cert-manager.io condition met
+customresourcedefinition.apiextensions.k8s.io/issuers.cert-manager.io condition met
+customresourcedefinition.apiextensions.k8s.io/orders.acme.cert-manager.io condition met
+customresourcedefinition.apiextensions.k8s.io/podmonitors.monitoring.coreos.com condition met
+customresourcedefinition.apiextensions.k8s.io/probes.monitoring.coreos.com condition met
+customresourcedefinition.apiextensions.k8s.io/prometheusagents.monitoring.coreos.com condition met
+customresourcedefinition.apiextensions.k8s.io/prometheuses.monitoring.coreos.com condition met
+customresourcedefinition.apiextensions.k8s.io/prometheusrules.monitoring.coreos.com condition met
+customresourcedefinition.apiextensions.k8s.io/scrapeconfigs.monitoring.coreos.com condition met
+customresourcedefinition.apiextensions.k8s.io/servicemonitors.monitoring.coreos.com condition met
+customresourcedefinition.apiextensions.k8s.io/thanosrulers.monitoring.coreos.com condition met
+```
 
+
+
+替换镜像
+
+```bash
+root@k8s-made-01-32:/softs/kube-prometheus-release-0.13/manifests# grep "registry.k8s.io" ./ -R
+./kubeStateMetrics-deployment.yaml:        image: registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.9.2
+./prometheusAdapter-deployment.yaml:        image: registry.k8s.io/prometheus-adapter/prometheus-adapter:v0.11.1
+```
+
+
+
+<br>
+
+
+
+```bash
 # 执行构建
-root@master01:~/kube-prometheus# kubectl apply -f ./manifests/
+kubectl apply -f manifests/
 ```
 
 
 
 #### 2.2.2 验证 Pod 状态
 
-![image-20230302202707951](https://cdn1.ryanxin.live/0f42244e31541a2c273cddee94d88ef1.png)
+![image-20240123153007196](https://cdn1.ryanxin.live/image-20240123153007196.png)
+
+```bash
+root@k8s-made-01-32:~# kubectl get pod -n monitoring
+NAME                                   READY   STATUS    RESTARTS   AGE
+alertmanager-main-0                    2/2     Running   0          20s
+blackbox-exporter-59dddb7bb6-582fm     3/3     Running   0          25s
+grafana-79f47474f7-r2qb8               1/1     Running   0          24s
+kube-state-metrics-744f9b758f-8lrkz    3/3     Running   0          23s
+node-exporter-594n4                    2/2     Running   0          23s
+node-exporter-5wvgg                    2/2     Running   0          23s
+node-exporter-7plwc                    2/2     Running   0          23s
+node-exporter-ldzrk                    2/2     Running   0          23s
+node-exporter-rjgc6                    2/2     Running   0          23s
+prometheus-adapter-69c6c87f9b-m9v2x    1/1     Running   0          22s
+prometheus-adapter-69c6c87f9b-qc6t2    1/1     Running   0          22s
+prometheus-k8s-0                       2/2     Running   0          18s
+prometheus-k8s-1                       2/2     Running   0          18s
+prometheus-operator-57cf88fbcb-m2mc7   2/2     Running   0          22s
+root@k8s-made-01-32:~# kubectl get statefulsets.apps -n monitoring
+NAME                READY   AGE
+alertmanager-main   1/1     32s
+prometheus-k8s      2/2     30s
+```
+
+
+
+
 
 维护 Prometheus 和 grafana 的配置文件
 
-![image-20230302203040462](https://cdn1.ryanxin.live/c63b7b71a2f73b448d2c7491e7db9c4f.png)
+后期运维主要是维护 Prometheus 和 grafana 的配置文件它们通过 configmap 形式挂载到 kubernetes 里，所以要修改配置就是编辑 configmap
+
+![image-20240123165304463](https://cdn1.ryanxin.live/image-20240123165304463.png)
+
+
 
 #### 2.2.3 从外部访问 Prometheus
 
 ##### 2.2.3.1 暴露端口
 
-![image-20230302203313576](https://cdn1.ryanxin.live/06cd7db76352a1501189c47de353e873.png)
+没有暴露端口，所以无法从外部访门 Prometheus
 
-编辑这个配置文件：`/root/kube-prometheus/manifests/prometheus-service.yaml`
+![image-20240123165423326](https://cdn1.ryanxin.live/image-20240123165423326.png)
+
+
+
+编辑配置：`/root/kube-prometheus/manifests/prometheus-service.yaml`
+
+![image-20240123170319474](https://cdn1.ryanxin.live/image-20240123170319474.png)
 
 ```yaml
 spec:
@@ -210,26 +313,27 @@ spec:
 
 同理，想要从外部访问 grafana ，也要将端口暴露出来，修改这个文件：`/root/kube-prometheus/manifests/grafana-service.yaml`
 
+![image-20240123165947468](https://cdn1.ryanxin.live/image-20240123165947468.png)
+
+
+
 ##### 2.2.3.2 修改 NetworkPolicy
 
 上文将端口暴露出来后依然无法从外部访问，那是因为加了 NetworkPolicy ，我们将关于 Prometheus 和 grafana 的 networkpolicy 删除：
 
-![img](https://cdn1.ryanxin.live/15b0690805263d66177da0060647201b.png)
+![image-20240123170047904](https://cdn1.ryanxin.live/image-20240123170047904.png)
 
-![img](https://img-blog.csdnimg.cn/img_convert/e206cc8b18175c942489a9410d02aeef.png)
+![image-20240123170146894](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20240123170146894.png)
 
-```bash
-root@master01:~/kube-prometheus# kubectl delete -f ./manifests/grafana-networkPolicy.yaml 
-networkpolicy.networking.k8s.io "grafana" deleted
-
-root@master01:~/kube-prometheus# kubectl delete -f ./manifests/prometheus-networkPolicy.yaml 
-networkpolicy.networking.k8s.io "prometheus-k8s" deleted
-
-```
+![image-20240123170402356](https://cdn1.ryanxin.live/image-20240123170402356.png)
 
 之后就能从外部访问了：
 
-![img](https://cdn1.ryanxin.live/075de11450504db57f22336aa9187609.png)
+![image-20240123170905441](https://cdn1.ryanxin.live/image-20240123170905441.png)
+
+
+
+![image-20240123171046830](https://cdn1.ryanxin.live/image-20240123171046830.png)
 
 
 
@@ -623,31 +727,4 @@ sudo service grafana-server restart
 
 ![image-20230303143432271](https://cdn1.ryanxin.live/6996b9be22c66525cd2f1f47cf5db669.png)
 
-
-
-## 三、PromQL 语句
-官网：[Querying basics | Prometheus](https://prometheus.io/docs/prometheus/latest/querying/basics/)
-
-Prometheus 提供一个函数式的表达式语言 PromQL（Prometheus Query Language），可以使用户实时地查找和聚合时间序列数据，表达式计算结果可以在图表中展示，也可以在Prometheus浏览器中以表格形式展示，或者作为数据源，以 HTTP API 的方式提供给外部系统使用。
-
-
-### 3.1 PromQL 数据基础
-
-#### 3.1.1 PromQL查询数据类型
-
-https://prometheus.io/docs/prometheus/latest/querying/basics/
-
-**瞬时向量、瞬时数据（instant vector）**：是对目标实例查询到的同一个时间戳的一组时间序列数据（按照时间的推移对数据进存储和展示），每个时间序列包含单个数据样本，比如 node_memory_MemFree_bytes 查询的是当前剩余内存（可用内存）就是-个瞬时向量，该表达式的返回值中只会包含该时间序列中的最新的一个样本值，而相应的这样的表达式称之为瞬时向量表达式，例如：`prometheus_http_requests_total`，prometheus API 查询瞬时数据命令，在没有指定匹配条件的前提下，会返回所有包含此指标数据的实例数据:
-
-```bash
-curl 'http://172.23.1.12:9090/api/v1/query' --data 'query=node_memory_MemFree_bytes' --data time=1677826800
-```
-
-![img](https://cdn1.ryanxin.live/0bb0f13c85caec97bc91fd6f338d4d9a.png)
-
-**标量、纯量数据（scalar）**：是一个浮点数类型的数据值，使用 node_ load1 获取到时一个瞬时向量后，再使用 prometheus 的内置函数 scalar( ) 将瞬时向量转换为标量，例如：`scalar(sum(node_load1))`
-
-```bash
-curl 'http://172.23.1.12:9090/api/v1/query' --data 'query=scalar(sum(node_load1{instance="172.23.1.11:9100"}))' --data time=1677826800
-```
 

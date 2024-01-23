@@ -5,35 +5,35 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
     <meta name="robots" content="noodp" />
-    <title> - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
+    <title>Prometheus 简介与安装 - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
 <meta name="author-link" content="https://github.com/ryanxin7">
-<meta name="description" content="Prometheus 简介与安装 一、Prometheus 简介 官网：https://prometheus.io/ Prometheus是基于go语言开发的一套开源的" /><meta name="keywords" content='Hugo, FixIt' /><meta itemprop="name" content="">
-<meta itemprop="description" content="Prometheus 简介与安装 一、Prometheus 简介 官网：https://prometheus.io/ Prometheus是基于go语言开发的一套开源的">
-
-<meta itemprop="wordCount" content="4906"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
-<meta itemprop="keywords" content="" /><meta property="og:title" content="" />
-<meta property="og:description" content="Prometheus 简介与安装 一、Prometheus 简介 官网：https://prometheus.io/ Prometheus是基于go语言开发的一套开源的" />
+<meta name="description" content="一、Prometheus 简介 官网：https://prometheus.io/ Prometheus是基于go语言开发的一套开源的监控、报警和" /><meta name="keywords" content='监控' /><meta itemprop="name" content="Prometheus 简介与安装">
+<meta itemprop="description" content="一、Prometheus 简介 官网：https://prometheus.io/ Prometheus是基于go语言开发的一套开源的监控、报警和"><meta itemprop="datePublished" content="2024-01-23T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2024-01-23T00:00:00+00:00" />
+<meta itemprop="wordCount" content="5213"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="keywords" content="监控," /><meta property="og:title" content="Prometheus 简介与安装" />
+<meta property="og:description" content="一、Prometheus 简介 官网：https://prometheus.io/ Prometheus是基于go语言开发的一套开源的监控、报警和" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
-
-
+<meta property="article:published_time" content="2024-01-23T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-01-23T00:00:00+00:00" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="https://hg-xnlog.github.io/logo.png"/>
 
-<meta name="twitter:title" content=""/>
-<meta name="twitter:description" content="Prometheus 简介与安装 一、Prometheus 简介 官网：https://prometheus.io/ Prometheus是基于go语言开发的一套开源的"/>
+<meta name="twitter:title" content="Prometheus 简介与安装"/>
+<meta name="twitter:description" content="一、Prometheus 简介 官网：https://prometheus.io/ Prometheus是基于go语言开发的一套开源的监控、报警和"/>
 <meta name="application-name" content="Ryan’s Notebook">
-<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" /><link rel="next" href="https://hg-xnlog.github.io/posts/notes/nginx%E9%83%A8%E7%BD%B2vue%E9%A1%B9%E7%9B%AE%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1%E5%88%B7%E6%96%B0404%E9%97%AE%E9%A2%98/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes%E9%85%8D%E7%BD%AEimagepullsecrets%E7%A7%98%E9%92%A5%E6%9D%A5%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
-    "headline": "",
+    "headline": "Prometheus 简介与安装",
     "inLanguage": "zh-CN",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/prometheus\/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85\/"
-    },"genre": "posts","wordcount":  4906 ,
-    "url": "https:\/\/hg-xnlog.github.io\/posts\/prometheus\/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85\/","publisher": {
+    },"genre": "posts","keywords": "监控","wordcount":  5213 ,
+    "url": "https:\/\/hg-xnlog.github.io\/posts\/prometheus\/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85\/","datePublished": "2024-01-23T00:00:00+00:00","dateModified": "2024-01-23T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
         "@type": "Person",
@@ -177,10 +177,11 @@
     </aside>
 
   <article class="page single">
-    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span></span>
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>Prometheus 简介与安装</span>
       </h1></div><div class="post-meta">
-      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span></div>
-      <div class="post-meta-line"><span title="发布于 0001-01-01 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="0001-01-01">0001-01-01</time></span>&nbsp;<span title="更新于 0001-01-01 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="0001-01-01">0001-01-01</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 4906 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 10 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
+          <span class="post-category">收录于 <a href="/categories/prometheus/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Prometheus</a></span></div>
+      <div class="post-meta-line"><span title="发布于 2024-01-23 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-23">2024-01-23</time></span>&nbsp;<span title="更新于 2024-01-23 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-23">2024-01-23</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 5213 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 11 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Prometheus 简介与安装">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -190,16 +191,15 @@
         </div>
         <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
-    <li><a href="#prometheus-简介与安装">Prometheus 简介与安装</a></li>
     <li><a href="#一prometheus-简介">一、Prometheus 简介</a>
       <ul>
         <li><a href="#为什么使用-prometheus">为什么使用 Prometheus？</a></li>
-        <li><a href="#prometheus-架构图">Prometheus 架构图</a></li>
+        <li><a href="#prometheus--组件">Prometheus  组件</a></li>
       </ul>
     </li>
     <li><a href="#二部署-prometheus">二、部署 Prometheus</a>
       <ul>
-        <li><a href="#21-docker-compose部署prometheus-servernode-exporter与grafana">2.1 docker-compose部署Prometheus Server、node-exporter与grafana</a></li>
+        <li><a href="#21-docker-compose部署prometheus-server">2.1 docker-compose部署Prometheus Server</a></li>
         <li><a href="#22-operator-部署-prometheus">2.2 operator 部署 Prometheus</a></li>
         <li><a href="#23-二进制部署-prometheus-server">2.3 二进制部署 Prometheus Server</a></li>
         <li><a href="#24-二进制安装node-exporter">2.4 二进制安装node-exporter</a></li>
@@ -207,45 +207,32 @@
         <li><a href="#26-部署-grafana">2.6 部署 Grafana</a></li>
       </ul>
     </li>
-    <li><a href="#三promql-语句">三、PromQL 语句</a>
-      <ul>
-        <li><a href="#31-promql-数据基础">3.1 PromQL 数据基础</a></li>
-      </ul>
-    </li>
   </ul>
 </nav></div>
-      </div><div class="content" id="content"><div class="details admonition warning open">
-      <div class="details-summary admonition-title">
-        <i class="icon fa-solid fa-exclamation-triangle fa-fw" aria-hidden="true"></i>警告<i class="details-icon fa-solid fa-angle-right fa-fw" aria-hidden="true"></i>
-      </div>
-      <div class="details-content">
-        <div class="admonition-content">本文最后更新于 0001-01-01，文中内容可能已过时。</div>
-      </div>
-    </div><h2 id="prometheus-简介与安装">Prometheus 简介与安装</h2>
-<h2 id="一prometheus-简介">一、Prometheus 简介</h2>
+      </div><div class="content" id="content"><h2 id="一prometheus-简介">一、Prometheus 简介</h2>
 <p>官网：https://prometheus.io/</p>
 <p>Prometheus是基于go语言开发的一套开源的监控、报警和时间序列数据库的组合，是由SoundCloud公司开发的开源监控系统，Prometheus于201 6年加入CNCF （Cloud Native Computing Foundation,云原生计算基金会），2018年8月9日prometheus成为CNCF继kubernetes之后毕业的第二二个项目，prometheus在 容器和微服务领域中得到了广泛的应用，其特点主要如下:</p>
-<div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">使用key-value的多维度（多个角度，多个层面，多个方面）格式保存数据；
+<div class="highlight" id="id-1"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">使用key-value的多维度格式保存数据： Prometheus使用标签（labels）来实现多维度的数据存储，允许您更灵活地查询和过滤数据。
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">数据不使用MySQL这样的传统数据库，而是使用时序数据库，目前是使用的TSDB；
+</span></span><span class="line"><span class="cl">使用时序数据库： Prometheus使用时序数据库（TSDB）来存储和查询时间序列数据，这有助于高效地处理大量的指标数据。
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">支持第三方dashboard实现更绚丽的图形界面，如grafana （Grafana 2. 5.0版本及以上）；
+</span></span><span class="line"><span class="cl">支持第三方dashboard： Prometheus可以与第三方仪表板工具集成，例如Grafana，以实现更丰富和可视化的图形界面，提供用户友好的监控仪表板。
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">组件模块化；
+</span></span><span class="line"><span class="cl">组件模块化： Prometheus的组件被设计为模块化的，这使得它易于定制和扩展，同时提高了系统的灵活性。
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">不需要依赖存储，数据可以本地保存也可以远程保存；
+</span></span><span class="line"><span class="cl">不依赖传统数据库： Prometheus不使用传统的关系型数据库（如MySQL），而是采用自己的时序数据库，简化了部署和维护过程。
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">平均每个采样点仅占 3.5 bytes，且一个Prometheus server 可以处理数百万级别的的 metrics 指标数据；
+</span></span><span class="line"><span class="cl">每个采样点仅占3.5字节： Prometheus对数据的高效存储使其能够处理大规模的指标数据，同时节省存储空间。
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">支持服务自动化发现（基于 consul 等方式动态发现被监控的目标服务）；
+</span></span><span class="line"><span class="cl">支持服务自动化发现： Prometheus支持通过诸如Consul等方式进行服务自动发现，使得监控目标的管理更加灵活和自动化。
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">强大的数据查询语句功能（PromQL，Prometheus Query Language）；
+</span></span><span class="line"><span class="cl">强大的查询语句功能（PromQL）： Prometheus Query Language（PromQL）提供了强大的查询语言，可以对时间序列数据执行灵活的查询和分析。
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">数据可以直接进行算术运算；
+</span></span><span class="line"><span class="cl">数据直接进行算术运算： PromQL允许用户对指标数据进行算术运算，从而更灵活地分析和汇总监控数据。
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">易于横向伸缩；
+</span></span><span class="line"><span class="cl">易于横向伸缩： Prometheus的架构支持横向扩展，可以通过添加更多的实例来处理更多的数据和负载。
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">众多官方和第三方的 exporter （“数据<span class="s2">&#34;导出器）实现不同的指标数据收集。</span></span></span></code></pre></div><h3 id="为什么使用-prometheus">为什么使用 Prometheus？</h3>
+</span></span><span class="line"><span class="cl">众多官方和第三方exporter： Prometheus提供了许多官方和第三方的exporter，这些exporter负责从各种服务和系统中收集指标数据，实现了广泛的数据源覆盖。</span></span></code></pre></div><h3 id="为什么使用-prometheus">为什么使用 Prometheus？</h3>
 <p>容器监控的实现方对比虚拟机或者物理机来说比大的区别，比如容器在k8s环境中可以任意横向扩容与缩容，那么就需要监控服务能够自动对新创建的容器进行监控，当容器删除后又能够及时的从监控服务中删除，而传统的zabbix的监控方式需要在每一个容器中安装启动agent， 并且在容器自动发现注册及模板关联方面并没有比较好的实现方式。</p>
 <p>Prometheus 更适合监控 Kubernetes，主要是因为以下几个原因：</p>
 <ol>
@@ -265,14 +252,24 @@
 <p>Kubernetes 官方推荐：Kubernetes 官方文档中推荐使用 Prometheus 进行 Kubernetes 监控，并提供了 Prometheus Operator 等工具和库，以帮助用户更轻松地在 Kubernetes 中部署和管理 Prometheus。</p>
 </li>
 </ol>
-<h3 id="prometheus-架构图">Prometheus 架构图</h3>
-<p>几个组件：</p>
-<div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">prometheus server: 主服务，接受外部http请求，收集、存储与查询数据等；
-</span></span><span class="line"><span class="cl">prometheus targets: 静态收集的目标服务数据；
-</span></span><span class="line"><span class="cl">service discovery: 动态发现服务；
-</span></span><span class="line"><span class="cl">prometheus alerting: 报警通知；
-</span></span><span class="line"><span class="cl">push gateway: 数据收集代理服务器（类似于zabbix proxy）；
-</span></span><span class="line"><span class="cl">data visualization and export: 数据可视化与数据导出（访问客户端）。</span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/6418afe7495bfc33298a6dda7cefe762.png" srcset="https://cdn1.ryanxin.live/6418afe7495bfc33298a6dda7cefe762.png, https://cdn1.ryanxin.live/6418afe7495bfc33298a6dda7cefe762.png 1.5x, https://cdn1.ryanxin.live/6418afe7495bfc33298a6dda7cefe762.png 2x" sizes="auto" data-title="img" data-alt="img" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h3 id="prometheus--组件">Prometheus  组件</h3>
+<div class="highlight" id="id-2"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Prometheus Server
+</span></span><span class="line"><span class="cl"><span class="c1">#主服务，接受外部HTTP请求,负责收集、存储和查询指标数据。使用PromQL进行数据查询和分析,可以配置告警规则，用于监测和通知异常情况。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Prometheus Targets
+</span></span><span class="line"><span class="cl"><span class="c1">#态收集的目标服务数据,Prometheus服务器定期从这些目标中拉取指标数据。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Service Discovery
+</span></span><span class="line"><span class="cl"><span class="c1">#于动态发现服务,Prometheus支持多种服务发现机制，例如Consul、Kubernetes、EC2等，使新的目标能够自动加入监控。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Prometheus Alerting
+</span></span><span class="line"><span class="cl"><span class="c1">#于配置和管理告警规则。当规则匹配到异常情况时，可以触发告警通知。支持配置多种告警通知方式，如电子邮件、Slack等。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Push Gateway
+</span></span><span class="line"><span class="cl"><span class="c1">#据收集代理服务器，类似于Zabbix Proxy的角色。允许短暂的服务（例如批处理作业）将指标推送到Push Gateway，而不需要直接与Prometheus Server通信。对于短暂生命周期的任务，Push Gateway可以更方便地处理指标数据。</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Data Visualization and Export
+</span></span><span class="line"><span class="cl"><span class="c1">#于数据可视化和导出的组件。可以使用第三方工具如Grafana连接到Prometheus，创建仪表板以实时监视和分析数据。</span></span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/1200756-20220929093158606-1647337583.png" srcset="https://cdn1.ryanxin.live/1200756-20220929093158606-1647337583.png, https://cdn1.ryanxin.live/1200756-20220929093158606-1647337583.png 1.5x, https://cdn1.ryanxin.live/1200756-20220929093158606-1647337583.png 2x" sizes="auto" data-title="img" data-alt="img" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <h2 id="二部署-prometheus">二、部署 Prometheus</h2>
 <p>可以通过不同的方式安装部署prometheus监控环境，虽然以下的多种安装方式演示了不同的部署方式，但是实际生产环境只需要根据实际需求选择其中一种方式部署即可， 不过无论是使用哪一种方式安装部署的prometheus server，以后的使用都是一样的，后续的课程大部分以二进制安装环境为例，其它会做简单的对应介绍。</p>
 <ul>
@@ -280,11 +277,13 @@
 <li>docker-ompose 安装</li>
 <li>二进制安装</li>
 </ul>
-<h3 id="21-docker-compose部署prometheus-servernode-exporter与grafana">2.1 docker-compose部署Prometheus Server、node-exporter与grafana</h3>
+<h3 id="21-docker-compose部署prometheus-server">2.1 docker-compose部署Prometheus Server</h3>
 <p><a href="https://github.com/mohamadhoseinmoradi/Docker-Compose-Prometheus-and-Grafana"target="_blank" rel="external nofollow noopener noreferrer">https://github.com/mohamadhoseinmoradi/Docker-Compose-Prometheus-and-Grafana</a></p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/7f84f915c536a28d738b997529172b0b.png" srcset="https://cdn1.ryanxin.live/7f84f915c536a28d738b997529172b0b.png, https://cdn1.ryanxin.live/7f84f915c536a28d738b997529172b0b.png 1.5x, https://cdn1.ryanxin.live/7f84f915c536a28d738b997529172b0b.png 2x" sizes="auto" data-title="image-20230302155306464" data-alt="image-20230302155306464" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20240122101201441.png" srcset="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20240122101201441.png, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20240122101201441.png 1.5x, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20240122101201441.png 2x" sizes="auto" data-title="image-20240122101201441" data-alt="image-20240122101201441" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p>安装 docker compose</p>
+<p><a href="https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-linux-x86_64"target="_blank" rel="external nofollow noopener noreferrer">https://github.com/docker/compose/releases/download/v2.23.3/docker-compose-linux-x86_64</a></p>
 <div class="highlight" id="id-3"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 安装好docker后，将项目clone到本地</span>
-</span></span><span class="line"><span class="cl">root@prometheus01:~# git clone https://github.com/mohamadhoseinmoradi/Docker-Compose-Prometheus-and-Grafana.git
+</span></span><span class="line"><span class="cl">root@prometheus-server:~# git clone https://github.com/mohamadhoseinmoradi/Docker-Compose-Prometheus-and-Grafana.git
 </span></span><span class="line"><span class="cl">Cloning into <span class="s1">&#39;Docker-Compose-Prometheus-and-Grafana&#39;</span>...
 </span></span><span class="line"><span class="cl">remote: Enumerating objects: 40, <span class="k">done</span>.
 </span></span><span class="line"><span class="cl">remote: Counting objects: 100% <span class="o">(</span>8/8<span class="o">)</span>, <span class="k">done</span>.
@@ -293,85 +292,120 @@
 </span></span><span class="line"><span class="cl">Unpacking objects: 100% <span class="o">(</span>40/40<span class="o">)</span>, 2.90 MiB <span class="p">|</span> 4.47 MiB/s, <span class="k">done</span>.
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 进入目录执行</span>
-</span></span><span class="line"><span class="cl">root@prometheus01:~# <span class="nb">cd</span> Docker-Compose-Prometheus-and-Grafana
-</span></span><span class="line"><span class="cl">root@prometheus01:~/Docker-Compose-Prometheus-and-Grafana# docker-compose up -d</span></span></code></pre></div><p>修改 <code>docker-compose.yml</code> 文件，暴露 Prometheus 的9090端口和 grafana 的3000端口，之后再次执行 <code>docker-compose up -d</code></p>
-<div class="highlight" id="id-4"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"> <span class="c1"># Prometheus </span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    expose:<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>      - <span class="m">9090</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    ports:<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>      - <span class="s2">&#34;9090:9090&#34;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    networks:<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>      - monitor-net<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="c"># grafana</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    expose:<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>      - <span class="m">3000</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    ports:<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>      - <span class="s2">&#34;3000:3000&#34;</span><span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>    networks:<span class="err">
-</span></span></span><span class="line"><span class="cl"><span class="err"></span>      - monitor-net</span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/acf3b6780353c4b6e1f311b866a2cc48.png" srcset="https://cdn1.ryanxin.live/acf3b6780353c4b6e1f311b866a2cc48.png, https://cdn1.ryanxin.live/acf3b6780353c4b6e1f311b866a2cc48.png 1.5x, https://cdn1.ryanxin.live/acf3b6780353c4b6e1f311b866a2cc48.png 2x" sizes="auto" data-title="img" data-alt="img" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+</span></span><span class="line"><span class="cl">root@prometheus-server:/apps/docker-compose/Docker-Compose-Prometheus-and-Grafana-master# docker-compose up -d
+</span></span><span class="line"><span class="cl"><span class="o">[</span>+<span class="o">]</span> Running 7/7
+</span></span><span class="line"><span class="cl"> ✔ Container pushgateway   Running                                                                                                                      0.0s
+</span></span><span class="line"><span class="cl"> ✔ Container grafana       Started                                                                                                                      0.5s
+</span></span><span class="line"><span class="cl"> ✔ Container prometheus    Started                                                                                                                      0.6s
+</span></span><span class="line"><span class="cl"> ✔ Container cadvisor      Running                                                                                                                      0.0s
+</span></span><span class="line"><span class="cl"> ✔ Container alertmanager  Running                                                                                                                      0.0s
+</span></span><span class="line"><span class="cl"> ✔ Container nodeexporter  Running                                                                                                                      0.0s
+</span></span><span class="line"><span class="cl"> ✔ Container caddy         Started          </span></span></code></pre></div><p><img loading="lazy" src="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20240122143521141.png" srcset="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20240122143521141.png, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20240122143521141.png 1.5x, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20240122143521141.png 2x" sizes="auto" data-title="C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20240122143521141.png" data-alt="C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20240122143521141.png" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <p>grafana 账户密码默认是admin/admin</p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/040e53b5f4d95c33fc1cd9110169245a.png" srcset="https://cdn1.ryanxin.live/040e53b5f4d95c33fc1cd9110169245a.png, https://cdn1.ryanxin.live/040e53b5f4d95c33fc1cd9110169245a.png 1.5x, https://cdn1.ryanxin.live/040e53b5f4d95c33fc1cd9110169245a.png 2x" sizes="auto" data-title="img" data-alt="img" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20240122143620417.png" srcset="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20240122143620417.png, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20240122143620417.png 1.5x, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20240122143620417.png 2x" sizes="auto" data-title="image-20240122143620417" data-alt="image-20240122143620417" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <h3 id="22-operator-部署-prometheus">2.2 operator 部署 Prometheus</h3>
-<p>Operator部署器是基于已经编写好的yaml文件，可以将prometheus server、alertmanager. grafana、 node-exporter等组件-键批量部署。</p>
+<p>Operator部署器是基于已经编写好的yaml文件，可以将prometheus server、alertmanager、grafana、 node-exporter等组件一键批量部署。</p>
 <p>部署环境：在当前已有的 kubernetes 里部署</p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240122143823108.png" srcset="https://cdn1.ryanxin.live/image-20240122143823108.png, https://cdn1.ryanxin.live/image-20240122143823108.png 1.5x, https://cdn1.ryanxin.live/image-20240122143823108.png 2x" sizes="auto" data-title="image-20240122143823108" data-alt="image-20240122143823108" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <h4 id="221-clone-项目并部署">2.2.1 clone 项目并部署</h4>
 <p><a href="https://github.com/prometheus-operator/kube-prometheus"target="_blank" rel="external nofollow noopener noreferrer">https://github.com/prometheus-operator/kube-prometheus</a></p>
 <p>其中这两个镜像无法下载，需要替换成国内源</p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/cbada12d59fa32ecae0ddf60c693f6ad.png" srcset="https://cdn1.ryanxin.live/cbada12d59fa32ecae0ddf60c693f6ad.png, https://cdn1.ryanxin.live/cbada12d59fa32ecae0ddf60c693f6ad.png 1.5x, https://cdn1.ryanxin.live/cbada12d59fa32ecae0ddf60c693f6ad.png 2x" sizes="auto" data-title="image-20230302165950320" data-alt="image-20230302165950320" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p>替换镜像源</p>
-<div class="highlight" id="id-5"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@master01:~/kube-prometheus# vim ./manifests/kubeStateMetrics-deployment.yaml
+<p><strong>创建命名空间和 CRDs</strong></p>
+<div class="highlight" id="id-4"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/softs/kube-prometheus-release-0.13# kubectl apply --server-side -f manifests/setup
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/alertmanagerconfigs.monitoring.coreos.com serverside-applied
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/alertmanagers.monitoring.coreos.com serverside-applied
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/podmonitors.monitoring.coreos.com serverside-applied
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/probes.monitoring.coreos.com serverside-applied
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/prometheuses.monitoring.coreos.com serverside-applied
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/prometheusagents.monitoring.coreos.com serverside-applied
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/prometheusrules.monitoring.coreos.com serverside-applied
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/scrapeconfigs.monitoring.coreos.com serverside-applied
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/servicemonitors.monitoring.coreos.com serverside-applied
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/thanosrulers.monitoring.coreos.com serverside-applied
+</span></span><span class="line"><span class="cl">namespace/monitoring serverside-applied
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        image: registry.cn-hangzhou.aliyuncs.com/zhangshijie/kube-state-metrics:2.5.0
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">root@master01:~/kube-prometheus# vim ./manifests/prometheusAdapter-deployment.yaml
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        image: registry.cn-hangzhou.aliyuncs.com/zhangshijie/prometheus-adapter:v0.9.1</span></span></code></pre></div><p>执行 <code>kubectl apply -f ./manifests/setup/</code> 时报错，使用 create 命令执行</p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/710e47bb0b00526f9bb0cedafce2e033.png" srcset="https://cdn1.ryanxin.live/710e47bb0b00526f9bb0cedafce2e033.png, https://cdn1.ryanxin.live/710e47bb0b00526f9bb0cedafce2e033.png 1.5x, https://cdn1.ryanxin.live/710e47bb0b00526f9bb0cedafce2e033.png 2x" sizes="auto" data-title="image-20230302171333998" data-alt="image-20230302171333998" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<div class="highlight" id="id-6"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@master01:~/kube-prometheus# kubectl create -f ./manifests/setup/
-</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/alertmanagerconfigs.monitoring.coreos.com created
-</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/alertmanagers.monitoring.coreos.com created
-</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/podmonitors.monitoring.coreos.com created
-</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/probes.monitoring.coreos.com created
-</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/prometheuses.monitoring.coreos.com created
-</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/prometheusrules.monitoring.coreos.com created
-</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/servicemonitors.monitoring.coreos.com created
-</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/thanosrulers.monitoring.coreos.com created
-</span></span><span class="line"><span class="cl">namespace/monitoring created
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 执行构建</span>
-</span></span><span class="line"><span class="cl">root@master01:~/kube-prometheus# kubectl apply -f ./manifests/</span></span></code></pre></div><h4 id="222-验证-pod-状态">2.2.2 验证 Pod 状态</h4>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/0f42244e31541a2c273cddee94d88ef1.png" srcset="https://cdn1.ryanxin.live/0f42244e31541a2c273cddee94d88ef1.png, https://cdn1.ryanxin.live/0f42244e31541a2c273cddee94d88ef1.png 1.5x, https://cdn1.ryanxin.live/0f42244e31541a2c273cddee94d88ef1.png 2x" sizes="auto" data-title="image-20230302202707951" data-alt="image-20230302202707951" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p>维护 Prometheus 和 grafana 的配置文件</p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/c63b7b71a2f73b448d2c7491e7db9c4f.png" srcset="https://cdn1.ryanxin.live/c63b7b71a2f73b448d2c7491e7db9c4f.png, https://cdn1.ryanxin.live/c63b7b71a2f73b448d2c7491e7db9c4f.png 1.5x, https://cdn1.ryanxin.live/c63b7b71a2f73b448d2c7491e7db9c4f.png 2x" sizes="auto" data-title="image-20230302203040462" data-alt="image-20230302203040462" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+</span></span><span class="line"><span class="cl">kubectl <span class="nb">wait</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>	--for <span class="nv">condition</span><span class="o">=</span>Established <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>	--all CustomResourceDefinition <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>	--namespace<span class="o">=</span>monitoring</span></span></code></pre></div><div class="highlight" id="id-5"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1">#指定命名空间 &#34;monitoring&#34; 中的 CustomResourceDefinition (CRD) 已经达到了 &#34;Established&#34; 的条件。</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#condition met 表示指定的条件已经被满足，资源处于期望的状态</span>
+</span></span><span class="line"><span class="cl">root@k8s-made-01-32:/softs/kube-prometheus-release-0.13# kubectl <span class="nb">wait</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>&gt; --for <span class="nv">condition</span><span class="o">=</span>Established <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>&gt; --all CustomResourceDefinition <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>&gt; --namespace<span class="o">=</span>monitoring
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/alertmanagerconfigs.monitoring.coreos.com condition met
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/alertmanagers.monitoring.coreos.com condition met
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/certificaterequests.cert-manager.io condition met
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/certificates.cert-manager.io condition met
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/challenges.acme.cert-manager.io condition met
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/clusterissuers.cert-manager.io condition met
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/issuers.cert-manager.io condition met
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/orders.acme.cert-manager.io condition met
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/podmonitors.monitoring.coreos.com condition met
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/probes.monitoring.coreos.com condition met
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/prometheusagents.monitoring.coreos.com condition met
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/prometheuses.monitoring.coreos.com condition met
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/prometheusrules.monitoring.coreos.com condition met
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/scrapeconfigs.monitoring.coreos.com condition met
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/servicemonitors.monitoring.coreos.com condition met
+</span></span><span class="line"><span class="cl">customresourcedefinition.apiextensions.k8s.io/thanosrulers.monitoring.coreos.com condition met</span></span></code></pre></div><p>替换镜像</p>
+<div class="highlight" id="id-6"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:/softs/kube-prometheus-release-0.13/manifests# grep <span class="s2">&#34;registry.k8s.io&#34;</span> ./ -R
+</span></span><span class="line"><span class="cl">./kubeStateMetrics-deployment.yaml:        image: registry.k8s.io/kube-state-metrics/kube-state-metrics:v2.9.2
+</span></span><span class="line"><span class="cl">./prometheusAdapter-deployment.yaml:        image: registry.k8s.io/prometheus-adapter/prometheus-adapter:v0.11.1</span></span></code></pre></div><!-- raw HTML omitted -->
+<div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 执行构建</span>
+</span></span><span class="line"><span class="cl">kubectl apply -f manifests/</span></span></code></pre></div><h4 id="222-验证-pod-状态">2.2.2 验证 Pod 状态</h4>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240123153007196.png" srcset="https://cdn1.ryanxin.live/image-20240123153007196.png, https://cdn1.ryanxin.live/image-20240123153007196.png 1.5x, https://cdn1.ryanxin.live/image-20240123153007196.png 2x" sizes="auto" data-title="image-20240123153007196" data-alt="image-20240123153007196" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-made-01-32:~# kubectl get pod -n monitoring
+</span></span><span class="line"><span class="cl">NAME                                   READY   STATUS    RESTARTS   AGE
+</span></span><span class="line"><span class="cl">alertmanager-main-0                    2/2     Running   <span class="m">0</span>          20s
+</span></span><span class="line"><span class="cl">blackbox-exporter-59dddb7bb6-582fm     3/3     Running   <span class="m">0</span>          25s
+</span></span><span class="line"><span class="cl">grafana-79f47474f7-r2qb8               1/1     Running   <span class="m">0</span>          24s
+</span></span><span class="line"><span class="cl">kube-state-metrics-744f9b758f-8lrkz    3/3     Running   <span class="m">0</span>          23s
+</span></span><span class="line"><span class="cl">node-exporter-594n4                    2/2     Running   <span class="m">0</span>          23s
+</span></span><span class="line"><span class="cl">node-exporter-5wvgg                    2/2     Running   <span class="m">0</span>          23s
+</span></span><span class="line"><span class="cl">node-exporter-7plwc                    2/2     Running   <span class="m">0</span>          23s
+</span></span><span class="line"><span class="cl">node-exporter-ldzrk                    2/2     Running   <span class="m">0</span>          23s
+</span></span><span class="line"><span class="cl">node-exporter-rjgc6                    2/2     Running   <span class="m">0</span>          23s
+</span></span><span class="line"><span class="cl">prometheus-adapter-69c6c87f9b-m9v2x    1/1     Running   <span class="m">0</span>          22s
+</span></span><span class="line"><span class="cl">prometheus-adapter-69c6c87f9b-qc6t2    1/1     Running   <span class="m">0</span>          22s
+</span></span><span class="line"><span class="cl">prometheus-k8s-0                       2/2     Running   <span class="m">0</span>          18s
+</span></span><span class="line"><span class="cl">prometheus-k8s-1                       2/2     Running   <span class="m">0</span>          18s
+</span></span><span class="line"><span class="cl">prometheus-operator-57cf88fbcb-m2mc7   2/2     Running   <span class="m">0</span>          22s
+</span></span><span class="line"><span class="cl">root@k8s-made-01-32:~# kubectl get statefulsets.apps -n monitoring
+</span></span><span class="line"><span class="cl">NAME                READY   AGE
+</span></span><span class="line"><span class="cl">alertmanager-main   1/1     32s
+</span></span><span class="line"><span class="cl">prometheus-k8s      2/2     30s</span></span></code></pre></div><p>维护 Prometheus 和 grafana 的配置文件</p>
+<p>后期运维主要是维护 Prometheus 和 grafana 的配置文件它们通过 configmap 形式挂载到 kubernetes 里，所以要修改配置就是编辑 configmap</p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240123165304463.png" srcset="https://cdn1.ryanxin.live/image-20240123165304463.png, https://cdn1.ryanxin.live/image-20240123165304463.png 1.5x, https://cdn1.ryanxin.live/image-20240123165304463.png 2x" sizes="auto" data-title="image-20240123165304463" data-alt="image-20240123165304463" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <h4 id="223-从外部访问-prometheus">2.2.3 从外部访问 Prometheus</h4>
 <h5 id="2231-暴露端口">2.2.3.1 暴露端口</h5>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/06cd7db76352a1501189c47de353e873.png" srcset="https://cdn1.ryanxin.live/06cd7db76352a1501189c47de353e873.png, https://cdn1.ryanxin.live/06cd7db76352a1501189c47de353e873.png 1.5x, https://cdn1.ryanxin.live/06cd7db76352a1501189c47de353e873.png 2x" sizes="auto" data-title="image-20230302203313576" data-alt="image-20230302203313576" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p>编辑这个配置文件：<code>/root/kube-prometheus/manifests/prometheus-service.yaml</code></p>
-<div class="highlight" id="id-7"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w">
+<p>没有暴露端口，所以无法从外部访门 Prometheus</p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240123165423326.png" srcset="https://cdn1.ryanxin.live/image-20240123165423326.png, https://cdn1.ryanxin.live/image-20240123165423326.png 1.5x, https://cdn1.ryanxin.live/image-20240123165423326.png 2x" sizes="auto" data-title="image-20240123165423326" data-alt="image-20240123165423326" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p>编辑配置：<code>/root/kube-prometheus/manifests/prometheus-service.yaml</code></p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240123170319474.png" srcset="https://cdn1.ryanxin.live/image-20240123170319474.png, https://cdn1.ryanxin.live/image-20240123170319474.png 1.5x, https://cdn1.ryanxin.live/image-20240123170319474.png 2x" sizes="auto" data-title="image-20240123170319474" data-alt="image-20240123170319474" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<div class="highlight" id="id-9"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">spec</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">NodePort</span><span class="w"> </span><span class="c">#新增</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">web</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="m">9090</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l">web</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">nodePort</span><span class="p">:</span><span class="w"> </span><span class="m">39090</span><span class="w"> </span><span class="c"># 新增</span></span></span></code></pre></div><p>同理，想要从外部访问 grafana ，也要将端口暴露出来，修改这个文件：<code>/root/kube-prometheus/manifests/grafana-service.yaml</code></p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240123165947468.png" srcset="https://cdn1.ryanxin.live/image-20240123165947468.png, https://cdn1.ryanxin.live/image-20240123165947468.png 1.5x, https://cdn1.ryanxin.live/image-20240123165947468.png 2x" sizes="auto" data-title="image-20240123165947468" data-alt="image-20240123165947468" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <h5 id="2232-修改-networkpolicy">2.2.3.2 修改 NetworkPolicy</h5>
 <p>上文将端口暴露出来后依然无法从外部访问，那是因为加了 NetworkPolicy ，我们将关于 Prometheus 和 grafana 的 networkpolicy 删除：</p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/15b0690805263d66177da0060647201b.png" srcset="https://cdn1.ryanxin.live/15b0690805263d66177da0060647201b.png, https://cdn1.ryanxin.live/15b0690805263d66177da0060647201b.png 1.5x, https://cdn1.ryanxin.live/15b0690805263d66177da0060647201b.png 2x" sizes="auto" data-title="img" data-alt="img" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p><img loading="lazy" src="https://img-blog.csdnimg.cn/img_convert/e206cc8b18175c942489a9410d02aeef.png" srcset="https://img-blog.csdnimg.cn/img_convert/e206cc8b18175c942489a9410d02aeef.png, https://img-blog.csdnimg.cn/img_convert/e206cc8b18175c942489a9410d02aeef.png 1.5x, https://img-blog.csdnimg.cn/img_convert/e206cc8b18175c942489a9410d02aeef.png 2x" sizes="auto" data-title="img" data-alt="img" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<div class="highlight" id="id-8"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@master01:~/kube-prometheus# kubectl delete -f ./manifests/grafana-networkPolicy.yaml 
-</span></span><span class="line"><span class="cl">networkpolicy.networking.k8s.io <span class="s2">&#34;grafana&#34;</span> deleted
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">root@master01:~/kube-prometheus# kubectl delete -f ./manifests/prometheus-networkPolicy.yaml 
-</span></span><span class="line"><span class="cl">networkpolicy.networking.k8s.io <span class="s2">&#34;prometheus-k8s&#34;</span> deleted</span></span></code></pre></div><p>之后就能从外部访问了：</p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/075de11450504db57f22336aa9187609.png" srcset="https://cdn1.ryanxin.live/075de11450504db57f22336aa9187609.png, https://cdn1.ryanxin.live/075de11450504db57f22336aa9187609.png 1.5x, https://cdn1.ryanxin.live/075de11450504db57f22336aa9187609.png 2x" sizes="auto" data-title="img" data-alt="img" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240123170047904.png" srcset="https://cdn1.ryanxin.live/image-20240123170047904.png, https://cdn1.ryanxin.live/image-20240123170047904.png 1.5x, https://cdn1.ryanxin.live/image-20240123170047904.png 2x" sizes="auto" data-title="image-20240123170047904" data-alt="image-20240123170047904" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20240123170146894.png" srcset="C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20240123170146894.png, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20240123170146894.png 1.5x, C:%5cUsers%5cxx9z%5cAppData%5cRoaming%5cTypora%5ctypora-user-images%5cimage-20240123170146894.png 2x" sizes="auto" data-title="image-20240123170146894" data-alt="image-20240123170146894" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240123170402356.png" srcset="https://cdn1.ryanxin.live/image-20240123170402356.png, https://cdn1.ryanxin.live/image-20240123170402356.png 1.5x, https://cdn1.ryanxin.live/image-20240123170402356.png 2x" sizes="auto" data-title="image-20240123170402356" data-alt="image-20240123170402356" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p>之后就能从外部访问了：</p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240123170905441.png" srcset="https://cdn1.ryanxin.live/image-20240123170905441.png, https://cdn1.ryanxin.live/image-20240123170905441.png 1.5x, https://cdn1.ryanxin.live/image-20240123170905441.png 2x" sizes="auto" data-title="image-20240123170905441" data-alt="image-20240123170905441" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240123171046830.png" srcset="https://cdn1.ryanxin.live/image-20240123171046830.png, https://cdn1.ryanxin.live/image-20240123171046830.png 1.5x, https://cdn1.ryanxin.live/image-20240123171046830.png 2x" sizes="auto" data-title="image-20240123171046830" data-alt="image-20240123171046830" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <h3 id="23-二进制部署-prometheus-server">2.3 二进制部署 Prometheus Server</h3>
 <p>部署环境：本例使用kubernetes 集群外的一台服务器做演示 172.23.1.12</p>
 <p><img loading="lazy" src="https://cdn1.ryanxin.live/a2eea6189d4286294b81a00223adbe59.png" srcset="https://cdn1.ryanxin.live/a2eea6189d4286294b81a00223adbe59.png, https://cdn1.ryanxin.live/a2eea6189d4286294b81a00223adbe59.png 1.5x, https://cdn1.ryanxin.live/a2eea6189d4286294b81a00223adbe59.png 2x" sizes="auto" data-title="img" data-alt="img" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <p>二进制从官网下载：<a href="https://prometheus.io/download/#prometheus"target="_blank" rel="external nofollow noopener noreferrer">Download | Prometheus</a></p>
 <h4 id="231-解压二进制">2.3.1 解压二进制</h4>
-<div class="highlight" id="id-9"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus02:/usr/local/src# <span class="nb">pwd</span>
+<div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus02:/usr/local/src# <span class="nb">pwd</span>
 </span></span><span class="line"><span class="cl">/usr/local/src
 </span></span><span class="line"><span class="cl">root@prometheus02:/usr/local/src# wget https://github.com/prometheus/prometheus/releases/download/v2.37.6/prometheus-2.37.6.linux-amd64.tar.gz
 </span></span><span class="line"><span class="cl">root@prometheus02:/usr/local/src# tar xvf prometheus-2.37.6.linux-amd64.tar.gz 
@@ -400,9 +434,9 @@
 </span></span><span class="line"><span class="cl">root@prometheus02:/apps/prometheus# ./promtool check config prometheus.yml
 </span></span><span class="line"><span class="cl">Checking prometheus.yml
 </span></span><span class="line"><span class="cl"> SUCCESS: prometheus.yml is valid prometheus config file syntax</span></span></code></pre></div><h4 id="232-创建prometheus-service启动脚本">2.3.2 创建prometheus service启动脚本</h4>
-<div class="highlight" id="id-10"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 该选项类似 nginx 的 reload，修改prometheus配置文件后不用重启服务，直接reload即可</span>
+<div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 该选项类似 nginx 的 reload，修改prometheus配置文件后不用重启服务，直接reload即可</span>
 </span></span><span class="line"><span class="cl">root@prometheus02:/apps/prometheus# ./prometheus --help <span class="p">|</span> grep <span class="s2">&#34;enable-lifecycle&#34;</span>
-</span></span><span class="line"><span class="cl">      --web.enable-lifecycle     Enable shutdown and reload via HTTP request.</span></span></code></pre></div><div class="highlight" id="id-11"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus02:/apps/prometheus# vim /etc/systemd/system/prometheus.service
+</span></span><span class="line"><span class="cl">      --web.enable-lifecycle     Enable shutdown and reload via HTTP request.</span></span></code></pre></div><div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus02:/apps/prometheus# vim /etc/systemd/system/prometheus.service
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
 </span></span><span class="line"><span class="cl"><span class="nv">Description</span><span class="o">=</span>Prometheus Server
@@ -416,11 +450,11 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
 </span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target</span></span></code></pre></div><h4 id="233-启动-prometheus-服务">2.3.3 启动 prometheus 服务</h4>
-<div class="highlight" id="id-12"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus02:/apps/prometheus# systemctl restart prometheus.service <span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> prometheus.service</span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/c9748de865c16cc7286f404de5a6368c.png" srcset="https://cdn1.ryanxin.live/c9748de865c16cc7286f404de5a6368c.png, https://cdn1.ryanxin.live/c9748de865c16cc7286f404de5a6368c.png 1.5x, https://cdn1.ryanxin.live/c9748de865c16cc7286f404de5a6368c.png 2x" sizes="auto" data-title="image-20230302215033827" data-alt="image-20230302215033827" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus02:/apps/prometheus# systemctl restart prometheus.service <span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> prometheus.service</span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/c9748de865c16cc7286f404de5a6368c.png" srcset="https://cdn1.ryanxin.live/c9748de865c16cc7286f404de5a6368c.png, https://cdn1.ryanxin.live/c9748de865c16cc7286f404de5a6368c.png 1.5x, https://cdn1.ryanxin.live/c9748de865c16cc7286f404de5a6368c.png 2x" sizes="auto" data-title="image-20230302215033827" data-alt="image-20230302215033827" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <h4 id="234-验证web界面">2.3.4 验证web界面</h4>
 <p><img loading="lazy" src="https://cdn1.ryanxin.live/a17950a01fb1d76cca276f6fc78453ea.png" srcset="https://cdn1.ryanxin.live/a17950a01fb1d76cca276f6fc78453ea.png, https://cdn1.ryanxin.live/a17950a01fb1d76cca276f6fc78453ea.png 1.5x, https://cdn1.ryanxin.live/a17950a01fb1d76cca276f6fc78453ea.png 2x" sizes="auto" data-title="image-20230302215200758" data-alt="image-20230302215200758" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <h4 id="235-动态热加载配置">2.3.5 动态（热）加载配置</h4>
-<div class="highlight" id="id-13"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus02:/apps/prometheus# vim /etc/systemd/system/prometheus.service
+<div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus02:/apps/prometheus# vim /etc/systemd/system/prometheus.service
 </span></span><span class="line"><span class="cl">--web.enable-lifecycle
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">root@prometheus02:/apps/prometheus# systemctl daemon-reload <span class="o">&amp;&amp;</span> systemctl restart prometheus.service
@@ -431,7 +465,7 @@
 <p><img loading="lazy" src="https://cdn1.ryanxin.live/1bd077d60b60c3b388451aa3fa3356ea.png" srcset="https://cdn1.ryanxin.live/1bd077d60b60c3b388451aa3fa3356ea.png, https://cdn1.ryanxin.live/1bd077d60b60c3b388451aa3fa3356ea.png 1.5x, https://cdn1.ryanxin.live/1bd077d60b60c3b388451aa3fa3356ea.png 2x" sizes="auto" data-title="image-20230302215912438" data-alt="image-20230302215912438" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <h4 id="241-解压二进制程序">2.4.1 解压二进制程序</h4>
 <p>下载地址：<a href="https://prometheus.io/download/#node_exporter"target="_blank" rel="external nofollow noopener noreferrer">Download | Prometheus</a></p>
-<div class="highlight" id="id-14"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@node01:/usr/local/src# wget https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-amd64.tar.gz
+<div class="highlight" id="id-15"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@node01:/usr/local/src# wget https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-amd64.tar.gz
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">root@node01:/usr/local/src# tar xvf node_exporter-1.5.0.linux-amd64.tar.gz 
 </span></span><span class="line"><span class="cl">root@node01:/usr/local/src# mkdir /apps
@@ -446,7 +480,7 @@
 </span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> <span class="m">3434</span> <span class="m">3434</span>    <span class="m">11357</span> Nov <span class="m">30</span> 03:05 LICENSE
 </span></span><span class="line"><span class="cl">-rw-r--r-- <span class="m">1</span> <span class="m">3434</span> <span class="m">3434</span>      <span class="m">463</span> Nov <span class="m">30</span> 03:05 NOTICE
 </span></span><span class="line"><span class="cl">-rwxr-xr-x <span class="m">1</span> <span class="m">3434</span> <span class="m">3434</span> <span class="m">19779640</span> Nov <span class="m">30</span> 02:59 node_exporter*</span></span></code></pre></div><h4 id="242-创建node-exporter-service启动文件">2.4.2 创建node-exporter service启动文件</h4>
-<div class="highlight" id="id-15"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@node01:/apps# vim /etc/systemd/system/node-exporter.service
+<div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@node01:/apps# vim /etc/systemd/system/node-exporter.service
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
 </span></span><span class="line"><span class="cl"><span class="nv">Description</span><span class="o">=</span>Prometheus Node Exporter
@@ -457,13 +491,13 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
 </span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target</span></span></code></pre></div><h4 id="243-启动node-exporter服务">2.4.3 启动node exporter服务</h4>
-<div class="highlight" id="id-16"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 默认监听在9100端口</span>
+<div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 默认监听在9100端口</span>
 </span></span><span class="line"><span class="cl">root@node01:/apps# ./node_exporter/node_exporter --help <span class="p">|</span> grep <span class="m">9100</span>
-</span></span><span class="line"><span class="cl">      --web.listen-address<span class="o">=</span>:9100 ...  </span></span></code></pre></div><div class="highlight" id="id-17"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@node01:/apps# systemctl daemon-reload <span class="o">&amp;&amp;</span> systemctl restart node-exporter.service <span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> node-exporter.service </span></span></code></pre></div><h4 id="244-验证web页面">2.4.4 验证web页面</h4>
+</span></span><span class="line"><span class="cl">      --web.listen-address<span class="o">=</span>:9100 ...  </span></span></code></pre></div><div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@node01:/apps# systemctl daemon-reload <span class="o">&amp;&amp;</span> systemctl restart node-exporter.service <span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> node-exporter.service </span></span></code></pre></div><h4 id="244-验证web页面">2.4.4 验证web页面</h4>
 <p><img loading="lazy" src="https://cdn1.ryanxin.live/e944b2af5a9a4d1f56cd74228f5884aa.png" srcset="https://cdn1.ryanxin.live/e944b2af5a9a4d1f56cd74228f5884aa.png, https://cdn1.ryanxin.live/e944b2af5a9a4d1f56cd74228f5884aa.png 1.5x, https://cdn1.ryanxin.live/e944b2af5a9a4d1f56cd74228f5884aa.png 2x" sizes="auto" data-title="image-20230302222317782" data-alt="image-20230302222317782" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <h4 id="245-node-exporter指标数据">2.4.5 node-exporter指标数据</h4>
 <p><a href="https://knowledge.zhaoweiguo.com/build/html/cloudnative/prometheus/metrics/kubernetes-cadvisor.html"target="_blank" rel="external nofollow noopener noreferrer">4.5.2. kubernetes-cadvisor — 新溪-gordon V1.7.0 documentation (zhaoweiguo.com)</a></p>
-<div class="highlight" id="id-18"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus02:/apps# curl 172.23.0.20:9100/metrics
+<div class="highlight" id="id-19"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus02:/apps# curl 172.23.0.20:9100/metrics
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">常见指标：
 </span></span><span class="line"><span class="cl">node_boot_time: 系统自启动以后的总结时间
@@ -480,7 +514,7 @@
 <p>上文部署好prometheus server后，它只收集了自身的指标数据，那么怎么让它也收集node-exporter指标数据？</p>
 <p><img loading="lazy" src="https://cdn1.ryanxin.live/6fb1a4e7ce16f3f58fa44b15469d54c0.png" srcset="https://cdn1.ryanxin.live/6fb1a4e7ce16f3f58fa44b15469d54c0.png, https://cdn1.ryanxin.live/6fb1a4e7ce16f3f58fa44b15469d54c0.png 1.5x, https://cdn1.ryanxin.live/6fb1a4e7ce16f3f58fa44b15469d54c0.png 2x" sizes="auto" data-title="image-20230302224307106" data-alt="image-20230302224307106" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <h4 id="251-prometheus-默认配置文件">2.5.1 prometheus 默认配置文件</h4>
-<div class="highlight" id="id-19"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus02:/apps# vim /apps/prometheus/prometheus.yml 
+<div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus02:/apps# vim /apps/prometheus/prometheus.yml 
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># my global config</span>
 </span></span><span class="line"><span class="cl">global:
@@ -511,12 +545,12 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    static_configs:
 </span></span><span class="line"><span class="cl">      - targets: <span class="o">[</span><span class="s2">&#34;localhost:9090&#34;</span><span class="o">]</span></span></span></code></pre></div><h4 id="252-添加-node节点数据收集">2.5.2 添加 node节点数据收集</h4>
-<div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus02:/apps# vim /apps/prometheus/prometheus.yml 
+<div class="highlight" id="id-21"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus02:/apps# vim /apps/prometheus/prometheus.yml 
 </span></span><span class="line"><span class="cl"><span class="c1"># 末尾添加</span>
 </span></span><span class="line"><span class="cl">  - job_name: <span class="s2">&#34;prometheus-worknode&#34;</span>
 </span></span><span class="line"><span class="cl">    static_configs:
 </span></span><span class="line"><span class="cl">      - targets: <span class="o">[</span><span class="s2">&#34;172.23.0.20:9100&#34;</span>,<span class="s2">&#34;172.23.0.21:9100&#34;</span><span class="o">]</span></span></span></code></pre></div><h4 id="253-动态加载配置并验证prometheus-server状态">2.5.3 动态加载配置并验证prometheus server状态</h4>
-<div class="highlight" id="id-21"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus02:/apps# curl -X POST http://172.23.1.12:9090/-/reload</span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/2a07515b6df5e5d97c642c49c3b8dcff.png" srcset="https://cdn1.ryanxin.live/2a07515b6df5e5d97c642c49c3b8dcff.png, https://cdn1.ryanxin.live/2a07515b6df5e5d97c642c49c3b8dcff.png 1.5x, https://cdn1.ryanxin.live/2a07515b6df5e5d97c642c49c3b8dcff.png 2x" sizes="auto" data-title="image-20230302225615678" data-alt="image-20230302225615678" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus02:/apps# curl -X POST http://172.23.1.12:9090/-/reload</span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/2a07515b6df5e5d97c642c49c3b8dcff.png" srcset="https://cdn1.ryanxin.live/2a07515b6df5e5d97c642c49c3b8dcff.png, https://cdn1.ryanxin.live/2a07515b6df5e5d97c642c49c3b8dcff.png 1.5x, https://cdn1.ryanxin.live/2a07515b6df5e5d97c642c49c3b8dcff.png 2x" sizes="auto" data-title="image-20230302225615678" data-alt="image-20230302225615678" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <h3 id="26-部署-grafana">2.6 部署 Grafana</h3>
 <p>grafana是一个可视化组件，用于接收客户端浏览器的请求并连接到prometheus查询数据，最后经过渲染并在浏览器进行体系化显示，需要注意的是，grafana查询数据类似于zabbix-样需要自定义模板,模板可以手动制作也可以导入已有模板。</p>
 <p>下载：<a href="https://grafana.com/grafana/download?pg=get&amp;plcmt=selfmanaged-box1-cta1"target="_blank" rel="external nofollow noopener noreferrer">Download Grafana | Grafana Labs</a></p>
@@ -527,11 +561,11 @@
 <p>下载地址：<a href="https://grafana.com/grafana/download"target="_blank" rel="external nofollow noopener noreferrer">Download Grafana | Grafana Labs</a></p>
 <p>安装文档：<a href="https://grafana.com/docs/grafana/latest/setup-grafana/installation/"target="_blank" rel="external nofollow noopener noreferrer">Install Grafana | Grafana documentation</a></p>
 <p>部署环境：可以和 Prometheus Server 安装在一起，也可以分开安装（网络互通即可）。本例和 Prometheus Server 安装在一起（172.23.1.12）。</p>
-<div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus-server:~# sudo apt-get install -y adduser libfontconfig1
+<div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus-server:~# sudo apt-get install -y adduser libfontconfig1
 </span></span><span class="line"><span class="cl">root@prometheus-server:~# wget https://dl.grafana.com/enterprise/release/grafana-enterprise_9.4.3_amd64.deb
 </span></span><span class="line"><span class="cl">root@prometheus-server:~# sudo dpkg -i grafana-enterprise_9.4.3_amd64.deb</span></span></code></pre></div><h4 id="262-grafana-server-配置文件">2.6.2 grafana server 配置文件</h4>
 <p>路径：<code>/etc/grafana/grafana.ini</code></p>
-<div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>server<span class="o">]</span>
+<div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>server<span class="o">]</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># Protocol (http, https, h2, socket)</span>
 </span></span><span class="line"><span class="cl"><span class="nv">protocol</span> <span class="o">=</span> http
 </span></span><span class="line"><span class="cl">
@@ -540,7 +574,7 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># The http port  to use</span>
 </span></span><span class="line"><span class="cl"><span class="nv">http_port</span> <span class="o">=</span> <span class="m">3000</span></span></span></code></pre></div><h4 id="263-启动-grafana">2.6.3 启动 grafana</h4>
-<div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus-server:~# systemctl restart grafana-server.service <span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> grafana-server.service 
+<div class="highlight" id="id-25"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus-server:~# systemctl restart grafana-server.service <span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> grafana-server.service 
 </span></span><span class="line"><span class="cl">Synchronizing state of grafana-server.service with SysV service script with /lib/systemd/systemd-sysv-install.
 </span></span><span class="line"><span class="cl">Executing: /lib/systemd/systemd-sysv-install <span class="nb">enable</span> grafana-server
 </span></span><span class="line"><span class="cl">Created symlink /etc/systemd/system/multi-user.target.wants/grafana-server.service → /lib/systemd/system/grafana-server.service.
@@ -569,59 +603,49 @@
 插件仓库：<a href="https://grafana.com/grafana/plugins/"target="_blank" rel="external nofollow noopener noreferrer">Grafana Plugins - extend and customize your Grafana | Grafana Labs</a></p>
 <p>本例安装饼图插件：<a href="">Pie Chart plugin for Grafana | Grafana Labs</a></p>
 <p>插件保存目录：<code>/var/lib/grafana/plugins</code></p>
-<div class="highlight" id="id-25"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 在线安装</span>
+<div class="highlight" id="id-26"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 在线安装</span>
 </span></span><span class="line"><span class="cl">root@prometheus-server:~# grafana-cli plugins install grafana-piechart-panel
 </span></span><span class="line"><span class="cl">✔ Downloaded and extracted grafana-piechart-panel v1.6.4 zip successfully to /var/lib/grafana/plugins/grafana-piechart-panel
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Please restart Grafana after installing plugins. Refer to Grafana documentation <span class="k">for</span> instructions <span class="k">if</span> necessary.</span></span></code></pre></div><div class="highlight" id="id-26"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 离线安装</span>
+</span></span><span class="line"><span class="cl">Please restart Grafana after installing plugins. Refer to Grafana documentation <span class="k">for</span> instructions <span class="k">if</span> necessary.</span></span></code></pre></div><div class="highlight" id="id-27"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 离线安装</span>
 </span></span><span class="line"><span class="cl">wget -nv https://grafana.com/api/plugins/grafana-piechart-panel/versions/latest/download -O /tmp/grafana-piechart-panel.zip
 </span></span><span class="line"><span class="cl">unzip -q /tmp/grafana-piechart-panel.zip -d /tmp
 </span></span><span class="line"><span class="cl">mv /tmp/grafana-piechart-panel-* /var/lib/grafana/plugins/grafana-piechart-panel
-</span></span><span class="line"><span class="cl">sudo service grafana-server restart</span></span></code></pre></div><div class="highlight" id="id-27"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 您可以将此repo直接克隆到插件目录中。然后重新启动grafana服务器，插件将被自动检测并使用。</span>
+</span></span><span class="line"><span class="cl">sudo service grafana-server restart</span></span></code></pre></div><div class="highlight" id="id-28"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 您可以将此repo直接克隆到插件目录中。然后重新启动grafana服务器，插件将被自动检测并使用。</span>
 </span></span><span class="line"><span class="cl">git clone https://github.com/grafana/piechart-panel.git --branch release-1.6.2
 </span></span><span class="line"><span class="cl">sudo service grafana-server restart</span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/6996b9be22c66525cd2f1f47cf5db669.png" srcset="https://cdn1.ryanxin.live/6996b9be22c66525cd2f1f47cf5db669.png, https://cdn1.ryanxin.live/6996b9be22c66525cd2f1f47cf5db669.png 1.5x, https://cdn1.ryanxin.live/6996b9be22c66525cd2f1f47cf5db669.png 2x" sizes="auto" data-title="image-20230303143432271" data-alt="image-20230303143432271" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<h2 id="三promql-语句">三、PromQL 语句</h2>
-<p>官网：<a href="https://prometheus.io/docs/prometheus/latest/querying/basics/"target="_blank" rel="external nofollow noopener noreferrer">Querying basics | Prometheus</a></p>
-<p>Prometheus 提供一个函数式的表达式语言 PromQL（Prometheus Query Language），可以使用户实时地查找和聚合时间序列数据，表达式计算结果可以在图表中展示，也可以在Prometheus浏览器中以表格形式展示，或者作为数据源，以 HTTP API 的方式提供给外部系统使用。</p>
-<h3 id="31-promql-数据基础">3.1 PromQL 数据基础</h3>
-<h4 id="311-promql查询数据类型">3.1.1 PromQL查询数据类型</h4>
-<p><a href="https://prometheus.io/docs/prometheus/latest/querying/basics/"target="_blank" rel="external nofollow noopener noreferrer">https://prometheus.io/docs/prometheus/latest/querying/basics/</a></p>
-<p><strong>瞬时向量、瞬时数据（instant vector）</strong>：是对目标实例查询到的同一个时间戳的一组时间序列数据（按照时间的推移对数据进存储和展示），每个时间序列包含单个数据样本，比如 node_memory_MemFree_bytes 查询的是当前剩余内存（可用内存）就是-个瞬时向量，该表达式的返回值中只会包含该时间序列中的最新的一个样本值，而相应的这样的表达式称之为瞬时向量表达式，例如：<code>prometheus_http_requests_total</code>，prometheus API 查询瞬时数据命令，在没有指定匹配条件的前提下，会返回所有包含此指标数据的实例数据:</p>
-<div class="highlight" id="id-28"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl <span class="s1">&#39;http://172.23.1.12:9090/api/v1/query&#39;</span> --data <span class="s1">&#39;query=node_memory_MemFree_bytes&#39;</span> --data <span class="nv">time</span><span class="o">=</span><span class="m">1677826800</span></span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/0bb0f13c85caec97bc91fd6f338d4d9a.png" srcset="https://cdn1.ryanxin.live/0bb0f13c85caec97bc91fd6f338d4d9a.png, https://cdn1.ryanxin.live/0bb0f13c85caec97bc91fd6f338d4d9a.png 1.5x, https://cdn1.ryanxin.live/0bb0f13c85caec97bc91fd6f338d4d9a.png 2x" sizes="auto" data-title="img" data-alt="img" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p><strong>标量、纯量数据（scalar）</strong>：是一个浮点数类型的数据值，使用 node_ load1 获取到时一个瞬时向量后，再使用 prometheus 的内置函数 scalar( ) 将瞬时向量转换为标量，例如：<code>scalar(sum(node_load1))</code></p>
-<div class="highlight" id="id-29"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl <span class="s1">&#39;http://172.23.1.12:9090/api/v1/query&#39;</span> --data <span class="s1">&#39;query=scalar(sum(node_load1{instance=&#34;172.23.1.11:9100&#34;}))&#39;</span> --data <span class="nv">time</span><span class="o">=</span><span class="m">1677826800</span></span></span></code></pre></div></div><div class="post-footer" id="post-footer">
+</div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">
-        <span title="更新于 0001-01-01 00:00:00">更新于 0001-01-01&nbsp;</span>
+        <span title="更新于 2024-01-23 00:00:00">更新于 2024-01-23&nbsp;</span>
       </div><div class="post-info-license">
           <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
         </div></div>
     <div class="post-info-line">
       <div class="post-info-md"><span><a href="/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
       <div class="post-info-share">
-        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title=""><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title="" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title=""><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title=""><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title="" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title="" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title=""><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title="Prometheus 简介与安装" data-hashtags="监控"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-hashtag="监控"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title="Prometheus 简介与安装" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title="Prometheus 简介与安装"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title="Prometheus 简介与安装"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Myspace" data-sharer="myspace" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title="Prometheus 简介与安装" data-description=""><i data-svg-src="/lib/simple-icons/icons/myspace.min.svg" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Blogger" data-sharer="blogger" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title="Prometheus 简介与安装" data-description=""><i class="fa-brands fa-blogger fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Evernote" data-sharer="evernote" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title="Prometheus 简介与安装"><i class="fa-brands fa-evernote fa-fw" aria-hidden="true"></i></a>
   </span>
       </div>
     </div>
   </div>
 
   <div class="post-info-more">
-    <section class="post-tags"></section>
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href='/tags/%E7%9B%91%E6%8E%A7/' class="post-tag">监控</a></section>
     <section>
       <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
     </section>
   </div>
 
-  <div class="post-nav">
-      <a href="/posts/notes/nginx%E9%83%A8%E7%BD%B2vue%E9%A1%B9%E7%9B%AE%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1%E5%88%B7%E6%96%B0404%E9%97%AE%E9%A2%98/" class="post-nav-item" rel="next" title=""><i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+  <div class="post-nav"><a href="/posts/kubernetes/primary/kubernetes%E9%85%8D%E7%BD%AEimagepullsecrets%E7%A7%98%E9%92%A5%E6%9D%A5%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F/" class="post-nav-item" rel="prev" title="kubernetes配置imagePullSecrets秘钥来拉取镜像"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>kubernetes配置imagePullSecrets秘钥来拉取镜像</a></div>
 </div>
 </article></main><footer class="footer">
     <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>

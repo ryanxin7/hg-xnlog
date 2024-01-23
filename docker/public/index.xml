@@ -4,9 +4,17 @@
     <link>https://hg-xnlog.github.io/</link>
     <description>Ryan’s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Mon, 22 Jan 2024 00:00:00 &#43;0000</lastBuildDate>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Tue, 23 Jan 2024 00:00:00 &#43;0000</lastBuildDate>
       <atom:link href="https://hg-xnlog.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
+  <title>Prometheus 简介与安装</title>
+  <link>https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/</link>
+  <pubDate>Tue, 23 Jan 2024 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/</guid>
+  <description><![CDATA[一、Prometheus 简介 官网：https://prometheus.io/ Prometheus是基于go语言开发的一套开源的监控、报警和]]></description>
+</item>
+<item>
   <title>kubernetes配置imagePullSecrets秘钥来拉取镜像</title>
   <link>https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes%E9%85%8D%E7%BD%AEimagepullsecrets%E7%A7%98%E9%92%A5%E6%9D%A5%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F/</link>
   <pubDate>Mon, 22 Jan 2024 00:00:00 &#43;0000</pubDate>
@@ -77,14 +85,6 @@
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/posts/kubernetes/advanced/k8s%E7%BB%93%E5%90%88jenkins%E4%B8%8Egitlab%E4%BB%A3%E7%A0%81%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%9B%9E%E6%BB%9A/</guid>
   <description><![CDATA[k8s结合Jenkins与gitlab代码升级与回滚 一、jenkins环境准备 1.1 安装jdk17 tar -xf jdk-17.0.9_linux-x64.tar.gz -C /opt ## 配置环境变量 vim /etc/profile.d/java.sh JAVA_HOME=/opt/jdk-17.0.9 CLASSPATH=.:$JAVA_HOME/lib/jrt-fs.jar PATH=$PATH:$JAVA_HOME/bin source /etc/]]></description>
-</item>
-<item>
-  <title>docker 构建JDK17 镜像</title>
-  <link>https://hg-xnlog.github.io/posts/docker/%E6%9E%84%E5%BB%BAjdk17%E9%95%9C%E5%83%8F/</link>
-  <pubDate>Fri, 01 Dec 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/docker/%E6%9E%84%E5%BB%BAjdk17%E9%95%9C%E5%83%8F/</guid>
-  <description><![CDATA[构建JDK17 镜像 1.下载JDK17程序包 2.准备JDK17 Dockerfile FROM ubuntu:latest MAINTAINER xinn.cc WORKDIR /usr/local/java17 ADD ./jdk-17.0.9_linux-x64.tar.gz /usr/local/java17/ ENV JAVA_HOME=/usr/local/java17/jdk-17.0.9 ENV CLASSPATH=.:$JAVA_HOME/lib/jrt-fs.jar ENV PATH=$PATH:$JAVA_HOME/bin3. 构建脚本 #!/bin/bash TAG=$1 docker build -t harbor.ceamg.com/baseimages/jdk17_0.9:${TAG} . docker push harbor.ceam]]></description>
 </item>
 </channel>
 </rss>
