@@ -69,19 +69,19 @@
   <description><![CDATA[]]></description>
 </item>
 <item>
+  <title>Git</title>
+  <link>https://hg-xnlog.github.io/categories/git/</link>
+  <pubDate>Tue, 24 Oct 2023 00:00:00 &#43;0000</pubDate>
+  <author>Ryan</author>
+  <guid>https://hg-xnlog.github.io/categories/git/</guid>
+  <description><![CDATA[]]></description>
+</item>
+<item>
   <title>ElasticStack</title>
   <link>https://hg-xnlog.github.io/categories/elasticstack/</link>
   <pubDate>Mon, 23 Oct 2023 00:00:00 &#43;0000</pubDate>
   <author>Ryan</author>
   <guid>https://hg-xnlog.github.io/categories/elasticstack/</guid>
-  <description><![CDATA[]]></description>
-</item>
-<item>
-  <title>Linux</title>
-  <link>https://hg-xnlog.github.io/categories/linux/</link>
-  <pubDate>Mon, 23 Oct 2023 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/categories/linux/</guid>
   <description><![CDATA[]]></description>
 </item>
 </channel>

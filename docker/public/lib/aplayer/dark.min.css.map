@@ -1,7 +1,7 @@
 {
 	"version": 3,
 	"file": "dark.min.css",
-	"sourceRoot": "C:/Users/xx9z/Desktop/xx/blog/hg-xnlog",
+	"sourceRoot": "C:/Users/xin/Desktop/新建文件夹/hg-xnlog",
 	"sources": [
 		"themes/FixIt/assets/lib/aplayer/dark.scss"
 	],

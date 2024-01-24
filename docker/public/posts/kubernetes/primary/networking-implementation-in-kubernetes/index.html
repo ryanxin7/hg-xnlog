@@ -10,7 +10,7 @@
 <meta name="description" content="1.kubernetes 网络通信方案简介 Kubernetes 的网络涉及到各种 Pod 之间的通信以及 Pod 与外部网络的连接。而 Kubernetes 的网络实现通常依赖于第三方网络插件，这些插件需要遵循一定的规范，" /><meta name="keywords" content='kubernetes网络, cni, flannel, docker, calico' /><meta itemprop="name" content="kubernetes 中的网络实现方式">
 <meta itemprop="description" content="1.kubernetes 网络通信方案简介 Kubernetes 的网络涉及到各种 Pod 之间的通信以及 Pod 与外部网络的连接。而 Kubernetes 的网络实现通常依赖于第三方网络插件，这些插件需要遵循一定的规范，"><meta itemprop="datePublished" content="2024-01-08T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2024-01-08T00:00:00+00:00" />
-<meta itemprop="wordCount" content="18710"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="12818"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="kubernetes网络,cni,flannel,docker,calico," /><meta property="og:title" content="kubernetes 中的网络实现方式" />
 <meta property="og:description" content="1.kubernetes 网络通信方案简介 Kubernetes 的网络涉及到各种 Pod 之间的通信以及 Pod 与外部网络的连接。而 Kubernetes 的网络实现通常依赖于第三方网络插件，这些插件需要遵循一定的规范，" />
 <meta property="og:type" content="article" />
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/primary\/networking-implementation-in-kubernetes\/"
-    },"genre": "posts","keywords": "kubernetes网络, cni, flannel, docker, calico","wordcount":  18710 ,
+    },"genre": "posts","keywords": "kubernetes网络, cni, flannel, docker, calico","wordcount":  12818 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/kubernetes\/primary\/networking-implementation-in-kubernetes\/","datePublished": "2024-01-08T00:00:00+00:00","dateModified": "2024-01-08T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -181,7 +181,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/kubernetes/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Kubernetes</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2024-01-08 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-08">2024-01-08</time></span>&nbsp;<span title="更新于 2024-01-08 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-08">2024-01-08</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 18710 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 38 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="kubernetes 中的网络实现方式">
+      <div class="post-meta-line"><span title="发布于 2024-01-08 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-08">2024-01-08</time></span>&nbsp;<span title="更新于 2024-01-08 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-08">2024-01-08</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 12818 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 26 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="kubernetes 中的网络实现方式">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -215,13 +215,7 @@
         <li><a href="#45-host-gw">4.5 host-gw</a></li>
       </ul>
     </li>
-    <li><a href="#5calico网络插件">5.Calico网络插件</a>
-      <ul>
-        <li><a href="#51-calico-工作原理">5.1 Calico 工作原理</a></li>
-        <li><a href="#52-node-to-node-mesh模式">5.2 node-to-node mesh模式</a></li>
-        <li><a href="#53-route-reflector-模式rr路由反射">5.3 Route Reflector 模式（RR路由反射）</a></li>
-      </ul>
-    </li>
+    <li><a href="#5calico网络插件">5.Calico网络插件</a></li>
   </ul>
 </nav></div>
       </div><div class="content" id="content"><h2 id="1kubernetes-网络通信方案简介">1.kubernetes 网络通信方案简介</h2>
@@ -278,7 +272,7 @@
 <p><strong>VNI（VXLAN Network Identifier）</strong>：VNI 类似于 VLAN ID，在 VXLAN 中用于标识不同的 VXLAN 段或虚拟网络。每个 VNI 表示一个租户或者一个虚拟网络，允许对不同的虚拟网络进行隔离和标识。VNI 用于区分不同的 VXLAN 段，确保不同 VNI 的虚拟机或容器之间不能直接连接二层通信，实现租户间的隔离。多个终端用户或虚拟机属于同一个 VNI 表示它们属于同一个租户或虚拟网络。</p>
 <p><img loading="lazy" src="https://cdn1.ryanxin.live/kube-network-model-vxlan.png" srcset="https://cdn1.ryanxin.live/kube-network-model-vxlan.png, https://cdn1.ryanxin.live/kube-network-model-vxlan.png 1.5x, https://cdn1.ryanxin.live/kube-network-model-vxlan.png 2x" sizes="auto" data-title="img" data-alt="img" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <ol>
-<li><strong>veth1</strong>：veth1是（veth pair）中的一个端点，veth pair 是容器和宿主机网络之间的虚拟以太网设备，由容器运行时（例如 Docker、Containerd 等）在创建容器时自动创建。并将一端附加到容器内部，这个端点通常被命名为 veth1 或类似的名称。同时，另一端会被自动连接到宿主机的网络命名空间中这个虚拟设备允许容器内的网络流量与宿主机的网络进行通信，是宿主机上的容器与宿主机网络之间的桥梁。</li>
+<li>**veth1：**veth1是（veth pair）中的一个端点，veth pair 是容器和宿主机网络之间的虚拟以太网设备，由容器运行时（例如 Docker、Containerd 等）在创建容器时自动创建。并将一端附加到容器内部，这个端点通常被命名为 veth1 或类似的名称。同时，另一端会被自动连接到宿主机的网络命名空间中这个虚拟设备允许容器内的网络流量与宿主机的网络进行通信，是宿主机上的容器与宿主机网络之间的桥梁。</li>
 <li><strong>cni0：</strong> <code>cni0</code> 设备通常是由容器网络插件（CNI 插件）创建的，它用作容器网络中的虚拟网桥或虚拟网络接口。这个虚拟设备（<code>cni0</code>）的创建通常是由容器运行时（如 Docker、Containerd 等）与所选的 CNI 插件协作完成的。当容器网络插件被初始化和配置后，它可能会创建 <code>cni0</code> 这样的虚拟网桥，用于连接不同的容器和宿主机网络之间的通信。</li>
 <li><strong>flannel.1：</strong> <code>flannel.1</code> 是 Flannel 网络插件创建的虚拟网络接口，用于实现 Kubernetes 集群中 Pod 之间的通信。Flannel 是一个网络覆盖（overlay）解决方案，通过创建虚拟网络层（例如使用 VXLAN 或者其他技术）实现不同节点上 Pod 之间的直接通信。</li>
 </ol>
@@ -747,180 +741,6 @@
 </span></span><span class="line"><span class="cl">root@k8s-node1:~#
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">#无flannel设备</span></span></span></code></pre></div><h2 id="5calico网络插件">5.Calico网络插件</h2>
-<p>官网：<a href="https://www.projectcalico.org/"target="_blank" rel="external nofollow noopener noreferrer">https://www.projectcalico.org</a></p>
-<p>Calico是一个纯三层的虚拟网络解决方案，它把每个节点都当作虚拟路由器（vRouter），并把每个节点上的Pod都当作是“节点路由器”后的一个终端设备并为其分配一个IP地址。各节点路由器通过BGP协议学习生成路由规则，从而实现不同节点上Pod间的互联互通。</p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/2719436-20220221230639689-1947384991.png" srcset="https://cdn1.ryanxin.live/2719436-20220221230639689-1947384991.png, https://cdn1.ryanxin.live/2719436-20220221230639689-1947384991.png 1.5x, https://cdn1.ryanxin.live/2719436-20220221230639689-1947384991.png 2x" sizes="auto" data-title="img" data-alt="img" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p>BGP是互联网上一个核心的去中心化自治路由协议，它通过维护IP路由表或“前缀”表来实现自治系统（AS）之间的可达性，通常作为大规模数据中心维护不同的自治系统之间路由信息的矢量路由协议。Linux内核原生支持BGP，因而我们可轻易把一台Linux主机配置成为边界网关。 Calico把Kubernetes集群环境中的每个节点上的Pod所组成的网络视为一个自治系统，而每个节点也就自然由各自的Pod对象组成虚拟网络，进而形成自治系统的边界网关。各节点间通过BGP协议交换路由信息并生成路由规则。但考虑到并非所有网络都能支持BGP，而且BGP路由模型要求所有节点必须要位于同一个二层网络，所以Calico还支持基于IPIP和VXLAN的Overlay网络模型，它们的工作模式与Flannel的VXLAN和IPIP模型并无显著不同。 类似Flannel在VXLAN后端启用DirectRouting时的网络模型，Calico也支持混合使用路由和Overlay网络模型，BGP路由模型用于二层网络的高性能通信，IP-IP或VXLAN用于跨子网的节点间报文转发，如下所示。IP-IP协议包头非常小，理论上它的速度要比VXLAN稍快一点，但安全性更差。</p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/2719436-20220221230839845-46907500.png" srcset="https://cdn1.ryanxin.live/2719436-20220221230839845-46907500.png, https://cdn1.ryanxin.live/2719436-20220221230839845-46907500.png 1.5x, https://cdn1.ryanxin.live/2719436-20220221230839845-46907500.png 2x" sizes="auto" data-title="img" data-alt="img" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p>Calico网络提供的在线部署清单中默认使用的是IPIP隧道网络，而非BGP或者混合模型，因为它假设节点的底层网络不支持BGP协议。明确需要使用BGP或混合模型时，需要事先修改calico的yaml清单文件，按需修改后方可部署在Kubernetes集群之上。</p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/2719436-20220221230925125-178311608.png" srcset="https://cdn1.ryanxin.live/2719436-20220221230925125-178311608.png, https://cdn1.ryanxin.live/2719436-20220221230925125-178311608.png 1.5x, https://cdn1.ryanxin.live/2719436-20220221230925125-178311608.png 2x" sizes="auto" data-title="img" data-alt="img" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/2719436-20220221230929809-222558607.png" srcset="https://cdn1.ryanxin.live/2719436-20220221230929809-222558607.png, https://cdn1.ryanxin.live/2719436-20220221230929809-222558607.png 1.5x, https://cdn1.ryanxin.live/2719436-20220221230929809-222558607.png 2x" sizes="auto" data-title="img" data-alt="img" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p>BGP模式下的Calico所承载的各Pod资源直接基于vRouter经由基础网络进行互联，它非叠加、无隧道、不使用VRF表，也不依赖于NAT，因此每个工作负载都可以直接配置使用公网IP接入互联网，当然，也可以按需使用网络策略控制它的网络连通性。</p>
-<p>Calico的系统组件主要有Felix、BGP路由反射器、编排系统插件、BIRD和etcd存储系统等。</p>
-<p>（1）Felix Felix是运行于各节点上守护进程，它主要负责完成接口管理、路由规划、ACL规划和状态报告几个核心任务，从而为各端点（VM或Container）生成连接机制。 1）接口管理，负责创建网络接口、生成必要信息并送往内核，以确保内核能正确处理各端点的流量，尤其是要确保目标节点MAC能响应当前节点上各工作负载的MAC地址的ARP请求，以及为Felix管理的接口打开转发功能。另外，接口管理还要监控各接口的变动以确保规则能得到正确应用。 2）路由规划，负责为当前节点上运行的各端点在内核FIB（Forwarding Information Base）中生成路由信息，以保证到达当前节点的报文可正确转发给端点。 3）ACL规划，负责在Linux内核中生成ACL，实现仅放行端点间的合规流量，并确保流量不能绕过Calico等安全措施。 4）状态报告，负责提供网络健康状态的相关数据，尤其是报告由Felix管理的节点上的错误和问题。这些报告数据会存储在etcd，供其他组件或网络管理员使用。</p>
-<p>简单理解为：运行在每一台node节点上，主要功能是维护路由规则、汇报当前节点状态以确保pod的跨主机通信。</p>
-<p>（2）编排系统插件 编排系统插件的主要功能是将Calico整合进所在的编排系统中，例如Kubernetes或OpenStack等。它主要负责完成API转换，从而让管理员和用户能够无差别地使用Calico的网络功能。换句话说，编排系统通常有自己的网络管理API，相应的插件要负责将对这些API的调用转换为Calico的数据模型，并存储到Calico的存储系统中。因而，编排插件的具体实现依赖于底层编排系统，不同的编排系统有各自专用的插件。</p>
-<p>（3）etcd存储系统 利用etcd，Calico网络可实现为有明确状态（正常或故障）的系统，且易于通过扩展应对访问压力的提升，避免自身成为系统瓶颈。另外，etcd也是Calico各组件的通信总线。</p>
-<p>（4）BGP客户端 Calico要求在每个运行着Felix的节点上同时运行一个称为BIRD的守护进程，它是BGP协议的客户端，负责将Felix生成的路由信息载入内核并通告给整个网络中。</p>
-<p>BGP Client运行在每一台node节点，负责监听node节点上由felix生成的路由信息，然后通过BGP协议广播至其他剩余的node节点，从而相互学习路由实现pod通信。</p>
-<p>（5）BGP路由反射器 Calico在每一个计算节点利用Linux内核实现了一个高效的vRouter（虚拟路由器）进行报文转发。每个vRouter通过BGP协议将自身所属节点运行的Pod资源的IP地址信息，基于节点上的专用代理程序（Felix）生成路由规则向整个Calico网络内传播。尽管小规模部署能够直接使用BGP网格模型，但随着节点数量（假设为N）的增加，这些连接的数量就会以N2的规模快速增长，从而给集群网络带来巨大的压力。因此，一般建议大规模的节点网络使用BGP路由反射器进行路由学习，BGP的点到点通信也就转为与中心点的单路通信模型。另外，出于冗余考虑，生产实践中应该部署多个BGP路由反射器。而对于Calico来说，BGP客户端程序除了作为客户端使用外，也可以配置为路由反射器。</p>
-<p>Route Reflector：集中式的路由反射器，calico v3.3开始支持，当calico BGP客户端将路由从其FIB（Forward Information DataBase，转发信息库）通告到Route Reflector时，Route Reflector会将这些路由通告给部署集群中的其他节点，Route Reflector专门用于管理BGP网络路由规则，不会产生pod数据通信。</p>
-<p>注意：</p>
-<p>calico默认工作模式为BGP的node-to-node mesh,如果需要使用Route Reflector需要进行相关配置。</p>
-<p><a href="https://docs.projectcalico.org/v3.4/usage/routereflector"target="_blank" rel="external nofollow noopener noreferrer">https://docs.projectcalico.org/v3.4/usage/routereflector</a></p>
-<p><a href="https://docs.projectcalico.org/v3.2/usage/routereflector/calico-routerreflector"target="_blank" rel="external nofollow noopener noreferrer">https://docs.projectcalico.org/v3.2/usage/routereflector/calico-routerreflector</a></p>
-<h3 id="51-calico-工作原理">5.1 Calico 工作原理</h3>
-<p>Calico把每个操作系统的协议栈认为是一个路由器，然后把所有的容器认为是连在这个路由器上的网络终端，在路由器之间跑标准的路由协议——BGP的协议，然后让它们自己去学习这个网络拓扑该如何转发。所以Calico方案其实是一个纯三层的方案，也就是说让每台机器的协议栈的三层去确保两个容器，跨主机容器之间的三层连通性。</p>
-<p>对于控制平面，它每个节点上会运行两个主要的程序，一个是Felix，它会监听ECTD中心的存储，从它获取事件，比如说用户在这台机器上加了一个IP，或者是分配了一个容器等。接着会在这台机器上创建出一个容器，并将其网卡、IP、MAC都设置好，然后在内核的路由表里面写一条，注明这个IP应该到这张网卡。绿色部分是一个标准的路由程序，它会从内核里面获取哪一些IP的路由发生了变化，然后通过标准BGP的路由协议扩散到整个其他的宿主机上，让外界都知道这个IP在这里，你们路由的时候得到这里来。</p>
-<p>由于Calico是一种纯三层的实现，因此可以避免与二层方案相关的数据包封装的操作，中间没有任何的NAT，没有任何的overlay，所以它的转发效率可能是所有方案中最高的，因为它的包直接走原生TCP/IP的协议栈，它的隔离也因为这个栈而变得好做。因为TCP/IP的协议栈提供了一整套的防火墙的规则，所以它可以通过IPTABLES的规则达到比较复杂的隔离逻辑。</p>
-<h3 id="52-node-to-node-mesh模式">5.2 node-to-node mesh模式</h3>
-<p>全互联模式 每一个BGP Speaker都需要和其他BGP Speaker建立BGP连接，这样BGP连接总数就是N*（N-1），如果数量过大会消耗大量连接。如果集群数量超过100台官方不建议使用此种模式。</p>
-<h4 id="521--calico开启ipip模式">5.2.1  Calico开启IPIP模式</h4>
-<p>calico是使用node-to-node mesh的方式要维护路由规则，及每个node节点上都有n(n-1)条路哟规则，n为node的节点数量。</p>
-<p>以k8s-node1为例来验证路由信息</p>
-<p>calico 2.x 版本默认使用etcd v2 API</p>
-<p>calico 3.x 版本默认使用etcd v3 API</p>
-<div class="highlight" id="id-19"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-node1:~# calicoctl node status
-</span></span><span class="line"><span class="cl">Calico process is running.
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">IPv4 BGP status
-</span></span><span class="line"><span class="cl">+---------------+-------------------+-------+----------+-------------+
-</span></span><span class="line"><span class="cl"><span class="p">|</span> PEER ADDRESS  <span class="p">|</span>     PEER TYPE     <span class="p">|</span> STATE <span class="p">|</span>  SINCE   <span class="p">|</span>    INFO     <span class="p">|</span>
-</span></span><span class="line"><span class="cl">+---------------+-------------------+-------+----------+-------------+
-</span></span><span class="line"><span class="cl"><span class="p">|</span> 192.168.1.101 <span class="p">|</span> node-to-node mesh <span class="p">|</span> up    <span class="p">|</span> 15:25:25 <span class="p">|</span> Established <span class="p">|</span>
-</span></span><span class="line"><span class="cl"><span class="p">|</span> 192.168.1.103 <span class="p">|</span> node-to-node mesh <span class="p">|</span> up    <span class="p">|</span> 15:25:26 <span class="p">|</span> Established <span class="p">|</span>
-</span></span><span class="line"><span class="cl">+---------------+-------------------+-------+----------+-------------+
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">IPv6 BGP status
-</span></span><span class="line"><span class="cl">No IPv6 peers found.
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">#k8s-node01所有的master和node节点都建立了BGP邻居关系</span></span></span></code></pre></div><p>开启IPIP的路由状态</p>
-<p>运行4个pod</p>
-<div class="highlight" id="id-20"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-deploy:/etc/kubeasz# kubectl run testpod-1 --image<span class="o">=</span>ikubernetes/demoapp:v1.0
-</span></span><span class="line"><span class="cl">pod/testpod-1 created
-</span></span><span class="line"><span class="cl">root@k8s-deploy:/etc/kubeasz# kubectl run testpod-2 --image<span class="o">=</span>ikubernetes/demoapp:v1.0
-</span></span><span class="line"><span class="cl">pod/testpod-2 created
-</span></span><span class="line"><span class="cl">root@k8s-deploy:/etc/kubeasz# kubectl run testpod-3 --image<span class="o">=</span>ikubernetes/demoapp:v1.0
-</span></span><span class="line"><span class="cl">pod/testpod-3 created
-</span></span><span class="line"><span class="cl">root@k8s-deploy:/etc/kubeasz# kubectl run testpod-4 --image<span class="o">=</span>ikubernetes/demoapp:v1.0
-</span></span><span class="line"><span class="cl">pod/testpod-4 created
-</span></span><span class="line"><span class="cl">root@k8s-deploy:/etc/kubeasz# kubectl get pod -A -o wide
-</span></span><span class="line"><span class="cl">NAMESPACE     NAME                                       READY   STATUS    RESTARTS   AGE    IP               NODE            NOMINATED NODE   READINESS GATES
-</span></span><span class="line"><span class="cl">default       testpod-1                                  1/1     Running   <span class="m">2</span>          69m    172.20.169.129   192.168.1.103   &lt;none&gt;           &lt;none&gt;
-</span></span><span class="line"><span class="cl">default       testpod-2                                  1/1     Running   <span class="m">2</span>          69m    172.20.36.66     192.168.1.102   &lt;none&gt;           &lt;none&gt;
-</span></span><span class="line"><span class="cl">default       testpod-3                                  1/1     Running   <span class="m">0</span>          5s     172.20.36.67     192.168.1.102   &lt;none&gt;           &lt;none&gt;
-</span></span><span class="line"><span class="cl">default       testpod-4                                  1/1     Running   <span class="m">0</span>          2s     172.20.169.130   192.168.1.103   &lt;none&gt;           &lt;none&gt;</span></span></code></pre></div><p>查看k8s-node1的路由信息</p>
-<div class="highlight" id="id-21"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-node1:~# route -n
-</span></span><span class="line"><span class="cl">Kernel IP routing table
-</span></span><span class="line"><span class="cl">Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
-</span></span><span class="line"><span class="cl">0.0.0.0         192.168.1.1     0.0.0.0         UG    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> eth0
-</span></span><span class="line"><span class="cl">172.17.0.0      0.0.0.0         255.255.0.0     U     <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> docker0
-</span></span><span class="line"><span class="cl">172.20.36.64    0.0.0.0         255.255.255.192 U     <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> *
-</span></span><span class="line"><span class="cl">172.20.36.65    0.0.0.0         255.255.255.255 UH    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> cali146f692ec0d
-</span></span><span class="line"><span class="cl">172.20.36.66    0.0.0.0         255.255.255.255 UH    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> cali3d1e6ac0b31
-</span></span><span class="line"><span class="cl">172.20.36.67    0.0.0.0         255.255.255.255 UH    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> cali4a41f53597d
-</span></span><span class="line"><span class="cl">172.20.169.128  192.168.1.103   255.255.255.192 UG    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> tunl0
-</span></span><span class="line"><span class="cl">172.20.235.192  192.168.1.101   255.255.255.192 UG    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> tunl0
-</span></span><span class="line"><span class="cl">192.168.1.0     0.0.0.0         255.255.255.0   U     <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> eth0
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">root@k8s-node1:~# ip route
-</span></span><span class="line"><span class="cl">default via 192.168.1.1 dev eth0 proto static 
-</span></span><span class="line"><span class="cl">172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown 
-</span></span><span class="line"><span class="cl">blackhole 172.20.36.64/26 proto bird 
-</span></span><span class="line"><span class="cl">172.20.36.65 dev cali146f692ec0d scope link 
-</span></span><span class="line"><span class="cl">172.20.36.66 dev cali3d1e6ac0b31 scope link 
-</span></span><span class="line"><span class="cl">172.20.36.67 dev cali4a41f53597d scope link 
-</span></span><span class="line"><span class="cl">172.20.169.128/26 via 192.168.1.103 dev tunl0 proto bird onlink 
-</span></span><span class="line"><span class="cl">172.20.235.192/26 via 192.168.1.101 dev tunl0 proto bird onlink 
-</span></span><span class="line"><span class="cl">192.168.1.0/24 dev eth0 proto kernel scope link src 192.168.1.102
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">#1、k8s-node1上访问本地容器走cali3d1e6ac0b31接口，Calico并不会为容器在主机上使用网桥，而是仅为每个容器生成一对veth设备，留在主机上的那一端会在主机上生成目标地址，作为当前容器的路由条目。</span>
-</span></span><span class="line"><span class="cl"><span class="c1">#2、k8s-node01上需要跨主机访问时，走tunl0隧道</span></span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/2719436-20220221233720026-674862605.png" srcset="https://cdn1.ryanxin.live/2719436-20220221233720026-674862605.png, https://cdn1.ryanxin.live/2719436-20220221233720026-674862605.png 1.5x, https://cdn1.ryanxin.live/2719436-20220221233720026-674862605.png 2x" sizes="auto" data-title="img" data-alt="img" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/2719436-20220221233724641-829726378.png" srcset="https://cdn1.ryanxin.live/2719436-20220221233724641-829726378.png, https://cdn1.ryanxin.live/2719436-20220221233724641-829726378.png 1.5x, https://cdn1.ryanxin.live/2719436-20220221233724641-829726378.png 2x" sizes="auto" data-title="img" data-alt="img" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p>Calico使用BGP（Border Gateway Protocol）协议在主机集群中自动分发和学习路由信息。与Flannel不同的是，Calico并不会为容器在主机上使用网桥，而是仅为每个容器生成一对veth设备，留在主机上的那一端会在主机上生成目标地址，作为当前容器的路由条目。</p>
-<p>当访问同一个node的不同pod时，node节点会查询路由表把报文发往相应的calixxx目标地址；当访问不同node上的pod时，node会把数据包发往tunl0，再根据etcd中的保存的路由信息来转发。</p>
-<div class="highlight" id="id-22"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-node1:~# route -n
-</span></span><span class="line"><span class="cl">Kernel IP routing table
-</span></span><span class="line"><span class="cl">Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
-</span></span><span class="line"><span class="cl">0.0.0.0         192.168.1.1     0.0.0.0         UG    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> eth0
-</span></span><span class="line"><span class="cl">172.17.0.0      0.0.0.0         255.255.0.0     U     <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> docker0
-</span></span><span class="line"><span class="cl">172.20.36.64    0.0.0.0         255.255.255.192 U     <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> *
-</span></span><span class="line"><span class="cl">172.20.36.65    0.0.0.0         255.255.255.255 UH    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> cali146f692ec0d   <span class="c1">#本地容器接口</span>
-</span></span><span class="line"><span class="cl">172.20.36.66    0.0.0.0         255.255.255.255 UH    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> cali3d1e6ac0b31    <span class="c1">#本地容器接口</span>
-</span></span><span class="line"><span class="cl">172.20.36.67    0.0.0.0         255.255.255.255 UH    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> cali4a41f53597d   <span class="c1">#本地容器接口</span>
-</span></span><span class="line"><span class="cl">172.20.169.128  192.168.1.103   255.255.255.192 UG    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> tunl0   <span class="c1">#隧道接口</span>
-</span></span><span class="line"><span class="cl">172.20.235.192  192.168.1.101   255.255.255.192 UG    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> tunl0   <span class="c1">#隧道接口</span>
-</span></span><span class="line"><span class="cl">192.168.1.0     0.0.0.0         255.255.255.0   U     <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> eth0
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">kubectl run testpod-1 --image<span class="o">=</span>ikubernetes/demoapp:v1.0
-</span></span><span class="line"><span class="cl">kubectl run testpod-2 --image<span class="o">=</span>ikubernetes/demoapp:v1.0
-</span></span><span class="line"><span class="cl">kubectl run testpod-3 --image<span class="o">=</span>ikubernetes/demoapp:v1.0
-</span></span><span class="line"><span class="cl">kubectl run testpod-4 --image<span class="o">=</span>ikubernetes/demoapp:v1.0
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">root@k8s-deploy:/etc/kubeasz# kubectl get pod -A -o wide
-</span></span><span class="line"><span class="cl">NAMESPACE     NAME                                       READY   STATUS    RESTARTS   AGE    IP               NODE            NOMINATED NODE   READINESS GATES
-</span></span><span class="line"><span class="cl">default       testpod-1                                  1/1     Running   <span class="m">2</span>          69m    172.20.169.129   192.168.1.103   &lt;none&gt;           &lt;none&gt;
-</span></span><span class="line"><span class="cl">default       testpod-2                                  1/1     Running   <span class="m">2</span>          69m    172.20.36.66     192.168.1.102   &lt;none&gt;           &lt;none&gt;
-</span></span><span class="line"><span class="cl">default       testpod-3                                  1/1     Running   <span class="m">0</span>          5s     172.20.36.67     192.168.1.102   &lt;none&gt;           &lt;none&gt;
-</span></span><span class="line"><span class="cl">default       testpod-4                                  1/1     Running   <span class="m">0</span>          2s     172.20.169.130   192.168.1.103   &lt;none&gt;           &lt;none&gt;
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">#测试在同一个node下pod的访问，k8s-node01上有2个pod，testpod-2和testpod-3</span>
-</span></span><span class="line"><span class="cl">root@k8s-deploy:/etc/kubeasz# kubectl <span class="nb">exec</span> -it testpod-2 -- sh
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@testpod-2 /<span class="o">]</span><span class="c1"># traceroute 172.20.36.67</span>
-</span></span><span class="line"><span class="cl">traceroute to 172.20.36.67 <span class="o">(</span>172.20.36.67<span class="o">)</span>, <span class="m">30</span> hops max, <span class="m">46</span> byte packets
-</span></span><span class="line"><span class="cl"> <span class="m">1</span>  192.168.1.102 <span class="o">(</span>192.168.1.102<span class="o">)</span>  0.004 ms  0.005 ms  0.002 ms
-</span></span><span class="line"><span class="cl"> <span class="m">2</span>  172.20.36.67 <span class="o">(</span>172.20.36.67<span class="o">)</span>  0.001 ms  0.003 ms  0.001 ms
-</span></span><span class="line"><span class="cl"><span class="c1">#1、数据包从testpod-2出到达Veth Pair另一端（宿主机上，以cali前缀开头cali3d1e6ac0b31）</span>
-</span></span><span class="line"><span class="cl"><span class="c1">#2、宿主机根据路由规则，将数据包转发给下一跳（网关）</span>
-</span></span><span class="line"><span class="cl"><span class="c1">#3、发现下一跳为自己的cali4a41f53597d，直接转发数据包给cali4a41f53597d，到达test-pod3</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">#测试在不在同一个node下pod的访问，testpod-2和testpod-4</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>root@testpod-2 /<span class="o">]</span><span class="c1"># traceroute 172.20.169.130</span>
-</span></span><span class="line"><span class="cl">traceroute to 172.20.169.130 <span class="o">(</span>172.20.169.130<span class="o">)</span>, <span class="m">30</span> hops max, <span class="m">46</span> byte packets
-</span></span><span class="line"><span class="cl"> <span class="m">1</span>  192.168.1.102 <span class="o">(</span>192.168.1.102<span class="o">)</span>  0.004 ms  0.003 ms  0.002 ms
-</span></span><span class="line"><span class="cl"> <span class="m">2</span>  172.20.169.128 <span class="o">(</span>172.20.169.128<span class="o">)</span>  0.268 ms  0.082 ms  0.163 ms   <span class="c1">#走的tunl0隧道</span>
-</span></span><span class="line"><span class="cl"> <span class="m">3</span>  172.20.169.130 <span class="o">(</span>172.20.169.130<span class="o">)</span>  0.191 ms  0.207 ms  0.153 ms
-</span></span><span class="line"><span class="cl"><span class="c1">#1、数据包从 testpod-2 出到达Veth Pair另一端（宿主机上，以cali前缀开头cali3d1e6ac0b31）</span>
-</span></span><span class="line"><span class="cl"><span class="c1">#2、宿主机根据路由规则，将数据包转发给下一跳（网关）</span>
-</span></span><span class="line"><span class="cl"><span class="c1">#3、到达 Node3，根据路由规则将数据包转发给 cali 设备，从而到达 testpod-3。</span></span></span></code></pre></div><p>IPIP就是把一个IP数据包又套在一个IP包里，即把 IP 层封装到 IP 层的一个 tunnel，看起来似乎是浪费，实则不然。它的作用其实基本上就相当于一个基于IP层的网桥！一般来说，普通的网桥是基于mac层的，根本不需 IP，而这个 ipip 则是通过两端的路由做一个 tunnel，把两个本来不通的网络通过点对点连接起来。ipip 的源代码在内核 net/ipv4/ipip.c 中可以找到。</p>
-<h4 id="522--calico关闭ipip模式">5.2.2  Calico关闭IPIP模式</h4>
-<p>与Flannel的host-gw的模式相似，后端通过添加必要的路由信息，并使用节点的二层网络直接发送Pod间的通信报文，同时也跟host-gw一样不支持跨网段。</p>
-<p>Calico关闭IPIP模式将不会有tunl0隧道，pod之间的访问全靠路由。</p>
-<div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-deploy:~# vim /etc/kubeasz/clusters/k8s-test/config.yml 
-</span></span><span class="line"><span class="cl">......
-</span></span><span class="line"><span class="cl"><span class="c1"># [calico]设置 CALICO_IPV4POOL_IPIP=“off”,可以提高网络性能，条件限制详见 docs/setup/calico.md</span>
-</span></span><span class="line"><span class="cl"><span class="c1">#CALICO_IPV4POOL_IPIP: &#34;Always&#34;</span>
-</span></span><span class="line"><span class="cl">CALICO_IPV4POOL_IPIP: <span class="s2">&#34;off&#34;</span>
-</span></span><span class="line"><span class="cl">......</span></span></code></pre></div><p>创建4个pod</p>
-<div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kubectl run testpod-1 --image<span class="o">=</span>ikubernetes/demoapp:v1.0
-</span></span><span class="line"><span class="cl">kubectl run testpod-2 --image<span class="o">=</span>ikubernetes/demoapp:v1.0
-</span></span><span class="line"><span class="cl">kubectl run testpod-3 --image<span class="o">=</span>ikubernetes/demoapp:v1.0
-</span></span><span class="line"><span class="cl">kubectl run testpod-4 --image<span class="o">=</span>ikubernetes/demoapp:v1.0
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">root@k8s-deploy:/etc/kubeasz# kubectl get pod -o wide
-</span></span><span class="line"><span class="cl">NAME        READY   STATUS    RESTARTS   AGE   IP               NODE            NOMINATED NODE   READINESS GATES
-</span></span><span class="line"><span class="cl">testpod-1   1/1     Running   <span class="m">3</span>          97m   172.20.169.132   192.168.1.103   &lt;none&gt;           &lt;none&gt;
-</span></span><span class="line"><span class="cl">testpod-2   1/1     Running   <span class="m">3</span>          96m   172.20.36.69     192.168.1.102   &lt;none&gt;           &lt;none&gt;
-</span></span><span class="line"><span class="cl">testpod-3   1/1     Running   <span class="m">1</span>          27m   172.20.36.68     192.168.1.102   &lt;none&gt;           &lt;none&gt;
-</span></span><span class="line"><span class="cl">testpod-4   1/1     Running   <span class="m">1</span>          27m   172.20.169.131   192.168.1.103   &lt;none&gt;           &lt;none&gt;</span></span></code></pre></div><p>查看k8s-node1上的路由信息</p>
-<div class="highlight" id="id-25"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@k8s-node1:~# route -n
-</span></span><span class="line"><span class="cl">Kernel IP routing table
-</span></span><span class="line"><span class="cl">Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
-</span></span><span class="line"><span class="cl">0.0.0.0         192.168.1.1     0.0.0.0         UG    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> eth0
-</span></span><span class="line"><span class="cl">172.17.0.0      0.0.0.0         255.255.0.0     U     <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> docker0
-</span></span><span class="line"><span class="cl">172.20.36.64    0.0.0.0         255.255.255.192 U     <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> *
-</span></span><span class="line"><span class="cl">172.20.36.68    0.0.0.0         255.255.255.255 UH    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> cali4a41f53597d
-</span></span><span class="line"><span class="cl">172.20.36.69    0.0.0.0         255.255.255.255 UH    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> cali3d1e6ac0b31
-</span></span><span class="line"><span class="cl">172.20.36.70    0.0.0.0         255.255.255.255 UH    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> cali146f692ec0d
-</span></span><span class="line"><span class="cl">172.20.169.128  192.168.1.103   255.255.255.192 UG    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> eth0
-</span></span><span class="line"><span class="cl">172.20.235.192  192.168.1.101   255.255.255.192 UG    <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> eth0
-</span></span><span class="line"><span class="cl">192.168.1.0     0.0.0.0         255.255.255.0   U     <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span> eth0</span></span></code></pre></div><p>没有tunl0隧道接口</p>
-<h3 id="53-route-reflector-模式rr路由反射">5.3 Route Reflector 模式（RR路由反射）</h3>
-<p>设置方法请参考官方链接 <a href="https://docs.projectcalico.org/master/networking/bgp"target="_blank" rel="external nofollow noopener noreferrer">https://docs.projectcalico.org/master/networking/bgp</a></p>
-<p>Calico 维护的网络在默认是 <code>（Node-to-Node Mesh）全互联模式</code>，Calico集群中的节点之间都会相互建立连接，用于路由交换。但是随着集群规模的扩大，mesh模式将形成一个巨大服务网格，连接数成倍增加。这时就需要使用 Route Reflector（路由器反射）模式解决这个问题。确定一个或多个Calico节点充当路由反射器，让其他节点从这个RR节点获取路由信息。</p>
-<p>在BGP中可以通过calicoctl node status看到启动是 node-to-node mesh 网格的形式，这种形式是一个全互联的模式，默认的BGP在k8s的每个节点担任了一个BGP的一个喇叭，一直吆喝着扩散到其他节点，随着集群节点的数量的增加，那么上百台节点就要构建上百台链接，就是全互联的方式，都要来回建立连接来保证网络的互通性，那么增加一个节点就要成倍的增加这种链接保证网络的互通性，这样的话就会使用大量的网络消耗，所以这时就需要使用Route reflector，也就是找几个大的节点，让他们去这个大的节点建立连接，也叫RR，也就是公司的员工没有微信群的时候，找每个人沟通都很麻烦，那么建个群，里面的人都能收到，所以要找节点或着多个节点充当路由反射器，建议至少是2到3个，一个做备用，一个在维护的时候不影响其他的使用。</p>
 </div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">

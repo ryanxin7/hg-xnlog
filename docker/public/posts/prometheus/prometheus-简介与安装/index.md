@@ -101,7 +101,7 @@ Data Visualization and Export
 
 https://github.com/mohamadhoseinmoradi/Docker-Compose-Prometheus-and-Grafana
 
-![image-20240122101201441](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20240122101201441.png)
+![image-20240122101201441](https://cdn1.ryanxin.live/image-20240122101201441.png)
 
 
 
@@ -133,13 +133,13 @@ root@prometheus-server:/apps/docker-compose/Docker-Compose-Prometheus-and-Grafan
  ✔ Container caddy         Started          
 ```
 
-![](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20240122143521141.png)
+![](https://cdn1.ryanxin.live/image-20240122143521141.png)
 
 
 
 grafana 账户密码默认是admin/admin
 
-![image-20240122143620417](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20240122143620417.png)
+![image-20240122143620417](https://cdn1.ryanxin.live/image-20240122143620417.png)
 
 
 
@@ -313,7 +313,7 @@ spec:
 
 ![image-20240123170047904](https://cdn1.ryanxin.live/image-20240123170047904.png)
 
-![image-20240123170146894](C:\Users\xx9z\AppData\Roaming\Typora\typora-user-images\image-20240123170146894.png)
+![image-20240123170146894](https://cdn1.ryanxin.live/image-20240123170146894.png)
 
 ![image-20240123170402356](https://cdn1.ryanxin.live/image-20240123170402356.png)
 
@@ -329,42 +329,36 @@ spec:
 
 ### 2.3 二进制部署 Prometheus Server
 
-部署环境：本例使用kubernetes 集群外的一台服务器做演示 172.23.1.12
 
-![img](https://cdn1.ryanxin.live/a2eea6189d4286294b81a00223adbe59.png)
+
+![preview](https://cdn1.ryanxin.live/view)
 
 二进制从官网下载：[Download | Prometheus](https://prometheus.io/download/#prometheus)
 
 #### 2.3.1 解压二进制
 
+https://github.com/prometheus/prometheus/releases/download/v2.37.6/prometheus-2.37.6.linux-amd64.tar.gz
+
 ```bash
-root@prometheus02:/usr/local/src# pwd
-/usr/local/src
-root@prometheus02:/usr/local/src# wget https://github.com/prometheus/prometheus/releases/download/v2.37.6/prometheus-2.37.6.linux-amd64.tar.gz
-root@prometheus02:/usr/local/src# tar xvf prometheus-2.37.6.linux-amd64.tar.gz 
-root@prometheus02:/usr/local/src# mkdir /apps
-root@prometheus02:/usr/local/src# mv prometheus-2.37.6.linux-amd64/ /apps/
-root@prometheus02:/apps# ln -sv prometheus-2.37.6.linux-amd64/ /apps/prometheus
-root@prometheus02:/apps# ll
-total 0
-drwxr-xr-x  3 root root  61 Mar  2 21:33 ./
-drwxr-xr-x 20 root root 304 Mar  2 21:31 ../
-lrwxrwxrwx  1 root root  30 Mar  2 21:33 prometheus -> prometheus-2.37.6.linux-amd64//
-drwxr-xr-x  4 1001  123 132 Feb 20 18:07 prometheus-2.37.6.linux-amd64/
+root@promethues-server:~# tar xf prometheus-2.37.6.linux-amd64.tar.gz
+root@promethues-server:~# mkdir /apps
+root@promethues-server:~# mv  prometheus-2.37.6.linux-amd64 /apps/
+root@promethues-server:/apps# ln -s prometheus-2.37.6.linux-amd64/ /apps/prometheus
+root@promethues-server:/apps/prometheus# ll
+total 208932
+drwxr-xr-x 4 1001  123      4096 Feb 20  2023 ./
+drwxr-xr-x 3 root root      4096 Jan 24 09:03 ../
+-rw-r--r-- 1 1001  123     11357 Feb 20  2023 LICENSE
+-rw-r--r-- 1 1001  123      3773 Feb 20  2023 NOTICE
+drwxr-xr-x 2 1001  123      4096 Feb 20  2023 console_libraries/
+drwxr-xr-x 2 1001  123      4096 Feb 20  2023 consoles/
+-rwxr-xr-x 1 1001  123 111052375 Feb 20  2023 prometheus*      # prometheus服务可执行程序
+-rw-r--r-- 1 1001  123       934 Feb 20  2023 prometheus.yml   # prometheus配置文件
+-rwxr-xr-x 1 1001  123 102850693 Feb 20  2023 promtool*        
 
-root@prometheus02:/apps# ll prometheus/
-total 208916
-drwxr-xr-x 4 1001  123       132 Feb 20 18:07 ./
-drwxr-xr-x 3 root root        61 Mar  2 21:33 ../
--rw-r--r-- 1 1001  123     11357 Feb 20 18:03 LICENSE
--rw-r--r-- 1 1001  123      3773 Feb 20 18:03 NOTICE
-drwxr-xr-x 2 1001  123        38 Feb 20 18:03 console_libraries/
-drwxr-xr-x 2 1001  123       173 Feb 20 18:03 consoles/
--rwxr-xr-x 1 1001  123 111052375 Feb 20 17:40 prometheus*     # prometheus服务可执行程序
--rw-r--r-- 1 1001  123       934 Feb 20 18:03 prometheus.yml  # prometheus配置文件
--rwxr-xr-x 1 1001  123 102850693 Feb 20 17:42 promtool*       # 测试工具，用于检查配置prometheus配置文件、检测metrics数据等
 
-root@prometheus02:/apps/prometheus# ./promtool check config prometheus.yml
+# 测试工具，用于检查配置prometheus配置文件、检测metrics数据等
+root@promethues-server:/apps/prometheus# ./promtool check config prometheus.yml
 Checking prometheus.yml
  SUCCESS: prometheus.yml is valid prometheus config file syntax
 ```
@@ -372,13 +366,13 @@ Checking prometheus.yml
 #### 2.3.2 创建prometheus service启动脚本
 
 ```bash
-# 该选项类似 nginx 的 reload，修改prometheus配置文件后不用重启服务，直接reload即可
-root@prometheus02:/apps/prometheus# ./prometheus --help | grep "enable-lifecycle"
+# 该选项类似 nginx 的 reload，当启用该选项时，Prometheus允许您通过HTTP请求执行优雅关闭或重新加载其配置。
+./prometheus --help | grep "enable-lifecycle"
       --web.enable-lifecycle     Enable shutdown and reload via HTTP request.
 ```
 
 ```bash
-root@prometheus02:/apps/prometheus# vim /etc/systemd/system/prometheus.service
+vim /etc/systemd/system/prometheus.service
 
 [Unit]
 Description=Prometheus Server
@@ -396,28 +390,39 @@ WantedBy=multi-user.target
 
 
 
-#### 2.3.3 启动 prometheus 服务
+#### 2.3.3 配置时间同步
 
 ```bash
-root@prometheus02:/apps/prometheus# systemctl restart prometheus.service && systemctl enable prometheus.service
+timedatectl set-timezone Asia/Shanghai
+apt install chrony
 ```
 
-![image-20230302215033827](https://cdn1.ryanxin.live/c9748de865c16cc7286f404de5a6368c.png)
 
-#### 2.3.4 验证web界面
 
-![image-20230302215200758](https://cdn1.ryanxin.live/a17950a01fb1d76cca276f6fc78453ea.png)
 
-#### 2.3.5 动态（热）加载配置
+
+#### 2.3.4 启动 prometheus 服务
 
 ```bash
-root@prometheus02:/apps/prometheus# vim /etc/systemd/system/prometheus.service
+root@promethues-server:/apps/prometheus# systemctl restart prometheus.service &&                                                   systemctl enable prometheus.service
+Created symlink /etc/systemd/system/multi-user.target.wants/prometheus.service →                                                        /etc/systemd/system/prometheus.service.
+```
+
+
+
+#### 2.3.5 验证web界面
+
+![image-20240124173131467](https://cdn1.ryanxin.live/image-20240124173131467.png)
+
+#### 2.3.6 动态（热）加载配置
+
+```bash
+root@promethues-server:/apps/prometheus# vim /etc/systemd/system/prometheus.service
 --web.enable-lifecycle
 
-root@prometheus02:/apps/prometheus# systemctl daemon-reload && systemctl restart prometheus.service
+root@promethues-server:/apps/prometheus# systemctl daemon-reload && systemctl restart prometheus.service
 
-root@prometheus02:/apps/prometheus# curl -X POST http://172.23.1.12:9090/-/reload
-
+root@promethues-server:/apps/prometheus# curl -X POST http://192.168.29.71:9090/-/reload
 ```
 
 
@@ -716,7 +721,6 @@ sudo service grafana-server restart
 ```
 
 ![image-20230303143432271](https://cdn1.ryanxin.live/6996b9be22c66525cd2f1f47cf5db669.png)
-
 
 
 
