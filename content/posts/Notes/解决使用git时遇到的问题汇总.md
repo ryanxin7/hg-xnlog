@@ -1,14 +1,14 @@
 ---
 author: Ryan
 title: 使用Git时遇到的问题汇总
-date: 2023-10-24
+date: 2024-01-24
 lastmod: 2024-01-24
 tags:
-  - git问题汇总
+  - Git问题汇总
 categories:
   - Git
 expirationReminder:
-  enable: false
+  enable: true
 ---
 
 

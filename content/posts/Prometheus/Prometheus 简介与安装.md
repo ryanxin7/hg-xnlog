@@ -4,7 +4,8 @@ title: Prometheus 简介与安装
 date: 2024-01-23
 lastmod: 2024-01-23
 tags:
-  - 监控
+  - 监控系统
+  - exporter
 categories:
   - Prometheus
 expirationReminder:
@@ -617,80 +618,161 @@ root@promethues-server:~# curl -X POST http://192.168.29.71:9090/-/reload
 
 
 
-### 2.6 部署 Grafana
-grafana是一个可视化组件，用于接收客户端浏览器的请求并连接到prometheus查询数据，最后经过渲染并在浏览器进行体系化显示，需要注意的是，grafana查询数据类似于zabbix-样需要自定义模板,模板可以手动制作也可以导入已有模板。
+### 2.6 安装 blackbox exporter 
 
-下载：[Download Grafana | Grafana Labs](https://grafana.com/grafana/download?pg=get&plcmt=selfmanaged-box1-cta1)
+https://prometheus.io/download/#blackbox_exporter
 
-模板：[Dashboards | Grafana Labs](https://grafana.com/grafana/dashboards/)
-
-插件：[Grafana Plugins - extend and customize your Grafana | Grafana Labs](https://grafana.com/grafana/plugins/)
-
-
-![](https://cdn1.ryanxin.live/1695797621991)
-
-#### 2.6.1 安装 grafana server
-
-下载地址：[Download Grafana | Grafana Labs](https://grafana.com/grafana/download)
-
-安装文档：[Install Grafana | Grafana documentation](https://grafana.com/docs/grafana/latest/setup-grafana/installation/)
-
-部署环境：可以和 Prometheus Server 安装在一起，也可以分开安装（网络互通即可）。
-
-![image-20240125104222583](https://cdn1.ryanxin.live/image-20240125104222583.png)
-
+`blackbox_exporter` 是由 Prometheus 社区提供的一个官方 exporter，用于进行对端点的黑盒探测。它主要通过执行各种网络层协议（HTTP、HTTPS、DNS、TCP、ICMP等）来监控和收集有关被监控节点的数据。
 
 ```bash
-root@promethues-server:~# apt-get install -y adduser libfontconfig1
-root@prometheus-server:~# dpkg -i grafana-enterprise_9.4.3_amd64.deb
-```
-
-#### 2.6.2 grafana server 配置文件
-
-路径：`/etc/grafana/grafana.ini`
-
-```bash
-[server]
-# Protocol (http, https, h2, socket)
-protocol = http
-
-# The ip address to bind to, empty will bind to all interfaces
-http_addr = 0.0.0.0
-
-# The http port  to use
-http_port = 3000
-```
-
-#### 2.6.3 启动 grafana
-
-```bash
-root@prometheus-server:~# systemctl restart grafana-server.service && systemctl enable grafana-server.service 
-Synchronizing state of grafana-server.service with SysV service script with /lib/systemd/systemd-sysv-install.
-Executing: /lib/systemd/systemd-sysv-install enable grafana-server
-Created symlink /etc/systemd/system/multi-user.target.wants/grafana-server.service → /lib/systemd/system/grafana-server.service.
-root@prometheus-server:~# ss -anptl | grep 3000
-LISTEN    0         4096                     *:3000                   *:*        users:(("grafana",pid=136786,fd=11))                                           
+HTTP(S) 监控： 通过发送 HTTP 或 HTTPS 请求并检查响应的方式来监控服务的可用性和性能。
+DNS 监控： 通过 DNS 查询检查域名解析的状态和响应时间。
+TCP 监控： 建立 TCP 连接并检查端口的可用性。
+ICMP 监控： 使用 ICMP Echo 请求（类似于 Ping）来检查主机的可达性。
 ```
 
 
 
-#### 2.6.4 验证 web 界面
+#### 2.6.1 下载二进制包
 
-默认账户密码：admin/admin
+```bash
+wget  https://github.com/prometheus/blackbox_exporter/releases/download/v0.19.0/blackbox_exporter-0.19.0.linux-amd64.tar.gz
+```
 
-![image-20240125110130210](https://cdn1.ryanxin.live/image-20240125110130210.png)
 
-#### 2.6.5 添加 Prometheus 数据源
 
-进入主界面后，点击左下角的设置，选择 “ Data sources”，再选择 Prometheus。
+#### 2.6.2 准备配置文件
 
-![image-20240125110238982](https://cdn1.ryanxin.live/image-20240125110238982.png)
+```bash
+vim /etc/systemd/system/blackbox-exporter.service
+[Unit]
+Description=Prometheus Blackbox Exporter
+After=network.target
 
-![image-20240125110448889](https://cdn1.ryanxin.live/image-20240125110448889.png)
 
-![image-20240125110516029](https://cdn1.ryanxin.live/image-20240125110516029.png)
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/apps/blackbox_exporter \
+    --config.file=/apps/blackbox_exporter/blackbox.yml \
+    --web.listen-address=:9115
+Restart=on-failure
 
-检查与Prometheus能否连通
+[Install]
+WantedBy=multi-user.target
+
+```
+
+#### 2.6.3 启动服务
+
+```bash
+root@promethues-server:/apps# systemctl daemon-reload && systemctl restart blackbox-exporter.service && systemctl enable blackbox-exporter.service
+```
+
+
+
+#### 2.6.4 查看服务状态
+
+```bash
+root@promethues-server:/apps# systemctl status blackbox-exporter.service
+● blackbox-exporter.service - Prometheus Blackbox Exporter
+   Loaded: loaded (/etc/systemd/system/blackbox-exporter.service; enabled; vendor preset: enabled)
+   Active: active (running) since Thu 2024-01-25 16:23:55 CST; 4s ago
+ Main PID: 55495 (blackbox_export)
+    Tasks: 9 (limit: 4629)
+   CGroup: /system.slice/blackbox-exporter.service
+           └─55495 /apps/blackbox_exporter/blackbox_exporter --config.file=/apps/blackbox_exporter/blackbox.yml --web.listen-address=:9115
+
+Jan 25 16:23:55 promethues-server systemd[1]: Started Prometheus Blackbox Exporter.
+Jan 25 16:23:55 promethues-server blackbox_exporter[55495]: level=info ts=2024-01-25T08:23:55.048Z caller=main.go:224 msg="Starting blackbox_exporter" versio
+Jan 25 16:23:55 promethues-server blackbox_exporter[55495]: level=info ts=2024-01-25T08:23:55.049Z caller=main.go:225 build_context="(go=go1.16.4, user=root@
+Jan 25 16:23:55 promethues-server blackbox_exporter[55495]: level=info ts=2024-01-25T08:23:55.049Z caller=main.go:237 msg="Loaded config file"
+Jan 25 16:23:55 promethues-server blackbox_exporter[55495]: level=info ts=2024-01-25T08:23:55.049Z caller=main.go:385 msg="Listening on address" address=:911
+Jan 25 16:23:55 promethues-server blackbox_exporter[55495]: level=info ts=2024-01-25T08:23:55.050Z caller=tls_config.go:191 msg="TLS is disabled." http2=fals
+```
+
+
+
+
+
+验证 web 界面
+
+![image-20240125162525774](https://cdn1.ryanxin.live/image-20240125162525774.png)
+
+### 2.7 blackbox exporter 实现URL监控
+
+prometheus 调用 blackbox exporter 实现对 URL/ICMP 的监控。
+
+需要指定 `blackbox_exporter` 对哪些目标执行探测，以及如何执行这些探测。通常通过 Prometheus 的 `scrape_configs` 配置中的 `static_configs` 或 `file_sd_configs` 来完成。在这些配置中定义了被监控节点的地址、端口、以及要执行的探测类型等信息。
+
+
+
+- `scrape_configs` 是主要的抓取目标配置部分，可以包含多个作业，每个作业可以包含多个抓取目标。
+- `relabel_configs` 用于在运行时修改或处理目标标签，它通常与 `scrape_configs` 结合使用。
+- `file_sd_configs` 允许从文件中动态发现抓取目标，这提供了一种自动发现服务实例的机制。
+- `static_configs` 用于静态地定义抓取目标，适用于不经常变化的目标。
+
+
+
+#### 2.7.1 URL 监控配置  
+
+```bash
+vim /apps/prometheus/prometheus.yml
+   # 网站监控
+  - job_name: 'http_status'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets: ['https://www.rmxc.com.cn']
+        labels:
+          instance: http_status
+          group: web
+    relabel_configs:
+      - source_labels: [__address__] #从原始的标签 __address__ 中提取值。
+        target_label: __param_target #将提取的值放入新标签 __param_target 中。
+      - source_labels: [__param_target] #从新的标签 __param_target 中提取值。
+        target_label: url #将提取的值放入新的标签 url 中
+      - target_label: __address__ #将目标地址的值放回原始标签 __address__ 中。
+        replacement: 192.168.29.71:9115
+```
+
+
+
+**验证 Prometheus 配置文件的语法**
+
+```bash
+/apps/prometheus/promtool check config /apps/prometheus/prometheus.yml
+Checking /apps/prometheus/prometheus.yml
+ SUCCESS: /apps/prometheus/prometheus.yml is valid prometheus config file syntax
+```
+
+
+
+**重启Prometheus服务生效**
+
+```bash
+root@promethues-server:/apps# curl -X POST http://192.168.29.71:9090/-/reload
+```
+
+
+
+
+
+#### 2.7.2 prometheus 验证数据
+
+![image-20240125170258048](https://cdn1.ryanxin.live/image-20240125170258048.png)
+
+
+
+
+
+#### 2.7.3 blackbox exporter 界面验证数据
+
+![image-20240125171155160](https://cdn1.ryanxin.live/image-20240125171155160.png)
+
+
 
 
 
@@ -698,31 +780,55 @@ LISTEN    0         4096                     *:3000                   *:*       
 
 
 
-#### 2.6.6 导入模板
+### 2.8 blackbox exporter 实现ICMP监控
 
-模板仓库：[Dashboards | Grafana Labs](https://grafana.com/grafana/dashboards/)
+```bash
+   # ping 检测
+  - job_name: 'ping_status'
+    metrics_path: /probe
+    params:
+      module: [icmp]
+    static_configs:
+      - targets: ['10.1.0.32']
+        labels:
+          instance: 'ping_status'
+          group: 'icmp'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: ping
+      - target_label: __address__
+        replacement: 192.168.29.71:9115
+```
 
-推荐使用：[1 Node Exporter for Prometheus Dashboard EN 20201010 | Grafana Labs](https://grafana.com/grafana/dashboards/11074-node-exporter-for-prometheus-dashboard-en-v20201010/)
-
-![image-20240125110610473](https://cdn1.ryanxin.live/image-20240125110610473.png)
 
 
 
-点击 Import
 
-![image-20240125110646728](https://cdn1.ryanxin.live/image-20240125110646728.png)
+**验证 Prometheus 配置文件的语法**
 
-输入模板ID
+```bash
+/apps/prometheus/promtool check config /apps/prometheus/prometheus.yml
+Checking /apps/prometheus/prometheus.yml
+ SUCCESS: /apps/prometheus/prometheus.yml is valid prometheus config file syntax
+```
 
-![image-20240125110720638](https://cdn1.ryanxin.live/image-20240125110720638.png)
+<br>
 
-选择数据源
 
-![image-20240125110811133](https://cdn1.ryanxin.live/image-20240125110811133.png)
 
-验证模板图形信息
+#### 2.8.1 验证数据
 
-![image-20240125110902165](https://cdn1.ryanxin.live/image-20240125110902165.png)
+
+
+![image-20240125170258048](https://cdn1.ryanxin.live/image-20240125170258048.png)
+
+
+
+#### 2.8.2 blackbox exporter 界面验证数据
+
+![image-20240125171155160](https://cdn1.ryanxin.live/image-20240125171155160.png)
 
 
 
@@ -730,36 +836,57 @@ LISTEN    0         4096                     *:3000                   *:*       
 
 
 
-#### 2.6.7 插件管理
-插件仓库：[Grafana Plugins - extend and customize your Grafana | Grafana Labs](https://grafana.com/grafana/plugins/)
-
-本例安装饼图插件：[Pie Chart plugin for Grafana | Grafana Labs]()
-
-插件保存目录：`/var/lib/grafana/plugins`
-
-```bash
-# 在线安装
-root@prometheus-server:~# grafana-cli plugins install grafana-piechart-panel
-✔ Downloaded and extracted grafana-piechart-panel v1.6.4 zip successfully to /var/lib/grafana/plugins/grafana-piechart-panel
-
-Please restart Grafana after installing plugins. Refer to Grafana documentation for instructions if necessary.
-```
+### 2.9 blackbox exporter 实现端口监控
 
 
 
 ```bash
-# 离线安装
-wget -nv https://grafana.com/api/plugins/grafana-piechart-panel/versions/latest/download -O /tmp/grafana-piechart-panel.zip
-unzip -q /tmp/grafana-piechart-panel.zip -d /tmp
-mv /tmp/grafana-piechart-panel-* /var/lib/grafana/plugins/grafana-piechart-panel
-sudo service grafana-server restart
+   # 端口监控
+  - job_name: 'port_status'
+    metrics_path: /probe
+    params:
+      module: [tcp_connect]
+    static_configs:
+      - targets: ['110.242.68.3:80']
+        labels:
+          instance: 'port_status'
+          group: 'port'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: port
+      - target_label: __address__
+        replacement: 192.168.29.71:9115
 ```
+
+
+
+<br>
+
+
+
+**验证 Prometheus 配置文件的语法**
 
 ```bash
-# 您可以将此repo直接克隆到插件目录中。然后重新启动grafana服务器，插件将被自动检测并使用。
-git clone https://github.com/grafana/piechart-panel.git --branch release-1.6.2
-sudo service grafana-server restart
+/apps/prometheus/promtool check config /apps/prometheus/prometheus.yml
+Checking /apps/prometheus/prometheus.yml
+ SUCCESS: /apps/prometheus/prometheus.yml is valid prometheus config file syntax
 ```
 
-![image-20230303143432271](https://cdn1.ryanxin.live/6996b9be22c66525cd2f1f47cf5db669.png)
+<br>
+
+
+
+#### 2.9.1 验证数据
+
+![image-20240125170258048](https://cdn1.ryanxin.live/image-20240125170258048.png)
+
+
+
+#### 2.9.2 blackbox exporter 界面验证数据
+
+
+
+![image-20240125171155160](https://cdn1.ryanxin.live/image-20240125171155160.png)
 

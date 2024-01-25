@@ -7,11 +7,11 @@
     <meta name="robots" content="noodp" />
     <title>Prometheus 简介与安装 - Ryan&#39;s Notebook</title><meta name="author" content="Ryan">
 <meta name="author-link" content="https://github.com/ryanxin7">
-<meta name="description" content="一、Prometheus 简介 官网：https://prometheus.io/ Prometheus是基于go语言开发的一套开源的监控、报警和" /><meta name="keywords" content='监控' /><meta itemprop="name" content="Prometheus 简介与安装">
+<meta name="description" content="一、Prometheus 简介 官网：https://prometheus.io/ Prometheus是基于go语言开发的一套开源的监控、报警和" /><meta name="keywords" content='监控系统, exporter' /><meta itemprop="name" content="Prometheus 简介与安装">
 <meta itemprop="description" content="一、Prometheus 简介 官网：https://prometheus.io/ Prometheus是基于go语言开发的一套开源的监控、报警和"><meta itemprop="datePublished" content="2024-01-23T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2024-01-23T00:00:00+00:00" />
-<meta itemprop="wordCount" content="5056"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
-<meta itemprop="keywords" content="监控," /><meta property="og:title" content="Prometheus 简介与安装" />
+<meta itemprop="wordCount" content="5347"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="keywords" content="监控系统,exporter," /><meta property="og:title" content="Prometheus 简介与安装" />
 <meta property="og:description" content="一、Prometheus 简介 官网：https://prometheus.io/ Prometheus是基于go语言开发的一套开源的监控、报警和" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" /><meta property="og:image" content="https://hg-xnlog.github.io/logo.png"/><meta property="article:section" content="posts" />
@@ -23,7 +23,7 @@
 <meta name="twitter:title" content="Prometheus 简介与安装"/>
 <meta name="twitter:description" content="一、Prometheus 简介 官网：https://prometheus.io/ Prometheus是基于go语言开发的一套开源的监控、报警和"/>
 <meta name="application-name" content="Ryan’s Notebook">
-<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes%E9%85%8D%E7%BD%AEimagepullsecrets%E7%A7%98%E9%92%A5%E6%9D%A5%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/kubernetes/primary/kubernetes%E9%85%8D%E7%BD%AEimagepullsecrets%E7%A7%98%E9%92%A5%E6%9D%A5%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F/" /><link rel="next" href="https://hg-xnlog.github.io/posts/notes/%E8%A7%A3%E5%86%B3%E4%BD%BF%E7%94%A8git%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/prometheus\/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85\/"
-    },"genre": "posts","keywords": "监控","wordcount":  5056 ,
+    },"genre": "posts","keywords": "监控系统, exporter","wordcount":  5347 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/prometheus\/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85\/","datePublished": "2024-01-23T00:00:00+00:00","dateModified": "2024-01-23T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -181,7 +181,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/prometheus/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Prometheus</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2024-01-23 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-23">2024-01-23</time></span>&nbsp;<span title="更新于 2024-01-23 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-23">2024-01-23</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 5056 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 11 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Prometheus 简介与安装">
+      <div class="post-meta-line"><span title="发布于 2024-01-23 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-23">2024-01-23</time></span>&nbsp;<span title="更新于 2024-01-23 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-23">2024-01-23</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 5347 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 11 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Prometheus 简介与安装">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -204,7 +204,10 @@
         <li><a href="#23-二进制部署-prometheus-server">2.3 二进制部署 Prometheus Server</a></li>
         <li><a href="#24-二进制安装node-exporter">2.4 二进制安装node-exporter</a></li>
         <li><a href="#25-配置prometheus-server收集node-exporter指标数据">2.5 配置prometheus server收集node-exporter指标数据</a></li>
-        <li><a href="#26-部署-grafana">2.6 部署 Grafana</a></li>
+        <li><a href="#26-安装-blackbox-exporter">2.6 安装 blackbox exporter</a></li>
+        <li><a href="#27-blackbox-exporter-实现url监控">2.7 blackbox exporter 实现URL监控</a></li>
+        <li><a href="#28-blackbox-exporter-实现icmp监控">2.8 blackbox exporter 实现ICMP监控</a></li>
+        <li><a href="#29-blackbox-exporter-实现端口监控">2.9 blackbox exporter 实现端口监控</a></li>
       </ul>
     </li>
   </ul>
@@ -556,72 +559,136 @@
 </span></span><span class="line"><span class="cl">      - targets: <span class="o">[</span><span class="s2">&#34;10.1.0.35:9100&#34;</span>,<span class="s2">&#34;10.1.0.34:9100&#34;</span>,<span class="s2">&#34;10.1.0.37:9100&#34;</span><span class="o">]</span></span></span></code></pre></div><h4 id="253-动态加载配置并验证prometheus-server状态">2.5.3 动态加载配置并验证prometheus server状态</h4>
 <div class="highlight" id="id-23"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@promethues-server:~# curl -X POST http://192.168.29.71:9090/-/reload</span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125103817173.png" srcset="https://cdn1.ryanxin.live/image-20240125103817173.png, https://cdn1.ryanxin.live/image-20240125103817173.png 1.5x, https://cdn1.ryanxin.live/image-20240125103817173.png 2x" sizes="auto" data-title="image-20240125103817173" data-alt="image-20240125103817173" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <p>已经接收到数据了</p>
-<h3 id="26-部署-grafana">2.6 部署 Grafana</h3>
-<p>grafana是一个可视化组件，用于接收客户端浏览器的请求并连接到prometheus查询数据，最后经过渲染并在浏览器进行体系化显示，需要注意的是，grafana查询数据类似于zabbix-样需要自定义模板,模板可以手动制作也可以导入已有模板。</p>
-<p>下载：<a href="https://grafana.com/grafana/download?pg=get&amp;plcmt=selfmanaged-box1-cta1"target="_blank" rel="external nofollow noopener noreferrer">Download Grafana | Grafana Labs</a></p>
-<p>模板：<a href="https://grafana.com/grafana/dashboards/"target="_blank" rel="external nofollow noopener noreferrer">Dashboards | Grafana Labs</a></p>
-<p>插件：<a href="https://grafana.com/grafana/plugins/"target="_blank" rel="external nofollow noopener noreferrer">Grafana Plugins - extend and customize your Grafana | Grafana Labs</a></p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/1695797621991" srcset="https://cdn1.ryanxin.live/1695797621991, https://cdn1.ryanxin.live/1695797621991 1.5x, https://cdn1.ryanxin.live/1695797621991 2x" sizes="auto" data-title="https://cdn1.ryanxin.live/1695797621991" data-alt="https://cdn1.ryanxin.live/1695797621991" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<h4 id="261-安装-grafana-server">2.6.1 安装 grafana server</h4>
-<p>下载地址：<a href="https://grafana.com/grafana/download"target="_blank" rel="external nofollow noopener noreferrer">Download Grafana | Grafana Labs</a></p>
-<p>安装文档：<a href="https://grafana.com/docs/grafana/latest/setup-grafana/installation/"target="_blank" rel="external nofollow noopener noreferrer">Install Grafana | Grafana documentation</a></p>
-<p>部署环境：可以和 Prometheus Server 安装在一起，也可以分开安装（网络互通即可）。</p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125104222583.png" srcset="https://cdn1.ryanxin.live/image-20240125104222583.png, https://cdn1.ryanxin.live/image-20240125104222583.png 1.5x, https://cdn1.ryanxin.live/image-20240125104222583.png 2x" sizes="auto" data-title="image-20240125104222583" data-alt="image-20240125104222583" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@promethues-server:~# apt-get install -y adduser libfontconfig1
-</span></span><span class="line"><span class="cl">root@prometheus-server:~# dpkg -i grafana-enterprise_9.4.3_amd64.deb</span></span></code></pre></div><h4 id="262-grafana-server-配置文件">2.6.2 grafana server 配置文件</h4>
-<p>路径：<code>/etc/grafana/grafana.ini</code></p>
-<div class="highlight" id="id-25"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">[</span>server<span class="o">]</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># Protocol (http, https, h2, socket)</span>
-</span></span><span class="line"><span class="cl"><span class="nv">protocol</span> <span class="o">=</span> http
+<h3 id="26-安装-blackbox-exporter">2.6 安装 blackbox exporter</h3>
+<p><a href="https://prometheus.io/download/#blackbox_exporter"target="_blank" rel="external nofollow noopener noreferrer">https://prometheus.io/download/#blackbox_exporter</a></p>
+<p><code>blackbox_exporter</code> 是由 Prometheus 社区提供的一个官方 exporter，用于进行对端点的黑盒探测。它主要通过执行各种网络层协议（HTTP、HTTPS、DNS、TCP、ICMP等）来监控和收集有关被监控节点的数据。</p>
+<div class="highlight" id="id-24"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">HTTP<span class="o">(</span>S<span class="o">)</span> 监控： 通过发送 HTTP 或 HTTPS 请求并检查响应的方式来监控服务的可用性和性能。
+</span></span><span class="line"><span class="cl">DNS 监控： 通过 DNS 查询检查域名解析的状态和响应时间。
+</span></span><span class="line"><span class="cl">TCP 监控： 建立 TCP 连接并检查端口的可用性。
+</span></span><span class="line"><span class="cl">ICMP 监控： 使用 ICMP Echo 请求（类似于 Ping）来检查主机的可达性。</span></span></code></pre></div><h4 id="261-下载二进制包">2.6.1 下载二进制包</h4>
+<div class="highlight" id="id-25"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">wget  https://github.com/prometheus/blackbox_exporter/releases/download/v0.19.0/blackbox_exporter-0.19.0.linux-amd64.tar.gz</span></span></code></pre></div><h4 id="262-准备配置文件">2.6.2 准备配置文件</h4>
+<div class="highlight" id="id-26"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /etc/systemd/system/blackbox-exporter.service
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Unit<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Description</span><span class="o">=</span>Prometheus Blackbox Exporter
+</span></span><span class="line"><span class="cl"><span class="nv">After</span><span class="o">=</span>network.target
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># The ip address to bind to, empty will bind to all interfaces</span>
-</span></span><span class="line"><span class="cl"><span class="nv">http_addr</span> <span class="o">=</span> 0.0.0.0
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># The http port  to use</span>
-</span></span><span class="line"><span class="cl"><span class="nv">http_port</span> <span class="o">=</span> <span class="m">3000</span></span></span></code></pre></div><h4 id="263-启动-grafana">2.6.3 启动 grafana</h4>
-<div class="highlight" id="id-26"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@prometheus-server:~# systemctl restart grafana-server.service <span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> grafana-server.service 
-</span></span><span class="line"><span class="cl">Synchronizing state of grafana-server.service with SysV service script with /lib/systemd/systemd-sysv-install.
-</span></span><span class="line"><span class="cl">Executing: /lib/systemd/systemd-sysv-install <span class="nb">enable</span> grafana-server
-</span></span><span class="line"><span class="cl">Created symlink /etc/systemd/system/multi-user.target.wants/grafana-server.service → /lib/systemd/system/grafana-server.service.
-</span></span><span class="line"><span class="cl">root@prometheus-server:~# ss -anptl <span class="p">|</span> grep <span class="m">3000</span>
-</span></span><span class="line"><span class="cl">LISTEN    <span class="m">0</span>         <span class="m">4096</span>                     *:3000                   *:*        users:<span class="o">((</span><span class="s2">&#34;grafana&#34;</span>,pid<span class="o">=</span>136786,fd<span class="o">=</span>11<span class="o">))</span>                                           </span></span></code></pre></div><h4 id="264-验证-web-界面">2.6.4 验证 web 界面</h4>
-<p>默认账户密码：admin/admin</p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125110130210.png" srcset="https://cdn1.ryanxin.live/image-20240125110130210.png, https://cdn1.ryanxin.live/image-20240125110130210.png 1.5x, https://cdn1.ryanxin.live/image-20240125110130210.png 2x" sizes="auto" data-title="image-20240125110130210" data-alt="image-20240125110130210" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<h4 id="265-添加-prometheus-数据源">2.6.5 添加 Prometheus 数据源</h4>
-<p>进入主界面后，点击左下角的设置，选择 “ Data sources”，再选择 Prometheus。</p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125110238982.png" srcset="https://cdn1.ryanxin.live/image-20240125110238982.png, https://cdn1.ryanxin.live/image-20240125110238982.png 1.5x, https://cdn1.ryanxin.live/image-20240125110238982.png 2x" sizes="auto" data-title="image-20240125110238982" data-alt="image-20240125110238982" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125110448889.png" srcset="https://cdn1.ryanxin.live/image-20240125110448889.png, https://cdn1.ryanxin.live/image-20240125110448889.png 1.5x, https://cdn1.ryanxin.live/image-20240125110448889.png 2x" sizes="auto" data-title="image-20240125110448889" data-alt="image-20240125110448889" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125110516029.png" srcset="https://cdn1.ryanxin.live/image-20240125110516029.png, https://cdn1.ryanxin.live/image-20240125110516029.png 1.5x, https://cdn1.ryanxin.live/image-20240125110516029.png 2x" sizes="auto" data-title="image-20240125110516029" data-alt="image-20240125110516029" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p>检查与Prometheus能否连通</p>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Service<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">Type</span><span class="o">=</span>simple
+</span></span><span class="line"><span class="cl"><span class="nv">User</span><span class="o">=</span>root
+</span></span><span class="line"><span class="cl"><span class="nv">Group</span><span class="o">=</span>root
+</span></span><span class="line"><span class="cl"><span class="nv">ExecStart</span><span class="o">=</span>/apps/blackbox_exporter <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --config.file<span class="o">=</span>/apps/blackbox_exporter/blackbox.yml <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    --web.listen-address<span class="o">=</span>:9115
+</span></span><span class="line"><span class="cl"><span class="nv">Restart</span><span class="o">=</span>on-failure
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Install<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="nv">WantedBy</span><span class="o">=</span>multi-user.target</span></span></code></pre></div><h4 id="263-启动服务">2.6.3 启动服务</h4>
+<div class="highlight" id="id-27"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@promethues-server:/apps# systemctl daemon-reload <span class="o">&amp;&amp;</span> systemctl restart blackbox-exporter.service <span class="o">&amp;&amp;</span> systemctl <span class="nb">enable</span> blackbox-exporter.service</span></span></code></pre></div><h4 id="264-查看服务状态">2.6.4 查看服务状态</h4>
+<div class="highlight" id="id-28"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@promethues-server:/apps# systemctl status blackbox-exporter.service
+</span></span><span class="line"><span class="cl">● blackbox-exporter.service - Prometheus Blackbox Exporter
+</span></span><span class="line"><span class="cl">   Loaded: loaded <span class="o">(</span>/etc/systemd/system/blackbox-exporter.service<span class="p">;</span> enabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
+</span></span><span class="line"><span class="cl">   Active: active <span class="o">(</span>running<span class="o">)</span> since Thu 2024-01-25 16:23:55 CST<span class="p">;</span> 4s ago
+</span></span><span class="line"><span class="cl"> Main PID: <span class="m">55495</span> <span class="o">(</span>blackbox_export<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    Tasks: <span class="m">9</span> <span class="o">(</span>limit: 4629<span class="o">)</span>
+</span></span><span class="line"><span class="cl">   CGroup: /system.slice/blackbox-exporter.service
+</span></span><span class="line"><span class="cl">           └─55495 /apps/blackbox_exporter/blackbox_exporter --config.file<span class="o">=</span>/apps/blackbox_exporter/blackbox.yml --web.listen-address<span class="o">=</span>:9115
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Jan <span class="m">25</span> 16:23:55 promethues-server systemd<span class="o">[</span>1<span class="o">]</span>: Started Prometheus Blackbox Exporter.
+</span></span><span class="line"><span class="cl">Jan <span class="m">25</span> 16:23:55 promethues-server blackbox_exporter<span class="o">[</span>55495<span class="o">]</span>: <span class="nv">level</span><span class="o">=</span>info <span class="nv">ts</span><span class="o">=</span>2024-01-25T08:23:55.048Z <span class="nv">caller</span><span class="o">=</span>main.go:224 <span class="nv">msg</span><span class="o">=</span><span class="s2">&#34;Starting blackbox_exporter&#34;</span> versio
+</span></span><span class="line"><span class="cl">Jan <span class="m">25</span> 16:23:55 promethues-server blackbox_exporter<span class="o">[</span>55495<span class="o">]</span>: <span class="nv">level</span><span class="o">=</span>info <span class="nv">ts</span><span class="o">=</span>2024-01-25T08:23:55.049Z <span class="nv">caller</span><span class="o">=</span>main.go:225 <span class="nv">build_context</span><span class="o">=</span><span class="s2">&#34;(go=go1.16.4, user=root@
+</span></span></span><span class="line"><span class="cl"><span class="s2">Jan 25 16:23:55 promethues-server blackbox_exporter[55495]: level=info ts=2024-01-25T08:23:55.049Z caller=main.go:237 msg=&#34;</span>Loaded config file<span class="s2">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">Jan 25 16:23:55 promethues-server blackbox_exporter[55495]: level=info ts=2024-01-25T08:23:55.049Z caller=main.go:385 msg=&#34;</span>Listening on address<span class="s2">&#34; address=:911
+</span></span></span><span class="line"><span class="cl"><span class="s2">Jan 25 16:23:55 promethues-server blackbox_exporter[55495]: level=info ts=2024-01-25T08:23:55.050Z caller=tls_config.go:191 msg=&#34;</span>TLS is disabled.<span class="s2">&#34; http2=fals</span></span></span></code></pre></div><p>验证 web 界面</p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125162525774.png" srcset="https://cdn1.ryanxin.live/image-20240125162525774.png, https://cdn1.ryanxin.live/image-20240125162525774.png 1.5x, https://cdn1.ryanxin.live/image-20240125162525774.png 2x" sizes="auto" data-title="image-20240125162525774" data-alt="image-20240125162525774" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h3 id="27-blackbox-exporter-实现url监控">2.7 blackbox exporter 实现URL监控</h3>
+<p>prometheus 调用 blackbox exporter 实现对 URL/ICMP 的监控。</p>
+<p>需要指定 <code>blackbox_exporter</code> 对哪些目标执行探测，以及如何执行这些探测。通常通过 Prometheus 的 <code>scrape_configs</code> 配置中的 <code>static_configs</code> 或 <code>file_sd_configs</code> 来完成。在这些配置中定义了被监控节点的地址、端口、以及要执行的探测类型等信息。</p>
+<ul>
+<li><code>scrape_configs</code> 是主要的抓取目标配置部分，可以包含多个作业，每个作业可以包含多个抓取目标。</li>
+<li><code>relabel_configs</code> 用于在运行时修改或处理目标标签，它通常与 <code>scrape_configs</code> 结合使用。</li>
+<li><code>file_sd_configs</code> 允许从文件中动态发现抓取目标，这提供了一种自动发现服务实例的机制。</li>
+<li><code>static_configs</code> 用于静态地定义抓取目标，适用于不经常变化的目标。</li>
+</ul>
+<h4 id="271-url-监控配置">2.7.1 URL 监控配置</h4>
+<div class="highlight" id="id-29"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">vim /apps/prometheus/prometheus.yml
+</span></span><span class="line"><span class="cl">   <span class="c1"># 网站监控</span>
+</span></span><span class="line"><span class="cl">  - job_name: <span class="s1">&#39;http_status&#39;</span>
+</span></span><span class="line"><span class="cl">    metrics_path: /probe
+</span></span><span class="line"><span class="cl">    params:
+</span></span><span class="line"><span class="cl">      module: <span class="o">[</span>http_2xx<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    static_configs:
+</span></span><span class="line"><span class="cl">      - targets: <span class="o">[</span><span class="s1">&#39;https://www.rmxc.com.cn&#39;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">        labels:
+</span></span><span class="line"><span class="cl">          instance: http_status
+</span></span><span class="line"><span class="cl">          group: web
+</span></span><span class="line"><span class="cl">    relabel_configs:
+</span></span><span class="line"><span class="cl">      - source_labels: <span class="o">[</span>__address__<span class="o">]</span> <span class="c1">#从原始的标签 __address__ 中提取值。</span>
+</span></span><span class="line"><span class="cl">        target_label: __param_target <span class="c1">#将提取的值放入新标签 __param_target 中。</span>
+</span></span><span class="line"><span class="cl">      - source_labels: <span class="o">[</span>__param_target<span class="o">]</span> <span class="c1">#从新的标签 __param_target 中提取值。</span>
+</span></span><span class="line"><span class="cl">        target_label: url <span class="c1">#将提取的值放入新的标签 url 中</span>
+</span></span><span class="line"><span class="cl">      - target_label: __address__ <span class="c1">#将目标地址的值放回原始标签 __address__ 中。</span>
+</span></span><span class="line"><span class="cl">        replacement: 192.168.29.71:9115</span></span></code></pre></div><p><strong>验证 Prometheus 配置文件的语法</strong></p>
+<div class="highlight" id="id-30"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/apps/prometheus/promtool check config /apps/prometheus/prometheus.yml
+</span></span><span class="line"><span class="cl">Checking /apps/prometheus/prometheus.yml
+</span></span><span class="line"><span class="cl"> SUCCESS: /apps/prometheus/prometheus.yml is valid prometheus config file syntax</span></span></code></pre></div><p><strong>重启Prometheus服务生效</strong></p>
+<div class="highlight" id="id-31"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">root@promethues-server:/apps# curl -X POST http://192.168.29.71:9090/-/reload</span></span></code></pre></div><h4 id="272-prometheus-验证数据">2.7.2 prometheus 验证数据</h4>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125170258048.png" srcset="https://cdn1.ryanxin.live/image-20240125170258048.png, https://cdn1.ryanxin.live/image-20240125170258048.png 1.5x, https://cdn1.ryanxin.live/image-20240125170258048.png 2x" sizes="auto" data-title="image-20240125170258048" data-alt="image-20240125170258048" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h4 id="273-blackbox-exporter-界面验证数据">2.7.3 blackbox exporter 界面验证数据</h4>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125171155160.png" srcset="https://cdn1.ryanxin.live/image-20240125171155160.png, https://cdn1.ryanxin.live/image-20240125171155160.png 1.5x, https://cdn1.ryanxin.live/image-20240125171155160.png 2x" sizes="auto" data-title="image-20240125171155160" data-alt="image-20240125171155160" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <!-- raw HTML omitted -->
-<h4 id="266-导入模板">2.6.6 导入模板</h4>
-<p>模板仓库：<a href="https://grafana.com/grafana/dashboards/"target="_blank" rel="external nofollow noopener noreferrer">Dashboards | Grafana Labs</a></p>
-<p>推荐使用：<a href="https://grafana.com/grafana/dashboards/11074-node-exporter-for-prometheus-dashboard-en-v20201010/"target="_blank" rel="external nofollow noopener noreferrer">1 Node Exporter for Prometheus Dashboard EN 20201010 | Grafana Labs</a></p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125110610473.png" srcset="https://cdn1.ryanxin.live/image-20240125110610473.png, https://cdn1.ryanxin.live/image-20240125110610473.png 1.5x, https://cdn1.ryanxin.live/image-20240125110610473.png 2x" sizes="auto" data-title="image-20240125110610473" data-alt="image-20240125110610473" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p>点击 Import</p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125110646728.png" srcset="https://cdn1.ryanxin.live/image-20240125110646728.png, https://cdn1.ryanxin.live/image-20240125110646728.png 1.5x, https://cdn1.ryanxin.live/image-20240125110646728.png 2x" sizes="auto" data-title="image-20240125110646728" data-alt="image-20240125110646728" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p>输入模板ID</p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125110720638.png" srcset="https://cdn1.ryanxin.live/image-20240125110720638.png, https://cdn1.ryanxin.live/image-20240125110720638.png 1.5x, https://cdn1.ryanxin.live/image-20240125110720638.png 2x" sizes="auto" data-title="image-20240125110720638" data-alt="image-20240125110720638" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p>选择数据源</p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125110811133.png" srcset="https://cdn1.ryanxin.live/image-20240125110811133.png, https://cdn1.ryanxin.live/image-20240125110811133.png 1.5x, https://cdn1.ryanxin.live/image-20240125110811133.png 2x" sizes="auto" data-title="image-20240125110811133" data-alt="image-20240125110811133" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
-<p>验证模板图形信息</p>
-<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125110902165.png" srcset="https://cdn1.ryanxin.live/image-20240125110902165.png, https://cdn1.ryanxin.live/image-20240125110902165.png 1.5x, https://cdn1.ryanxin.live/image-20240125110902165.png 2x" sizes="auto" data-title="image-20240125110902165" data-alt="image-20240125110902165" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h3 id="28-blackbox-exporter-实现icmp监控">2.8 blackbox exporter 实现ICMP监控</h3>
+<div class="highlight" id="id-32"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">   <span class="c1"># ping 检测</span>
+</span></span><span class="line"><span class="cl">  - job_name: <span class="s1">&#39;ping_status&#39;</span>
+</span></span><span class="line"><span class="cl">    metrics_path: /probe
+</span></span><span class="line"><span class="cl">    params:
+</span></span><span class="line"><span class="cl">      module: <span class="o">[</span>icmp<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    static_configs:
+</span></span><span class="line"><span class="cl">      - targets: <span class="o">[</span><span class="s1">&#39;10.1.0.32&#39;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">        labels:
+</span></span><span class="line"><span class="cl">          instance: <span class="s1">&#39;ping_status&#39;</span>
+</span></span><span class="line"><span class="cl">          group: <span class="s1">&#39;icmp&#39;</span>
+</span></span><span class="line"><span class="cl">    relabel_configs:
+</span></span><span class="line"><span class="cl">      - source_labels: <span class="o">[</span>__address__<span class="o">]</span>
+</span></span><span class="line"><span class="cl">        target_label: __param_target
+</span></span><span class="line"><span class="cl">      - source_labels: <span class="o">[</span>__param_target<span class="o">]</span>
+</span></span><span class="line"><span class="cl">        target_label: ping
+</span></span><span class="line"><span class="cl">      - target_label: __address__
+</span></span><span class="line"><span class="cl">        replacement: 192.168.29.71:9115</span></span></code></pre></div><p><strong>验证 Prometheus 配置文件的语法</strong></p>
+<div class="highlight" id="id-33"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/apps/prometheus/promtool check config /apps/prometheus/prometheus.yml
+</span></span><span class="line"><span class="cl">Checking /apps/prometheus/prometheus.yml
+</span></span><span class="line"><span class="cl"> SUCCESS: /apps/prometheus/prometheus.yml is valid prometheus config file syntax</span></span></code></pre></div><!-- raw HTML omitted -->
+<h4 id="281-验证数据">2.8.1 验证数据</h4>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125170258048.png" srcset="https://cdn1.ryanxin.live/image-20240125170258048.png, https://cdn1.ryanxin.live/image-20240125170258048.png 1.5x, https://cdn1.ryanxin.live/image-20240125170258048.png 2x" sizes="auto" data-title="image-20240125170258048" data-alt="image-20240125170258048" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h4 id="282-blackbox-exporter-界面验证数据">2.8.2 blackbox exporter 界面验证数据</h4>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125171155160.png" srcset="https://cdn1.ryanxin.live/image-20240125171155160.png, https://cdn1.ryanxin.live/image-20240125171155160.png 1.5x, https://cdn1.ryanxin.live/image-20240125171155160.png 2x" sizes="auto" data-title="image-20240125171155160" data-alt="image-20240125171155160" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <!-- raw HTML omitted -->
-<h4 id="267-插件管理">2.6.7 插件管理</h4>
-<p>插件仓库：<a href="https://grafana.com/grafana/plugins/"target="_blank" rel="external nofollow noopener noreferrer">Grafana Plugins - extend and customize your Grafana | Grafana Labs</a></p>
-<p>本例安装饼图插件：<a href="">Pie Chart plugin for Grafana | Grafana Labs</a></p>
-<p>插件保存目录：<code>/var/lib/grafana/plugins</code></p>
-<div class="highlight" id="id-27"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 在线安装</span>
-</span></span><span class="line"><span class="cl">root@prometheus-server:~# grafana-cli plugins install grafana-piechart-panel
-</span></span><span class="line"><span class="cl">✔ Downloaded and extracted grafana-piechart-panel v1.6.4 zip successfully to /var/lib/grafana/plugins/grafana-piechart-panel
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Please restart Grafana after installing plugins. Refer to Grafana documentation <span class="k">for</span> instructions <span class="k">if</span> necessary.</span></span></code></pre></div><div class="highlight" id="id-28"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 离线安装</span>
-</span></span><span class="line"><span class="cl">wget -nv https://grafana.com/api/plugins/grafana-piechart-panel/versions/latest/download -O /tmp/grafana-piechart-panel.zip
-</span></span><span class="line"><span class="cl">unzip -q /tmp/grafana-piechart-panel.zip -d /tmp
-</span></span><span class="line"><span class="cl">mv /tmp/grafana-piechart-panel-* /var/lib/grafana/plugins/grafana-piechart-panel
-</span></span><span class="line"><span class="cl">sudo service grafana-server restart</span></span></code></pre></div><div class="highlight" id="id-29"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 您可以将此repo直接克隆到插件目录中。然后重新启动grafana服务器，插件将被自动检测并使用。</span>
-</span></span><span class="line"><span class="cl">git clone https://github.com/grafana/piechart-panel.git --branch release-1.6.2
-</span></span><span class="line"><span class="cl">sudo service grafana-server restart</span></span></code></pre></div><p><img loading="lazy" src="https://cdn1.ryanxin.live/6996b9be22c66525cd2f1f47cf5db669.png" srcset="https://cdn1.ryanxin.live/6996b9be22c66525cd2f1f47cf5db669.png, https://cdn1.ryanxin.live/6996b9be22c66525cd2f1f47cf5db669.png 1.5x, https://cdn1.ryanxin.live/6996b9be22c66525cd2f1f47cf5db669.png 2x" sizes="auto" data-title="image-20230303143432271" data-alt="image-20230303143432271" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h3 id="29-blackbox-exporter-实现端口监控">2.9 blackbox exporter 实现端口监控</h3>
+<div class="highlight" id="id-34"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">   <span class="c1"># 端口监控</span>
+</span></span><span class="line"><span class="cl">  - job_name: <span class="s1">&#39;port_status&#39;</span>
+</span></span><span class="line"><span class="cl">    metrics_path: /probe
+</span></span><span class="line"><span class="cl">    params:
+</span></span><span class="line"><span class="cl">      module: <span class="o">[</span>tcp_connect<span class="o">]</span>
+</span></span><span class="line"><span class="cl">    static_configs:
+</span></span><span class="line"><span class="cl">      - targets: <span class="o">[</span><span class="s1">&#39;110.242.68.3:80&#39;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">        labels:
+</span></span><span class="line"><span class="cl">          instance: <span class="s1">&#39;port_status&#39;</span>
+</span></span><span class="line"><span class="cl">          group: <span class="s1">&#39;port&#39;</span>
+</span></span><span class="line"><span class="cl">    relabel_configs:
+</span></span><span class="line"><span class="cl">      - source_labels: <span class="o">[</span>__address__<span class="o">]</span>
+</span></span><span class="line"><span class="cl">        target_label: __param_target
+</span></span><span class="line"><span class="cl">      - source_labels: <span class="o">[</span>__param_target<span class="o">]</span>
+</span></span><span class="line"><span class="cl">        target_label: port
+</span></span><span class="line"><span class="cl">      - target_label: __address__
+</span></span><span class="line"><span class="cl">        replacement: 192.168.29.71:9115</span></span></code></pre></div><!-- raw HTML omitted -->
+<p><strong>验证 Prometheus 配置文件的语法</strong></p>
+<div class="highlight" id="id-35"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">/apps/prometheus/promtool check config /apps/prometheus/prometheus.yml
+</span></span><span class="line"><span class="cl">Checking /apps/prometheus/prometheus.yml
+</span></span><span class="line"><span class="cl"> SUCCESS: /apps/prometheus/prometheus.yml is valid prometheus config file syntax</span></span></code></pre></div><!-- raw HTML omitted -->
+<h4 id="291-验证数据">2.9.1 验证数据</h4>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125170258048.png" srcset="https://cdn1.ryanxin.live/image-20240125170258048.png, https://cdn1.ryanxin.live/image-20240125170258048.png 1.5x, https://cdn1.ryanxin.live/image-20240125170258048.png 2x" sizes="auto" data-title="image-20240125170258048" data-alt="image-20240125170258048" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<h4 id="292-blackbox-exporter-界面验证数据">2.9.2 blackbox exporter 界面验证数据</h4>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125171155160.png" srcset="https://cdn1.ryanxin.live/image-20240125171155160.png, https://cdn1.ryanxin.live/image-20240125171155160.png 1.5x, https://cdn1.ryanxin.live/image-20240125171155160.png 2x" sizes="auto" data-title="image-20240125171155160" data-alt="image-20240125171155160" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 </div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
@@ -633,8 +700,8 @@
     <div class="post-info-line">
       <div class="post-info-md"><span><a href="/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/index.md" title="阅读原始文档" class="link-to-markdown">阅读原始文档</a></span></div>
       <div class="post-info-share">
-        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title="Prometheus 简介与安装" data-hashtags="监控"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-hashtag="监控"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
+        <span><a href="javascript:void(0);" title="分享到 Twitter" data-sharer="twitter" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title="Prometheus 简介与安装" data-hashtags="监控系统,exporter"><i class="fa-brands fa-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="分享到 Facebook" data-sharer="facebook" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-hashtag="监控系统"><i class="fa-brands fa-facebook-square fa-fw" aria-hidden="true"></i></a>
   <a href="javascript:void(0);" title="分享到 WhatsApp" data-sharer="whatsapp" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title="Prometheus 简介与安装" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
   <a href="javascript:void(0);" title="分享到 Line" data-sharer="line" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title="Prometheus 简介与安装"><i data-svg-src="/lib/simple-icons/icons/line.min.svg" aria-hidden="true"></i></a>
   <a href="javascript:void(0);" title="分享到 微博" data-sharer="weibo" data-url="https://hg-xnlog.github.io/posts/prometheus/prometheus-%E7%AE%80%E4%BB%8B%E4%B8%8E%E5%AE%89%E8%A3%85/" data-title="Prometheus 简介与安装"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
@@ -647,13 +714,14 @@
   </div>
 
   <div class="post-info-more">
-    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href='/tags/%E7%9B%91%E6%8E%A7/' class="post-tag">监控</a></section>
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href='/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/' class="post-tag">监控系统</a><a href='/tags/exporter/' class="post-tag">exporter</a></section>
     <section>
       <span><a href="javascript:void(0);" onclick="window.history.back();">返回</a></span>&nbsp;|&nbsp;<span><a href="/">主页</a></span>
     </section>
   </div>
 
-  <div class="post-nav"><a href="/posts/kubernetes/primary/kubernetes%E9%85%8D%E7%BD%AEimagepullsecrets%E7%A7%98%E9%92%A5%E6%9D%A5%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F/" class="post-nav-item" rel="prev" title="kubernetes配置imagePullSecrets秘钥来拉取镜像"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>kubernetes配置imagePullSecrets秘钥来拉取镜像</a></div>
+  <div class="post-nav"><a href="/posts/kubernetes/primary/kubernetes%E9%85%8D%E7%BD%AEimagepullsecrets%E7%A7%98%E9%92%A5%E6%9D%A5%E6%8B%89%E5%8F%96%E9%95%9C%E5%83%8F/" class="post-nav-item" rel="prev" title="kubernetes配置imagePullSecrets秘钥来拉取镜像"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>kubernetes配置imagePullSecrets秘钥来拉取镜像</a>
+      <a href="/posts/notes/%E8%A7%A3%E5%86%B3%E4%BD%BF%E7%94%A8git%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/" class="post-nav-item" rel="next" title="使用Git时遇到的问题汇总">使用Git时遇到的问题汇总<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></main><footer class="footer">
     <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
