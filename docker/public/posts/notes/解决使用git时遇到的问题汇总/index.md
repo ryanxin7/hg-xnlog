@@ -8,7 +8,7 @@
 
 解决方法： 设置git端口号和梯子的端口号保持一致
 
-![image-20240124223407707](http://cdn1.ryanxin.live/xxlog/image-20240124223407707.png)
+![image-20240124223407707](https://cdn1.ryanxin.live/xxlog/image-20240124223407707.png)
 
 
 
@@ -68,11 +68,11 @@ git config --global --unset https.proxy
 
 必须使用个人访问令牌（personal access token），就是把你的密码替换成token！
 
-![image-20240124224044162](http://cdn1.ryanxin.live/xxlog/image-20240124224044162.png)
+![image-20240124224044162](https://cdn1.ryanxin.live/xxlog/image-20240124224044162.png)
 
-![image-20240124224326566](http://cdn1.ryanxin.live/xxlog/image-20240124224326566.png)
+![image-20240124224326566](https://cdn1.ryanxin.live/xxlog/image-20240124224326566.png)
 
-![1706107438712](http://cdn1.ryanxin.live/xxlog/1706107438712.png)
+![1706107438712](https://cdn1.ryanxin.live/xxlog/1706107438712.png)
 
 
 <br>
