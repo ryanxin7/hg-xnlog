@@ -443,31 +443,25 @@ root@promethues-server:/apps/prometheus# curl -X POST http://192.168.29.71:9090/
 
 k8s各node节点使用二进制或者daemonset方式安装node_ exporter，用于收集各k8s node节点宿主机的监控指标数据，默认监听端口为9100。
 
-部署环境：本例部署在kubernetes的两个 node（172.23.0.20/21）节点以及集群外的两个节点（172.23.1.11/13）， 如果之前已经通过其它方式部署了prometheus node- exporter，需要先停止再部署，避免端口冲突。
 
 
-![image-20230302215912438](https://cdn1.ryanxin.live/1bd077d60b60c3b388451aa3fa3356ea.png)
+![img](https://cdn1.ryanxin.live/1394626-20230608155048421-817186731.png)
+
+
 
 #### 2.4.1 解压二进制程序
 
 下载地址：[Download | Prometheus](https://prometheus.io/download/#node_exporter)
 
 ```bash
-root@node01:/usr/local/src# wget https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-amd64.tar.gz
-
-root@node01:/usr/local/src# tar xvf node_exporter-1.5.0.linux-amd64.tar.gz 
-root@node01:/usr/local/src# mkdir /apps
-root@node01:/usr/local/src# mv node_exporter-1.5.0.linux-amd64/ /apps/
-root@node01:/usr/local/src# cd /apps/
-root@node01:/apps# ln -sv node_exporter-1.5.0.linux-amd64/ /apps/node_exporter
+root@k8s-made-01-32:/softs# tar xf node_exporter-1.5.0.linux-amd64.tar.gz
+root@k8s-made-01-32:/softs/node_exporter-1.5.0.linux-amd64# mkdir /apps
+root@k8s-made-01-32:/apps# mv /softs/node_exporter-1.5.0.linux-amd64/ ./
+root@k8s-made-01-32:/apps# ln -sv node_exporter-1.5.0.linux-amd64/ /apps/node_exporter
 '/apps/node_exporter' -> 'node_exporter-1.5.0.linux-amd64/'
-root@node01:/apps# ll node_exporter/
-total 19336
-drwxr-xr-x 2 3434 3434       56 Nov 30 03:05 ./
-drwxr-xr-x 4 root root      121 Mar  2 22:02 ../
--rw-r--r-- 1 3434 3434    11357 Nov 30 03:05 LICENSE
--rw-r--r-- 1 3434 3434      463 Nov 30 03:05 NOTICE
--rwxr-xr-x 1 3434 3434 19779640 Nov 30 02:59 node_exporter*
+root@k8s-made-01-32:/apps#
+root@k8s-made-01-32:/apps# ls node_exporter
+LICENSE  node_exporter  NOTICE
 ```
 
 
@@ -496,19 +490,37 @@ WantedBy=multi-user.target
 
 ```bash
 # 默认监听在9100端口
-root@node01:/apps# ./node_exporter/node_exporter --help | grep 9100
-      --web.listen-address=:9100 ...  
+root@k8s-made-01-32:/apps# ./node_exporter/node_exporter --help | grep 9100
+      --web.listen-address=:9100 ...
 ```
 
 ```bash
-root@node01:/apps# systemctl daemon-reload && systemctl restart node-exporter.service && systemctl enable node-exporter.service 
+root@k8s-made-01-32:/apps# systemctl daemon-reload && systemctl restart node-exporter.service && systemctl enable node-exporter.service
+Created symlink /etc/systemd/system/multi-user.target.wants/node-exporter.servic                                                                             e → /etc/systemd/system/node-exporter.service.
+root@k8s-made-01-32:/apps#
+root@k8s-made-01-32:/apps#
+root@k8s-made-01-32:/apps# systemctl status node-exporter.service
+● node-exporter.service - Prometheus Node Exporter
+     Loaded: loaded (/etc/systemd/system/node-exporter.service; enabled; vendor>
+     Active: active (running) since Thu 2024-01-25 10:11:35 CST; 11s ago
+   Main PID: 495132 (node_exporter)
+      Tasks: 6 (limit: 19101)
+     Memory: 3.0M
+     CGroup: /system.slice/node-exporter.service
+             └─495132 /apps/node_exporter/node_exporter
+
+Jan 25 10:11:35 k8s-made-01-32 node_exporter[495132]: ts=2024-01-25T02:11:35.06>
+Jan 25 10:11:35 k8s-made-01-32 node_exporter[495132]: ts=2024-01-25T02:11:35.06>
+Jan 25 10:11:35 k8s-made-01-32 node_exporter[495132]: ts=2024-01-25T02:11:35.06>
+Jan 25 10:11:35 k8s-made-01-32 node_exporter[495132]: ts=2024-01-25T02:11:35.06>
+Jan 25 10:11:35 k8s-made-01-32 node_exporter[495132]: ts=2024-01-25T02:11:35.06>
 ```
 
 
 
 #### 2.4.4 验证web页面
 
-![image-20230302222317782](https://cdn1.ryanxin.live/e944b2af5a9a4d1f56cd74228f5884aa.png)
+![image-20240125101239529](https://cdn1.ryanxin.live/image-20240125101239529.png)
 
 
 
@@ -518,7 +530,7 @@ root@node01:/apps# systemctl daemon-reload && systemctl restart node-exporter.se
 [4.5.2. kubernetes-cadvisor — 新溪-gordon V1.7.0 documentation (zhaoweiguo.com)](https://knowledge.zhaoweiguo.com/build/html/cloudnative/prometheus/metrics/kubernetes-cadvisor.html)
 
 ```bash
-root@prometheus02:/apps# curl 172.23.0.20:9100/metrics
+root@promethues-server:~# curl 10.1.0.32:9100/metrics
 
 常见指标：
 node_boot_time: 系统自启动以后的总结时间
@@ -533,15 +545,15 @@ go_*: node exporter中go相关指标
 process_ *: node exporter 自身进程相关运行指标
 ```
 
-至此node节点（172.23.0.20）已经安装了node-exporter，将另外一个node节点（172.23.0.21）也安装node-exporter。
+至此node节点（10.1.0.32）已经安装了node-exporter，将另外一个node节点（10.1.0.33）也安装node-exporter。
 
 
 
 ### 2.5 配置prometheus server收集node-exporter指标数据
 
-上文部署好prometheus server后，它只收集了自身的指标数据，那么怎么让它也收集node-exporter指标数据？
+部署好prometheus server后，它只收集了自身的指标数据，那么怎么让它也收集node-exporter指标数据？
 
-![image-20230302224307106](https://cdn1.ryanxin.live/6fb1a4e7ce16f3f58fa44b15469d54c0.png)
+![image-20240125102939550](https://cdn1.ryanxin.live/image-20240125102939550.png)
 
 #### 2.5.1 prometheus 默认配置文件
 
@@ -582,20 +594,26 @@ scrape_configs:  # 数据采集目标配置
 #### 2.5.2 添加 node节点数据收集
 
 ```bash
-root@prometheus02:/apps# vim /apps/prometheus/prometheus.yml 
+root@promethues-server:~# vim /apps/prometheus/prometheus.yml
 # 末尾添加
-  - job_name: "prometheus-worknode"
+  - job_name: "prometheus-k8s-node"
     static_configs:
-      - targets: ["172.23.0.20:9100","172.23.0.21:9100"]
+      - targets: ["10.1.0.35:9100","10.1.0.34:9100","10.1.0.37:9100"]
 ```
 
 #### 2.5.3 动态加载配置并验证prometheus server状态
 
 ```bash
-root@prometheus02:/apps# curl -X POST http://172.23.1.12:9090/-/reload
+root@promethues-server:~# curl -X POST http://192.168.29.71:9090/-/reload
 ```
 
-![image-20230302225615678](https://cdn1.ryanxin.live/2a07515b6df5e5d97c642c49c3b8dcff.png)
+
+
+![image-20240125103817173](https://cdn1.ryanxin.live/image-20240125103817173.png)
+
+已经接收到数据了
+
+
 
 
 
@@ -609,7 +627,7 @@ grafana是一个可视化组件，用于接收客户端浏览器的请求并连�
 插件：[Grafana Plugins - extend and customize your Grafana | Grafana Labs](https://grafana.com/grafana/plugins/)
 
 
-![image-20230303115811593](https://cdn1.ryanxin.live/8d82119f52d9bdb6f5a8da7242918ba2.png)
+![](https://cdn1.ryanxin.live/1695797621991)
 
 #### 2.6.1 安装 grafana server
 
@@ -617,13 +635,14 @@ grafana是一个可视化组件，用于接收客户端浏览器的请求并连�
 
 安装文档：[Install Grafana | Grafana documentation](https://grafana.com/docs/grafana/latest/setup-grafana/installation/)
 
-部署环境：可以和 Prometheus Server 安装在一起，也可以分开安装（网络互通即可）。本例和 Prometheus Server 安装在一起（172.23.1.12）。
+部署环境：可以和 Prometheus Server 安装在一起，也可以分开安装（网络互通即可）。
+
+![image-20240125104222583](https://cdn1.ryanxin.live/image-20240125104222583.png)
 
 
 ```bash
-root@prometheus-server:~# sudo apt-get install -y adduser libfontconfig1
-root@prometheus-server:~# wget https://dl.grafana.com/enterprise/release/grafana-enterprise_9.4.3_amd64.deb
-root@prometheus-server:~# sudo dpkg -i grafana-enterprise_9.4.3_amd64.deb
+root@promethues-server:~# apt-get install -y adduser libfontconfig1
+root@prometheus-server:~# dpkg -i grafana-enterprise_9.4.3_amd64.deb
 ```
 
 #### 2.6.2 grafana server 配置文件
@@ -659,17 +678,23 @@ LISTEN    0         4096                     *:3000                   *:*       
 
 默认账户密码：admin/admin
 
-![image-20230303121328026](https://cdn1.ryanxin.live/04414deb26df1587a0eb779899cbaa1e.png)
+![image-20240125110130210](https://cdn1.ryanxin.live/image-20240125110130210.png)
 
 #### 2.6.5 添加 Prometheus 数据源
 
 进入主界面后，点击左下角的设置，选择 “ Data sources”，再选择 Prometheus。
 
-![image-20230303121741323](https://cdn1.ryanxin.live/1ec32342b6075cb8cc4a79741b5a3d29.png)
+![image-20240125110238982](https://cdn1.ryanxin.live/image-20240125110238982.png)
 
-![image-20230303122140995](https://cdn1.ryanxin.live/3e29221f0db6c59f28ec8723b7b8ea61.png)
+![image-20240125110448889](https://cdn1.ryanxin.live/image-20240125110448889.png)
 
-![image-20230303122254292](https://cdn1.ryanxin.live/57139d1900b90f0cb6dcc6665e2f7c3a.png)
+![image-20240125110516029](https://cdn1.ryanxin.live/image-20240125110516029.png)
+
+检查与Prometheus能否连通
+
+
+
+<br>
 
 
 
@@ -679,27 +704,33 @@ LISTEN    0         4096                     *:3000                   *:*       
 
 推荐使用：[1 Node Exporter for Prometheus Dashboard EN 20201010 | Grafana Labs](https://grafana.com/grafana/dashboards/11074-node-exporter-for-prometheus-dashboard-en-v20201010/)
 
+![image-20240125110610473](https://cdn1.ryanxin.live/image-20240125110610473.png)
 
 
-![image-20230303123010063](https://cdn1.ryanxin.live/f57274e5b4ce40883d158b5d674d97b6.png)
 
 点击 Import
 
-![image-20230303123250724](https://cdn1.ryanxin.live/d1abec5f15c90555a6cfe1145178cc5e.png)
+![image-20240125110646728](https://cdn1.ryanxin.live/image-20240125110646728.png)
 
 输入模板ID
 
-![image-20230303123559425](https://cdn1.ryanxin.live/17f40802c97a4dff824f75b127c339c7.png)
+![image-20240125110720638](https://cdn1.ryanxin.live/image-20240125110720638.png)
 
 选择数据源
 
-![image-20230303123711522](https://cdn1.ryanxin.live/82f4b0929be7df89e5fd12402f16f34a.png)
+![image-20240125110811133](https://cdn1.ryanxin.live/image-20240125110811133.png)
 
 验证模板图形信息
 
-![image-20230303123815999](https://cdn1.ryanxin.live/f34cbb71bd8d0a03b7ef306170065f60.png)
+![image-20240125110902165](https://cdn1.ryanxin.live/image-20240125110902165.png)
 
-6、插件管理
+
+
+<br>
+
+
+
+#### 2.6.7 插件管理
 插件仓库：[Grafana Plugins - extend and customize your Grafana | Grafana Labs](https://grafana.com/grafana/plugins/)
 
 本例安装饼图插件：[Pie Chart plugin for Grafana | Grafana Labs]()
