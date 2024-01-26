@@ -1,17 +1,4 @@
----
-author: Ryan
-title: PromQL 语句
-date: 2024-01-26
-lastmod: 2024-01-26
-tags:
-  - 监控系统
-  - 可视化
-  - PromQL
-categories:
-  - Prometheus
-expirationReminder:
-  enable: true
----
+
 
 
 

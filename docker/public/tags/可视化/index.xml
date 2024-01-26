@@ -4,15 +4,7 @@
     <link>https://hg-xnlog.github.io/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/</link>
     <description>可视化 - 标签 - Ryan&#39;s Notebook</description>
     <generator>Hugo -- gohugo.io</generator><language>zh-CN</language><managingEditor>99929x@gmail.com (Ryan)</managingEditor>
-      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Fri, 26 Jan 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/" rel="self" type="application/rss+xml" /><item>
-  <title>PromQL 语句</title>
-  <link>https://hg-xnlog.github.io/posts/prometheus/promql%E8%AF%AD%E5%8F%A5/</link>
-  <pubDate>Fri, 26 Jan 2024 00:00:00 &#43;0000</pubDate>
-  <author>Ryan</author>
-  <guid>https://hg-xnlog.github.io/posts/prometheus/promql%E8%AF%AD%E5%8F%A5/</guid>
-  <description><![CDATA[1.PromQL 简介 Prometheus Query Language（PromQL）是 Prometheus 使用的查询语言，它允许用户实时地查找、聚合和操作时间序列数据。通过 PromQL，用户可以从 Prometheus 数]]></description>
-</item>
-<item>
+      <webMaster>99929x@gmail.com (Ryan)</webMaster><lastBuildDate>Thu, 25 Jan 2024 00:00:00 &#43;0000</lastBuildDate><atom:link href="https://hg-xnlog.github.io/tags/%E5%8F%AF%E8%A7%86%E5%8C%96/" rel="self" type="application/rss+xml" /><item>
   <title>Grafana 简介与安装</title>
   <link>https://hg-xnlog.github.io/posts/prometheus/%E5%AE%89%E8%A3%85grafana/</link>
   <pubDate>Thu, 25 Jan 2024 00:00:00 &#43;0000</pubDate>
