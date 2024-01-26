@@ -10,7 +10,7 @@
 <meta name="description" content="简介 Grafana 是一个流行的开源可视化工具，用于创建和分享动态仪表板。它可以集成多种数据源，包括 Prometheus、MySQL、InfluxDB、E" /><meta name="keywords" content='监控系统, 可视化, Grafana' /><meta itemprop="name" content="Grafana 简介与安装">
 <meta itemprop="description" content="简介 Grafana 是一个流行的开源可视化工具，用于创建和分享动态仪表板。它可以集成多种数据源，包括 Prometheus、MySQL、InfluxDB、E"><meta itemprop="datePublished" content="2024-01-25T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2024-01-25T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1172"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
+<meta itemprop="wordCount" content="1205"><meta itemprop="image" content="https://hg-xnlog.github.io/logo.png"/>
 <meta itemprop="keywords" content="监控系统,可视化,Grafana," /><meta property="og:title" content="Grafana 简介与安装" />
 <meta property="og:description" content="简介 Grafana 是一个流行的开源可视化工具，用于创建和分享动态仪表板。它可以集成多种数据源，包括 Prometheus、MySQL、InfluxDB、E" />
 <meta property="og:type" content="article" />
@@ -23,7 +23,7 @@
 <meta name="twitter:title" content="Grafana 简介与安装"/>
 <meta name="twitter:description" content="简介 Grafana 是一个流行的开源可视化工具，用于创建和分享动态仪表板。它可以集成多种数据源，包括 Prometheus、MySQL、InfluxDB、E"/>
 <meta name="application-name" content="Ryan’s Notebook">
-<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/prometheus/%E5%AE%89%E8%A3%85grafana/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/notes/%E8%A7%A3%E5%86%B3%E4%BD%BF%E7%94%A8git%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+<meta name="apple-mobile-web-app-title" content="Ryan’s Notebook"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="icon" href="/images/favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://hg-xnlog.github.io/posts/prometheus/%E5%AE%89%E8%A3%85grafana/" /><link rel="prev" href="https://hg-xnlog.github.io/posts/notes/%E8%A7%A3%E5%86%B3%E4%BD%BF%E7%94%A8git%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/" /><link rel="next" href="https://hg-xnlog.github.io/posts/prometheus/promql%E8%AF%AD%E5%8F%A5/" /><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
@@ -32,7 +32,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "https:\/\/hg-xnlog.github.io\/posts\/prometheus\/%E5%AE%89%E8%A3%85grafana\/"
-    },"genre": "posts","keywords": "监控系统, 可视化, Grafana","wordcount":  1172 ,
+    },"genre": "posts","keywords": "监控系统, 可视化, Grafana","wordcount":  1205 ,
     "url": "https:\/\/hg-xnlog.github.io\/posts\/prometheus\/%E5%AE%89%E8%A3%85grafana\/","datePublished": "2024-01-25T00:00:00+00:00","dateModified": "2024-01-25T00:00:00+00:00","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -181,7 +181,7 @@
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/ryanxin7" title="作者"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><img loading="lazy" src="/images/avatar.png" srcset="/images/avatar.png, /images/avatar.png 1.5x, /images/avatar.png 2x" sizes="auto" data-title="Ryan" data-alt="Ryan" class="avatar" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/>&nbsp;Ryan</a></span>
           <span class="post-category">收录于 <a href="/categories/prometheus/"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Prometheus</a></span></div>
-      <div class="post-meta-line"><span title="发布于 2024-01-25 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-25">2024-01-25</time></span>&nbsp;<span title="更新于 2024-01-25 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-25">2024-01-25</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 1172 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 3 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Grafana 简介与安装">
+      <div class="post-meta-line"><span title="发布于 2024-01-25 00:00:00"><i class="fa-regular fa-calendar-alt fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-25">2024-01-25</time></span>&nbsp;<span title="更新于 2024-01-25 00:00:00"><i class="fa-regular fa-edit fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-25">2024-01-25</time></span>&nbsp;<span><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>约 1205 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>预计阅读 3 分钟</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="Grafana 简介与安装">
             <i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;次阅读
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
@@ -199,7 +199,8 @@
         <li><a href="#13-启动-grafana">1.3 启动 grafana</a></li>
         <li><a href="#14-验证-web-界面">1.4 验证 web 界面</a></li>
         <li><a href="#15-添加-prometheus-数据源">1.5 添加 Prometheus 数据源</a></li>
-        <li><a href="#16-导入模板">1.6 导入模板</a></li>
+        <li><a href="#16-导入node-exporter模板">1.6 导入node exporter模板</a></li>
+        <li><a href="#17-导入-blackbox-exporter模板">1.7 导入 blackbox exporter模板</a></li>
         <li><a href="#17-插件管理">1.7 插件管理</a></li>
       </ul>
     </li>
@@ -264,7 +265,7 @@
 <p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125110516029.png" srcset="https://cdn1.ryanxin.live/image-20240125110516029.png, https://cdn1.ryanxin.live/image-20240125110516029.png 1.5x, https://cdn1.ryanxin.live/image-20240125110516029.png 2x" sizes="auto" data-title="image-20240125110516029" data-alt="image-20240125110516029" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <p>检查与Prometheus能否连通</p>
 <!-- raw HTML omitted -->
-<h3 id="16-导入模板">1.6 导入模板</h3>
+<h3 id="16-导入node-exporter模板">1.6 导入node exporter模板</h3>
 <p>模板仓库：<a href="https://grafana.com/grafana/dashboards/"target="_blank" rel="external nofollow noopener noreferrer">Dashboards | Grafana Labs</a></p>
 <p>推荐使用：<a href="https://grafana.com/grafana/dashboards/11074-node-exporter-for-prometheus-dashboard-en-v20201010/"target="_blank" rel="external nofollow noopener noreferrer">1 Node Exporter for Prometheus Dashboard EN 20201010 | Grafana Labs</a></p>
 <p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125110610473.png" srcset="https://cdn1.ryanxin.live/image-20240125110610473.png, https://cdn1.ryanxin.live/image-20240125110610473.png 1.5x, https://cdn1.ryanxin.live/image-20240125110610473.png 2x" sizes="auto" data-title="image-20240125110610473" data-alt="image-20240125110610473" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
@@ -277,6 +278,11 @@
 <p>验证模板图形信息</p>
 <p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240125110902165.png" srcset="https://cdn1.ryanxin.live/image-20240125110902165.png, https://cdn1.ryanxin.live/image-20240125110902165.png 1.5x, https://cdn1.ryanxin.live/image-20240125110902165.png 2x" sizes="auto" data-title="image-20240125110902165" data-alt="image-20240125110902165" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <!-- raw HTML omitted -->
+<h3 id="17-导入-blackbox-exporter模板">1.7 导入 blackbox exporter模板</h3>
+<p>模板-9719</p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240126161618929.png" srcset="https://cdn1.ryanxin.live/image-20240126161618929.png, https://cdn1.ryanxin.live/image-20240126161618929.png 1.5x, https://cdn1.ryanxin.live/image-20240126161618929.png 2x" sizes="auto" data-title="image-20240126161618929" data-alt="image-20240126161618929" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240126161710803.png" srcset="https://cdn1.ryanxin.live/image-20240126161710803.png, https://cdn1.ryanxin.live/image-20240126161710803.png 1.5x, https://cdn1.ryanxin.live/image-20240126161710803.png 2x" sizes="auto" data-title="image-20240126161710803" data-alt="image-20240126161710803" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
+<p><img loading="lazy" src="https://cdn1.ryanxin.live/image-20240126161755092.png" srcset="https://cdn1.ryanxin.live/image-20240126161755092.png, https://cdn1.ryanxin.live/image-20240126161755092.png 1.5x, https://cdn1.ryanxin.live/image-20240126161755092.png 2x" sizes="auto" data-title="image-20240126161755092" data-alt="image-20240126161755092" style="background: url(/svg/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;this.alt=this.dataset.alt;for(const a of ['style','data-title','data-alt','onerror','onload']){this.removeAttribute(a);}"/></p>
 <h3 id="17-插件管理">1.7 插件管理</h3>
 <p>插件仓库：<a href="https://grafana.com/grafana/plugins/"target="_blank" rel="external nofollow noopener noreferrer">Grafana Plugins - extend and customize your Grafana | Grafana Labs</a></p>
 <p>本例安装饼图插件：<a href="">Pie Chart plugin for Grafana | Grafana Labs</a></p>
@@ -323,7 +329,8 @@
     </section>
   </div>
 
-  <div class="post-nav"><a href="/posts/notes/%E8%A7%A3%E5%86%B3%E4%BD%BF%E7%94%A8git%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/" class="post-nav-item" rel="prev" title="使用Git时遇到的问题汇总"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>使用Git时遇到的问题汇总</a></div>
+  <div class="post-nav"><a href="/posts/notes/%E8%A7%A3%E5%86%B3%E4%BD%BF%E7%94%A8git%E6%97%B6%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/" class="post-nav-item" rel="prev" title="使用Git时遇到的问题汇总"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>使用Git时遇到的问题汇总</a>
+      <a href="/posts/prometheus/promql%E8%AF%AD%E5%8F%A5/" class="post-nav-item" rel="next" title="PromQL 语句">PromQL 语句<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
 </div>
 </article></main><footer class="footer">
     <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>

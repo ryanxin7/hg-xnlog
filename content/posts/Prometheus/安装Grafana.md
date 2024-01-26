@@ -119,7 +119,7 @@ LISTEN    0         4096                     *:3000                   *:*       
 
 
 
-### 1.6 导入模板
+### 1.6 导入node exporter模板 
 
 模板仓库：[Dashboards | Grafana Labs](https://grafana.com/grafana/dashboards/)
 
@@ -148,6 +148,18 @@ LISTEN    0         4096                     *:3000                   *:*       
 
 
 <br>
+
+### 1.7 导入 blackbox exporter模板
+
+模板-9719
+
+![image-20240126161618929](https://cdn1.ryanxin.live/image-20240126161618929.png)
+
+![image-20240126161710803](https://cdn1.ryanxin.live/image-20240126161710803.png)
+
+
+
+![image-20240126161755092](https://cdn1.ryanxin.live/image-20240126161755092.png)
 
 
 
@@ -184,6 +196,8 @@ sudo service grafana-server restart
 ```
 
 ![image-20230303143432271](https://cdn1.ryanxin.live/6996b9be22c66525cd2f1f47cf5db669.png)
+
+
 
 
 
